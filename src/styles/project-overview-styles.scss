@@ -1,0 +1,241 @@
+.project-overview{
+    width: 95%;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    background-color: rgb(36, 36, 36);
+    min-height: 70vh;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    animation: fadeIn forwards 0.15s;
+
+    .current-board-toolbar{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .icon-span{
+
+            &:hover{
+
+                .icon{
+                    color: rgba(255, 255, 255, 0.7);
+
+                    &.dot{
+                        color: rgba(255, 255, 255, 0.4);
+                    }
+                }
+            }
+            .icon{
+                font-size: 1.5rem;
+                transition: color 0.1s;
+
+                &.dot{
+                    font-size: 0.35rem;
+                }
+            }
+        }
+
+        .options-menu{
+            width: 25%;
+            
+            &.open{
+                z-index: 10;
+            }
+        }
+    }
+
+    h2{
+        color: rgb(184, 3, 3);
+    }
+
+    hr.line{
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        width: 98%;
+        margin: 0 auto;
+    }
+
+    .icon-span{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .icon{
+        font-size: 0.4rem;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .current-board-due-date{
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .current-board-members-container{
+        display: flex;
+        align-items: center;
+        flex: 1;
+
+        .current-board-members{
+            color: rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            .icon-span.add{
+                background-color: rgba(255, 255, 255, 0.4);
+                border-radius: 5px;
+                padding: 0.2em;
+                // overflow: visible;
+                position: relative;
+
+                &:hover .icon{
+                    color: rgb(211, 3, 3);
+                }
+
+                .icon{
+                    color: rgba(255, 255, 255, 0.95);
+                    font-size: 1.5rem;
+                    transition: color 0.1s;
+                }
+            }
+
+            .icon-span{
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 0.1rem;
+                // animation: fadeIn forwards 0.1s;
+    
+                .name-overlay{
+                    position: absolute;
+                    z-index: 1;
+                    color: white;
+                }
+                .icon{
+                    font-size: 1.8rem;
+                }
+            }
+        }
+
+
+        .options-menu{
+            width: 450%;
+            right: -400%;
+            top: 100%;
+            text-align: left;
+
+            &.open{
+                z-index: 5;
+            }
+        }
+    }
+
+    .current-board-stages-container{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        place-items: center;
+        height: 60vh;
+        width: 100%;
+
+        .stage-container{
+            height: 95%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.05);
+            width: 18vw;
+            display: flex;
+            position: relative;
+            flex-direction: column;
+            overflow: hidden;
+
+            .btn{
+                width: 100%;
+                border: none;
+                border-radius: unset;
+                box-shadow: 0 0 80px rgb(0, 0, 0);
+            }
+
+            .icon-span.dots-menu{
+                color: rgba(255, 255, 255, 0.5);
+                text-align: center;
+                position: unset;
+                position: absolute;
+                z-index: 2;
+                right: 0.5rem;
+                top: 0.5rem;
+                border-radius: 3px;
+                width: 25px;
+                height: 25px;
+                background-color: transparent;
+
+                &:hover{
+                    background-color: rgb(22, 22, 22);
+                    
+                    .icon{
+                        color: rgba(255, 255, 255, 0.65);
+                    }
+                }
+
+                .icon{
+                    font-size: 2rem;
+                }
+            }
+        }
+
+        .line{
+            width: 85%;
+        }
+
+        .input-container{
+            width: 75%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            padding: 0.2rem;
+            position: relative;
+            border-radius: 5px;
+            transition: background-color 0.15s;
+
+            .icon-span{
+                padding: 0.4rem;
+                // display: none;
+                position: absolute;
+                z-index: 1;
+                right: 3%;
+
+                &:hover .icon{
+                    color: rgba(255, 255, 255, 0.8);
+                }
+                
+                .icon{
+                    font-size: 1.1rem;
+                }
+            }
+
+            .stage-title-input{
+                color: rgba(255, 255, 255, 0.8);
+                text-align: center;
+                padding: 0.3rem 0;
+                background-color: transparent;
+                border: none;
+                font-size: 1.2rem;
+                margin: 0 auto;
+                width: 100%;
+                cursor: default;
+                
+                &:focus-visible{
+                    outline: none;
+                }
+
+                &.active{
+                    background-color: rgba(255, 255, 255, 0.2);
+                    cursor: text;
+                }
+            }
+        }
+    }
+}
