@@ -9,6 +9,9 @@ import NotificationTab from "./components/NotificationTab";
 import ProfileTab from "./components/ProfileTab";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import ProjectOverview from "./components/ProjectOverview";
+import NavBar from "./components/NavBar";
+import Task from "./components/Task";
 
 // Styles
 import "./styles/main-styles.scss";
@@ -22,21 +25,26 @@ import "./styles/notification-tab-styles.scss";
 import "./styles/projects-styles.scss";
 import "./styles/profile-tab-styles.scss";
 import "./styles/back-button-styles.scss";
+import Create from "./components/Create";
 
 
 const App = () => {
   const {notificationTabOpen, profileTabOpen} = useContext(ProjectContext);
   return (
     <div className='main'>
+      <NavBar/>
       {notificationTabOpen ? <NotificationTab/> : null}
       {profileTabOpen ? <ProfileTab/> : null}
     <Routes>
         <Route path="/" element={<ProjectManagement/>}/>
-        <Route path="projects" element={<Projects/>}/>
-        <Route path="notifications" element={<Notifications/>}/>
-        <Route path="profile" element={<Profile/>}/>
-        <Route path="login" element={<Login/>}/>
-        <Route path="register" element={<Register/>}/>
+        <Route path="/projects/:id" element={<ProjectOverview/>}/>
+        <Route path="/projects" element={<Projects/>}/>
+        <Route path="/projects/:id/notifications" element={<Notifications/>}/>
+        <Route path="/projects/:id/:task_id" element={<Task/>}/>
+        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
+        <Route path="/create" element={<Create/>}/>
     </Routes>
     </div>
   )

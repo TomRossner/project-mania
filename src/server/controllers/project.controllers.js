@@ -54,8 +54,22 @@ async function updateProject(req, res) {
     }
 }
 
+async function getTask(req, res) {
+    try {
+        const {id: projectID, task_id} = req.body;
+        const project = await boardsCollection.findOne({_id: ObjectId(`${projectID}`)});
+        const task = project.stages.map(stage => {
+            return stage.stage_tasks.find(task => Number(task._id) === Number(task_id))
+        })
+        res.status(200).send(task);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     getProjects,
     addProject,
-    updateProject
+    updateProject,
+    getTask
 }

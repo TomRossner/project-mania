@@ -2,14 +2,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
 import { BsCircleFill } from "react-icons/bs";
 import { RxPlus } from "react-icons/rx";
-import { FiCheck } from "react-icons/fi";
 // import { RiEdit2Fill } from "react-icons/ri";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { CgMenuGridO } from "react-icons/cg";
-import { stageOptions } from "../utils/stageOptionsMenu";
-import Task from './Task';
 // import { team } from '../temp/team';
 import { projectMenuOptions } from "../utils/projectMenuOptions";
+import StageOverview from './StageOverview';
 
 const ProjectOverview = () => {
     const {boards,
@@ -20,88 +17,16 @@ const ProjectOverview = () => {
         availableMembers
     } = useContext(ProjectContext);
     const NUMBER_OF_MEMBERS_TO_DISPLAY = 4;
-    const [inputValue, setInputValue] = useState("");
     const [membersPopUpTabOpen, setMembersPopUpTabOpen] = useState(false);
     const [projectMenuOpen, setProjectMenuOpen] = useState(false);
 
-    const handleInputChange = (e) => {
-        return setInputValue(e.target.value);
-    }
-
-    const validate = (inputValue, stageToUpdate) => {
-        if (!inputValue || !stageToUpdate) return;
-
-        return setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-            if (Number(stage._id) === Number(stageToUpdate._id)) {
-                return {...stage, stage_name: inputValue, edit_active: false, stage_tasks: [...stage.stage_tasks.map(task => {
-                    return {...task, current_stage: inputValue};
-                })]};
-            } else return stage;
-        })]});
-    }
-
-    const closeStageOptionMenus = () => {
-        return setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-            if (stage.options_menu_open) {
-                return {...stage, options_menu_open: false};
-            } else return stage;
-        })]});
-    }
-
-    const toggleStageOptions = (stageToUpdate) => {
-        if (!stageToUpdate) return;
-
-        const updatedStage = {...stageToUpdate, options_menu_open: !stageToUpdate.options_menu_open}
-        return setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-            if (stage.options_menu_open && Number(stage._id) !== Number(stageToUpdate._id)) {
-                return {...stage, options_menu_open: false};
-            }
-            else if (!stage.options_menu_open && Number(stage._id) !== Number(stageToUpdate._id)) {
-                return stage;
-            }
-            else return updatedStage;
-        })]});
-    }
-
-    const handleEdit = (stageToUpdate) => {
-        if (!stageToUpdate) return;
-
-        setInputValue(stageToUpdate.stage_name);
-        const updatedStage = {...stageToUpdate, edit_active: !stageToUpdate.edit_active, options_menu_open: false}
-        return setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-            if (stage.edit_active && Number(stage._id) !== Number(stageToUpdate._id)) {
-                return {...stage, edit_active: false, options_menu_open: false};
-            }
-            else if (!stage.edit_active && Number(stage._id) !== Number(stageToUpdate._id)) {
-                return {...stage, options_menu_open: false};
-            }
-            else return updatedStage;
-        })]});
-    }
-
-    const handleAddTask = (stageToAddTaskTo) => {
-        closeStageOptionMenus();
-    }
-
-    const handleDeleteStage = (stageToDelete) => {
-        if (!stageToDelete) return;
-
-        closeStageOptionMenus();
-        return setCurrentProject({...currentProject, stages: [...currentProject.stages.filter(stage => stage._id !== stageToDelete._id)]});
-    }
+    
 
     const toggleMembersPopUpTab = () => {
         setMembersPopUpTabOpen(!membersPopUpTabOpen);
     }
 
-    const handleOption = (stage, opt) => {
-        if (!stage || !opt || typeof opt !== 'string') return;
-
-        if (opt.toLowerCase() === "edit") return handleEdit(stage);
-        if (opt.toLowerCase() === "add task") return handleAddTask(stage);
-        if (opt.toLowerCase() === "delete") return handleDeleteStage(stage);
-        else return console.log(`Unknown/unhandled option "${opt}".`);
-    }
+    
 
     const handleAddMember = (member) => {
         if (!member) return;
@@ -187,35 +112,8 @@ const ProjectOverview = () => {
         </div>
         <hr className='line'/>
         <div className='current-board-stages-container'>
-            {currentProject?.stages?.map((stage, index) => {
-                const {stage_name} = stage;
-                return (<div key={index} className='stage-container'>
-                    {stage.options_menu_open
-                        ?   <div className="options-menu open">
-                                {stageOptions.map(opt => <p key={opt} onClick={() => handleOption(stage, opt)}>{opt}</p>)}
-                            </div>
-                        : <div className="options-menu"></div>}
-                    <div className='input-container'>
-                        <input
-                            type="text"
-                            name='stage_name'
-                            readOnly={!stage.edit_active}
-                            onChange={(e) => handleInputChange(e, stage)}
-                            defaultValue={stage_name}
-                            className={stage.edit_active ? "stage-title-input active" : "stage-title-input"}
-                        />
-                        {stage.edit_active ? <span className='icon-span' onClick={() => validate(inputValue, stage)}><FiCheck className='icon'/></span> : null}
-                    </div>
-                    <span className='icon-span dots-menu' onClick={() => toggleStageOptions(stage)}><BsThreeDotsVertical className='icon'/></span>
-                    <hr className='line'/>
-                    <div className='stage-tasks'>
-                        {stage.stage_tasks?.map((task, index) => task.current_stage === stage.stage_name
-                        ? <Task key={index} task={task}/>
-                        : null)}
-                    </div>
-                    <div className='flex1'></div>
-                    <button className='btn'>Add card</button>
-                </div>)})}
+            {currentProject?.stages?.map((stage) => {
+                return (<StageOverview key={stage._id} stage={stage}/>)})}
         </div>
     </div>
     : null}

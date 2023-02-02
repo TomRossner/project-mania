@@ -9,6 +9,7 @@ const NavBar = () => {
   const {setOpen, open, setProfileTabOpen, profileTabOpen, setNotificationTabOpen, notificationTabOpen} = useContext(ProjectContext);
 
   const handleCreateClick = () => {
+    
     setOpen(!open);
   }
 
@@ -25,7 +26,7 @@ const NavBar = () => {
         <Logo/>
         <ul className='flex1'>
             <Link className='link' to="projects">Projects</Link>
-            <li className='link' to="create" onClick={handleCreateClick}>Create</li>
+            <Link className='link' to="/create" onClick={handleCreateClick}>Create</Link>
         </ul>
         <ul>
             <li onClick={handleToggleNotificationTab}><IoIosNotifications className='icon'/></li>
