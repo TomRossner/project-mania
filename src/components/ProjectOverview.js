@@ -14,7 +14,9 @@ const ProjectOverview = () => {
         projectMembers,
         currentProject,
         setCurrentProject,
-        availableMembers
+        availableMembers,
+        setCreatePopupOpen,
+        setSelectedElement
     } = useContext(ProjectContext);
     const NUMBER_OF_MEMBERS_TO_DISPLAY = 4;
     const [membersPopUpTabOpen, setMembersPopUpTabOpen] = useState(false);
@@ -40,11 +42,16 @@ const ProjectOverview = () => {
         return setProjectMenuOpen(!projectMenuOpen);
     }
 
+    const handleAddStage = () => {
+        setCreatePopupOpen(true);
+        setSelectedElement("stage");
+    }
+
     const handleMenuOption = (opt) => {
         if (!opt || typeof opt !== 'string') return;
 
         if (opt.toLowerCase() === 'view project summary') return console.log(opt);
-        if (opt.toLowerCase() === 'add stage') return console.log(opt);
+        if (opt.toLowerCase() === 'add stage') return handleAddStage();
         if (opt.toLowerCase() === 'add/remove members') return console.log(opt);
         if (opt.toLowerCase() === 'edit project') return console.log(opt);
         if (opt.toLowerCase() === 'delete project') return console.log(opt);

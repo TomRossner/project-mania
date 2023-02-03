@@ -7,7 +7,7 @@ import { stageOptions } from '../utils/stageOptionsMenu';
 
 const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
-    const {setCurrentProject, currentProject, setBoards, boards} = useContext(ProjectContext);
+    const {setCurrentProject, currentProject, setBoards, boards, setCreatePopupOpen, setSelectedElement, setSelectStage} = useContext(ProjectContext);
     const [inputValue, setInputValue] = useState("");
 
     const toggleStageOptions = (stageToUpdate) => {
@@ -76,6 +76,9 @@ const StageOverview = ({stage}) => {
 
     const handleAddTask = (stageToAddTaskTo) => {
         closeStageOptionMenus();
+        setSelectStage(stageToAddTaskTo);
+        setCreatePopupOpen(true);
+        setSelectedElement("task");
     }
 
     const handleDeleteStage = (stageToDelete) => {

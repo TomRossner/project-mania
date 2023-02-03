@@ -29,10 +29,11 @@ import Create from "./components/Create";
 
 
 const App = () => {
-  const {notificationTabOpen, profileTabOpen} = useContext(ProjectContext);
+  const {notificationTabOpen, profileTabOpen, createPopupOpen} = useContext(ProjectContext);
   return (
     <div className='main'>
       <NavBar/>
+      {createPopupOpen ? <Create/> : null}
       {notificationTabOpen ? <NotificationTab/> : null}
       {profileTabOpen ? <ProfileTab/> : null}
     <Routes>
@@ -44,7 +45,7 @@ const App = () => {
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
-        <Route path="/create" element={<Create/>}/>
+        {/* <Route path="/create" element={<Create/>}/> */}
     </Routes>
     </div>
   )

@@ -53,8 +53,8 @@ const StageForm = () => {
             <div className='radio-buttons'>
             {boards?.map((board, index) =>
               <div key={index} className='input-container' onClick={() => handleSelectProject(board)}>
-                <input type="radio" name='project' id={board.id} value={board.id}/>
-                <label className={board.id === selectProject?.id ? "selected" : null} htmlFor={board.id}>{board.title}</label>
+                <input type="radio" name='project' id={board._id} value={board._id}/>
+                <label className={board._id === selectProject?._id ? "selected" : null} htmlFor={board._id}>{board.title}</label>
               </div>
             )}
             </div>

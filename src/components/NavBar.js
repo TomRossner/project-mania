@@ -6,10 +6,10 @@ import { BsCircleFill, BsPersonCircle } from "react-icons/bs";
 import { ProjectContext } from '../contexts/ProjectContext';
 
 const NavBar = () => {
-  const {setOpen, open, setProfileTabOpen, profileTabOpen, setNotificationTabOpen, notificationTabOpen} = useContext(ProjectContext);
+  const {setOpen, open, setProfileTabOpen, profileTabOpen, setNotificationTabOpen, notificationTabOpen, createPopupOpen, setCreatePopupOpen, closeCreatePopup} = useContext(ProjectContext);
 
   const handleCreateClick = () => {
-    
+    setCreatePopupOpen(!createPopupOpen);
     setOpen(!open);
   }
 
@@ -25,8 +25,8 @@ const NavBar = () => {
     <nav>
         <Logo/>
         <ul className='flex1'>
-            <Link className='link' to="projects">Projects</Link>
-            <Link className='link' to="/create" onClick={handleCreateClick}>Create</Link>
+            <Link className='link' to="/projects" onClick={closeCreatePopup}>Projects</Link>
+            <li className='link' onClick={handleCreateClick}>Create</li>
         </ul>
         <ul>
             <li onClick={handleToggleNotificationTab}><IoIosNotifications className='icon'/></li>

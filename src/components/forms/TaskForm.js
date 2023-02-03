@@ -6,11 +6,11 @@ import {defaultTaskProperties} from "../../utils/defaultProperties";
 
 const TaskForm = () => {
     const [readOnly, setReadOnly] = useState(true);
-    const {selectedElement, setOpen, currentProject, addTask} = useContext(ProjectContext);
+    const {selectedElement, setOpen, currentProject, addTask, selectStage, setSelectStage} = useContext(ProjectContext);
     const [inputValues, setInputValues] = useState({...defaultTaskProperties, type: selectedElement});
     const {title, description} = inputValues;
     const FormTitleRef = useRef(null);
-    const [selectStage, setSelectStage] = useState(currentProject.stages[0]);
+    
 
     const handleSelectStage = (stage) => {
       setSelectStage(stage);
