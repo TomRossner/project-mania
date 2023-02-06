@@ -3,10 +3,13 @@ import { ProjectContext } from '../../contexts/ProjectContext';
 import { RiEdit2Fill } from "react-icons/ri";
 import { FiCheck } from "react-icons/fi";
 import {defaultTaskProperties} from "../../utils/defaultProperties";
+import Input from "../common/Input";
+import IconContainer from "../common/IconContainer";
+
 
 const TaskForm = () => {
     const [readOnly, setReadOnly] = useState(true);
-    const {selectedElement, setOpen, currentProject, addTask, selectStage, setSelectStage} = useContext(ProjectContext);
+    const {selectedElement, setCreatePopupOpen, currentProject, addTask, selectStage, setSelectStage} = useContext(ProjectContext);
     const [inputValues, setInputValues] = useState({...defaultTaskProperties, type: selectedElement});
     const {title, description} = inputValues;
     const FormTitleRef = useRef(null);
@@ -19,7 +22,7 @@ const TaskForm = () => {
     const handleFormSubmit = (e) => {
       e.preventDefault();
       addTask(inputValues, selectStage);
-      setOpen(false);
+      setCreatePopupOpen(false);
     }
 
     const handleEditFormTitle = () => {
@@ -33,30 +36,40 @@ const TaskForm = () => {
     useEffect(() => {
       if (!readOnly) FormTitleRef.current.focus();
     }, [readOnly]);
+
+    // useEffect(() => {
+    //   if (!selectStage) {
+    //     return setSelectStage(currentProject.stages[0]);
+    //   }
+    // }, [selectStage])
     
   return (
     <form onSubmit={handleFormSubmit}>
       <div className='form-title-container'>
         <input className="form-title-input" type="text" name='title' readOnly={readOnly} ref={FormTitleRef} onChange={handleInputChange} value={title}></input>
-        {readOnly && <span className='icon-span' onClick={handleEditFormTitle}><RiEdit2Fill className='icon'/></span>}
-        {!readOnly && <span className='icon-span' onClick={handleEditFormTitle}><FiCheck className='icon'/></span>}
+        {readOnly && <IconContainer onClick={handleEditFormTitle} icon={<RiEdit2Fill className='icon'/>}></IconContainer>}
+        {!readOnly && <IconContainer onClick={handleEditFormTitle} icon={<FiCheck className='icon'/>}></IconContainer>}
       </div>
         <div className='form-inputs-container'>
           <div className='radio-buttons-container'>
             <p>Add task to:</p>
               <div className='radio-buttons'>
-              {currentProject?.stages.map((stage, index) =>
-                <div key={index} className='input-container' onClick={() => handleSelectStage(stage)}>
-                  <input type="radio" name='stage' id={stage.stage_name} value={stage.stage_name}/>
-                  <label className={stage.stage_name === selectStage.stage_name ? "selected" : null} htmlFor={stage.stage_name}>{stage.stage_name}</label>
+              {currentProject.stages.map((stage) =>
+                <div key={stage._id} className='input-container' onClick={() => handleSelectStage(stage)}>
+                  <input type="radio" name='stage' id={stage._id} value={stage.stage_name}/>
+                  <label className={stage.stage_name === selectStage?.stage_name ? "selected" : null} htmlFor={stage.stage_name}>{stage.stage_name}</label>
                 </div>
               )}
               </div>
           </div>
-          <div className='input-container'>
-            <label htmlFor='due-date'>Due date</label>
-            <input type="date" value={inputValues.due_date} id='due_date' name="due_date" onChange={handleInputChange}/>
-          </div>
+            <Input
+              type="date"
+              value={inputValues.due_date}
+              id='due_date'
+              name="due_date"
+              onChange={handleInputChange}
+              text="Due date"
+            />
             <div className='textarea-container'>
               <label htmlFor='description'>Description <span>(optional)</span></label>
               <textarea value={description} maxLength="500" id='description' name="description" onChange={handleInputChange}/>

@@ -1,0 +1,35 @@
+.current-board-info-bar{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .icon-span{
+
+        &:hover{
+
+            .icon{
+                color: rgba(255, 255, 255, 0.7);
+
+                &.dot{
+                    color: rgba(255, 255, 255, 0.4);
+                }
+            }
+        }
+        .icon{
+            font-size: 1.5rem;
+            transition: color 0.1s;
+
+            &.dot{
+                font-size: 0.35rem;
+            }
+        }
+    }
+
+    .options-menu{
+        width: 25%;
+        
+        &.open{
+            z-index: 10;
+        }
+    }
+}

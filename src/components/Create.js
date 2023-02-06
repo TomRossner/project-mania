@@ -3,18 +3,21 @@ import { ProjectContext } from '../contexts/ProjectContext';
 import BoardForm from './forms/BoardForm';
 import StageForm from './forms/StageForm';
 import TaskForm from './forms/TaskForm';
+import { RxCross2 } from 'react-icons/rx';
+import IconContainer from './common/IconContainer';
 
 const elements = ["board", "stage", "task"];
 
 const Create = () => {
-    const {selectedElement, setSelectedElement, currentProject, closeCreatePopup} = useContext(ProjectContext);
+    const {selectedElement, setSelectedElement, currentProject, closeCreatePopup, createPopupOpen} = useContext(ProjectContext);
     const handleElementClick = (element) => {
         setSelectedElement(element);
     }
 
   return (
-    <div className='create-popup-container'>
-        <div className='create-popup'>
+    <div className={createPopupOpen ? 'create-popup-container active' : 'create-popup-container'}>
+        <IconContainer icon={<RxCross2 className='icon'/>} onClick={closeCreatePopup}/>
+        <div className={createPopupOpen ? 'create-popup active' : 'create-popup'}>
             <div className='element-options'>
             <span>Create a new: </span>
             {elements.map((element) =>

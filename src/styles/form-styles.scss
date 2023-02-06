@@ -1,6 +1,7 @@
+@import 'main-styles';
+
 .form-container{
     width: 40%;
-    border: 1px solid yellow;
     display: flex;
     padding: 1.5rem 0;
     margin: 15% auto auto auto; 
@@ -18,7 +19,7 @@
     }
 
     form label{
-        color: rgba(255, 255, 255, 0.9);
+        color: $white;
         flex: 1;
     }
 
@@ -27,20 +28,20 @@
     }
 
     form p{
-        color: rgba(255, 255, 255, 0.9);
+        color: $white;
 
         .link{
-            color: rgb(184, 3, 3);
-            background-color: rgba(0, 0, 0, 0.3);
             padding: 0.2rem 0.4rem;
             border-radius: 3px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
             font-weight: 500;
             transition: background-color 0.15s;
 
             &:hover{
-                color: rgb(184, 3, 3, 1);
                 background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            &.blue{
+                color: $blue;
             }
         }
     }
@@ -54,8 +55,6 @@ form{
     gap: 1.5rem;
     width: 85%;
     margin: 0 auto;
-    // position: absolute;
-    // z-index: 10;
 
     .form-inputs-container{
         display: flex;
@@ -82,7 +81,7 @@ form{
                 justify-content: center;
                 flex-wrap: wrap;
                 gap: 1rem;
-                accent-color: rgb(184, 3, 3);
+                accent-color: $blue;
 
                 .input-container{
                     width: fit-content;
@@ -104,7 +103,7 @@ form{
                     transition: background-color 0.1s;
 
                     &.selected{
-                        color: rgb(184, 3, 3);
+                        color: $blue;
                         font-weight: 500;
                     }
                 }
@@ -166,6 +165,14 @@ form{
         .icon-span{
             flex: 1;
             color: rgba(255, 255, 255, 0.5);
+            position: unset;
+            width: unset;
+            height: unset;
+
+            .icon{
+                scale: 1.1;
+                animation: fadeIn forwards 0.25s linear;
+            }
 
             &:hover{
                 color: rgba(255, 255, 255, 1);

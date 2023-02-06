@@ -1,0 +1,62 @@
+@import 'main-styles.scss';
+
+.current-board-members-container{
+    display: flex;
+    align-items: center;
+    flex: 1;
+
+    .current-board-members{
+        color: rgba(255, 255, 255, 0.4);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .icon-span.add{
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 5px;
+            padding: 0.2em;
+            position: relative;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+            .icon{
+                color: $white;
+                font-size: 1.5rem;
+                transition: color 0.1s;
+            }
+        }
+
+        .icon-span{
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0.1rem;
+            // animation: fadeIn forwards 0.1s;
+
+            .name-overlay{
+                position: absolute;
+                z-index: 1;
+                color: $white;
+            }
+            .icon{
+                font-size: 1.8rem;
+            }
+        }
+    }
+
+
+    .options-menu{
+        width: 450%;
+        right: -400%;
+        top: 100%;
+        text-align: left;
+
+        &.open{
+            z-index: 5;
+        }
+    }
+}

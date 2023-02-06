@@ -1,32 +1,26 @@
 export const team = [
     {
-        name: "John",
-        last_name: "Doe",
-        id: 1
+        first_name: "John",
+        last_name: "Doe"
     },
     {
-        name: "Jerry",
+        first_name: "Jerry",
         last_name: "Bod",
-        id: 2
     },
     {
-        name: "Alison",
+        first_name: "Alison",
         last_name: "Paul",
-        id: 3
     },
     {
-        name: "Fred",
+        first_name: "Fred",
         last_name: "Goldberg",
-        id: 4
     },
     {
-        name: "Xioa",
+        first_name: "Xioa",
         last_name: "Zhang",
-        id: 5
     },
     {
-        name: "Catty",
+        first_name: "Catty",
         last_name: "Bourne",
-        id: 6
     },
 ];

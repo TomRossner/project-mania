@@ -1,8 +1,12 @@
+@import 'main-styles.scss';
+
 nav{
     width: 100%;
     display: flex;
     align-items: center;
     gap: 1rem;
+    position: absolute;
+    top: 0;
 
     .logo-container{
         width: auto;
@@ -14,7 +18,7 @@ nav{
             font-size: 1.7rem;
     
             &:hover{
-                color: rgba(255, 255, 255, 1);
+                color: $white;
             }
         }
     }
@@ -27,7 +31,7 @@ nav{
         list-style: none;
 
         li{
-            color: rgba(255, 255, 255, 1);
+            color: $white;
             padding: 0.3em 0.5em;
             cursor: default;
             font-weight: 600;
@@ -44,7 +48,7 @@ nav{
 
         .link{
             text-decoration: none;
-            color: rgba(255, 255, 255, 1);
+            color: $white;
             padding: 0.3em 0.5em;
             cursor: default;
             font-weight: 600;

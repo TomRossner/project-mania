@@ -1,0 +1,14 @@
+@import 'main-styles.scss';
+
+.chat-container{
+    border: 1px solid $blue;
+    width: 100%;
+    margin: 0 auto;
+    min-height: 25vh;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255, 0.2);
+
+    .chat-text{
+        color: $white;
+    }
+}

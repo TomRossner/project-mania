@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const ProjectManagement = () => {
-  const {open, currentProject} = useContext(ProjectContext);
+  const {currentProject} = useContext(ProjectContext);
   const navigate = useNavigate();
 
   const handleNavigate = () => {
@@ -16,7 +16,7 @@ const ProjectManagement = () => {
 
   useEffect(() => {
     if (currentProject) handleNavigate();
-  }, [])
+  }, [currentProject])
 
   return (
     <>

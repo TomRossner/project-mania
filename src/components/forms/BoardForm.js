@@ -4,10 +4,11 @@ import { FiCheck } from "react-icons/fi";
 import { ProjectContext } from '../../contexts/ProjectContext';
 import { team } from '../../temp/team';
 import { boardProperties } from "../../utils/defaultProperties";
+import Input from '../common/Input';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
-  const {selectedElement, addBoard, setOpen, setProjectMembers, projectMembers} = useContext(ProjectContext);
+  const {selectedElement, addBoard, setCreatePopupOpen, setProjectMembers, projectMembers} = useContext(ProjectContext);
   const FormTitleRef = useRef(null);
   const [inputValues, setInputValues] = useState({...boardProperties, type: selectedElement});
   const {title, subtitle, due_date} = inputValues;
@@ -16,7 +17,7 @@ const BoardForm = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     addBoard(inputValues);
-    setOpen(false);
+    setCreatePopupOpen(false);
   }
 
   const handleInputChange = (e) => {
@@ -36,16 +37,16 @@ const BoardForm = () => {
 
   const handleAddMembers = (e) => {
     if (!e.target.value) return;
-    const newMember = team.find(member => Number(e.target.value) === Number(member.id));
-    if (projectMembers.find(member => newMember.id === member.id)) return;
-    else setProjectMembers([...projectMembers, team.find(member => Number(e.target.value) === Number(member.id))]);
+    const newMember = team.find(member => e.target.value === member._id);
+    if (projectMembers.find(member => newMember._id === member._id)) return;
+    else setProjectMembers([...projectMembers, team.find(member => e.target.value === member._id)]);
   }
 
   const handleRemoveMemberFromProject = (id) => {
     if (!id) return;
-    const memberToRemove = projectMembers.find(member => Number(member.id) === Number(id));
+    const memberToRemove = projectMembers.find(member => member._id === id);
     if (!memberToRemove) throw new Error("Member not found");
-    else setProjectMembers(projectMembers.filter(member => Number(member.id) !== memberToRemove.id));
+    else setProjectMembers(projectMembers.filter(member => member._id !== memberToRemove._id));
   }
 
   useEffect(() => {
@@ -65,21 +66,23 @@ const BoardForm = () => {
       </div>
         <div className='form-inputs-container'>
 
-            <div className='input-container'>
+            {/* <div className='input-container'>
               <label htmlFor='subtitle'>Subtitle</label>
               <input type="text" value={subtitle} id='subtitle' name="subtitle" onChange={handleInputChange}/>
-            </div>
+            </div> */}
+            <Input name="subtitle" type="text" value={subtitle} onChange={handleInputChange} id="subtitle" text="Subtitle"/>
 
-            <div className='input-container'>
+            {/* <div className='input-container'>
               <label htmlFor='due-date'>Due date</label>
               <input type="date" value={due_date} id='due_date' name="due_date" onChange={handleInputChange}/>
-            </div>
+            </div> */}
+            <Input name="due_date" type="date" value={due_date} onChange={handleInputChange} id="due_date" text="Due date"/>
 
             <div className='input-container'>
               <label htmlFor='members'>Members</label>
               <select onChange={handleAddMembers}>
                 <option value="">Choose members</option>
-                {team.map(member => <option key={member.id} value={member.id}>{member.name} {member.last_name}</option>)}
+                {team.map(member => <option key={member._id} value={member._id}>{member.first_name} {member.last_name}</option>)}
               </select>
             </div>
 
@@ -89,14 +92,14 @@ const BoardForm = () => {
               <>
                 {projectMembers.filter((_, index) => index < 4)
                   .map(member =>
-                    <span key={member.id} className='form-project-member-added' onClick={() => handleRemoveMemberFromProject(member.id)}>
-                      {member.name} {member.last_name.substring(0, 1)}.
+                    <span key={member._id} className='form-project-member-added' onClick={() => handleRemoveMemberFromProject(member._id)}>
+                      {member.first_name} {member.last_name.substring(0, 1)}.
                     </span>)}
                 <span>+ {projectMembers.filter((_, index) => index > 3).length} more</span>
               </>
               : projectMembers.map(member =>
-                  <span key={member.id} className='form-project-member-added' onClick={() => handleRemoveMemberFromProject(member.id)}>
-                    {member.name} {member.last_name.substring(0, 1)}.
+                  <span key={member._id} className='form-project-member-added' onClick={() => handleRemoveMemberFromProject(member._id)}>
+                    {member.first_name} {member.last_name.substring(0, 1)}.
                   </span>)}
             </div>
 

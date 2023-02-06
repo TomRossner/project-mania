@@ -10,7 +10,7 @@ const taskSchema = new mongoose.Schema({
     due_date: {type: Date, default: new Date().toDateString()},
     isDone: {type: Boolean, default: false},
     edit_active: {type: Boolean, default: false},
-    files: {type: Array}
+    files: {type: Array},
 })
 const Task = mongoose.model("Task", taskSchema);
 

@@ -9,9 +9,9 @@ const defaultStageProperties = {
 }
   
 const defaultStages = [
-    {...defaultStageProperties, stage_name: 'Stage #1', _id: 1},
-    {...defaultStageProperties, stage_name: 'Stage #2', _id: 2},
-    {...defaultStageProperties, stage_name: 'Stage #3', _id: 3}
+    {...defaultStageProperties, stage_name: 'Stage #1'},
+    {...defaultStageProperties, stage_name: 'Stage #2'},
+    {...defaultStageProperties, stage_name: 'Stage #3'}
 ]
   
 const boardProperties = {
@@ -31,7 +31,7 @@ const defaultTaskProperties = {
     labels: [],
     isDone: false,
     edit_active: false,
-    files: [],
+    files: []
 }
 
 module.exports = {

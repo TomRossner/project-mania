@@ -4,6 +4,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { ProjectContext } from '../contexts/ProjectContext';
 import TaskOverview from './TaskOverview';
 import { stageOptions } from '../utils/stageOptionsMenu';
+import ProgressBar from './common/ProgressBar';
 
 const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
@@ -42,7 +43,7 @@ const StageOverview = ({stage}) => {
         if (!inputValue || !stageToUpdate) return;
 
         return setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-            if (stage._i === stageToUpdate._) {
+            if (stage._id === stageToUpdate._id) {
                 return {...stage, stage_name: inputValue, edit_active: false, stage_tasks: [...stage.stage_tasks.map(task => {
                     return {...task, current_stage: inputValue};
                 })]};
@@ -126,7 +127,9 @@ const StageOverview = ({stage}) => {
         </div>
         <div className='flex1'></div>
         <div className='stage-status'>
-            Status
+            <h4 className='white'>Status</h4>
+            <p className='white'>{((stage_tasks.filter(task => task.isDone === true).length * stage_tasks.length) / 100)}% completed</p>
+            <ProgressBar tasksDone={stage.tasks_done} totalTasks={stage_tasks.length}/>
         </div>
     </div>
   )
