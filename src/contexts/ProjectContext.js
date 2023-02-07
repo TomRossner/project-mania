@@ -72,7 +72,13 @@ const ProjectProvider = ({children}) => {
     const addTask = (values, stageToUpdate) => {
         if (!values || values.type !== 'task') return setError("Invalid values. Could not create task");
         if (createPopupOpen) closeCreatePopup();
-        const newTask = {...values, current_stage: stageToUpdate.stage_name, project: currentProject.title, _id: generateId()};
+        const newTask = {
+            ...values,
+            current_stage: stageToUpdate.stage_name,
+            project: currentProject.title,
+            _id: generateId(),
+            messages: []
+        };
         setCurrentProject({...currentProject, stages: [...currentProject.stages.map(current_project_stage => {
                 if (current_project_stage._id === stageToUpdate._id) {
                     return {...current_project_stage, stage_tasks: [...current_project_stage.stage_tasks, newTask]}
@@ -87,8 +93,10 @@ const ProjectProvider = ({children}) => {
 
     const loadProjects = async () => {
         const projects = await getProjects();
-        setCurrentProject({...projects[projects.length - 1], due_date: new Date(projects[projects.length - 1].due_date).toDateString()});
-        return setBoards(projects);
+        if (projects.length) {
+            setCurrentProject({...projects[projects.length - 1], due_date: new Date(projects[projects.length - 1].due_date).toDateString()});
+            return setBoards(projects);
+        } else return;
     }
 
     const update = async (project) => {
@@ -136,7 +144,7 @@ const ProjectProvider = ({children}) => {
         createPopupOpen, setCreatePopupOpen, closeCreatePopup,
         selectStage, setSelectStage,
         projectMenuOpen, setProjectMenuOpen,
-        errorPopupOpen, setErrorPopupOpen, error, resetErrorMessage
+        errorPopupOpen, setErrorPopupOpen, error, setError, resetErrorMessage
     }
 
   return (

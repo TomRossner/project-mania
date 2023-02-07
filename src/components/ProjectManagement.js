@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
 import Create from './Create';
 import { useNavigate } from 'react-router-dom';
+import StageOverview from './StageOverview';
 
 
 const ProjectManagement = () => {
@@ -18,11 +19,7 @@ const ProjectManagement = () => {
     if (currentProject) handleNavigate();
   }, [currentProject])
 
-  return (
-    <>
-      <Create/>
-    </>
-  )
+  return <Create/>; // load something instead of null if currentProject is not available
 }
 
 export default ProjectManagement;

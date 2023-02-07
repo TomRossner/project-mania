@@ -2,6 +2,17 @@
 const mongoose = require("mongoose");
 const {defaultStages} = require("../utils/defaultProperties");
 
+const messageSchema = new mongoose.Schema({
+    text: {type: String},
+    date_sent: {type: Date, default: Date.now()},
+    to: {type: Object},
+    from: {type: Object},
+    task: {type: Object}
+})
+const Message = mongoose.model("Message", messageSchema);
+
+
+
 const taskSchema = new mongoose.Schema({
     created_at: {type: Date, default: new Date()},
     current_stage: {type: String},
@@ -11,6 +22,8 @@ const taskSchema = new mongoose.Schema({
     isDone: {type: Boolean, default: false},
     edit_active: {type: Boolean, default: false},
     files: {type: Array},
+    messages: {type: [messageSchema]},
+    priority: {type: String, default: 'Low'}
 })
 const Task = mongoose.model("Task", taskSchema);
 
@@ -37,7 +50,8 @@ const boardSchema = new mongoose.Schema({
     title: {type: String, default: "New Board"},
     subtitle: {type: String},
     edit_active: {type: Boolean, default: false},
-    options_menu_open: {type: Boolean, default: false}
+    options_menu_open: {type: Boolean, default: false},
+    notifications: {type: Array}
 })
 const Board = mongoose.model("Board", boardSchema);
 
@@ -49,7 +63,8 @@ const userSchema = new mongoose.Schema({
     email: {type: String, unique: true},
     password: {type: String},
     created_at: {type: Date, default: new Date()},
-    last_login: {type: Date, default: Date.now()}
+    last_login: {type: Date, default: Date.now()},
+    notifications: {type: Array}
 })
 const User = mongoose.model("User", userSchema);
 
@@ -60,5 +75,6 @@ module.exports = {
     User,
     Board,
     Stage,
-    Task
+    Task,
+    Message
 }

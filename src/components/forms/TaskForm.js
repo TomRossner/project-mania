@@ -9,7 +9,7 @@ import IconContainer from "../common/IconContainer";
 
 const TaskForm = () => {
     const [readOnly, setReadOnly] = useState(true);
-    const {selectedElement, setCreatePopupOpen, currentProject, addTask, selectStage, setSelectStage} = useContext(ProjectContext);
+    const {selectedElement, setCreatePopupOpen, currentProject, addTask, selectStage, setSelectStage, setError, setErrorPopupOpen} = useContext(ProjectContext);
     const [inputValues, setInputValues] = useState({...defaultTaskProperties, type: selectedElement});
     const {title, description} = inputValues;
     const FormTitleRef = useRef(null);
@@ -21,8 +21,11 @@ const TaskForm = () => {
 
     const handleFormSubmit = (e) => {
       e.preventDefault();
-      addTask(inputValues, selectStage);
       setCreatePopupOpen(false);
+      if (!selectStage) {
+        setError("Couldn't create task. Please choose in which stage you would like to add your task to.");
+        return setErrorPopupOpen(true);
+      } else addTask(inputValues, selectStage);
     }
 
     const handleEditFormTitle = () => {
@@ -36,12 +39,6 @@ const TaskForm = () => {
     useEffect(() => {
       if (!readOnly) FormTitleRef.current.focus();
     }, [readOnly]);
-
-    // useEffect(() => {
-    //   if (!selectStage) {
-    //     return setSelectStage(currentProject.stages[0]);
-    //   }
-    // }, [selectStage])
     
   return (
     <form onSubmit={handleFormSubmit}>

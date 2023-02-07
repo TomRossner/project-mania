@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
 import BoardForm from './forms/BoardForm';
 import StageForm from './forms/StageForm';
@@ -9,10 +9,14 @@ import IconContainer from './common/IconContainer';
 const elements = ["board", "stage", "task"];
 
 const Create = () => {
-    const {selectedElement, setSelectedElement, currentProject, closeCreatePopup, createPopupOpen} = useContext(ProjectContext);
+    const {selectedElement, setSelectedElement, boards, currentProject, closeCreatePopup, createPopupOpen, setCreatePopupOpen} = useContext(ProjectContext);
     const handleElementClick = (element) => {
         setSelectedElement(element);
     }
+
+    useEffect(() => {
+        if (boards.length === 0 && !createPopupOpen) setCreatePopupOpen(true);
+    }, [])
 
   return (
     <div className={createPopupOpen ? 'create-popup-container active' : 'create-popup-container'}>

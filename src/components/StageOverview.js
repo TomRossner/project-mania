@@ -10,7 +10,7 @@ const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
     const {setCurrentProject, currentProject, setBoards, boards, setCreatePopupOpen, setSelectedElement, setSelectStage} = useContext(ProjectContext);
     const [inputValue, setInputValue] = useState("");
-
+    
     const toggleStageOptions = (stageToUpdate) => {
         if (!stageToUpdate) return;
 

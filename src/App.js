@@ -33,6 +33,8 @@ import "./styles/project-members-styles.scss";
 import "./styles/error-popup-styles.scss";
 import "./styles/task-styles.scss";
 import "./styles/chat-styles.scss";
+import "./styles/chat-message-styles.scss";
+import "./styles/project-stages-styles.scss";
 
 
 const App = () => {
@@ -55,7 +57,6 @@ const App = () => {
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
-            {/* <Route path="/create" element={<Create/>}/> */}
         </Routes>
         <div className="flex1"></div>
         {/* <div className="additional-content"></div> */}
