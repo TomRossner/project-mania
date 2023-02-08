@@ -52,20 +52,20 @@ const boardSchema = new mongoose.Schema({
     edit_active: {type: Boolean, default: false},
     options_menu_open: {type: Boolean, default: false},
     notifications: {type: Array}
-})
+}, {collection: 'boards'})
 const Board = mongoose.model("Board", boardSchema);
 
 
 
 const userSchema = new mongoose.Schema({
-    first_name: {type: String},
-    last_name: {type: String},
-    email: {type: String, unique: true},
-    password: {type: String},
+    first_name: {type: String, required: true},
+    last_name: {type: String, required: true},
+    email: {type: String, unique: true, required: true},
+    password: {type: String, required: true},
     created_at: {type: Date, default: new Date()},
     last_login: {type: Date, default: Date.now()},
     notifications: {type: Array}
-})
+}, {collection: 'users'})
 const User = mongoose.model("User", userSchema);
 
 

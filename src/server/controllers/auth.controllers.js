@@ -1,33 +1,43 @@
 const {User} = require("../models");
 const {usersCollection} = require("../db");
+const {validateRegistrationInputs, validateLoginInputs} = require("../validations/auth.validations");
 
 async function getUsers(req, res) {
     try {
-        const users = await usersCollection.find({}).toArray();
-        res.send(users);
+        const users = await User.find({});
+        res.status(200).send(users);
     } catch (error) {
         console.log(error);
+        res.status(400).send({error: "Failed getting users"});
     }
 }
 
 async function register(req, res) {
     try {
         const newUser = req.body; 
-        const user = new User(newUser);
-        usersCollection.insertOne(user);
+        const {error} = validateRegistrationInputs(newUser);
+        if (error) return res.status(400).send({error: error.details[0].message});
+
+        const user = await new User(newUser).save();
+        res.status(200).send(user);
     } catch (error) {
         console.log(error);
+        res.status(400).send({error: "Registration failed"});
     }
 }
 
 async function login(req, res) {
     try {
         const {email, password} = req.body;
-        const user = await usersCollection.findOne({email: email, password: password});
-        if (user) res.send(user);
-        else return res.status(404).send("User not found");
+        const {error} = validateLoginInputs(req.body);
+        if (error) return res.status(400).send({error: error.details[0].message});
+
+        const user = await User.findOne({email: email, password: password});
+        if (!user) return res.status(404).send({error: "User not found"});
+        res.status(200).send(user);
     } catch (error) {
         console.log(error);
+        res.status(400).send({error: "Login failed"});
     }
 }
 

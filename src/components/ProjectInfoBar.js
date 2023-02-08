@@ -36,7 +36,7 @@ const ProjectInfoBar = () => {
     <div className="current-board-info-bar">
         <h2 className='blue'>{currentProject.title}</h2>
         <IconContainer icon={<BsCircleFill className='icon dot'/>}/>
-        <p className='current-board-due-date'>Due Date: <span className='white'>{currentProject.due_date}</span></p>
+        <p className='current-board-due-date'>Due Date: <span className='white'>{currentProject.due_date.toString()}</span></p>
         <IconContainer icon={<BsCircleFill className='icon dot'/>}/>
         <ProjectMembers/>
         <IconContainer icon={<CgMenuGridO className='icon'/>} onClick={handleMenuClick}/>

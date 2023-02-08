@@ -3,8 +3,9 @@ import NavBar from './NavBar';
 import { useContext } from 'react';
 import { ProjectContext } from '../contexts/ProjectContext';
 import Create from './Create';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import StageOverview from './StageOverview';
+import Spinner from './common/Spinner';
 
 
 const ProjectManagement = () => {
@@ -19,7 +20,11 @@ const ProjectManagement = () => {
     if (currentProject) handleNavigate();
   }, [currentProject])
 
-  return <Create/>; // load something instead of null if currentProject is not available
+  return (
+    <>
+    {currentProject ? <Navigate to={`/projects/${currentProject._id}`}/> : <Spinner/>}
+    </>
+  )
 }
 
 export default ProjectManagement;

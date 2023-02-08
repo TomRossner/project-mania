@@ -1,21 +1,22 @@
 import axios from "axios";
 
 export const getTask = async (ids) => {
-    const {data} = await axios.post('/tasks', ids);
-    return data[0];
+    const {id, task_id} = ids;
+    return await axios.post(`/projects/${id}/${task_id}`);
 }
 
 export const getMembers = async () => {
-    const {data} = await axios.get("/users")
-    return data;
+    return await axios.get("/auth/users")
 }
 
 export const getProjects = async () => {
-    const {data} = await axios.get("/projects");
-    return data;
+    return await axios.get("/projects/all");
 }
 
 export const updateProject = async (project) => {
-    const {data} = await  axios.put("/projects", project);
-    return data;
+    return await axios.put(`/projects/${project._id}`, project);
+}
+
+export const addProject = async (values) => {
+    return await axios.post("/projects/add", values);
 }

@@ -6,25 +6,19 @@ dotenv.config();
 const cors = require("cors");
 const AuthRouter = require("./routes/auth.routes");
 const ProjectRouter = require("./routes/project.routes");
-const {client} = require("./db");
-
-const initDB = async () => {
-    try {
-        await client.connect();
-        console.log("Connected to database");
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-initDB();
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
+mongoose
+  .connect("mongodb://127.0.0.1/ProjectManiaDB")
+  .then(() => console.log("Connected to database :D"))
+  .catch(() => console.log("Failed to connect to database"));
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
 
-app.use(AuthRouter);
-app.use(ProjectRouter);
+app.use("/auth", AuthRouter);
+app.use("/projects", ProjectRouter);
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}...`));

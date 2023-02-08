@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import BackButton from "./common/BackButton";
 import { loginUser } from "../httpRequests/auth";
 import Input from "./common/Input";
+import { ProjectContext } from "../contexts/ProjectContext";
 
 const defaultLoginFormValues = {
     email: "",
@@ -12,11 +13,20 @@ const defaultLoginFormValues = {
 const Login = () => {
     const [formValues, setFormValues] = useState(defaultLoginFormValues);
     const {email, password} = formValues;
+    const {setErrorPopupOpen, setError} = useContext(ProjectContext);
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
-        loginUser(formValues);
-        resetFormValues();
+        try {
+            await loginUser(formValues);
+            resetFormValues();
+        } catch ({response}) {
+            if ((response.data.error && response.status === 400)
+            || (response.data.error && response.status === 404)) {
+                setError(response.data.error);
+                setErrorPopupOpen(true);
+            }
+        }
     }
 
     const resetFormValues = () => setFormValues(defaultLoginFormValues);

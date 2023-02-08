@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react';
-import { getMembers, getProjects, updateProject } from '../httpRequests/projectsRequests';
+import { addProject, getMembers, getProjects, updateProject } from '../httpRequests/projectsRequests';
 import { generateId } from '../utils/taskIdGenerator';
 
 export const ProjectContext = createContext({
@@ -33,7 +33,8 @@ export const ProjectContext = createContext({
     setError: () => {},
     setErrorPopupOpen: () => {},
     errorPopupOpen: false,
-    resetErrorMessage: () => {}
+    resetErrorMessage: () => {},
+    loadProjects: () => {}
 })
 
 const ProjectProvider = ({children}) => {
@@ -47,14 +48,22 @@ const ProjectProvider = ({children}) => {
     const [availableMembers, setAvailableMembers] = useState([]);
     const [selectStage, setSelectStage] = useState(null);
     const [projectMenuOpen, setProjectMenuOpen] = useState(false);
-    const [errorPopupOpen, setErrorPopupOpen] = useState(true);
-    const [error, setError] = useState("Some error that needs attention, but when I click CLOSE it resets :D");
+    const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+    const [error, setError] = useState("");
 
     const addBoard = async (values) => {
-        if (!values || values.type !== 'board') return setError("Invalid values. Could not create board");
+        if (values.type !== 'board') return setError("Invalid values. Could not create board");
         if (createPopupOpen) closeCreatePopup();
-        const {data: newProject} = await axios.post("/projects", {...values, members: [...projectMembers]});
-        return setBoards([...boards, {...newProject, due_date: new Date(newProject.due_date).toDateString()}]);
+        try {
+            const response = await addProject({...values, members: [...projectMembers]});
+            const newProject = response.data;
+            setBoards([...boards, {...newProject, due_date: new Date(newProject.due_date).toDateString()}]);
+        } catch ({response}) {
+            if (response.data.error && response.status === 400) {
+                setError(response.data.error);
+                setErrorPopupOpen(true);
+            }
+        }
     }
 
     const addStage = (values, project) => {
@@ -87,20 +96,43 @@ const ProjectProvider = ({children}) => {
     }
 
     const loadMembers = async () => {
-        const members = await getMembers();
-        return setAvailableMembers(members);
+        try {
+            const response = await getMembers();
+            const members = response.data;
+            setAvailableMembers(members);
+        } catch ({response}) {
+            if (response.data.error && response.status === 400) {
+                setError(response.data.error);
+                setErrorPopupOpen(true);
+            }
+        }
     }
 
     const loadProjects = async () => {
-        const projects = await getProjects();
-        if (projects.length) {
+        try {
+            const response = await getProjects();
+            const projects = response.data;
             setCurrentProject({...projects[projects.length - 1], due_date: new Date(projects[projects.length - 1].due_date).toDateString()});
-            return setBoards(projects);
-        } else return;
+            setBoards(projects);
+            return projects;
+        } catch ({response}) {
+            if ((response.data.error && response.status === 400)
+            || (response.data.error && response.status === 404)) {
+                setError(response.data.error);
+                setErrorPopupOpen(true);
+            }
+        }
     }
 
     const update = async (project) => {
-        return await updateProject(project);
+        try {
+            await updateProject(project);
+        } catch ({response}) {
+            if (response.data.error && response.status === 400) {
+                setError(response.data.error);
+                setErrorPopupOpen(true);
+            }
+        }
     }
 
     const closeCreatePopup = () => {
@@ -115,11 +147,11 @@ const ProjectProvider = ({children}) => {
     }, [])
 
 
-    useEffect(() => {
-        if (!currentProject) return;
-        update(currentProject);
-        setProjectMembers(currentProject.members);
-    }, [currentProject])
+    // useEffect(() => {
+    //     if (!currentProject) return;
+    //     update(); //currentProject
+    //     setProjectMembers(currentProject.members);
+    // }, [currentProject])
 
     useEffect(() => {
         if (!boards.length) return;
@@ -128,9 +160,9 @@ const ProjectProvider = ({children}) => {
         })
     }, [boards])
 
-    useEffect(() => {
-        console.log(currentProject)
-    }, [currentProject])
+    // useEffect(() => {
+    //     console.log(currentProject)
+    // }, [currentProject])
     
     const values = {
         selectedElement, setSelectedElement,
@@ -144,7 +176,8 @@ const ProjectProvider = ({children}) => {
         createPopupOpen, setCreatePopupOpen, closeCreatePopup,
         selectStage, setSelectStage,
         projectMenuOpen, setProjectMenuOpen,
-        errorPopupOpen, setErrorPopupOpen, error, setError, resetErrorMessage
+        errorPopupOpen, setErrorPopupOpen, error, setError, resetErrorMessage,
+        loadProjects
     }
 
   return (

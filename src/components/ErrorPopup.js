@@ -12,13 +12,19 @@ const ErrorPopup = () => {
     }
 
   return (
-    <div className={errorPopupOpen ? 'background-blur active' : 'background-blur off'}>
+    <>
+    {error ?
+    (
+      <div className={errorPopupOpen ? 'background-blur active' : 'background-blur off'}>
         <div className={errorPopupOpen ? 'error-popup-container active' : 'error-popup-container'}>
             <h3 className='red'>Error</h3>
             <IconContainer icon={<RxCross2 className='icon'/>} onClick={handleCloseErrorPopup}/>
             <p className='flex1'>{error}</p>
         </div>
-    </div>
+      </div>
+    )
+  : null}
+    </>
   )
 }
 

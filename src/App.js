@@ -35,10 +35,11 @@ import "./styles/task-styles.scss";
 import "./styles/chat-styles.scss";
 import "./styles/chat-message-styles.scss";
 import "./styles/project-stages-styles.scss";
+import "./styles/spinner-styles.scss";
 
 
 const App = () => {
-  const {notificationTabOpen, profileTabOpen} = useContext(ProjectContext);
+  const {notificationTabOpen, profileTabOpen, error, currentProject} = useContext(ProjectContext);
 
   return (
     <div className='main'>
