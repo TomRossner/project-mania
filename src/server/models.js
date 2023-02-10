@@ -64,7 +64,8 @@ const userSchema = new mongoose.Schema({
     password: {type: String, required: true},
     created_at: {type: Date, default: new Date()},
     last_login: {type: Date, default: Date.now()},
-    notifications: {type: Array}
+    notifications: {type: Array},
+    is_admin: {type: Boolean, default: false}
 }, {collection: 'users'})
 const User = mongoose.model("User", userSchema);
 
