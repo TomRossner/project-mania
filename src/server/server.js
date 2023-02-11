@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 mongoose
   .connect("mongodb://127.0.0.1/ProjectManiaDB")
-  .then(() => console.log("Connected to database :D"))
+  .then(() => console.log("Connected to database"))
   .catch(() => console.log("Failed to connect to database"));
 
 app.use(express.json());

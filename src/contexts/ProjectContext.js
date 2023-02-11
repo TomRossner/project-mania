@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react';
 import { addProject, getMembers, getProjects, updateProject } from '../httpRequests/projectsRequests';
 import { generateId } from '../utils/taskIdGenerator';
