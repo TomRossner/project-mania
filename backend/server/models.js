@@ -1,6 +1,6 @@
 
 const mongoose = require("mongoose");
-const {defaultStages} = require("../../frontend/src/utils/defaultProperties");
+const {defaultStages} = require("./defaultProperties");
 
 const messageSchema = new mongoose.Schema({
     text: {type: String},
