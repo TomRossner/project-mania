@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/projects/project-mania/static/css/main.8c9c3a74.css",
+    "main.js": "/projects/project-mania/static/js/main.0e4069aa.js",
+    "static/js/787.cc73316b.chunk.js": "/projects/project-mania/static/js/787.cc73316b.chunk.js",
+    "index.html": "/projects/project-mania/index.html",
+    "static/media/loader.svg": "/projects/project-mania/static/media/loader.c3a44aaf0b5ff38262ce0466410c69f0.svg",
+    "main.8c9c3a74.css.map": "/projects/project-mania/static/css/main.8c9c3a74.css.map",
+    "main.0e4069aa.js.map": "/projects/project-mania/static/js/main.0e4069aa.js.map",
+    "787.cc73316b.chunk.js.map": "/projects/project-mania/static/js/787.cc73316b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8c9c3a74.css",
+    "static/js/main.0e4069aa.js"
+  ]
+}
