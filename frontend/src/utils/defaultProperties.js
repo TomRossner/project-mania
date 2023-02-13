@@ -1,4 +1,4 @@
-const defaultStageProperties = {
+export const defaultStageProperties = {
     stage_name: "New Stage",
     description: "",
     stage_tasks: [],
@@ -8,13 +8,13 @@ const defaultStageProperties = {
     tasks_done: 0
 }
   
-const defaultStages = [
+export const defaultStages = [
     {...defaultStageProperties, stage_name: 'Stage #1'},
     {...defaultStageProperties, stage_name: 'Stage #2'},
     {...defaultStageProperties, stage_name: 'Stage #3'}
 ]
   
-const boardProperties = {
+export const boardProperties = {
     stages: [...defaultStages],
     members: [],
     due_date: new Date().toDateString(),
@@ -22,7 +22,7 @@ const boardProperties = {
     subtitle: "",
 }
 
-const defaultTaskProperties = {
+export const defaultTaskProperties = {
     created_at: new Date(),
     current_stage: "",
     project: "",
@@ -34,9 +34,9 @@ const defaultTaskProperties = {
     files: []
 }
 
-module.exports = {
-    defaultStages,
-    defaultStageProperties,
-    defaultTaskProperties,
-    boardProperties
-}
+// module.exports = {
+//     defaultStages,
+//     defaultStageProperties,
+//     defaultTaskProperties,
+//     boardProperties
+// }

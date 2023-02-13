@@ -26,11 +26,6 @@ const initialState = {
     selectedStage: null,
 }
 
-export const rootReducer = {
-    project: projectReducer,
-    tabs: tabsReducer
-}
-
 export const projectReducer = (state = initialState, action = {}) => {
     switch(action.type) {
         case CHANGE_BOARDS: 
@@ -64,5 +59,15 @@ export const tabsReducer = (state = initialState, action = {}) => {
             return {...state, profileTabOpen: action.payload};
         default:
             return state;
+    }
+}
+
+export const projectRed = projectReducer();
+export const tabsRed = tabsReducer();
+
+export const rootReducer = () => {
+    return {
+        projectRed,
+        tabsRed
     }
 }
