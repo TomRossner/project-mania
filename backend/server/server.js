@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
-const PORT = 3001;
+const PORT = 5000;
 const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
+// const BASE_URL = 'http://191.101.80.174/';
 const AuthRouter = require("./routes/auth.routes");
 const ProjectRouter = require("./routes/project.routes");
 const mongoose = require("mongoose");
@@ -17,8 +18,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
 
-app.use("/auth", AuthRouter);
-app.use("/projects", ProjectRouter);
+app.use(`/auth`, AuthRouter);
+app.use(`/projects`, ProjectRouter);
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}...`));
