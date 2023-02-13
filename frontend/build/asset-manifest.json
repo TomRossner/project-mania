@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.8c9c3a74.css",
-    "main.js": "/static/js/main.e279f309.js",
-    "static/js/787.cc73316b.chunk.js": "/static/js/787.cc73316b.chunk.js",
-    "static/media/loader.svg": "/static/media/loader.c3a44aaf0b5ff38262ce0466410c69f0.svg",
-    "index.html": "/index.html",
-    "main.8c9c3a74.css.map": "/static/css/main.8c9c3a74.css.map",
-    "main.e279f309.js.map": "/static/js/main.e279f309.js.map",
-    "787.cc73316b.chunk.js.map": "/static/js/787.cc73316b.chunk.js.map"
+    "main.css": "/projects/project-mania/static/css/main.8c9c3a74.css",
+    "main.js": "/projects/project-mania/static/js/main.d772ca9b.js",
+    "static/js/787.cc73316b.chunk.js": "/projects/project-mania/static/js/787.cc73316b.chunk.js",
+    "index.html": "/projects/project-mania/index.html",
+    "static/media/loader.svg": "/projects/project-mania/static/media/loader.5a9c25d051e1fffb922a6a15000f8e13.svg",
+    "main.8c9c3a74.css.map": "/projects/project-mania/static/css/main.8c9c3a74.css.map",
+    "main.d772ca9b.js.map": "/projects/project-mania/static/js/main.d772ca9b.js.map",
+    "787.cc73316b.chunk.js.map": "/projects/project-mania/static/js/787.cc73316b.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.8c9c3a74.css",
-    "static/js/main.e279f309.js"
+    "static/js/main.d772ca9b.js"
   ]
 }
