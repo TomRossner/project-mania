@@ -4,13 +4,12 @@ const PORT = 5000;
 const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
-// const BASE_URL = 'http://191.101.80.174/';
 const AuthRouter = require("./routes/auth.routes");
 const ProjectRouter = require("./routes/project.routes");
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 mongoose
-  .connect("mongodb://127.0.0.1/ProjectManiaDB")
+  .connect(process.env.MONGO_URL)
   .then(() => console.log("Connected to database"))
   .catch(() => console.log("Failed to connect to database"));
 
