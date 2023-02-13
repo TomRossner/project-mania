@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
@@ -16,6 +16,14 @@ mongoose
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../', 'frontend', 'build', 'index.html')))
+} else {
+  app.get('*', (req, res) => res.send('Please set to production'));
+}
 
 app.use(`/auth`, AuthRouter);
 app.use(`/projects`, ProjectRouter);
