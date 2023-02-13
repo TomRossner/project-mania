@@ -3,8 +3,8 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { FiCheck } from "react-icons/fi";
 import { ProjectContext } from '../../contexts/ProjectContext';
 import { team } from '../../temp/team';
-import { boardProperties } from "../../utils/defaultProperties";
 import Input from '../common/Input';
+const { boardProperties } = require("../../utils/defaultProperties");
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
