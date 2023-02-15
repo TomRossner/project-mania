@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/project-mania-frontend/static/css/main.8c9c3a74.css",
-    "main.js": "/project-mania-frontend/static/js/main.e30132ea.js",
+    "main.css": "/project-mania-frontend/static/css/main.44b425c5.css",
+    "main.js": "/project-mania-frontend/static/js/main.e1fb472e.js",
     "static/js/787.cc73316b.chunk.js": "/project-mania-frontend/static/js/787.cc73316b.chunk.js",
     "index.html": "/project-mania-frontend/index.html",
     "static/media/loader.svg": "/project-mania-frontend/static/media/loader.5a9c25d051e1fffb922a6a15000f8e13.svg",
-    "main.8c9c3a74.css.map": "/project-mania-frontend/static/css/main.8c9c3a74.css.map",
-    "main.e30132ea.js.map": "/project-mania-frontend/static/js/main.e30132ea.js.map",
+    "main.44b425c5.css.map": "/project-mania-frontend/static/css/main.44b425c5.css.map",
+    "main.e1fb472e.js.map": "/project-mania-frontend/static/js/main.e1fb472e.js.map",
     "787.cc73316b.chunk.js.map": "/project-mania-frontend/static/js/787.cc73316b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8c9c3a74.css",
-    "static/js/main.e30132ea.js"
+    "static/css/main.44b425c5.css",
+    "static/js/main.e1fb472e.js"
   ]
 }
