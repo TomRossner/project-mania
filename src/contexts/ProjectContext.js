@@ -126,11 +126,12 @@ const ProjectProvider = ({children}) => {
     const update = async (project) => {
         try {
             await updateProject(project);
-        } catch ({response}) {
-            if (response.data.error && response.status === 400) {
-                setError(response.data.error);
-                setErrorPopupOpen(true);
-            }
+        } catch (error) {
+            // if (response.data.error && response.status === 400) {
+            //     setError(response.data.error);
+            //     setErrorPopupOpen(true);
+            // }
+            console.log(error);
         }
     }
 
