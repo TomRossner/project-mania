@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE = 'https://tomrossner.dev/project-mania';
+const BASE = 'http://tomrossner.dev/projectmania';
 
 export const loginUser = async (values) => {
     return await axios.post(`${BASE}/auth/login`, values);

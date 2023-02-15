@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE = 'https://tomrossner.dev/project-mania';
+const BASE = 'http://tomrossner.dev/projectmania';
 
 export const getTask = async (ids) => {
     const {id, task_id} = ids;
