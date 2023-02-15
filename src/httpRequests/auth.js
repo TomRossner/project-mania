@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE = 'http://191.101.80.174:5000';
+const BASE = 'https://tomrossner.dev/project-mania';
 
 export const loginUser = async (values) => {
     return await axios.post(`${BASE}/auth/login`, values);

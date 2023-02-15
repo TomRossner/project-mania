@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE = 'http://191.101.80.174:5000';
+const BASE = 'https://tomrossner.dev/project-mania';
 
 export const getTask = async (ids) => {
     const {id, task_id} = ids;
