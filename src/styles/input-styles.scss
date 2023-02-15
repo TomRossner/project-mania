@@ -1,0 +1,14 @@
+.input-container{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: fadeIn 0.15s forwards;
+    width: 100%;
+
+    input{
+        font-size: 1rem;
+        border-radius: 3px;
+        padding: 0.2em;
+        border: none;
+    }
+}

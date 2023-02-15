@@ -1,0 +1,28 @@
+@import 'main-styles.scss';
+
+.profile-tab-container{
+    width: 25%;
+    position: absolute;
+    z-index: 10;
+    height: 40%;
+    right: 1rem;
+    border: 1px solid rgb(255, 255, 255, 0.2);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgb(0, 0, 0);
+    top: -1.5rem;
+    background-color: rgb(30, 30, 30);
+    animation: fadeIn forwards 0.1s;
+
+    .profile-tab{
+        width: 100%;
+        display: flex;
+        padding: 0.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+.link{
+    text-decoration: none;
+    color: $white;
+}

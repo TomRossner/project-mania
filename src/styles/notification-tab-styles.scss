@@ -1,0 +1,42 @@
+@import 'main-styles.scss';
+
+.notifs-tab{
+    width: 25%;
+    position: absolute;
+    right: 4rem;
+    top: -1.5rem;
+    z-index: 10;
+    background-color: rgb(27, 27, 27);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    animation: fadeIn forwards 0.08s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+
+    h3{
+        color: $white;
+        text-align: center;
+    }
+
+    .notifications-container{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 95%;
+        margin: 0 auto;
+
+        .notification{
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            min-height: 4rem;
+            background-color: rgba(255, 255, 255, 0.1);
+
+            &.marked{
+                border: 1px solid $blue;
+            }
+        }
+    }
+}
