@@ -1,6 +1,12 @@
 const {User} = require("../models");
-const {usersCollection} = require("../db");
 const {validateRegistrationInputs, validateLoginInputs} = require("../validations/auth.validations");
+const bcrypt = require('bcrypt');
+
+const hash = async (password) => {
+    const hashedPW = await bcrypt.hash(password, 10);
+    console.log(hashedPW);
+    return hashedPW;
+} 
 
 async function getUsers(req, res) {
     try {
@@ -18,7 +24,16 @@ async function register(req, res) {
         const {error} = validateRegistrationInputs(newUser);
         if (error) return res.status(400).send({error: error.details[0].message});
 
-        const user = await new User(newUser).save();
+        const isUserAlreadyRegistered = await User.findOne({ email: req.body.email });
+        if (isUserAlreadyRegistered) {
+            return res.status(400).send({error: "User already registered"});
+        }
+
+        const user = await new User({
+            ...newUser,
+            password: await hash(newUser.password)
+        }).save();
+        
         res.status(200).send(user);
     } catch (error) {
         console.log(error);

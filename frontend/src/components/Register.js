@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BackButton from './common/BackButton';
 import { addNewUser } from '../httpRequests/auth';
 import Input from './common/Input';
@@ -17,6 +17,7 @@ const Register = () => {
     const [formValues, setFormValues] = useState(defaultRegistrationFormValues);
     const {first_name, last_name, email, password, confirm_password} = formValues;
     const {setError, setErrorPopupOpen} = useContext(ProjectContext);
+    const navigate = useNavigate();
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -28,8 +29,9 @@ const Register = () => {
         try {
             const response = await addNewUser(formValues);
             const user = response.data;
-            console.log(user)
+            console.log("User: ", user);
             resetFormValues();
+            navigate('/login');
         } catch ({response}) {
             if (response.data.error && response.status === 400) {
                 setError(response.data.error);

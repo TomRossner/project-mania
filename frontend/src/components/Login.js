@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BackButton from "./common/BackButton";
 import { loginUser } from "../httpRequests/auth";
 import Input from "./common/Input";
@@ -14,11 +14,14 @@ const Login = () => {
     const [formValues, setFormValues] = useState(defaultLoginFormValues);
     const {email, password} = formValues;
     const {setErrorPopupOpen, setError} = useContext(ProjectContext);
+    const navigate = useNavigate();
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            await loginUser(formValues);
+            const {data} = await loginUser(formValues);
+            console.log(data);
+            navigate('/')
             resetFormValues();
         } catch ({response}) {
             if ((response.data.error && response.status === 400)
