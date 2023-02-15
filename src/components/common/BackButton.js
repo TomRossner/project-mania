@@ -1,10 +1,13 @@
 import React from 'react';
 import { BiChevronLeft } from "react-icons/bi";
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const BackButton = () => {
+  const navigate = useNavigate();
+  const handleClick = () => navigate(-1);
+  
   return (
-    <Link to=".." className='back-button link'><BiChevronLeft className='icon'/>Back</Link>
+    <button className='back-button link' onClick={handleClick}><BiChevronLeft className='icon'/>Back</button>
   )
 }
 
