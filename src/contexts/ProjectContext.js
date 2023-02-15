@@ -146,11 +146,11 @@ const ProjectProvider = ({children}) => {
     }, [])
 
 
-    // useEffect(() => {
-    //     if (!currentProject) return;
-    //     update(); //currentProject
-    //     setProjectMembers(currentProject.members);
-    // }, [currentProject])
+    useEffect(() => {
+        if (!currentProject) return;
+        update(); //currentProject
+        setProjectMembers(currentProject.members);
+    }, [currentProject])
 
     useEffect(() => {
         if (!boards.length) return;

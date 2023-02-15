@@ -13,6 +13,7 @@ const ProjectMembers = () => {
     }
 
     const handleAddMember = (member) => {
+        console.log(member)
         if (!member) return;
 
         const MemberAlreadyAdded = projectMembers.find(m => m._id === member._id);
@@ -29,10 +30,10 @@ const ProjectMembers = () => {
                 <>
                     {projectMembers.filter((_, index) => index < NUMBER_OF_MEMBERS_TO_DISPLAY)
                     .map(member => 
-                        <span key={member._id} className='icon-span'>
+                        <span key={member._id} className='icon-span' onClick={() => handleAddMember(member)}>
                             <BsCircleFill className='icon'/>
                             <span className='name-overlay'>
-                                {member.name.substring(0, 1).toUpperCase()}{member.last_name.substring(0, 1).toUpperCase()}
+                                {member.first_name.substring(0, 1).toUpperCase()}{member.last_name.substring(0, 1).toUpperCase()}
                             </span>
                         </span>)}
                     <span>+ {projectMembers.filter((_, index) => index > 3).length}</span>
