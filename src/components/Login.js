@@ -21,7 +21,7 @@ const Login = () => {
         try {
             const {data} = await loginUser(formValues);
             console.log(data);
-            navigate('/')
+            navigate('/project-mania-frontend')
             resetFormValues();
         } catch ({response}) {
             if ((response.data.error && response.status === 400)
@@ -66,7 +66,7 @@ const Login = () => {
                
                 <button type="submit" className="btn">Log in</button>
             </div>
-            <p>Not registered? <Link to="/register" className="link blue">Register now</Link></p>
+            <p>Not registered? <Link to="/project-mania-frontend/register" className="link blue">Register now</Link></p>
         </form>
     </div>
     </>

@@ -13,7 +13,7 @@ const ProjectManagement = () => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate(`/projects/${currentProject._id}`);
+    navigate(`/project-mania-frontend/projects/${currentProject._id}`);
   }
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const ProjectManagement = () => {
 
   return (
     <>
-    {currentProject ? <Navigate to={`/projects/${currentProject._id}`}/> : <Spinner/>}
+    {currentProject ? <Navigate to={`/project-mania-frontend/projects/${currentProject._id}`}/> : <Spinner/>}
     </>
   )
 }

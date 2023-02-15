@@ -10,7 +10,7 @@ const TaskOverview = ({task}) => {
     const navigate = useNavigate();
 
     const handleOpenTask = (task_id) => {
-        navigate(`/projects/${currentProject._id}/${task_id}`);
+        navigate(`/project-mania-frontend/projects/${currentProject._id}/${task_id}`);
     }
 
   return (

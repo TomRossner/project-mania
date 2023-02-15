@@ -34,11 +34,6 @@ const StageForm = () => {
       if (!readOnly) FormTitleRef.current.focus(); 
     }, [readOnly]);
 
-    useEffect(() => {
-      if (!selectProject) return;
-      // console.log(selectProject.id)
-    }, [selectProject])
-
   return (
     <form onSubmit={handleFormSubmit}>
       <div className='form-title-container'>

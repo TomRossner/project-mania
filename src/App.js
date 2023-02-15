@@ -50,14 +50,14 @@ const App = () => {
           {notificationTabOpen ? <NotificationTab/> : null}
           {profileTabOpen ? <ProfileTab/> : null}
         <Routes>
-            <Route path="/" element={<ProjectManagement/>}/>
-            <Route path="/projects/:id" element={<ProjectOverview/>}/>
-            <Route path="/projects" element={<Projects/>}/>
-            <Route path="/projects/:id/notifications" element={<Notifications/>}/>
-            <Route path="/projects/:id/:task_id" element={<Task/>}/>
-            <Route path="/profile" element={<Profile/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/>
+            <Route path="/project-mania-frontend" element={<ProjectManagement/>}/>
+            <Route path="/project-mania-frontend/projects/:id" element={<ProjectOverview/>}/>
+            <Route path="/project-mania-frontend/projects" element={<Projects/>}/>
+            <Route path="/project-mania-frontend/projects/:id/notifications" element={<Notifications/>}/>
+            <Route path="/project-mania-frontend/projects/:id/:task_id" element={<Task/>}/>
+            <Route path="/project-mania-frontend/profile" element={<Profile/>}/>
+            <Route path="/project-mania-frontend/login" element={<Login/>}/>
+            <Route path="/project-mania-frontend/register" element={<Register/>}/>
         </Routes>
         <div className="flex1"></div>
         {/* <div className="additional-content"></div> */}

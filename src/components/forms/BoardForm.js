@@ -2,13 +2,12 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { RiEdit2Fill } from "react-icons/ri";
 import { FiCheck } from "react-icons/fi";
 import { ProjectContext } from '../../contexts/ProjectContext';
-import { team } from '../../temp/team';
 import { boardProperties } from "../../utils/defaultProperties";
 import Input from '../common/Input';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
-  const {selectedElement, addBoard, setCreatePopupOpen, setProjectMembers, projectMembers} = useContext(ProjectContext);
+  const {selectedElement, addBoard, setCreatePopupOpen, setProjectMembers, projectMembers, availableMembers} = useContext(ProjectContext);
   const FormTitleRef = useRef(null);
   const [inputValues, setInputValues] = useState({...boardProperties, type: selectedElement});
   const {title, subtitle, due_date} = inputValues;
@@ -37,9 +36,9 @@ const BoardForm = () => {
 
   const handleAddMembers = (e) => {
     if (!e.target.value) return;
-    const newMember = team.find(member => e.target.value === member._id);
+    const newMember = availableMembers?.find(member => e.target.value === member._id);
     if (projectMembers.find(member => newMember._id === member._id)) return;
-    else setProjectMembers([...projectMembers, team.find(member => e.target.value === member._id)]);
+    else setProjectMembers([...projectMembers, availableMembers?.find(member => e.target.value === member._id)]);
   }
 
   const handleRemoveMemberFromProject = (id) => {
@@ -66,23 +65,15 @@ const BoardForm = () => {
       </div>
         <div className='form-inputs-container'>
 
-            {/* <div className='input-container'>
-              <label htmlFor='subtitle'>Subtitle</label>
-              <input type="text" value={subtitle} id='subtitle' name="subtitle" onChange={handleInputChange}/>
-            </div> */}
             <Input name="subtitle" type="text" value={subtitle} onChange={handleInputChange} id="subtitle" text="Subtitle"/>
 
-            {/* <div className='input-container'>
-              <label htmlFor='due-date'>Due date</label>
-              <input type="date" value={due_date} id='due_date' name="due_date" onChange={handleInputChange}/>
-            </div> */}
             <Input name="due_date" type="date" value={due_date} onChange={handleInputChange} id="due_date" text="Due date"/>
 
             <div className='input-container'>
               <label htmlFor='members'>Members</label>
               <select onChange={handleAddMembers}>
                 <option value="">Choose members</option>
-                {team.map(member => <option key={member._id} value={member._id}>{member.first_name} {member.last_name}</option>)}
+                {availableMembers?.map(member => <option key={member._id} value={member._id}>{member.first_name} {member.last_name}</option>)}
               </select>
             </div>
 

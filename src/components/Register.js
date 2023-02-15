@@ -31,7 +31,7 @@ const Register = () => {
             const user = response.data;
             console.log("User: ", user);
             resetFormValues();
-            navigate('/login');
+            navigate('/project-mania-frontend/login');
         } catch ({response}) {
             if (response.data.error && response.status === 400) {
                 setError(response.data.error);
@@ -101,7 +101,7 @@ const Register = () => {
                 
                 <button type='submit' className='btn'>Create my account</button>
             </div>
-            <p>Already registered? <Link to="/login" className='link blue'>Log in</Link></p>
+            <p>Already registered? <Link to="/project-mania-frontend/login" className='link blue'>Log in</Link></p>
         </form>
     </div>
     </>

@@ -10,7 +10,7 @@ const Projects = () => {
 
   const handleClick = (board) => {
     setCurrentProject(board);
-    navigate(`/projects/${board._id}`);
+    navigate(`/project-mania-frontend/projects/${board._id}`);
   }
 
 

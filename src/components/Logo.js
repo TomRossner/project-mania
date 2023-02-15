@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Logo = () => {
   const navigate = useNavigate();
-  const handleLogoClick = () => navigate("/");
+  const handleLogoClick = () => navigate("/project-mania-frontend");
 
   return (
     <div className='logo-container' onClick={handleLogoClick}>

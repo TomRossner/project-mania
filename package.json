@@ -2,6 +2,7 @@
   "name": "project-management",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://TomRossner.github.io/project-mania-frontend",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -25,7 +26,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "nodemon /server/server.js"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^5.0.0",
     "nodemon": "^2.0.20"
   }
 }

@@ -12,8 +12,8 @@ const ProfileTab = () => {
   return (
     <div className='profile-tab-container'>
         <div className='profile-tab'>
-            <Link to="/login" className='link' onClick={handleToggleProfileTab}>Login</Link>
-            <Link to="/register" className='link' onClick={handleToggleProfileTab}>Register</Link>
+            <Link to="/project-mania-frontend/login" className='link' onClick={handleToggleProfileTab}>Login</Link>
+            <Link to="/project-mania-frontend/register" className='link' onClick={handleToggleProfileTab}>Register</Link>
         </div>
     </div>
   )
