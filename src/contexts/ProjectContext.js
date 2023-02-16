@@ -149,7 +149,7 @@ const ProjectProvider = ({children}) => {
 
     useEffect(() => {
         if (!currentProject) return;
-        update(); //currentProject
+        update(currentProject);
         setProjectMembers(currentProject.members);
     }, [currentProject])
 
