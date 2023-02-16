@@ -1,9 +1,9 @@
 import ProjectManagement from "./components/ProjectManagement";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Projects from "./components/Projects";
 import Notifications from "./components/Notifications"
 import Profile from "./components/Profile"
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ProjectContext } from "./contexts/ProjectContext";
 import NotificationTab from "./components/NotificationTab";
 import ProfileTab from "./components/ProfileTab";
@@ -14,6 +14,7 @@ import NavBar from "./components/NavBar";
 import Task from "./components/Task";
 import Create from "./components/Create";
 import ErrorPopup from "./components/ErrorPopup";
+import { UserContext } from "./contexts/UserContext";
 
 // Styles
 import "./styles/main-styles.scss";
@@ -36,16 +37,23 @@ import "./styles/chat-styles.scss";
 import "./styles/chat-message-styles.scss";
 import "./styles/project-stages-styles.scss";
 import "./styles/spinner-styles.scss";
+import Logout from "./components/Logout";
 
 
 const App = () => {
   const {notificationTabOpen, profileTabOpen, error, currentProject} = useContext(ProjectContext);
+  const {user} = useContext(UserContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) navigate("/project-mania-frontend/login");
+  }, [user])
 
   return (
     <div className='main'>
       <NavBar/>
-      <ErrorPopup/>
       <Create/>
+      <ErrorPopup/>
       <div className="main-content">
           {notificationTabOpen ? <NotificationTab/> : null}
           {profileTabOpen ? <ProfileTab/> : null}
@@ -58,6 +66,7 @@ const App = () => {
             <Route path="/project-mania-frontend/profile" element={<Profile/>}/>
             <Route path="/project-mania-frontend/login" element={<Login/>}/>
             <Route path="/project-mania-frontend/register" element={<Register/>}/>
+            <Route path="/project-mania-frontend/logout" element={<Logout/>}/>
         </Routes>
         <div className="flex1"></div>
         {/* <div className="additional-content"></div> */}

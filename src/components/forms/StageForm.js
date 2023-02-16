@@ -3,19 +3,22 @@ import { ProjectContext } from '../../contexts/ProjectContext';
 import { RiEdit2Fill } from "react-icons/ri";
 import { FiCheck } from "react-icons/fi";
 import {defaultStageProperties} from "../../utils/defaultProperties";
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../contexts/UserContext';
 
 const StageForm = () => {
     const [readOnly, setReadOnly] = useState(true);
-    const {selectedElement, setOpen, boards, addStage} = useContext(ProjectContext);
+    const {selectedElement, boards, addStage, setError, setErrorPopupOpen, setCreatePopupOpen} = useContext(ProjectContext);
     const [inputValues, setInputValues] = useState({...defaultStageProperties, type: selectedElement});
     const {stage_name, description} = inputValues;
     const FormTitleRef = useRef(null);
     const [selectProject, setSelectProject] = useState(boards.length ? boards[0] : null);
+    const navigate = useNavigate();
+    const {user} = useContext(UserContext);
 
     const handleFormSubmit = (e) => {
       e.preventDefault();
       addStage(inputValues, selectProject);
-      setOpen(false);
     }
 
     const handleSelectProject = (project) => {
@@ -33,6 +36,16 @@ const StageForm = () => {
     useEffect(() => {
       if (!readOnly) FormTitleRef.current.focus(); 
     }, [readOnly]);
+
+    useEffect(() => {
+      if (!user) {
+        navigate("/project-mania-frontend/login");
+        setError("You must be logged in to create projects/stages/tasks.");
+        setErrorPopupOpen(true);
+        setCreatePopupOpen(false);
+        return;
+      }
+    }, [])
 
   return (
     <form onSubmit={handleFormSubmit}>

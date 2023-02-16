@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BackButton from "./common/BackButton";
 import { loginUser } from "../httpRequests/auth";
 import Input from "./common/Input";
 import { ProjectContext } from "../contexts/ProjectContext";
+import { UserContext } from "../contexts/UserContext";
 
 const defaultLoginFormValues = {
     email: "",
@@ -14,14 +15,14 @@ const Login = () => {
     const [formValues, setFormValues] = useState(defaultLoginFormValues);
     const {email, password} = formValues;
     const {setErrorPopupOpen, setError} = useContext(ProjectContext);
+    const {setUser, user} = useContext(UserContext);
     const navigate = useNavigate();
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            const {data} = await loginUser(formValues);
-            console.log(data);
-            navigate('/project-mania-frontend')
+            const {data: userLoggedIn} = await loginUser(formValues);
+            setUser(userLoggedIn);
             resetFormValues();
         } catch ({response}) {
             if ((response.data.error && response.status === 400)
@@ -37,6 +38,10 @@ const Login = () => {
     const handInputChange = (e) => {
        return setFormValues({...formValues, [e.target.name]: e.target.value ? e.target.value: formValues[e.target.name].value});
     }
+
+    useEffect(() => {
+        if (user) navigate("/project-mania-frontend");
+    }, [user])
 
   return (
     <>

@@ -5,6 +5,8 @@ import { FiCheck } from "react-icons/fi";
 import {defaultTaskProperties} from "../../utils/defaultProperties";
 import Input from "../common/Input";
 import IconContainer from "../common/IconContainer";
+import { UserContext } from '../../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const TaskForm = () => {
@@ -13,6 +15,8 @@ const TaskForm = () => {
     const [inputValues, setInputValues] = useState({...defaultTaskProperties, type: selectedElement});
     const {title, description} = inputValues;
     const FormTitleRef = useRef(null);
+    const {user} = useContext(UserContext);
+    const navigate = useNavigate();
     
 
     const handleSelectStage = (stage) => {
@@ -39,6 +43,16 @@ const TaskForm = () => {
     useEffect(() => {
       if (!readOnly) FormTitleRef.current.focus();
     }, [readOnly]);
+
+    useEffect(() => {
+      if (!user) {
+        navigate("/project-mania-frontend/login");
+        setError("You must be logged in to create projects/stages/tasks.");
+        setErrorPopupOpen(true);
+        setCreatePopupOpen(false);
+        return;
+      }
+    }, [])
     
   return (
     <form onSubmit={handleFormSubmit}>

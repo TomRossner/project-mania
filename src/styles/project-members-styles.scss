@@ -35,7 +35,6 @@
             justify-content: center;
             text-align: center;
             padding: 0.1rem;
-            // animation: fadeIn forwards 0.1s;
 
             .name-overlay{
                 position: absolute;
@@ -57,6 +56,10 @@
 
         &.open{
             z-index: 5;
+        }
+
+        .member-already-in-project{
+            color: rgba(255, 255, 255, 0.5);
         }
     }
 }

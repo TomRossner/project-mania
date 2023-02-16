@@ -71,6 +71,24 @@
             text-align: left;
             color: rgb(145, 145, 145);
         }
+
+        .btn.error-btn{
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 0.2rem 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+
+            &:hover{
+                color: rgba(255, 255, 255, 1);
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+        }
     }
 }
 
@@ -85,14 +103,14 @@
     100%{
         opacity: 1;
         scale: 1;
-        z-index: 100;
+        z-index: 999;
     }
 }
 @keyframes fadeOutWithZ_Index {
     0%{
         opacity: 1;
         scale: 1;
-        z-index: 100;
+        z-index: 999;
     }
     100%{
         opacity: 0;

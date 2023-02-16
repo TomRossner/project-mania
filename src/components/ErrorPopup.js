@@ -19,7 +19,9 @@ const ErrorPopup = () => {
         <div className={errorPopupOpen ? 'error-popup-container active' : 'error-popup-container'}>
             <h3 className='red'>Error</h3>
             <IconContainer icon={<RxCross2 className='icon'/>} onClick={handleCloseErrorPopup}/>
-            <p className='flex1'>{error}</p>
+            <p className='flex1'>{error}
+              <button className='btn red error-btn' onClick={handleCloseErrorPopup}>OK</button>
+            </p>
         </div>
       </div>
     )

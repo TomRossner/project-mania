@@ -7,6 +7,7 @@ import ProjectProvider from './contexts/ProjectContext';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { rootReducer } from './redux_reducers/reducers';
+import UserProvider from './contexts/UserContext';
 
 const store = createStore(rootReducer);
 
@@ -15,9 +16,11 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <ProjectProvider>
-          <App />
-        </ProjectProvider>
+        <UserProvider>
+          <ProjectProvider>
+            <App />
+          </ProjectProvider>
+        </UserProvider>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>

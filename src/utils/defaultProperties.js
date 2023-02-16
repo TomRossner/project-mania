@@ -31,7 +31,8 @@ export const defaultTaskProperties = {
     labels: [],
     isDone: false,
     edit_active: false,
-    files: []
+    files: [],
+    description: ""
 }
 
 // module.exports = {

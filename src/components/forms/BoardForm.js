@@ -4,13 +4,26 @@ import { FiCheck } from "react-icons/fi";
 import { ProjectContext } from '../../contexts/ProjectContext';
 import { boardProperties } from "../../utils/defaultProperties";
 import Input from '../common/Input';
+import { UserContext } from '../../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
-  const {selectedElement, addBoard, setCreatePopupOpen, setProjectMembers, projectMembers, availableMembers} = useContext(ProjectContext);
+  const {
+    selectedElement,
+    addBoard,
+    setCreatePopupOpen,
+    setProjectMembers,
+    projectMembers,
+    availableMembers,
+    setError,
+    setErrorPopupOpen
+  } = useContext(ProjectContext);
   const FormTitleRef = useRef(null);
   const [inputValues, setInputValues] = useState({...boardProperties, type: selectedElement});
   const {title, subtitle, due_date} = inputValues;
+  const {user} = useContext(UserContext);
+  const navigate = useNavigate();
 
 
   const handleFormSubmit = (e) => {
@@ -54,6 +67,16 @@ const BoardForm = () => {
 
   useEffect(() => {
     if (projectMembers.length) setProjectMembers([]);
+  }, [])
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/project-mania-frontend/login");
+      setError("You must be logged in to create projects/stages/tasks.");
+      setErrorPopupOpen(true);
+      setCreatePopupOpen(false);
+      return;
+    }
   }, [])
 
   return (

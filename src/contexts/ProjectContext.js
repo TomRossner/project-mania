@@ -160,9 +160,9 @@ const ProjectProvider = ({children}) => {
         })
     }, [boards])
 
-    // useEffect(() => {
-    //     console.log(currentProject)
-    // }, [currentProject])
+    useEffect(() => {
+        console.log(currentProject)
+    }, [currentProject])
     
     const values = {
         selectedElement, setSelectedElement,
