@@ -44,6 +44,7 @@ const ProjectInfoBar = () => {
             {projectMenuOptions.map(opt => <p key={opt} onClick={() => handleMenuOption(opt)}>{opt}</p>)}
         </div>
     </div>
+    <p className='current-board-subtitle'>{currentProject.subtitle}</p>
     </>
   )
 }

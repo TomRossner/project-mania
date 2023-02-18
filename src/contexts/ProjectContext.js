@@ -1,6 +1,7 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { addProject, getMembers, getProjects, updateProject } from '../httpRequests/projectsRequests';
-import { generateId } from '../utils/taskIdGenerator';
+import { generateId } from '../utils/IdGenerator';
+import { UserContext } from './UserContext';
 
 export const ProjectContext = createContext({
     selectedElement: "",
@@ -50,11 +51,13 @@ const ProjectProvider = ({children}) => {
     const [errorPopupOpen, setErrorPopupOpen] = useState(false);
     const [error, setError] = useState("");
 
+    const {user} = useContext(UserContext);
+
     const addBoard = async (values) => {
         if (values.type !== 'board') return setError("Invalid values. Could not create board");
         if (createPopupOpen) closeCreatePopup();
         try {
-            const response = await addProject({...values, members: [...projectMembers]});
+            const response = await addProject({...values, members: [...projectMembers, user]});
             const newProject = response.data;
             setBoards([...boards, {...newProject, due_date: new Date(newProject.due_date).toDateString()}]);
         } catch ({response}) {
@@ -95,15 +98,17 @@ const ProjectProvider = ({children}) => {
     }
 
     const loadMembers = async () => {
+        if (!user) return;
         try {
             const response = await getMembers();
             const members = response.data;
-            setAvailableMembers(members);
-        } catch ({response}) {
-            if (response.data.error && response.status === 400) {
-                setError(response.data.error);
-                setErrorPopupOpen(true);
-            }
+            setAvailableMembers(members.filter(member => member._id !== user._id));
+        } catch (error) {
+            // if (response.data.error && response.status === 400) {
+            //     setError(response.data.error);
+            //     setErrorPopupOpen(true);
+            // }
+            console.log(error)
         }
     }
 
@@ -141,10 +146,10 @@ const ProjectProvider = ({children}) => {
 
     const resetErrorMessage = () => setError("");
     
-    useEffect(() => {
-        loadMembers();
-        loadProjects();
-    }, [])
+    // useEffect(() => {
+    //     loadMembers();
+    //     loadProjects();
+    // }, [])
 
 
     useEffect(() => {

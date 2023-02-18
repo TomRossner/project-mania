@@ -28,11 +28,11 @@ export const defaultTaskProperties = {
     project: "",
     title: "New Task",
     due_date: new Date().toDateString(),
-    labels: [],
     isDone: false,
     edit_active: false,
     files: [],
-    description: ""
+    description: "",
+    priority: "low"
 }
 
 // module.exports = {

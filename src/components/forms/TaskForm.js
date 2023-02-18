@@ -7,6 +7,7 @@ import Input from "../common/Input";
 import IconContainer from "../common/IconContainer";
 import { UserContext } from '../../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
+import { priorities } from '../../utils/taskPriorities';
 
 
 const TaskForm = () => {
@@ -17,6 +18,7 @@ const TaskForm = () => {
     const FormTitleRef = useRef(null);
     const {user} = useContext(UserContext);
     const navigate = useNavigate();
+    const [priority, setPriority] = useState("");
     
 
     const handleSelectStage = (stage) => {
@@ -29,7 +31,10 @@ const TaskForm = () => {
       if (!selectStage) {
         setError("Couldn't create task. Please choose in which stage you would like to add your task to.");
         return setErrorPopupOpen(true);
-      } else addTask(inputValues, selectStage);
+      } else {
+        addTask(inputValues, selectStage);
+        resetPriority();
+      }
     }
 
     const handleEditFormTitle = () => {
@@ -39,6 +44,12 @@ const TaskForm = () => {
     const handleInputChange = (e) => {
       return setInputValues({...inputValues, [e.target.name]: e.target.value});
     }
+
+    const handleSetPriority = (priority) => {
+      return setPriority(priority);
+    }
+
+    const resetPriority = () => setPriority("");
 
     useEffect(() => {
       if (!readOnly) FormTitleRef.current.focus();
@@ -71,6 +82,13 @@ const TaskForm = () => {
                   <label className={stage.stage_name === selectStage?.stage_name ? "selected" : null} htmlFor={stage.stage_name}>{stage.stage_name}</label>
                 </div>
               )}
+              </div>
+              <p>Priority:</p>
+              <div className='radio-buttons'>
+                {priorities.map(priority =>
+                  <span key={priority.id} className={`priority ${priority.color_class}`} onClick={() => handleSetPriority(priority.name.toLowerCase())}>
+                    {priority.name}
+                  </span>)}
               </div>
           </div>
             <Input

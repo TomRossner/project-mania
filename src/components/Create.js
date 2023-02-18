@@ -29,15 +29,15 @@ const Create = () => {
         setSelectedElement(element);
     }
 
-    useEffect(() => {
-        if (!user) {
-          navigate("/project-mania-frontend/login");
-          setError("You must be logged in to create projects/stages/tasks.");
-          setErrorPopupOpen(true);
-          setCreatePopupOpen(false);
-          return;
-        }
-      }, [])
+    // useEffect(() => {
+    //     if (!user) {
+    //       navigate("/project-mania-frontend/login");
+    //       setError("You must be logged in to create projects/stages/tasks.");
+    //       setErrorPopupOpen(true);
+    //       setCreatePopupOpen(false);
+    //       return;
+    //     }
+    //   }, [])
 
     // useEffect(() => {
     //     console.log(boards.length)

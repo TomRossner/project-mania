@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import {IoMdSend} from "react-icons/io";
 import { useParams } from 'react-router-dom';
 import ChatMessage from './ChatMessage';
-import {generateId} from "../utils/taskIdGenerator"
+import {generateId} from "../utils/IdGenerator"
 
 const Chat = () => {
   const {task_id} = useParams();

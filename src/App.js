@@ -64,9 +64,9 @@ const App = () => {
             <Route path="/project-mania-frontend/projects/:id/notifications" element={<Notifications/>}/>
             <Route path="/project-mania-frontend/projects/:id/:task_id" element={<Task/>}/>
             <Route path="/project-mania-frontend/profile" element={<Profile/>}/>
+            <Route path="/project-mania-frontend/logout" element={<Logout/>}/>
             <Route path="/project-mania-frontend/login" element={<Login/>}/>
             <Route path="/project-mania-frontend/register" element={<Register/>}/>
-            <Route path="/project-mania-frontend/logout" element={<Logout/>}/>
         </Routes>
         <div className="flex1"></div>
         {/* <div className="additional-content"></div> */}
