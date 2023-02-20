@@ -128,7 +128,7 @@ const StageOverview = ({stage}) => {
         <div className='flex1'></div>
         <div className='stage-status'>
             <h4 className='white'>Status</h4>
-            <p className='white'>{((stage_tasks.filter(task => task.isDone === true).length * stage_tasks.length) / 100)}% completed</p>
+            <p className='white'>{((stage_tasks.filter(task => task.isDone === true).length * stage_tasks.length) * 100)}% completed</p>
             <ProgressBar tasksDone={stage.tasks_done} totalTasks={stage_tasks.length}/>
         </div>
     </div>

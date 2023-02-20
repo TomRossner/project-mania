@@ -27,9 +27,7 @@ const Register = () => {
             return;
         }
         try {
-            const response = await addNewUser(formValues);
-            const user = response.data;
-            console.log("User: ", user);
+            await addNewUser(formValues);
             resetFormValues();
             navigate('/project-mania-frontend/login');
         } catch ({response}) {

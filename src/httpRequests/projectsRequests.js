@@ -1,24 +1,24 @@
 import axios from "axios";
 
-const BASE = 'http://tomrossner.dev/projectmania';
+axios.defaults.baseURL = 'http://tomrossner.dev/projectmania'
 
 export const getTask = async (ids) => {
     const {id, task_id} = ids;
-    return await axios.post(`${BASE}/projects/${id}/${task_id}`);
+    return await axios.get(`/projects/${id}/${task_id}`);
 }
 
 export const getMembers = async () => {
-    return await axios.get(`${BASE}/auth/users`);
+    return await axios.get(`/auth/users`);
 }
 
 export const getProjects = async () => {
-    return await axios.get(`${BASE}/projects/all`);
+    return await axios.get(`/projects/all`);
 }
 
 export const updateProject = async (project) => {
-    return await axios.put(`${BASE}/projects/${project._id}`, project);
+    return await axios.put(`/projects/${project._id}`, project);
 }
 
 export const addProject = async (values) => {
-    return await axios.post(`${BASE}/projects/add`, values);
+    return await axios.post(`/projects/add`, values);
 }

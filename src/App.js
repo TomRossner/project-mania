@@ -1,9 +1,9 @@
 import ProjectManagement from "./components/ProjectManagement";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Projects from "./components/Projects";
 import Notifications from "./components/Notifications"
 import Profile from "./components/Profile"
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ProjectContext } from "./contexts/ProjectContext";
 import NotificationTab from "./components/NotificationTab";
 import ProfileTab from "./components/ProfileTab";
@@ -14,7 +14,7 @@ import NavBar from "./components/NavBar";
 import Task from "./components/Task";
 import Create from "./components/Create";
 import ErrorPopup from "./components/ErrorPopup";
-import { UserContext } from "./contexts/UserContext";
+import Logout from "./components/Logout";
 
 // Styles
 import "./styles/main-styles.scss";
@@ -37,17 +37,10 @@ import "./styles/chat-styles.scss";
 import "./styles/chat-message-styles.scss";
 import "./styles/project-stages-styles.scss";
 import "./styles/spinner-styles.scss";
-import Logout from "./components/Logout";
 
 
 const App = () => {
-  const {notificationTabOpen, profileTabOpen, error, currentProject} = useContext(ProjectContext);
-  const {user} = useContext(UserContext);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user) navigate("/project-mania-frontend/login");
-  }, [user])
+  const {notificationTabOpen, profileTabOpen} = useContext(ProjectContext);
 
   return (
     <div className='main'>

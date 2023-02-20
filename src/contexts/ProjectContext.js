@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { getUserInfo } from '../httpRequests/auth';
 import { addProject, getMembers, getProjects, updateProject } from '../httpRequests/projectsRequests';
 import { generateId } from '../utils/IdGenerator';
 import { UserContext } from './UserContext';
@@ -57,7 +58,8 @@ const ProjectProvider = ({children}) => {
         if (values.type !== 'board') return setError("Invalid values. Could not create board");
         if (createPopupOpen) closeCreatePopup();
         try {
-            const response = await addProject({...values, members: [...projectMembers, user]});
+            const {data: userInfo} = await getUserInfo(user._id);
+            const response = await addProject({...values, members: [...projectMembers, userInfo]});
             const newProject = response.data;
             setBoards([...boards, {...newProject, due_date: new Date(newProject.due_date).toDateString()}]);
         } catch ({response}) {
@@ -146,11 +148,15 @@ const ProjectProvider = ({children}) => {
 
     const resetErrorMessage = () => setError("");
     
-    // useEffect(() => {
-    //     loadMembers();
-    //     loadProjects();
-    // }, [])
+    useEffect(() => {
+        loadMembers();
+        loadProjects();
+    }, [])
 
+    const loadUserProjects = async () => {
+        const projects = await loadProjects();
+        return projects;
+    }
 
     useEffect(() => {
         if (!currentProject) return;
@@ -166,8 +172,17 @@ const ProjectProvider = ({children}) => {
     }, [boards])
 
     useEffect(() => {
-        console.log(currentProject)
+        if (!currentProject) return;
+        console.log(currentProject);
     }, [currentProject])
+
+    useEffect(() => {
+        if (!user) setCurrentProject(null);
+        else if (user && !currentProject) {
+            const projects = loadUserProjects();
+            setCurrentProject(projects[0])
+        }
+    }, [user])
     
     const values = {
         selectedElement, setSelectedElement,

@@ -5,9 +5,8 @@ import { FiCheck } from "react-icons/fi";
 import {defaultTaskProperties} from "../../utils/defaultProperties";
 import Input from "../common/Input";
 import IconContainer from "../common/IconContainer";
-import { UserContext } from '../../contexts/UserContext';
-import { useNavigate } from 'react-router-dom';
 import { priorities } from '../../utils/taskPriorities';
+import PriorityLabel from '../common/PriorityLabel';
 
 
 const TaskForm = () => {
@@ -16,9 +15,7 @@ const TaskForm = () => {
     const [inputValues, setInputValues] = useState({...defaultTaskProperties, type: selectedElement});
     const {title, description} = inputValues;
     const FormTitleRef = useRef(null);
-    const {user} = useContext(UserContext);
-    const navigate = useNavigate();
-    const [priority, setPriority] = useState("");
+    const [priorityName, setPriorityName] = useState("");
     
 
     const handleSelectStage = (stage) => {
@@ -46,24 +43,25 @@ const TaskForm = () => {
     }
 
     const handleSetPriority = (priority) => {
-      return setPriority(priority);
+      console.log(priority)
+      return setPriorityName(priority);
     }
 
-    const resetPriority = () => setPriority("");
+    const resetPriority = () => setPriorityName(priorities[0].name);
 
     useEffect(() => {
       if (!readOnly) FormTitleRef.current.focus();
     }, [readOnly]);
 
-    useEffect(() => {
-      if (!user) {
-        navigate("/project-mania-frontend/login");
-        setError("You must be logged in to create projects/stages/tasks.");
-        setErrorPopupOpen(true);
-        setCreatePopupOpen(false);
-        return;
-      }
-    }, [])
+    // useEffect(() => {
+    //   if (!user) {
+    //     navigate("/project-mania-frontend/login");
+    //     setError("You must be logged in to create projects/stages/tasks.");
+    //     setErrorPopupOpen(true);
+    //     setCreatePopupOpen(false);
+    //     return;
+    //   }
+    // }, [])
     
   return (
     <form onSubmit={handleFormSubmit}>
@@ -86,9 +84,7 @@ const TaskForm = () => {
               <p>Priority:</p>
               <div className='radio-buttons'>
                 {priorities.map(priority =>
-                  <span key={priority.id} className={`priority ${priority.color_class}`} onClick={() => handleSetPriority(priority.name.toLowerCase())}>
-                    {priority.name}
-                  </span>)}
+                  <PriorityLabel key={priority.id} priority={priority} fn={() => handleSetPriority(priority.name.toLowerCase())}/>)}
               </div>
           </div>
             <Input

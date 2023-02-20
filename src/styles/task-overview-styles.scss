@@ -89,5 +89,14 @@
                 transition: color 0.1s;
             }
         }
+
+        &.blue-bg{
+            background-color: $blue;
+        
+            .icon-span,
+            .icon.info{
+                color: $white;
+            }
+        }
     }
 }

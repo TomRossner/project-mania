@@ -69,16 +69,6 @@ const BoardForm = () => {
     if (projectMembers.length) setProjectMembers([]);
   }, [])
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/project-mania-frontend/login");
-      setError("You must be logged in to create projects/stages/tasks.");
-      setErrorPopupOpen(true);
-      setCreatePopupOpen(false);
-      return;
-    }
-  }, [])
-
   return (
     <form onSubmit={handleFormSubmit}>
       <div className='form-title-container'>

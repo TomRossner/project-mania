@@ -1,10 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BackButton from "./common/BackButton";
 import { loginUser } from "../httpRequests/auth";
 import Input from "./common/Input";
-import { ProjectContext } from "../contexts/ProjectContext";
-import { UserContext } from "../contexts/UserContext";
 
 const defaultLoginFormValues = {
     email: "",
@@ -14,22 +12,21 @@ const defaultLoginFormValues = {
 const Login = () => {
     const [formValues, setFormValues] = useState(defaultLoginFormValues);
     const {email, password} = formValues;
-    const {setErrorPopupOpen, setError} = useContext(ProjectContext);
-    const {setUser, user} = useContext(UserContext);
     const navigate = useNavigate();
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            const {data: userLoggedIn} = await loginUser(formValues);
-            setUser(userLoggedIn);
+            await loginUser(formValues);
+            navigate("/project-mania-frontend");
             resetFormValues();
-        } catch ({response}) {
-            if ((response.data.error && response.status === 400)
-            || (response.data.error && response.status === 404)) {
-                setError(response.data.error);
-                setErrorPopupOpen(true);
-            }
+        } catch (error) {
+            // if ((response.data.error && response.status === 400)
+            // || (response.data.error && response.status === 404)) {
+            //     setError(response.data.error);
+            //     setErrorPopupOpen(true);
+            // }
+            console.log(error);
         }
     }
 
@@ -38,10 +35,6 @@ const Login = () => {
     const handInputChange = (e) => {
        return setFormValues({...formValues, [e.target.name]: e.target.value ? e.target.value: formValues[e.target.name].value});
     }
-
-    useEffect(() => {
-        if (user) navigate("/project-mania-frontend");
-    }, [user])
 
   return (
     <>

@@ -5,7 +5,7 @@ import { UserContext } from '../contexts/UserContext';
 import Spinner from './common/Spinner';
 
 const Projects = () => {
-  const {boards, setCurrentProject, createPopupOpen, setCreatePopupOpen, loadProjects, setError, setErrorPopupOpen} = useContext(ProjectContext);
+  const {setCurrentProject, createPopupOpen, setCreatePopupOpen, loadProjects, setError, setErrorPopupOpen} = useContext(ProjectContext);
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const {user} = useContext(UserContext);
@@ -22,15 +22,14 @@ const Projects = () => {
       setErrorPopupOpen(true);
       return;
     }
-  }, [])
 
-
-  useEffect(() => {
     if (createPopupOpen) setCreatePopupOpen(false);
+
     const fetchProjects = async () => {
       const response = await loadProjects();
       setProjects(response);
     }
+    
     fetchProjects();
   }, [])
 
@@ -40,12 +39,13 @@ const Projects = () => {
       {projects?.length ?
       ( <div className='projects-list'>
           {projects.map(project => {
-            return <div key={project._id} className='project' onClick={() => handleClick(project)}>
+            return (
+            <div key={project._id} className='project' onClick={() => handleClick(project)}>
               <p>{project.title}</p>
               <span>{new Date(project.due_date).toDateString()}</span>
-            </div>
+            </div>)
           })}
-        </div> ) : <Spinner/>}
+        </div> ) : <Spinner/> /*Remove spinner*/}
     </div>
   )
 }
