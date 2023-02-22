@@ -40,13 +40,22 @@ const ProjectMembers = () => {
                         </span>)}
                     <span>+ {projectMembers.filter((_, index) => index > 3).length}</span>
                 </>
-                : projectMembers.map(member =>
-                    <span key={member._id} className='icon-span'>
+                : projectMembers.map(member => {
+                    if (member._id === user._id) {
+                        return (
+                            <span key={member._id} className="icon-span">
+                                <BsCircleFill className='icon'/>
+                                <span className='name-overlay small' title="You">YOU</span>
+                            </span>
+                        )
+                    }
+                    else return (<span key={member._id} className='icon-span'>
                         <BsCircleFill className='icon'/>
                         <span className='name-overlay' title={`${member.first_name} ${member.last_name}`}>
                             {member.first_name.substring(0, 1).toUpperCase()}{member.last_name.substring(0, 1).toUpperCase()}
                         </span>
-                    </span>
+                    </span>)
+                }
                     )}
                     <span className='icon-span add' onClick={toggleMembersPopUpTab}><RxPlus className='icon'/>
                     {membersPopUpTabOpen

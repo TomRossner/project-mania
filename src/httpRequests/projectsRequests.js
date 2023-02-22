@@ -11,11 +11,12 @@ export const getMembers = async () => {
     return await axios.get(`/auth/users`);
 }
 
-export const getProjects = async () => {
-    return await axios.get(`/projects/all`);
+export const getProjects = async (id) => {
+    return await axios.get(`/projects/${id}/all`);
 }
 
 export const updateProject = async (project) => {
+    console.log(project._id)
     return await axios.put(`/projects/${project._id}`, project);
 }
 

@@ -5,17 +5,16 @@ import { FiCheck } from "react-icons/fi";
 import {defaultTaskProperties} from "../../utils/defaultProperties";
 import Input from "../common/Input";
 import IconContainer from "../common/IconContainer";
-import { priorities } from '../../utils/taskPriorities';
+import { priorities } from '../../utils/labels';
 import PriorityLabel from '../common/PriorityLabel';
 
 
 const TaskForm = () => {
     const [readOnly, setReadOnly] = useState(true);
-    const {selectedElement, setCreatePopupOpen, currentProject, addTask, selectStage, setSelectStage, setError, setErrorPopupOpen} = useContext(ProjectContext);
+    const {selectedElement, setCreatePopupOpen, currentProject, addTask, selectStage, setSelectStage, setError, setErrorPopupOpen, setTaskPriority, resetTaskPriority} = useContext(ProjectContext);
     const [inputValues, setInputValues] = useState({...defaultTaskProperties, type: selectedElement});
     const {title, description} = inputValues;
     const FormTitleRef = useRef(null);
-    const [priorityName, setPriorityName] = useState("");
     
 
     const handleSelectStage = (stage) => {
@@ -30,7 +29,6 @@ const TaskForm = () => {
         return setErrorPopupOpen(true);
       } else {
         addTask(inputValues, selectStage);
-        resetPriority();
       }
     }
 
@@ -43,11 +41,8 @@ const TaskForm = () => {
     }
 
     const handleSetPriority = (priority) => {
-      console.log(priority)
-      return setPriorityName(priority);
+      return setTaskPriority(priority);
     }
-
-    const resetPriority = () => setPriorityName(priorities[0].name);
 
     useEffect(() => {
       if (!readOnly) FormTitleRef.current.focus();
@@ -84,7 +79,7 @@ const TaskForm = () => {
               <p>Priority:</p>
               <div className='radio-buttons'>
                 {priorities.map(priority =>
-                  <PriorityLabel key={priority.id} priority={priority} fn={() => handleSetPriority(priority.name.toLowerCase())}/>)}
+                  <PriorityLabel key={priority.id} priority={priority} fn={() => handleSetPriority(priority)}/>)}
               </div>
           </div>
             <Input

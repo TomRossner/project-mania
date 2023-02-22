@@ -89,6 +89,7 @@ const StageOverview = ({stage}) => {
         return setCurrentProject({...currentProject, stages: [...currentProject.stages.filter(stage => stage._id !== stageToDelete._id)]});
     }
 
+    // Update boards every time currentProject changes
     useEffect(() => {
         if (!currentProject) return;
         const updateBoards = () => setBoards([...boards.map(board => {
@@ -128,11 +129,11 @@ const StageOverview = ({stage}) => {
         <div className='flex1'></div>
         <div className='stage-status'>
             <h4 className='white'>Status</h4>
-            <p className='white'>{((stage_tasks.filter(task => task.isDone === true).length * stage_tasks.length) * 100)}% completed</p>
-            <ProgressBar tasksDone={stage.tasks_done} totalTasks={stage_tasks.length}/>
+            <p className='white'>{stage_tasks.length ? ((stage_tasks.filter(task => task.isDone === true).length / stage_tasks.length) * 100).toFixed() : 0}% completed</p>
+            <ProgressBar  stage={stage} tasksDone={Number(stage.tasks_done)} totalTasks={Number(stage_tasks.length)}/>
         </div>
     </div>
   )
 }
 
-export default StageOverview
+export default StageOverview;

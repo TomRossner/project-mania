@@ -40,6 +40,10 @@
                 position: absolute;
                 z-index: 1;
                 color: $white;
+
+                &.small{
+                    font-size: 0.8rem;
+                }
             }
             .icon{
                 font-size: 1.8rem;

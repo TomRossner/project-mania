@@ -15,3 +15,21 @@ export const priorities = [
         id: "priority_high" 
     }
 ]
+
+export const labels = [
+    {
+        name: "New",
+        color_class: "green",
+        id: "label_new"
+    },
+    {
+        name: "Nearly done",
+        color_class: "lime",
+        id: "label_nearly_done"
+    },
+    {
+        name: "Bug",
+        color_class: "brown",
+        id: "label_bug"
+    },
+]

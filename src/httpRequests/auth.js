@@ -1,12 +1,14 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
-axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
+// axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
+axios.defaults.baseURL = 'http://localhost:5000/projectmania';
 const token = 'token';
 setTokenHeader();
 
 export async function loginUser(values) {
     const {data} = await axios.post(`/auth/login`, values);
+    console.log(data)
     localStorage.setItem("token", data.token);
     return setTokenHeader();
 }

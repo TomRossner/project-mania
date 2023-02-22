@@ -3,6 +3,7 @@ import { getUserInfo } from '../httpRequests/auth';
 import { addProject, getMembers, getProjects, updateProject } from '../httpRequests/projectsRequests';
 import { generateId } from '../utils/IdGenerator';
 import { UserContext } from './UserContext';
+import {priorities} from "../utils/labels";
 
 export const ProjectContext = createContext({
     selectedElement: "",
@@ -35,7 +36,10 @@ export const ProjectContext = createContext({
     setErrorPopupOpen: () => {},
     errorPopupOpen: false,
     resetErrorMessage: () => {},
-    loadProjects: () => {}
+    getUserProjects: () => {},
+    taskPriority: "",
+    setTaskPriority: () => {},
+    resetTaskPriority: () => {}
 })
 
 const ProjectProvider = ({children}) => {
@@ -51,9 +55,12 @@ const ProjectProvider = ({children}) => {
     const [projectMenuOpen, setProjectMenuOpen] = useState(false);
     const [errorPopupOpen, setErrorPopupOpen] = useState(false);
     const [error, setError] = useState("");
+    const [taskPriority, setTaskPriority] = useState(priorities[0]);
 
     const {user} = useContext(UserContext);
 
+
+    // Add new board
     const addBoard = async (values) => {
         if (values.type !== 'board') return setError("Invalid values. Could not create board");
         if (createPopupOpen) closeCreatePopup();
@@ -70,6 +77,8 @@ const ProjectProvider = ({children}) => {
         }
     }
 
+
+    // Add new stage
     const addStage = (values, project) => {
         if (!values || values.type !== 'stage') return setError("Invalid values. Could not create stage");
         if (createPopupOpen) closeCreatePopup();
@@ -82,6 +91,8 @@ const ProjectProvider = ({children}) => {
         }
     }
 
+
+    // Add new task
     const addTask = (values, stageToUpdate) => {
         if (!values || values.type !== 'task') return setError("Invalid values. Could not create task");
         if (createPopupOpen) closeCreatePopup();
@@ -90,7 +101,8 @@ const ProjectProvider = ({children}) => {
             current_stage: stageToUpdate.stage_name,
             project: currentProject.title,
             _id: generateId(),
-            messages: []
+            messages: [],
+            priority: taskPriority
         };
         setCurrentProject({...currentProject, stages: [...currentProject.stages.map(current_project_stage => {
                 if (current_project_stage._id === stageToUpdate._id) {
@@ -99,25 +111,22 @@ const ProjectProvider = ({children}) => {
         })]})
     }
 
+
+    // Get all members and set availableMembers
     const loadMembers = async () => {
-        if (!user) return;
         try {
-            const response = await getMembers();
-            const members = response.data;
+            const {data: members} = await getMembers();
             setAvailableMembers(members.filter(member => member._id !== user._id));
         } catch (error) {
-            // if (response.data.error && response.status === 400) {
-            //     setError(response.data.error);
-            //     setErrorPopupOpen(true);
-            // }
-            console.log(error)
+            console.log(error);
         }
     }
 
-    const loadProjects = async () => {
+
+    // Get all projects associated with user and set currentProject and Boards.
+    const getUserProjects = async (id) => {
         try {
-            const response = await getProjects();
-            const projects = response.data;
+            const {data: projects} = await getProjects(id);
             setCurrentProject({...projects[projects.length - 1], due_date: new Date(projects[projects.length - 1].due_date).toDateString()});
             setBoards(projects);
             return projects;
@@ -130,40 +139,41 @@ const ProjectProvider = ({children}) => {
         }
     }
 
+
+    // Update project
     const update = async (project) => {
+        console.log("Updating project")
         try {
             await updateProject(project);
         } catch (error) {
-            // if (response.data.error && response.status === 400) {
-            //     setError(response.data.error);
-            //     setErrorPopupOpen(true);
-            // }
             console.log(error);
         }
     }
 
-    const closeCreatePopup = () => {
-        return setCreatePopupOpen(false);
-    }
+    const closeCreatePopup = () => setCreatePopupOpen(false);
 
     const resetErrorMessage = () => setError("");
-    
+
+    const resetTaskPriority = () => setTaskPriority(priorities[0]); // "Low"
+
+
+    // Get all members on load
     useEffect(() => {
         loadMembers();
-        loadProjects();
     }, [])
 
-    const loadUserProjects = async () => {
-        const projects = await loadProjects();
-        return projects;
-    }
 
+    // Every time currentProject changes, update it in DB.
+    // Then update project members based on currentProject's members.
     useEffect(() => {
+        console.log("Current project: ", currentProject)
         if (!currentProject) return;
         update(currentProject);
         setProjectMembers(currentProject.members);
     }, [currentProject])
 
+
+    // Every time boards array changes, update each board in DB.
     useEffect(() => {
         if (!boards.length) return;
         else boards.forEach(board => {
@@ -171,18 +181,16 @@ const ProjectProvider = ({children}) => {
         })
     }, [boards])
 
-    useEffect(() => {
-        if (!currentProject) return;
-        console.log(currentProject);
-    }, [currentProject])
 
+    // If user in not logged in, set currentProject to null.
+    // Else get user's projects and set currentProject to first project returned(TODO: set currentProject to last project worked on).
     useEffect(() => {
         if (!user) setCurrentProject(null);
         else if (user && !currentProject) {
-            const projects = loadUserProjects();
-            setCurrentProject(projects[0])
+            const projects = getUserProjects(user._id);
+            setCurrentProject(projects[0]);
         }
-    }, [user])
+    }, [user, currentProject])
     
     const values = {
         selectedElement, setSelectedElement,
@@ -197,7 +205,8 @@ const ProjectProvider = ({children}) => {
         selectStage, setSelectStage,
         projectMenuOpen, setProjectMenuOpen,
         errorPopupOpen, setErrorPopupOpen, error, setError, resetErrorMessage,
-        loadProjects
+        taskPriority, setTaskPriority, resetTaskPriority,
+        getUserProjects
     }
 
   return (

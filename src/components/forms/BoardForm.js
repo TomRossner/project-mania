@@ -49,9 +49,9 @@ const BoardForm = () => {
 
   const handleAddMembers = (e) => {
     if (!e.target.value) return;
-    const newMember = availableMembers?.find(member => e.target.value === member._id);
+    const newMember = availableMembers?.find(member => e.target.value.trim() === member._id);
     if (projectMembers.find(member => newMember._id === member._id)) return;
-    else setProjectMembers([...projectMembers, availableMembers?.find(member => e.target.value === member._id)]);
+    else setProjectMembers([...projectMembers, availableMembers?.find(member => e.target.value.trim() === member._id)]);
   }
 
   const handleRemoveMemberFromProject = (id) => {

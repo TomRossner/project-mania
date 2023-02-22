@@ -11,6 +11,7 @@ const Task = () => {
     const {setCurrentProject, currentProject} = useContext(ProjectContext);
 
     const handleMarkAsDone = () => {
+      console.log("hi")
       setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
         if (stage.stage_name === activeTask.current_stage) {
           return {...stage, stage_tasks: [...stage.stage_tasks.map(task => {
@@ -22,20 +23,29 @@ const Task = () => {
       })]})
     }
 
-    useEffect(() => {
-      if (!activeTask) {
-        const loadTask = async () => {
-          const {data: task} = await getTask({id, task_id});
-          console.log(task)
-          setActiveTask(task);
-          return task;
-        }
-        loadTask();
-      }
-    }, [])
+    const updateTasksDone = () => {
+      setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
+        if (stage.stage_name === activeTask.current_stage) {
+          return {...stage, tasks_done: stage.stage_tasks.filter(task => task.isDone === true).length};
+        } else return stage;
+      })]})
+    }
 
     useEffect(() => {
-      console.log(activeTask)
+      console.log(id, task_id)
+      const loadTask = async () => {
+        const {data: task} = await getTask({id, task_id});
+        setActiveTask(task);
+        return task;
+      }
+      loadTask();
+    }, [])
+
+
+    // Update tasks_done every time activeTask changes 
+    useEffect(() => {
+      if (!activeTask) return;
+      updateTasksDone();
     }, [activeTask])
 
   return (

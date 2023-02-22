@@ -5,7 +5,7 @@ import { UserContext } from '../contexts/UserContext';
 import Spinner from './common/Spinner';
 
 const Projects = () => {
-  const {setCurrentProject, createPopupOpen, setCreatePopupOpen, loadProjects, setError, setErrorPopupOpen} = useContext(ProjectContext);
+  const {setCurrentProject, createPopupOpen, setCreatePopupOpen, getUserProjects, setError, setErrorPopupOpen} = useContext(ProjectContext);
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const {user} = useContext(UserContext);
@@ -26,7 +26,7 @@ const Projects = () => {
     if (createPopupOpen) setCreatePopupOpen(false);
 
     const fetchProjects = async () => {
-      const response = await loadProjects();
+      const response = await getUserProjects(user._id);
       setProjects(response);
     }
     
