@@ -24,8 +24,14 @@ export const boardProperties = {
 
 export const defaultTaskProperties = {
     created_at: new Date(),
-    current_stage: "",
-    project: "",
+    current_stage: {
+        name: "",
+        id: ""
+    },
+    project: {
+        title: "",
+        id: ""
+    },
     title: "New Task",
     due_date: new Date().toDateString(),
     isDone: false,

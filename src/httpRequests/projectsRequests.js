@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = 'http://tomrossner.dev/projectmania'
+axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
 
 export const getTask = async (ids) => {
     const {id, task_id} = ids;
@@ -16,10 +16,14 @@ export const getProjects = async (id) => {
 }
 
 export const updateProject = async (project) => {
-    console.log(project._id)
     return await axios.put(`/projects/${project._id}`, project);
 }
 
 export const addProject = async (values) => {
     return await axios.post(`/projects/add`, values);
+}
+
+export const deleteTask = async (ids) => {
+    const {id, stage_id, task_id} = ids;
+    return await axios.delete(`/projects/${id}/${stage_id}/${task_id}`);
 }

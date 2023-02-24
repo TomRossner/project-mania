@@ -45,7 +45,7 @@ const StageOverview = ({stage}) => {
         return setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
             if (stage._id === stageToUpdate._id) {
                 return {...stage, stage_name: inputValue, edit_active: false, stage_tasks: [...stage.stage_tasks.map(task => {
-                    return {...task, current_stage: inputValue};
+                    return {...task, current_stage: {...task.current_stage, name: inputValue}};
                 })]};
             } else return stage;
         })]});
@@ -122,7 +122,7 @@ const StageOverview = ({stage}) => {
         <span className='icon-span dots-menu' onClick={() => toggleStageOptions(stage)}><BsThreeDotsVertical className='icon'/></span>
         <hr className='line'/>
         <div className='stage-tasks'>
-            {stage_tasks?.map((task, index) => task.current_stage === stage_name
+            {stage_tasks?.map((task, index) => task.current_stage.name === stage_name
             ? <TaskOverview key={index} task={task}/>
             : null)}
         </div>
@@ -130,7 +130,7 @@ const StageOverview = ({stage}) => {
         <div className='stage-status'>
             <h4 className='white'>Status</h4>
             <p className='white'>{stage_tasks.length ? ((stage_tasks.filter(task => task.isDone === true).length / stage_tasks.length) * 100).toFixed() : 0}% completed</p>
-            <ProgressBar  stage={stage} tasksDone={Number(stage.tasks_done)} totalTasks={Number(stage_tasks.length)}/>
+            <ProgressBar stage={stage} tasksDone={Number(stage.tasks_done)} totalTasks={Number(stage_tasks.length)}/>
         </div>
     </div>
   )

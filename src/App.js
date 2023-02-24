@@ -37,6 +37,8 @@ import "./styles/chat-styles.scss";
 import "./styles/chat-message-styles.scss";
 import "./styles/project-stages-styles.scss";
 import "./styles/spinner-styles.scss";
+import "./styles/label-styles.scss";
+import "./styles/labels-container-styles.scss";
 
 
 const App = () => {
@@ -55,7 +57,7 @@ const App = () => {
             <Route path="/project-mania-frontend/projects/:id" element={<ProjectOverview/>}/>
             <Route path="/project-mania-frontend/projects" element={<Projects/>}/>
             <Route path="/project-mania-frontend/projects/:id/notifications" element={<Notifications/>}/>
-            <Route path="/project-mania-frontend/projects/:id/:task_id" element={<Task/>}/>
+            <Route path="/project-mania-frontend/projects/:id/:stage_id/:task_id" element={<Task/>}/>
             <Route path="/project-mania-frontend/profile" element={<Profile/>}/>
             <Route path="/project-mania-frontend/logout" element={<Logout/>}/>
             <Route path="/project-mania-frontend/login" element={<Login/>}/>

@@ -216,26 +216,6 @@ hr.line{
     }
 }
 
-.priority{
-    background-color: rgb(22, 22, 22);
-    padding: 0.2em 1em;
-    border-radius: 20px;
-
-    &.yellow{
-        border: 2px solid $yellow;
-    }
-    &.orange{
-        border: 2px solid $orange;
-    }
-    &.red{
-        border: 2px solid $red;
-    }
-
-    &:hover{
-        background-color: rgb(58, 58, 58);
-    }
-}
-
 @keyframes fadeIn {
     0%{
         opacity: 0;

@@ -98,8 +98,14 @@ const ProjectProvider = ({children}) => {
         if (createPopupOpen) closeCreatePopup();
         const newTask = {
             ...values,
-            current_stage: stageToUpdate.stage_name,
-            project: currentProject.title,
+            current_stage: {
+                name: stageToUpdate.stage_name,
+                id: stageToUpdate._id
+            },
+            project: {
+                title: currentProject.title,
+                id: currentProject._id
+            },
             _id: generateId(),
             messages: [],
             priority: taskPriority
@@ -142,7 +148,6 @@ const ProjectProvider = ({children}) => {
 
     // Update project
     const update = async (project) => {
-        console.log("Updating project")
         try {
             await updateProject(project);
         } catch (error) {

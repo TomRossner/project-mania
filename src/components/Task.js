@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getTask } from '../httpRequests/projectsRequests';
+import { useNavigate, useParams } from 'react-router-dom';
+import { deleteTask, getTask } from '../httpRequests/projectsRequests';
 import Chat from "../components/Chat";
 import BackButton from "../components/common/BackButton";
 import { ProjectContext } from '../contexts/ProjectContext';
 
 const Task = () => {
-    const {id, task_id} = useParams();
+    const {id, stage_id, task_id} = useParams();
     const [activeTask, setActiveTask] = useState(null);
     const {setCurrentProject, currentProject} = useContext(ProjectContext);
+    const navigate = useNavigate();
 
     const handleMarkAsDone = () => {
-      console.log("hi")
       setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
         if (stage.stage_name === activeTask.current_stage) {
           return {...stage, stage_tasks: [...stage.stage_tasks.map(task => {
@@ -21,6 +21,7 @@ const Task = () => {
           })]};
         } else return stage;
       })]})
+      
     }
 
     const updateTasksDone = () => {
@@ -31,12 +32,16 @@ const Task = () => {
       })]})
     }
 
+    const handleDeleteTask = async () => {
+      await deleteTask({id, stage_id, task_id});
+      return navigate(-1);
+    }
+
     useEffect(() => {
-      console.log(id, task_id)
       const loadTask = async () => {
         const {data: task} = await getTask({id, task_id});
-        setActiveTask(task);
-        return task;
+        setActiveTask(task[0]);
+        return task[0];
       }
       loadTask();
     }, [])
@@ -58,7 +63,7 @@ const Task = () => {
             <h1 className='task-title'>{activeTask.title}</h1>
             <div className="buttons-container">
               <button className="btn" onClick={handleMarkAsDone}>Mark as Done</button>
-              <button className="btn">Delete task</button>
+              <button className="btn" onClick={handleDeleteTask}>Delete task</button>
             </div>
           </div>
           <p className='task-desc'>{activeTask.description}</p>
