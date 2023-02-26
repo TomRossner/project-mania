@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Projects from "./components/Projects";
 import Notifications from "./components/Notifications"
 import Profile from "./components/Profile"
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ProjectContext } from "./contexts/ProjectContext";
 import NotificationTab from "./components/NotificationTab";
 import ProfileTab from "./components/ProfileTab";
@@ -15,6 +15,9 @@ import Task from "./components/Task";
 import Create from "./components/Create";
 import ErrorPopup from "./components/ErrorPopup";
 import Logout from "./components/Logout";
+import { useDispatch } from "react-redux";
+import { setUser } from "./store/user/user.actions";
+import { getUser } from "./httpRequests/auth";
 
 // Styles
 import "./styles/main-styles.scss";
@@ -43,6 +46,14 @@ import "./styles/labels-container-styles.scss";
 
 const App = () => {
   const {notificationTabOpen, profileTabOpen} = useContext(ProjectContext);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const subscribe = () => {
+      dispatch(setUser(getUser()));
+    }
+    subscribe();
+  }, [])
 
   return (
     <div className='main'>

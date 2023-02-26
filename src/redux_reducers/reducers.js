@@ -9,7 +9,8 @@ import {
     CHANGE_PROFILE_TAB,
     CHANGE_PROJECT_MEMBERS,
     CHANGE_PROJECT_MENU_TAB,
-    CHANGE_SELECTED_STAGE
+    CHANGE_SELECTED_STAGE,
+    CHANGE_TASK_PRIORITY
 } from "./constants";
 
 const initialState = {
@@ -24,6 +25,7 @@ const initialState = {
     projectMembers: [],
     projectMenuTabOpen: false,
     selectedStage: null,
+    taskPriority: "",
 }
 
 export const projectReducer = (state = initialState, action = {}) => {
@@ -40,6 +42,8 @@ export const projectReducer = (state = initialState, action = {}) => {
             return {...state, availableMembers: action.payload};
         case CHANGE_ELEMENT:
             return {...state, selectedElement: action.payload};
+        case CHANGE_TASK_PRIORITY:
+            return {...state, taskPriority: action.payload};
         default:
             return state;
     }
