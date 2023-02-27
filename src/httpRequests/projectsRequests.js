@@ -8,9 +8,7 @@ export const getTask = async (ids) => {
 }
 
 export const getMembers = async () => {
-    const response = await axios.get(`/auth/users`);
-    console.log(response)
-    return response;
+    return await axios.get(`/auth/users`);
 }
 
 export const getProjects = async (id) => {
