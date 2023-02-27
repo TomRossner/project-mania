@@ -14,7 +14,7 @@ const Logout = () => {
       }
 
       logoutUser();
-      navigate("/project-mania-frontend/login");
+      navigate("/login");
     }, [])
 
   return null;

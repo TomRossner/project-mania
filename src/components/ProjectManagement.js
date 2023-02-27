@@ -10,7 +10,7 @@ const ProjectManagement = () => {
 
   return (
     <>
-    {user && <Navigate to="/project-mania-frontend/projects"/>}
+    {user && <Navigate to="/projects"/>}
     </>
   )
 }

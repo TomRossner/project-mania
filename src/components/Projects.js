@@ -12,12 +12,12 @@ const Projects = () => {
 
   const handleClick = (board) => {
     setCurrentProject(board);
-    navigate(`/project-mania-frontend/projects/${board._id}`);
+    navigate(`/projects/${board._id}`);
   }
 
   useEffect(() => {
     if (!user) {
-      navigate("/project-mania-frontend/login");
+      navigate("/login");
       setError("You must be logged in to access projects.");
       setErrorPopupOpen(true);
       return;

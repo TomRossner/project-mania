@@ -7,13 +7,13 @@ import LabelsContainer from "./common/LabelsContainer";
 
 const TaskOverview = ({task}) => {
     const {title, description, due_date, files, _id, priority, current_stage} = task;
-    const {currentProject, taskPriority} = useContext(ProjectContext);
+    const {currentProject} = useContext(ProjectContext);
     const navigate = useNavigate();
 
 
     // Open task
     const handleOpenTask = (task_id) => {
-        navigate(`/project-mania-frontend/projects/${currentProject._id}/${current_stage.id}/${task_id}`);
+        navigate(`/projects/${currentProject._id}/${current_stage.id}/${task_id}`);
     }
 
   return (

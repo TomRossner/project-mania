@@ -31,7 +31,7 @@ const Create = () => {
 
     // useEffect(() => {
     //     if (!user) {
-    //       navigate("/project-mania-frontend/login");
+    //       navigate("/login");
     //       setError("You must be logged in to create projects/stages/tasks.");
     //       setErrorPopupOpen(true);
     //       setCreatePopupOpen(false);

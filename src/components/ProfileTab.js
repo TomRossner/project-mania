@@ -16,13 +16,13 @@ const ProfileTab = () => {
         {!user
         ? (
         <div className='profile-tab'>
-            <Link to="/project-mania-frontend/login" className='link' onClick={handleToggleProfileTab}>Login</Link>
-            <Link to="/project-mania-frontend/register" className='link' onClick={handleToggleProfileTab}>Register</Link>
+            <Link to="/login" className='link' onClick={handleToggleProfileTab}>Login</Link>
+            <Link to="/register" className='link' onClick={handleToggleProfileTab}>Register</Link>
         </div>)
         : (
         <div className='profile-tab'>
-          <Link to="/project-mania-frontend/profile" className='link' onClick={handleToggleProfileTab}>View Profile</Link>
-          <Link to="/project-mania-frontend/logout" className='link' onClick={handleToggleProfileTab}>Logout</Link>
+          <Link to="/profile" className='link' onClick={handleToggleProfileTab}>View Profile</Link>
+          <Link to="/logout" className='link' onClick={handleToggleProfileTab}>Logout</Link>
         </div>)}
     </div>
   )

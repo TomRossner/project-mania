@@ -44,7 +44,7 @@ const NavBar = () => {
     <nav>
         <Logo/>
         <ul className='flex1'>
-            <Link className='link' to="/project-mania-frontend/projects" onClick={handleProjectsClick}>Projects</Link>
+            <Link className='link' to="/projects" onClick={handleProjectsClick}>Projects</Link>
             <li className='link' onClick={handleCreateClick}>Create</li>
         </ul>
         <ul>
