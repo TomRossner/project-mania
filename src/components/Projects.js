@@ -1,36 +1,44 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ProjectContext } from '../contexts/ProjectContext';
-import { UserContext } from '../contexts/UserContext';
 import Spinner from './common/Spinner';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentUser } from '../store/user/user.selector';
+import { setBoards, setCurrentProject } from '../store/project/project.actions';
+import { selectProject, selectUserProjects } from '../store/project/project.selector';
+import { setError, setErrorPopupOpen, setCreatePopupOpen } from '../store/project/project.actions';
+import { getProjects } from '../httpRequests/projectsRequests';
 
 const Projects = () => {
-  const {setCurrentProject, createPopupOpen, setCreatePopupOpen, getUserProjects, setError, setErrorPopupOpen} = useContext(ProjectContext);
   const navigate = useNavigate();
-  const [projects, setProjects] = useState([]);
-  const {user} = useContext(UserContext);
+  const dispatch = useDispatch();
+  const user = useSelector(selectCurrentUser);
+  const projects = useSelector(selectUserProjects);
+  const {createPopupOpen} = useSelector(selectProject);
+  
 
   const handleClick = (board) => {
-    setCurrentProject(board);
+    dispatch(setCurrentProject(board));
     navigate(`/projects/${board._id}`);
   }
 
   useEffect(() => {
     if (!user) {
       navigate("/login");
-      setError("You must be logged in to access projects.");
-      setErrorPopupOpen(true);
+      dispatch(setError("You must be logged in to access projects."));
+      dispatch(setErrorPopupOpen(true));
       return;
     }
 
     if (createPopupOpen) setCreatePopupOpen(false);
 
-    const fetchProjects = async () => {
-      const response = await getUserProjects(user._id);
-      setProjects(response);
+    const fetchUserProjects = (id) => {
+      return async (dispatch) => {
+        const {data: userProjects} = await getProjects(id);
+        dispatch(setBoards(userProjects));
+      }
     }
-    
-    fetchProjects();
+
+    dispatch(fetchUserProjects(user._id));
   }, [])
 
   return (

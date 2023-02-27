@@ -1,18 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { deleteTask, getTask } from '../httpRequests/projectsRequests';
 import Chat from "../components/Chat";
 import BackButton from "../components/common/BackButton";
-import { ProjectContext } from '../contexts/ProjectContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentProject } from '../store/project/project.selector';
+import { setCurrentProject } from '../store/project/project.actions';
 
 const Task = () => {
     const {id, stage_id, task_id} = useParams();
     const [activeTask, setActiveTask] = useState(null);
-    const {setCurrentProject, currentProject} = useContext(ProjectContext);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const currentProject = useSelector(selectCurrentProject);
 
     const handleMarkAsDone = () => {
-      setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
+      dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
         if (stage.stage_name === activeTask.current_stage) {
           return {...stage, stage_tasks: [...stage.stage_tasks.map(task => {
             if (task._id === activeTask._id) {
@@ -20,16 +23,16 @@ const Task = () => {
             } else return task;
           })]};
         } else return stage;
-      })]})
+      })]}))
       
     }
 
     const updateTasksDone = () => {
-      setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
+      dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
         if (stage.stage_name === activeTask.current_stage) {
           return {...stage, tasks_done: stage.stage_tasks.filter(task => task.isDone === true).length};
         } else return stage;
-      })]})
+      })]}))
     }
 
     const handleDeleteTask = async () => {

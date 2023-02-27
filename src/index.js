@@ -3,22 +3,15 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import ProjectProvider from './contexts/ProjectContext';
 import { Provider } from 'react-redux';
-// import UserProvider from './contexts/UserContext';
 import { store } from './store/store';
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter basename='/project-mania-frontend'>
       <Provider store={store}>
-        {/* <UserProvider> */}
-          <ProjectProvider>
-            <App />
-          </ProjectProvider>
-        {/* </UserProvider> */}
+        <App />
       </Provider>
     </BrowserRouter>
   </React.StrictMode>

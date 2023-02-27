@@ -1,35 +1,50 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { RiEdit2Fill } from "react-icons/ri";
 import { FiCheck } from "react-icons/fi";
-import { ProjectContext } from '../../contexts/ProjectContext';
 import { boardProperties } from "../../utils/defaultProperties";
 import Input from '../common/Input';
-import { UserContext } from '../../contexts/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserInfo } from '../../httpRequests/auth';
+import { addProject } from '../../httpRequests/projectsRequests';
+import { selectAvailableMembers, selectProject, selectProjectMembers, selectUserProjects } from '../../store/project/project.selector';
+import { setCreatePopupOpen, setProjectMembers, setBoards, setError, setErrorPopupOpen } from '../../store/project/project.actions';
+import { selectCurrentUser } from '../../store/user/user.selector';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
-  const {
-    selectedElement,
-    addBoard,
-    setCreatePopupOpen,
-    setProjectMembers,
-    projectMembers,
-    availableMembers,
-    setError,
-    setErrorPopupOpen
-  } = useContext(ProjectContext);
   const FormTitleRef = useRef(null);
-  const [inputValues, setInputValues] = useState({...boardProperties, type: selectedElement});
+  const {element, createPopupOpen} = useSelector(selectProject);
+  const [inputValues, setInputValues] = useState({...boardProperties, type: element});
   const {title, subtitle, due_date} = inputValues;
-  const {user} = useContext(UserContext);
-  const navigate = useNavigate();
+  const projectMembers = useSelector(selectProjectMembers);
+  const availableMembers = useSelector(selectAvailableMembers);
+  const boards = useSelector(selectUserProjects);
+  const user = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
+
+  const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
+
+  const addBoard = async (values) => {
+    if (values.type !== 'board') return setError("Invalid values. Could not create board");
+    if (createPopupOpen) closeCreatePopup();
+    try {
+        const {data: userInfo} = await getUserInfo(user._id);
+        const response = await addProject({...values, members: [...projectMembers, userInfo]});
+        const newProject = response.data;
+        dispatch(setBoards([...boards, {...newProject, due_date: new Date(newProject.due_date).toDateString()}]));
+    } catch ({response}) {
+        if (response.data.error && response.status === 400) {
+            dispatch(setError(response.data.error));
+            dispatch(setErrorPopupOpen(true));
+        }
+    }
+}
 
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     addBoard(inputValues);
-    setCreatePopupOpen(false);
+    dispatch(setCreatePopupOpen(false));
   }
 
   const handleInputChange = (e) => {
@@ -51,14 +66,14 @@ const BoardForm = () => {
     if (!e.target.value) return;
     const newMember = availableMembers?.find(member => e.target.value.trim() === member._id);
     if (projectMembers.find(member => newMember._id === member._id)) return;
-    else setProjectMembers([...projectMembers, availableMembers?.find(member => e.target.value.trim() === member._id)]);
+    else dispatch(setProjectMembers([...projectMembers, availableMembers?.find(member => e.target.value.trim() === member._id)]));
   }
 
   const handleRemoveMemberFromProject = (id) => {
     if (!id) return;
     const memberToRemove = projectMembers.find(member => member._id === id);
     if (!memberToRemove) throw new Error("Member not found");
-    else setProjectMembers(projectMembers.filter(member => member._id !== memberToRemove._id));
+    else dispatch(setProjectMembers(projectMembers.filter(member => member._id !== memberToRemove._id)));
   }
 
   useEffect(() => {
@@ -66,7 +81,7 @@ const BoardForm = () => {
   }, [readOnly]);
 
   useEffect(() => {
-    if (projectMembers.length) setProjectMembers([]);
+    if (projectMembers.length) dispatch(setProjectMembers([]));
   }, [])
 
   return (
@@ -108,7 +123,7 @@ const BoardForm = () => {
             </div>
 
         </div>
-        <button type='submit' className='btn form'>Create {selectedElement}</button>
+        <button type='submit' className='btn form'>Create {element}</button>
     </form>
   )
 }

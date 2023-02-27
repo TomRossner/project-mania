@@ -1,43 +1,39 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from './Logo';
 import { IoIosNotifications } from "react-icons/io";
 import { BsCircleFill, BsPersonCircle } from "react-icons/bs";
-import { ProjectContext } from '../contexts/ProjectContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectProject } from '../store/project/project.selector';
+import { setCreatePopupOpen, setNotificationTabOpen, setProjectMenuOpen, setProfileTabOpen } from '../store/project/project.actions';
 
 const NavBar = () => {
-  const {
-    setProfileTabOpen,
-    profileTabOpen,
-    setNotificationTabOpen,
-    notificationTabOpen,
-    createPopupOpen,
-    setCreatePopupOpen,
-    closeCreatePopup,
-    projectMenuOpen, setProjectMenuOpen
-  } = useContext(ProjectContext);
+  const dispatch = useDispatch();
+  const {profileTabOpen, notificationTabOpen, projectMenuOpen, createPopupOpen} = useSelector(selectProject);
+
+  const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
 
   const handleProjectsClick = () => {
     closeCreatePopup();
-    if (notificationTabOpen) setNotificationTabOpen(false);
-    if (profileTabOpen) setProfileTabOpen(false);
+    if (notificationTabOpen) dispatch(setNotificationTabOpen(false));
+    if (profileTabOpen) dispatch(setProfileTabOpen(false));
   }
 
   const handleCreateClick = () => {
-    setCreatePopupOpen(!createPopupOpen);
-    if (projectMenuOpen) setProjectMenuOpen(false);
-    if (notificationTabOpen) setNotificationTabOpen(false);
-    if (profileTabOpen) setProfileTabOpen(false);
+    dispatch(setCreatePopupOpen(!createPopupOpen));
+    if (projectMenuOpen) dispatch(setProjectMenuOpen(false));
+    if (notificationTabOpen) dispatch(setNotificationTabOpen(false));
+    if (profileTabOpen) dispatch(setProfileTabOpen(false));
   }
 
   const handleToggleNotificationTab = () => {
-    setNotificationTabOpen(!notificationTabOpen);
-    if (profileTabOpen) setProfileTabOpen(false);
+    dispatch(setNotificationTabOpen(!notificationTabOpen));
+    if (profileTabOpen) dispatch(setProfileTabOpen(false));
   }
 
   const handleToggleProfileTab = () => {
-    setProfileTabOpen(!profileTabOpen);
-    if (notificationTabOpen) setNotificationTabOpen(false);
+    dispatch(setProfileTabOpen(!profileTabOpen));
+    if (notificationTabOpen) dispatch(setNotificationTabOpen(false));
   }
 
   return (

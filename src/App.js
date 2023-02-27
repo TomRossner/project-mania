@@ -3,8 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Projects from "./components/Projects";
 import Notifications from "./components/Notifications"
 import Profile from "./components/Profile"
-import { useContext, useEffect } from "react";
-import { ProjectContext } from "./contexts/ProjectContext";
+import { useEffect } from "react";
 import NotificationTab from "./components/NotificationTab";
 import ProfileTab from "./components/ProfileTab";
 import Login from "./components/Login";
@@ -15,9 +14,12 @@ import Task from "./components/Task";
 import Create from "./components/Create";
 import ErrorPopup from "./components/ErrorPopup";
 import Logout from "./components/Logout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/user/user.actions";
 import { getUser } from "./httpRequests/auth";
+import { getMembers } from "./httpRequests/projectsRequests";
+import { selectProject } from "./store/project/project.selector";
+import { setAvailableMembers } from "./store/project/project.actions";
 
 // Styles
 import "./styles/main-styles.scss";
@@ -44,14 +46,21 @@ import "./styles/label-styles.scss";
 import "./styles/labels-container-styles.scss";
 
 const App = () => {
-  const {notificationTabOpen, profileTabOpen} = useContext(ProjectContext);
   const dispatch = useDispatch();
+  const {notificationTabOpen, profileTabOpen} = useSelector(selectProject);
+
+  const loadUser = () => dispatch(setUser(getUser()));
+
+  const fetchAvailableMembers = async () => {
+    return async (dispatch) => {
+      const {data: users} = await getMembers();
+      dispatch(setAvailableMembers(users));
+    }
+  }
 
   useEffect(() => {
-    const subscribe = () => {
-      dispatch(setUser(getUser()));
-    }
-    subscribe();
+    loadUser();
+    fetchAvailableMembers();
   }, [])
 
   return (
@@ -63,16 +72,15 @@ const App = () => {
           {notificationTabOpen ? <NotificationTab/> : null}
           {profileTabOpen ? <ProfileTab/> : null}
         <Routes>
-        <Route path="/" element={<ProjectManagement/>}/>
-        <Route path="/projects" element={<Projects/>}>
-          <Route path=":id" element={<ProjectOverview/>}/>
-          <Route path=":id/notifications" element={<Notifications/>}/>
-          <Route path=":id/:stage_id/:task_id" element={<Task/>}/>
-        </Route>
-        <Route path="/profile" element={<Profile/>}/>
-        <Route path="/logout" element={<Logout/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
+          <Route path="/" element={<ProjectManagement/>}/>
+          <Route path="/projects" element={<Projects/>}/>
+          <Route path="/projects/:id" element={<ProjectOverview/>}/>
+          <Route path="/projects/:id/notifications" element={<Notifications/>}/>
+          <Route path="/projects/:id/:stage_id/:task_id" element={<Task/>}/>
+          <Route path="/profile" element={<Profile/>}/>
+          <Route path="/logout" element={<Logout/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/register" element={<Register/>}/>
         </Routes>
         <div className="flex1"></div>
       </div>

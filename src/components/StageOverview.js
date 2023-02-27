@@ -1,21 +1,25 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiCheck } from 'react-icons/fi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { ProjectContext } from '../contexts/ProjectContext';
 import TaskOverview from './TaskOverview';
 import { stageOptions } from '../utils/stageOptionsMenu';
 import ProgressBar from './common/ProgressBar';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentProject, selectUserProjects } from '../store/project/project.selector';
+import { setCurrentProject, setStage, setCreatePopupOpen, setElement, setBoards } from '../store/project/project.actions';
 
 const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
-    const {setCurrentProject, currentProject, setBoards, boards, setCreatePopupOpen, setSelectedElement, setSelectStage} = useContext(ProjectContext);
     const [inputValue, setInputValue] = useState("");
+    const dispatch = useDispatch();
+    const currentProject = useSelector(selectCurrentProject);
+    const boards = useSelector(selectUserProjects);
     
     const toggleStageOptions = (stageToUpdate) => {
         if (!stageToUpdate) return;
 
         const updatedStage = {...stageToUpdate, options_menu_open: !stageToUpdate.options_menu_open}
-        return setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
+        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
             if (stage.options_menu_open && stage._id !== stageToUpdate._id) {
                 return {...stage, options_menu_open: false};
             }
@@ -23,7 +27,7 @@ const StageOverview = ({stage}) => {
                 return stage;
             }
             else return updatedStage;
-        })]});
+        })]}));
     }
 
     const handleOption = (stage, opt) => {
@@ -42,21 +46,21 @@ const StageOverview = ({stage}) => {
     const validate = (inputValue, stageToUpdate) => {
         if (!inputValue || !stageToUpdate) return;
 
-        return setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
+        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
             if (stage._id === stageToUpdate._id) {
                 return {...stage, stage_name: inputValue, edit_active: false, stage_tasks: [...stage.stage_tasks.map(task => {
                     return {...task, current_stage: {...task.current_stage, name: inputValue}};
                 })]};
             } else return stage;
-        })]});
+        })]}));
     }
 
     const closeStageOptionMenus = () => {
-        return setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
+        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
             if (stage.options_menu_open) {
                 return {...stage, options_menu_open: false};
             } else return stage;
-        })]});
+        })]}));
     }
 
     const handleEdit = (stageToUpdate) => {
@@ -64,7 +68,7 @@ const StageOverview = ({stage}) => {
 
         setInputValue(stageToUpdate.stage_name);
         const updatedStage = {...stageToUpdate, edit_active: !stageToUpdate.edit_active, options_menu_open: false}
-        return setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
+        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
             if (stage.edit_active && stage._id !== stageToUpdate._id) {
                 return {...stage, edit_active: false, options_menu_open: false};
             }
@@ -72,31 +76,31 @@ const StageOverview = ({stage}) => {
                 return {...stage, options_menu_open: false};
             }
             else return updatedStage;
-        })]});
+        })]}));
     }
 
     const handleAddTask = (stageToAddTaskTo) => {
         closeStageOptionMenus();
-        setSelectStage(stageToAddTaskTo);
-        setCreatePopupOpen(true);
-        setSelectedElement("task");
+        dispatch(setStage(stageToAddTaskTo));
+        dispatch(setCreatePopupOpen(true));
+        dispatch(setElement("task"));
     }
 
     const handleDeleteStage = (stageToDelete) => {
         if (!stageToDelete) return;
 
         closeStageOptionMenus();
-        return setCurrentProject({...currentProject, stages: [...currentProject.stages.filter(stage => stage._id !== stageToDelete._id)]});
+        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.filter(stage => stage._id !== stageToDelete._id)]}));
     }
 
     // Update boards every time currentProject changes
     useEffect(() => {
         if (!currentProject) return;
-        const updateBoards = () => setBoards([...boards.map(board => {
+        const updateBoards = () => dispatch(setBoards([...boards.map(board => {
             if (board._id === currentProject._id) {
                 return {...currentProject};
             } else return board;
-        })])
+        })]))
 
         updateBoards();
     }, [currentProject])

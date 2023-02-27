@@ -1,16 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import IconContainer from './common/IconContainer';
 import { BsCircleFill } from 'react-icons/bs';
 import { CgMenuGridO } from 'react-icons/cg';
-import { ProjectContext } from '../contexts/ProjectContext';
 import ProjectMembers from './ProjectMembers';
 import { projectMenuOptions } from "../utils/projectMenuOptions";
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentProject, selectProject } from '../store/project/project.selector';
+import { setProjectMenuOpen, setCreatePopupOpen, setElement } from '../store/project/project.actions';
 
 const ProjectInfoBar = () => {
-    const {currentProject, setCreatePopupOpen, setSelectedElement, projectMenuOpen, setProjectMenuOpen} = useContext(ProjectContext);
+    const dispatch = useDispatch();
+    const {projectMenuOpen} = useSelector(selectProject);
+    const currentProject = useSelector(selectCurrentProject);
     
     const handleMenuClick = () => {
-        setProjectMenuOpen(!projectMenuOpen);
+        dispatch(setProjectMenuOpen(!projectMenuOpen));
     }
 
     const handleMenuOption = (opt) => {
@@ -26,9 +30,9 @@ const ProjectInfoBar = () => {
     }
 
     const handleAddStage = () => {
-        setCreatePopupOpen(true);
-        setProjectMenuOpen(false);
-        setSelectedElement("stage");
+        dispatch(setCreatePopupOpen(true));
+        dispatch(setProjectMenuOpen(false));
+        dispatch(setElement("stage"));
     }
 
   return (

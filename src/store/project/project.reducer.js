@@ -16,7 +16,7 @@ const INITIAL_STATE = {
     taskPriority: ""
 }
 
-export const projectReducer = (state = {INITIAL_STATE}, action) => {
+export const projectReducer = (state = INITIAL_STATE, action) => {
     const {type, payload} = action;
 
     switch(type) {

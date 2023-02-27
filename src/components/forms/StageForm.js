@@ -1,28 +1,43 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { ProjectContext } from '../../contexts/ProjectContext';
+import React, { useEffect, useRef, useState } from 'react';
 import { RiEdit2Fill } from "react-icons/ri";
 import { FiCheck } from "react-icons/fi";
 import {defaultStageProperties} from "../../utils/defaultProperties";
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../contexts/UserContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentProject, selectProject, selectUserProjects } from '../../store/project/project.selector';
+import { setCreatePopupOpen, setError, setCurrentProject, setBoards } from '../../store/project/project.actions';
 
 const StageForm = () => {
     const [readOnly, setReadOnly] = useState(true);
-    const {selectedElement, boards, addStage, setError, setErrorPopupOpen, setCreatePopupOpen} = useContext(ProjectContext);
-    const [inputValues, setInputValues] = useState({...defaultStageProperties, type: selectedElement});
+    const {element, createPopupOpen} = useSelector(selectProject);
+    const [inputValues, setInputValues] = useState({...defaultStageProperties, type: element});
     const {stage_name, description} = inputValues;
     const FormTitleRef = useRef(null);
-    const [selectProject, setSelectProject] = useState(boards.length ? boards[0] : null);
-    const navigate = useNavigate();
-    const {user} = useContext(UserContext);
+    const boards = useSelector(selectUserProjects);
+    const currentProject = useSelector(selectCurrentProject);
+    const [selectedProject, setSelectedProject] = useState(boards.length ? boards[0] : null);
+    const dispatch = useDispatch();
+
+    const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
+
+    const addStage = (values, project) => {
+      if (!values || values.type !== 'stage') return dispatch(setError("Invalid values. Could not create stage"));
+      if (createPopupOpen) closeCreatePopup();
+      const newStage = {...values, project: project.title};
+      const projectToAddStage = boards.find(board => board._id === project._id);
+      dispatch(setBoards([...boards.filter(board => board._id !== projectToAddStage._id),
+          {...projectToAddStage, stages: [...projectToAddStage.stages, newStage]}]));
+      if (projectToAddStage._id === currentProject._id) {
+          dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages, newStage]}));
+      }
+  }
 
     const handleFormSubmit = (e) => {
       e.preventDefault();
-      addStage(inputValues, selectProject);
+      addStage(inputValues, selectedProject);
     }
 
     const handleSelectProject = (project) => {
-      setSelectProject(project)
+      dispatch(setSelectedProject(project));
     }
 
     const handleEditFormTitle = () => {
@@ -30,7 +45,7 @@ const StageForm = () => {
     }
 
     const handleInputChange = (e) => {
-      return setInputValues({...inputValues, [e.target.name]: e.target.value});
+      return dispatch(setInputValues({...inputValues, [e.target.name]: e.target.value}));
     }
     
     useEffect(() => {
@@ -52,7 +67,7 @@ const StageForm = () => {
             {boards?.map((board, index) =>
               <div key={index} className='input-container' onClick={() => handleSelectProject(board)}>
                 <input type="radio" name='project' id={board._id} value={board._id}/>
-                <label className={board._id === selectProject?._id ? "selected" : null} htmlFor={board._id}>{board.title}</label>
+                <label className={board._id === selectedProject?._id ? "selected" : null} htmlFor={board._id}>{board.title}</label>
               </div>
             )}
             </div>
@@ -64,7 +79,7 @@ const StageForm = () => {
             </div>
 
         </div>
-        <button type='submit' className='btn form'>Create {selectedElement}</button>
+        <button type='submit' className='btn form'>Create {element}</button>
     </form>
   )
 }

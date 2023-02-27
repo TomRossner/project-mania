@@ -1,20 +1,22 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
-// axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
-axios.defaults.baseURL = 'http://localhost:5000/projectmania';
+axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
 const token = 'token';
 setTokenHeader();
 
+export function saveJWT(token) {
+    return localStorage.setItem("token", token);
+}
+
 export async function loginUser(values) {
-    const {data} = await axios.post(`/auth/login`, values);
-    console.log(data)
-    localStorage.setItem("token", data.token);
+    const {data: {token}} = await axios.post(`/auth/login`, values);
+    saveJWT(token);
     return setTokenHeader();
 }
 
 export async function addNewUser(values) {
-    const {first_name, last_name, email, password} = values;
+    const {first_name, last_name, email, password} = values; // Everything except confirmedPassword
     return await axios.post(`/auth/register`, {first_name, last_name, email, password});
 }
 

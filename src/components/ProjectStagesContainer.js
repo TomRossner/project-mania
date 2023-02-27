@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
-import { ProjectContext } from '../contexts/ProjectContext';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { selectCurrentProject } from '../store/project/project.selector';
 import StageOverview from './StageOverview';
 
 const ProjectStagesContainer = () => {
-    const {currentProject} = useContext(ProjectContext);
+    const currentProject = useSelector(selectCurrentProject);
   return (
     <>
     <div className='current-board-stages-container'>

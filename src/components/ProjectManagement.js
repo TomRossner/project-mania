@@ -1,16 +1,15 @@
 import React from 'react';
-import { useContext } from 'react';
-import { ProjectContext } from '../contexts/ProjectContext';
 import { Navigate } from 'react-router-dom';
-import { UserContext } from '../contexts/UserContext';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../store/user/user.selector';
 
 
 const ProjectManagement = () => {
-  const {user} = useContext(UserContext);
+  const user = useSelector(selectCurrentUser);
 
   return (
     <>
-    {user && <Navigate to="/projects"/>}
+    {user ? <Navigate to="/projects"/> : <Navigate to="/login"/>}
     </>
   )
 }

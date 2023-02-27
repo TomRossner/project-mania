@@ -1,33 +1,24 @@
-import React, { useContext, useEffect } from 'react';
-import { ProjectContext } from '../contexts/ProjectContext';
+import React from 'react';
 import BoardForm from './forms/BoardForm';
 import StageForm from './forms/StageForm';
 import TaskForm from './forms/TaskForm';
 import { RxCross2 } from 'react-icons/rx';
 import IconContainer from './common/IconContainer';
-import { UserContext } from '../contexts/UserContext';
-import { useNavigate } from 'react-router-dom';
-
-const elements = ["board", "stage", "task"];
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentProject, selectProject } from '../store/project/project.selector';
+import { setCreatePopupOpen, setElement } from '../store/project/project.actions';
+import {elements} from "../utils/elements";
 
 const Create = () => {
-    const {
-        selectedElement,
-        setSelectedElement,
-        boards,
-        currentProject,
-        closeCreatePopup,
-        createPopupOpen,
-        setCreatePopupOpen,
-        setError,
-        setErrorPopupOpen
-    } = useContext(ProjectContext);
-    const {user} = useContext(UserContext);
-    const navigate = useNavigate();
+    const currentProject = useSelector(selectCurrentProject);
+    const {createPopupOpen, element: selectedElement} = useSelector(selectProject);
+    const dispatch = useDispatch();
 
     const handleElementClick = (element) => {
-        setSelectedElement(element);
+        dispatch(setElement(element));
     }
+
+    const handleCreatePopup = () => dispatch(setCreatePopupOpen(false));
 
     // useEffect(() => {
     //     if (!user) {
@@ -39,23 +30,18 @@ const Create = () => {
     //     }
     //   }, [])
 
-    // useEffect(() => {
-    //     console.log(boards.length)
-    //     if (!boards.length) setCreatePopupOpen(true);
-    // }, [])
-
   return (
     <>
     {createPopupOpen ?
         (<div className='create-popup-container active'>
-            <IconContainer icon={<RxCross2 className='icon'/>} onClick={closeCreatePopup}/>
+            <IconContainer icon={<RxCross2 className='icon'/>} onClick={handleCreatePopup}/>
             <div className='create-popup active'>
                 <div className='element-options'>
                     <span>Create a new: </span>
                     {elements.map((element) =>
                         <span
                             key={element}
-                            className={selectedElement === element ? "create-element selected" : "create-element"}
+                            className={element === selectedElement ? "create-element selected" : "create-element"}
                             onClick={() => handleElementClick(element)}
                         >{element}</span>
                     )}

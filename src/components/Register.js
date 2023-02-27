@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import BackButton from './common/BackButton';
 import { addNewUser } from '../httpRequests/auth';
 import Input from './common/Input';
-import { ProjectContext } from '../contexts/ProjectContext';
+import { useDispatch } from 'react-redux';
+import { setError, setErrorPopupOpen } from '../store/project/project.actions';
 
 const defaultRegistrationFormValues = {
     first_name: "",
@@ -16,14 +17,14 @@ const defaultRegistrationFormValues = {
 const Register = () => {
     const [formValues, setFormValues] = useState(defaultRegistrationFormValues);
     const {first_name, last_name, email, password, confirm_password} = formValues;
-    const {setError, setErrorPopupOpen} = useContext(ProjectContext);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         if (formValues.confirm_password !== formValues.password) {
-            setError("Passwords don't match");
-            setErrorPopupOpen(true);
+            dispatch(setError("Passwords don't match"));
+            dispatch(setErrorPopupOpen(true));
             return;
         }
         try {
@@ -32,8 +33,8 @@ const Register = () => {
             navigate('/login');
         } catch ({response}) {
             if (response.data.error && response.status === 400) {
-                setError(response.data.error);
-                setErrorPopupOpen(true);
+                dispatch(setError(response.data.error));
+                dispatch(setErrorPopupOpen(true));
             }
         }
     }

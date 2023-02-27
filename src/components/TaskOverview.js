@@ -1,15 +1,15 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import { BsClock } from "react-icons/bs";
 import { ImAttachment } from "react-icons/im";
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ProjectContext } from '../contexts/ProjectContext';
+import { selectCurrentProject } from '../store/project/project.selector';
 import LabelsContainer from "./common/LabelsContainer";
 
 const TaskOverview = ({task}) => {
     const {title, description, due_date, files, _id, priority, current_stage} = task;
-    const {currentProject} = useContext(ProjectContext);
+    const currentProject = useSelector(selectCurrentProject);
     const navigate = useNavigate();
-
 
     // Open task
     const handleOpenTask = (task_id) => {

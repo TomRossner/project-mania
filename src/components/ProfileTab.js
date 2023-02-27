@@ -1,14 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ProjectContext } from '../contexts/ProjectContext';
-import { UserContext } from '../contexts/UserContext';
+
+import { selectCurrentUser } from '../store/user/user.selector';
+import { setProfileTabOpen } from '../store/project/project.actions';
+import { selectProject } from '../store/project/project.selector';
 
 const ProfileTab = () => {
-    const {setProfileTabOpen, profileTabOpen} = useContext(ProjectContext);
-    const {user} = useContext(UserContext);
+    const user = useSelector(selectCurrentUser);
+    const {profileTabOpen} = useSelector(selectProject);
+    const dispatch = useDispatch();
 
     const handleToggleProfileTab = () => {
-        return setProfileTabOpen(!profileTabOpen);
+        return dispatch(setProfileTabOpen(!profileTabOpen));
     }
     
   return (

@@ -4,6 +4,10 @@ import { addProject, getMembers, getProjects, updateProject } from '../httpReque
 import { generateId } from '../utils/IdGenerator';
 import { UserContext } from './UserContext';
 import {priorities} from "../utils/labels";
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentUser } from '../store/user/user.selector';
+import { selectCurrentProject } from '../store/project/project.selector';
+import { setCurrentProject } from '../store/project/project.actions';
 
 export const ProjectContext = createContext({
     selectedElement: "",
@@ -46,7 +50,6 @@ const ProjectProvider = ({children}) => {
     const [selectedElement, setSelectedElement] = useState("");
     const [boards, setBoards] = useState([]);
     const [projectMembers, setProjectMembers] = useState([]);
-    const [currentProject, setCurrentProject] = useState(boards[boards.length - 1]);
     const [notificationTabOpen, setNotificationTabOpen] = useState(false);
     const [profileTabOpen, setProfileTabOpen] = useState(false);
     const [createPopupOpen, setCreatePopupOpen] = useState(false);
@@ -57,7 +60,9 @@ const ProjectProvider = ({children}) => {
     const [error, setError] = useState("");
     const [taskPriority, setTaskPriority] = useState(priorities[0]);
 
-    const {user} = useContext(UserContext);
+    const user = useSelector(selectCurrentUser);
+    const currentProject = useSelector(selectCurrentProject);
+    const dispatch = useDispatch();
 
 
     // Add new board
@@ -87,7 +92,7 @@ const ProjectProvider = ({children}) => {
         setBoards([...boards.filter(board => board._id !== projectToAddStage._id),
             {...projectToAddStage, stages: [...projectToAddStage.stages, newStage]}]);
         if (projectToAddStage._id === currentProject._id) {
-            setCurrentProject({...currentProject, stages: [...currentProject.stages, newStage]});
+            dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages, newStage]}));
         }
     }
 
@@ -189,13 +194,13 @@ const ProjectProvider = ({children}) => {
 
     // If user in not logged in, set currentProject to null.
     // Else get user's projects and set currentProject to first project returned(TODO: set currentProject to last project worked on).
-    useEffect(() => {
-        if (!user) setCurrentProject(null);
-        else if (user && !currentProject) {
-            const projects = getUserProjects(user._id);
-            setCurrentProject(projects[0]);
-        }
-    }, [user, currentProject])
+    // useEffect(() => {
+    //     if (!user) setCurrentProject(null);
+    //     else if (user && !currentProject) {
+    //         const projects = getUserProjects(user._id);
+    //         setCurrentProject(projects[0]);
+    //     }
+    // }, [user, currentProject])
     
     const values = {
         selectedElement, setSelectedElement,
