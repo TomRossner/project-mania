@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import BoardForm from './forms/BoardForm';
 import StageForm from './forms/StageForm';
 import TaskForm from './forms/TaskForm';
@@ -29,6 +29,11 @@ const Create = () => {
     //       return;
     //     }
     //   }, [])
+
+    // Reset element every time popup is closed 
+    useEffect(() => {
+        if (!createPopupOpen) dispatch(setElement(""));
+    }, [createPopupOpen])
 
   return (
     <>

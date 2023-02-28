@@ -17,9 +17,8 @@ import Logout from "./components/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/user/user.actions";
 import { getUser } from "./httpRequests/auth";
-import { getMembers } from "./httpRequests/projectsRequests";
-import { selectProject } from "./store/project/project.selector";
-import { setAvailableMembers } from "./store/project/project.actions";
+import { selectCurrentProject, selectProject } from "./store/project/project.selector";
+import { updateProject } from "./httpRequests/projectsRequests";
 
 // Styles
 import "./styles/main-styles.scss";
@@ -48,19 +47,25 @@ import "./styles/labels-container-styles.scss";
 const App = () => {
   const dispatch = useDispatch();
   const {notificationTabOpen, profileTabOpen} = useSelector(selectProject);
+  const currentProject = useSelector(selectCurrentProject);
 
   const loadUser = () => dispatch(setUser(getUser()));
 
-  const fetchAvailableMembers = async () => {
-    return async (dispatch) => {
-      const {data: users} = await getMembers();
-      dispatch(setAvailableMembers(users));
+  const update = async (project) => {
+    try {
+        await updateProject(project);
+    } catch (error) {
+        console.log(error);
     }
   }
 
   useEffect(() => {
+    if (!currentProject) return;
+    update(currentProject);
+  }, [currentProject])
+
+  useEffect(() => {
     loadUser();
-    fetchAvailableMembers();
   }, [])
 
   return (

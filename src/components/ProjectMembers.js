@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsCircleFill } from "react-icons/bs";
 import { RxPlus } from "react-icons/rx";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentUser } from '../store/user/user.selector';
 import { selectProjectMembers, selectAvailableMembers, selectCurrentProject } from '../store/project/project.selector';
 import { setCurrentProject } from '../store/project/project.actions';
+import { getMembers } from '../httpRequests/projectsRequests';
+import { setAvailableMembers } from '../store/project/project.actions';
 
 const ProjectMembers = () => {
     const NUMBER_OF_MEMBERS_TO_DISPLAY = 4;
@@ -27,6 +29,18 @@ const ProjectMembers = () => {
 
         else dispatch(setCurrentProject({...currentProject, members: [...currentProject.members, member]}));
     }
+
+    const fetchAvailableMembers = () => {
+        return async (dispatch) => {
+          const {data: users} = await getMembers();
+          console.log(users)
+          dispatch(setAvailableMembers(users));
+        }
+      }
+
+    useEffect(() => {
+        dispatch(fetchAvailableMembers());
+    }, [])
 
   return (
     <>
@@ -65,7 +79,7 @@ const ProjectMembers = () => {
             <span className='icon-span add' onClick={toggleMembersPopUpTab}><RxPlus className='icon'/>
             {membersPopUpTabOpen
                 ?   <div className='options-menu open'>
-                        {availableMembers?.map((member, index) => {
+                        {availableMembers.map((member, index) => {
                             if (member._id === user._id) return '';
                             if (projectMembers.find(project_member => project_member._id === member._id)) {
                                 return (

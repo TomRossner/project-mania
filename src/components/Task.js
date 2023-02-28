@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { deleteTask, getTask } from '../httpRequests/projectsRequests';
+import { deleteTask, getTask, updateProject } from '../httpRequests/projectsRequests';
 import Chat from "../components/Chat";
 import BackButton from "../components/common/BackButton";
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +16,7 @@ const Task = () => {
 
     const handleMarkAsDone = () => {
       dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-        if (stage.stage_name === activeTask.current_stage) {
+        if (stage._id === activeTask.current_stage.id) {
           return {...stage, stage_tasks: [...stage.stage_tasks.map(task => {
             if (task._id === activeTask._id) {
               return {...task, isDone: true};
@@ -29,15 +29,23 @@ const Task = () => {
 
     const updateTasksDone = () => {
       dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-        if (stage.stage_name === activeTask.current_stage) {
+        if (stage._id === activeTask.current_stage.id) {
           return {...stage, tasks_done: stage.stage_tasks.filter(task => task.isDone === true).length};
         } else return stage;
       })]}))
     }
 
     const handleDeleteTask = async () => {
+      dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
+        if (stage._id === activeTask.current_stage.id) {
+          return {...stage, stage_tasks: [...stage.stage_tasks.filter(task => task._id !== activeTask._id)]}
+        } else return stage;
+      })]}))
       await deleteTask({id, stage_id, task_id});
       return navigate(-1);
+      // Need to refresh currentProject after deletion.
+      // setActiveTask to null?
+      // setCurrentProject and filter tasks?
     }
 
     useEffect(() => {

@@ -8,7 +8,7 @@ import { priorities } from '../../utils/labels';
 import PriorityLabel from '../common/PriorityLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentProject, selectProject } from '../../store/project/project.selector';
-import { setStage,setCreatePopupOpen, setError, setTaskPriority, setErrorPopupOpen, setCurrentProject } from '../../store/project/project.actions';
+import { setStage, setCreatePopupOpen, setError, setTaskPriority, setErrorPopupOpen, setCurrentProject } from '../../store/project/project.actions';
 import { generateId } from '../../utils/IdGenerator';
 
 const TaskForm = () => {
@@ -66,10 +66,10 @@ const TaskForm = () => {
     }
 
     const handleInputChange = (e) => {
-      return dispatch(setInputValues({...inputValues, [e.target.name]: e.target.value}));
+      return setInputValues({...inputValues, [e.target.name]: e.target.value});
     }
 
-    const handleSetPriority = (priority) => {
+    const handleSetPriority = (priority=null) => {
       return dispatch(setTaskPriority(priority));
     }
 
@@ -100,15 +100,18 @@ const TaskForm = () => {
               <div className='radio-buttons'>
               {currentProject.stages.map((stage) =>
                 <div key={stage._id} className='input-container' onClick={() => handleSelectStage(stage)}>
-                  <input type="radio" name='stage' id={stage._id} value={stage.stage_name}/>
-                  <label className={stage.stage_name === selectedStage?.stage_name ? "selected" : null} htmlFor={stage.stage_name}>{stage.stage_name}</label>
+                  <input type="radio" name='stage' id={stage._id} value={stage}/>
+                  <label className={stage._id === selectedStage?._id ? "selected" : null} htmlFor={stage.stage_name}>{stage.stage_name}</label>
                 </div>
               )}
               </div>
               <p>Priority:</p>
               <div className='radio-buttons'>
-                {priorities.map(priority =>
-                  <PriorityLabel key={priority.id} priority={priority} fn={() => handleSetPriority(priority)}/>)}
+                {priorities.map(priority => 
+                  <div className={priority.name === taskPriority.name ? "label-container selected": "label-container"} onClick={() => handleSetPriority(priority)}>
+                    <PriorityLabel key={priority.id} priority={priority}/>
+                  </div>
+                  )}
               </div>
           </div>
             <Input

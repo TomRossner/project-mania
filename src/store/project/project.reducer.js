@@ -10,7 +10,7 @@ const INITIAL_STATE = {
     availableMembers: [],
     createPopupOpen: false,
     stage: null,
-    projectMenuOpen: false,
+    projectMenuTabOpen: false,
     error: "",
     errorPopupOpen: false,
     taskPriority: ""
@@ -46,6 +46,8 @@ export const projectReducer = (state = INITIAL_STATE, action) => {
             return {...state, projectMenuTabOpen: payload};
         case PROJECT_ACTION_TYPES.SET_PROFILE_TAB:
             return {...state, profileTabOpen: payload};
+        case PROJECT_ACTION_TYPES.SET_STAGE:
+            return {...state, stage: payload};
         default:
             return state;
     }

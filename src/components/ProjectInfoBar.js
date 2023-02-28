@@ -10,11 +10,11 @@ import { setProjectMenuOpen, setCreatePopupOpen, setElement } from '../store/pro
 
 const ProjectInfoBar = () => {
     const dispatch = useDispatch();
-    const {projectMenuOpen} = useSelector(selectProject);
+    const {projectMenuTabOpen} = useSelector(selectProject);
     const currentProject = useSelector(selectCurrentProject);
     
     const handleMenuClick = () => {
-        dispatch(setProjectMenuOpen(!projectMenuOpen));
+        dispatch(setProjectMenuOpen(!projectMenuTabOpen));
     }
 
     const handleMenuOption = (opt) => {
@@ -44,7 +44,7 @@ const ProjectInfoBar = () => {
         <IconContainer icon={<BsCircleFill className='icon dot'/>}/>
         <ProjectMembers/>
         <IconContainer icon={<CgMenuGridO className='icon'/>} onClick={handleMenuClick}/>
-        <div className={projectMenuOpen ? "options-menu open" : "options-menu"}>
+        <div className={projectMenuTabOpen ? "options-menu open" : "options-menu"}>
             {projectMenuOptions.map(opt => <p key={opt} onClick={() => handleMenuOption(opt)}>{opt}</p>)}
         </div>
     </div>

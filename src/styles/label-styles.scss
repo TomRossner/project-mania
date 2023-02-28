@@ -1,5 +1,19 @@
 @import "./main-styles.scss";
 
+.label-container{
+    padding: 1rem 0.5rem;
+    border-radius: 5px;
+    transition: background-color 0.15s;
+
+    &.selected{
+        background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    &:hover{
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
 .label{
     background-color: rgb(22, 22, 22);
     padding: 0.2em 1em;
@@ -15,7 +29,7 @@
         border: 2px solid $red;
     }
 
-    &:hover{
-        background-color: rgb(58, 58, 58);
-    }
+    // &:hover{
+    //     background-color: rgb(58, 58, 58);
+    // }
 }
