@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { deleteTask, getTask, updateProject } from '../httpRequests/projectsRequests';
+import { deleteTask, getTask } from '../httpRequests/projectsRequests';
 import Chat from "../components/Chat";
 import BackButton from "../components/common/BackButton";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentProject } from '../store/project/project.selector';
 import { setCurrentProject } from '../store/project/project.actions';
+import {IoMdDoneAll} from "react-icons/io";
+import IconContainer from './common/IconContainer';
+import ThreeDotsMenu from './common/ThreeDotsMenu';
+import { task_options } from '../utils/taskMenuOptions';
+import EditElement from './EditElement';
+import { defaultTaskProperties } from '../utils/defaultProperties';
+import {MdRemoveDone} from "react-icons/md";
 
 const Task = () => {
     const {id, stage_id, task_id} = useParams();
@@ -13,11 +20,15 @@ const Task = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const currentProject = useSelector(selectCurrentProject);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [editMenuOpen, setEditMenuOpen] = useState(false);
+    const [isDone, setIsDone] = useState(false);
 
     const handleMarkAsDone = () => {
+      setIsDone(true);
       dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
         if (stage._id === activeTask.current_stage.id) {
-          return {...stage, stage_tasks: [...stage.stage_tasks.map(task => {
+          return {...stage, tasks_done: stage.stage_tasks.filter(task => task.isDone === true).length + 1 , stage_tasks: [...stage.stage_tasks.map(task => {
             if (task._id === activeTask._id) {
               return {...task, isDone: true};
             } else return task;
@@ -27,25 +38,50 @@ const Task = () => {
       
     }
 
-    const updateTasksDone = () => {
+    const handleMarkAsNotDone = () => {
+      setIsDone(false);
       dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
         if (stage._id === activeTask.current_stage.id) {
-          return {...stage, tasks_done: stage.stage_tasks.filter(task => task.isDone === true).length};
+          return {...stage, tasks_done: stage.stage_tasks.filter(task => task.isDone === true).length - 1 , stage_tasks: [...stage.stage_tasks.map(task => {
+            if (task._id === activeTask._id) {
+              return {...task, isDone: false};
+            } else return task;
+          })]};
         } else return stage;
       })]}))
+      
     }
 
     const handleDeleteTask = async () => {
       dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
         if (stage._id === activeTask.current_stage.id) {
-          return {...stage, stage_tasks: [...stage.stage_tasks.filter(task => task._id !== activeTask._id)]}
+          return {...stage, tasks_done: stage.tasks_done - 1, stage_tasks: [...stage.stage_tasks.filter(task => task._id !== activeTask._id)]}
         } else return stage;
       })]}))
       await deleteTask({id, stage_id, task_id});
-      return navigate(-1);
-      // Need to refresh currentProject after deletion.
-      // setActiveTask to null?
-      // setCurrentProject and filter tasks?
+      setActiveTask(null);
+      navigate(-1);
+    }
+
+    const handleEditTask = () => {
+      setMenuOpen(false);
+      setEditMenuOpen(true);
+    }
+
+    const handleTaskMenu = (e) => {
+      setMenuOpen(!menuOpen);
+    }
+
+    const handleOption = (opt) => {
+      setMenuOpen(false);
+      switch(opt) {
+        case "Edit":
+          return handleEditTask();
+        case "Delete":
+          return handleDeleteTask();
+        default:
+          return;
+      }
     }
 
     useEffect(() => {
@@ -57,15 +93,15 @@ const Task = () => {
       loadTask();
     }, [])
 
-
-    // Update tasks_done every time activeTask changes 
     useEffect(() => {
       if (!activeTask) return;
-      updateTasksDone();
+      setIsDone(activeTask.isDone);
     }, [activeTask])
+
 
   return (
     <>
+      {editMenuOpen ? <EditElement element={activeTask} elementDefaultValues={defaultTaskProperties} open={editMenuOpen}/> : null}
       <div className='back-button-container'><BackButton/></div>
       {activeTask ?
       (
@@ -73,8 +109,18 @@ const Task = () => {
           <div className="task-top-bar">
             <h1 className='task-title'>{activeTask.title}</h1>
             <div className="buttons-container">
-              <button className="btn" onClick={handleMarkAsDone}>Mark as Done</button>
-              <button className="btn" onClick={handleDeleteTask}>Delete task</button>
+              {isDone &&
+              <button className="btn blue" title='Mark as Not Done' onClick={handleMarkAsNotDone}>
+                <IconContainer icon={<MdRemoveDone className="icon"/>}/>
+              </button>}
+              {!isDone &&
+              <button className="btn green" title='Mark as Done' onClick={handleMarkAsDone}>
+                <IconContainer icon={<IoMdDoneAll className="icon"/>}/>
+              </button>}
+              <ThreeDotsMenu fn={handleTaskMenu}/>
+              <div className={menuOpen ? "options-menu open" : "options-menu"}>
+                  {task_options.map(opt => <p key={opt} onClick={() => handleOption(opt)}>{opt}</p>)}
+              </div>
             </div>
           </div>
           <p className='task-desc'>{activeTask.description}</p>

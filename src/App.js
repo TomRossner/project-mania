@@ -43,6 +43,7 @@ import "./styles/project-stages-styles.scss";
 import "./styles/spinner-styles.scss";
 import "./styles/label-styles.scss";
 import "./styles/labels-container-styles.scss";
+import "./styles/three-dots-menu-styles.scss";
 
 const App = () => {
   const dispatch = useDispatch();

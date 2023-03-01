@@ -7,6 +7,8 @@ import ProgressBar from './common/ProgressBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentProject, selectUserProjects } from '../store/project/project.selector';
 import { setCurrentProject, setStage, setCreatePopupOpen, setElement, setBoards } from '../store/project/project.actions';
+import ThreeDotsMenu from './common/ThreeDotsMenu';
+import OptionsMenu from './common/OptionsMenu';
 
 const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
@@ -107,11 +109,7 @@ const StageOverview = ({stage}) => {
 
   return (
     <div className='stage-container'>
-        {options_menu_open
-            ?   <div className="options-menu open">
-                    {stageOptions.map(opt => <p key={opt} onClick={() => handleOption(stage, opt)}>{opt}</p>)}
-                </div>
-            : <div className="options-menu"></div>}
+        <OptionsMenu options={stageOptions} boolean={options_menu_open} fn={handleOption} fn_arg={stage}/>
         <div className='input-container'>
             <input
                 type="text"
@@ -123,7 +121,7 @@ const StageOverview = ({stage}) => {
             />
             {edit_active ? <span className='icon-span' onClick={() => validate(inputValue, stage)}><FiCheck className='icon'/></span> : null}
         </div>
-        <span className='icon-span dots-menu' onClick={() => toggleStageOptions(stage)}><BsThreeDotsVertical className='icon'/></span>
+        <ThreeDotsMenu fn={() => toggleStageOptions(stage)}/>
         <hr className='line'/>
         <div className='stage-tasks'>
             {stage_tasks?.map((task, index) => task.current_stage.name === stage_name

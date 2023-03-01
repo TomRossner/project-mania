@@ -20,16 +20,6 @@ const Create = () => {
 
     const handleCreatePopup = () => dispatch(setCreatePopupOpen(false));
 
-    // useEffect(() => {
-    //     if (!user) {
-    //       navigate("/login");
-    //       setError("You must be logged in to create projects/stages/tasks.");
-    //       setErrorPopupOpen(true);
-    //       setCreatePopupOpen(false);
-    //       return;
-    //     }
-    //   }, [])
-
     // Reset element every time popup is closed 
     useEffect(() => {
         if (!createPopupOpen) dispatch(setElement(""));

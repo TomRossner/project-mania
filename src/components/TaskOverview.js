@@ -22,7 +22,7 @@ const TaskOverview = ({task}) => {
         <div className='listed-task-content'>
             <LabelsContainer priority={priority}/>
             <span className='listed-task-title'>{title}</span>
-            <p className='listed-task-description'>{description}</p>
+            {/* <p className='listed-task-description'>{description}</p> */}
         </div>
         <div className={task.isDone ? 'listed-task-infos blue-bg' : 'listed-task-infos'}>
             <span className='icon-span'><BsClock className='icon info'/>{new Date(due_date).toDateString()}</span>
