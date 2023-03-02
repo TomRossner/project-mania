@@ -1,0 +1,29 @@
+@import "./general.styles.scss";
+
+.search-bar-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    border: 1px solid $light_grey;
+    width: fit-content;
+
+    input{
+        border: none;
+        font-size: 1.2rem;
+        background-color: transparent;
+        padding: 0.2em 0.5em;
+        color: $blue;
+
+        &:focus{
+            outline: none;
+        }
+
+        &::placeholder{
+            color: $grey;
+            font-style: italic;
+            font-weight: 300;
+            opacity: 0.8;
+        }
+    }
+}

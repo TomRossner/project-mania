@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FiCheck } from 'react-icons/fi';
-import { BsThreeDotsVertical } from 'react-icons/bs';
+import { BsThreeDotsVertical, BsPlus } from 'react-icons/bs';
 import TaskOverview from './TaskOverview';
 import { stageOptions } from '../utils/stageOptionsMenu';
 import ProgressBar from './common/ProgressBar';
@@ -9,6 +9,7 @@ import { selectCurrentProject, selectUserProjects } from '../store/project/proje
 import { setCurrentProject, setStage, setCreatePopupOpen, setElement, setBoards } from '../store/project/project.actions';
 import ThreeDotsMenu from './common/ThreeDotsMenu';
 import OptionsMenu from './common/OptionsMenu';
+import IconContainer from './common/IconContainer';
 
 const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
@@ -109,20 +110,24 @@ const StageOverview = ({stage}) => {
 
   return (
     <div className='stage-container'>
-        <OptionsMenu options={stageOptions} boolean={options_menu_open} fn={handleOption} fn_arg={stage}/>
-        <div className='input-container'>
-            <input
-                type="text"
-                name='stage_name'
-                readOnly={!edit_active}
-                onChange={(e) => handleInputChange(e, stage)}
-                defaultValue={stage_name}
-                className={edit_active ? "stage-title-input active" : "stage-title-input"}
-            />
-            {edit_active ? <span className='icon-span' onClick={() => validate(inputValue, stage)}><FiCheck className='icon'/></span> : null}
+        <div className='stage-title-container'>
+            <OptionsMenu options={stageOptions} boolean={options_menu_open} fn={handleOption} fn_arg={stage}/>
+            <div className='input-container'>
+                <input
+                    type="text"
+                    name='stage_name'
+                    readOnly={!edit_active}
+                    onChange={(e) => handleInputChange(e, stage)}
+                    defaultValue={stage_name}
+                    className={edit_active ? "stage-title-input active" : "stage-title-input"}
+                />
+                {edit_active ? <span className='icon-span' onClick={() => validate(inputValue, stage)}><FiCheck className='icon'/></span> : null}
+            </div>
+            <div className='buttons-container'>
+                <IconContainer icon={<BsThreeDotsVertical className='icon dots-menu'/>} fn={() => toggleStageOptions(stage)}></IconContainer>
+                <IconContainer icon={<BsPlus className='icon plus'/>}/>
+            </div>
         </div>
-        <ThreeDotsMenu fn={() => toggleStageOptions(stage)}/>
-        <hr className='line'/>
         <div className='stage-tasks'>
             {stage_tasks?.map((task, index) => task.current_stage.name === stage_name
             ? <TaskOverview key={index} task={task}/>

@@ -1,0 +1,56 @@
+@import "./general.styles.scss";
+
+.current-board-stages-container{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+
+    .stage-container{
+        // border: 1px solid red;
+        .stage-tasks{
+            padding: 0.5rem;
+        }
+
+        .stage-title-container{
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0 3px 20px $light_grey;
+            border-radius: 10px;
+            padding-inline: 0.5rem;
+
+            .buttons-container{
+                position: relative;
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+                justify-content: space-between;
+
+                .icon.plus{
+                    scale: 1.4;
+                }
+            }
+
+            .input-container{
+                flex: 1;
+
+                input{
+                    background-color: transparent;
+                    border: none;
+                    font-size: 1.2rem;
+                    padding: 0.4rem;
+                    font-weight: 600;
+                }
+            }
+
+            .icon-span{
+                // background-color: white;
+
+                .icon.dots-menu{
+                    transform: rotateZ(90deg);
+                }
+            }
+        }
+    }
+}

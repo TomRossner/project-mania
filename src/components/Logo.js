@@ -9,6 +9,7 @@ const Logo = () => {
   return (
     <div className='logo-container' onClick={handleLogoClick}>
         <span className='icon-span'><SiGoogletagmanager className='icon logo'/></span>
+        <p>ProjectMania</p>
     </div>
   )
 }

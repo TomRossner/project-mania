@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+// Variables
+
+$light: rgb(245, 245, 245);
+$dark: rgb(10, 15, 22);
+$grey: rgb(170, 170, 170);
+$light_grey: #dee2e6;
+$light_grey2: #EEF2F7;
+$light_bg: #e9effa;
+$light_green: #b9ffb7;
+$green: #2dc653;
+$light_red: #ff686b;
+$red: #c1121f;
+$light_orange: #ffbf69;
+$orange: #ff9f1c;
+$blue: #4361ee;
+$light_blue: #a2d2ff;
+$blue_hover: #657ce4;
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Lato, sans-serif;
+}
+
+*.dark{
+    color: $light;
+}
+
+body{
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+@keyframes fadeIn {
+    0%{
+        scale: 0.5;
+        opacity: 0;
+    }
+    100%{
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+.main{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+
+    &.dark{
+        background-color: $dark;
+    }
+
+    .sections-container{
+        display: flex;
+        width: 100%;
+        height: 95vh;
+    }
+
+    .main-content{
+        flex: 1;
+        background-color: $light_grey2;
+        border-radius: 20px;
+        padding: 0.5rem 1.5rem;
+    }
+}
+
+.flex1{
+    flex: 1;
+}
+
+.icon-span{
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+
+    .icon{
+        color: $grey;
+        transition: transform 0.2s;
+
+        &.small{
+            scale: 1;
+        }
+
+        &.reversed{
+            transform: rotateZ(90deg);
+        }
+    }
+}
+
+.btn{
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0.5em 0.6em;
+    gap: 0.5rem;
+    font-size: 1rem;
+    transition: background-color 0.15s, scale 0.1s;
+
+    &.blue{
+        color: $light;
+        background-color: $blue;
+
+        &:hover{
+            background-color: $blue_hover;
+        }
+
+        .icon-span{
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+
+            .icon{
+                color: $light;
+                scale: 1.4;
+            }
+        }
+    }
+    &.white{
+        color: $blue;
+        background-color: white;
+        border: 1px solid $light_grey;
+
+        .icon{
+            color: $blue;
+        }
+
+        &:hover{
+            background-color: $blue_hover;
+
+            .icon{
+                color: $light;
+            }
+        }
+    }
+
+    &:active{
+        scale: 0.95;
+    }   
+}
+
+.options-menu{
+    border-radius: 10px;
+    background-color: $light;
+    box-shadow: 0 5px 20px $light_grey;
+    padding: 0.5rem 0.3rem;
+    position: absolute;
+    right: 2.2rem;
+    top: 1rem;
+    opacity: 1;
+    display: none;
+    user-select: none;
+
+    p{
+        padding: 0.2rem 0.5rem;
+        border-radius: 5px;
+        cursor: default;
+
+        &:hover{
+            background-color: $light_grey;
+        }
+    }
+
+    &.open{
+        display: block;
+        animation: fadeIn forwards 0.2s;
+    }
+}
+
+hr.line{
+    border: 1px solid $light_grey;
+    width: 95%;
+    margin: 0 auto 2rem auto;
+}

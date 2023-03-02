@@ -33,7 +33,6 @@ const ProjectMembers = () => {
     const fetchAvailableMembers = () => {
         return async (dispatch) => {
           const {data: users} = await getMembers();
-          console.log(users)
           dispatch(setAvailableMembers(users));
         }
       }
@@ -45,7 +44,7 @@ const ProjectMembers = () => {
   return (
     <>
     <div className='current-board-members-container'>
-        <span className='current-board-members'>Members:
+        <h3 className='current-board-members'>TEAM
         {projectMembers.length > NUMBER_OF_MEMBERS_TO_DISPLAY
         ?
         <>
@@ -97,7 +96,7 @@ const ProjectMembers = () => {
                     </div>
                 : null}
             </span>
-        </span>
+        </h3>
     </div>
     </>
   )

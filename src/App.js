@@ -16,34 +16,47 @@ import ErrorPopup from "./components/ErrorPopup";
 import Logout from "./components/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/user/user.actions";
-import { getUser } from "./httpRequests/auth";
+import { getUser, getUserInfo } from "./httpRequests/auth";
 import { selectCurrentProject, selectProject } from "./store/project/project.selector";
 import { updateProject } from "./httpRequests/projectsRequests";
+import SearchBar from "./components/common/SearchBar";
+import { selectCurrentUser } from "./store/user/user.selector";
+import {BsBell, BsPlus} from "react-icons/bs";
+import IconContainer from "./components/common/IconContainer";
 
 // Styles
-import "./styles/main-styles.scss";
-import "./styles/nav-styles.scss";
-import "./styles/create-styles.scss";
-import "./styles/input-styles.scss";
-import "./styles/form-styles.scss";
-import "./styles/project-overview-styles.scss";
-import "./styles/task-overview-styles.scss";
-import "./styles/notification-tab-styles.scss";
-import "./styles/projects-styles.scss";
-import "./styles/profile-tab-styles.scss";
-import "./styles/back-button-styles.scss";
-import "./styles/progress-bar-styles.scss";
-import "./styles/project-info-bar-styles.scss";
-import "./styles/project-members-styles.scss";
-import "./styles/error-popup-styles.scss";
-import "./styles/task-styles.scss";
-import "./styles/chat-styles.scss";
-import "./styles/chat-message-styles.scss";
-import "./styles/project-stages-styles.scss";
-import "./styles/spinner-styles.scss";
-import "./styles/label-styles.scss";
-import "./styles/labels-container-styles.scss";
-import "./styles/three-dots-menu-styles.scss";
+import "./styling/general.styles.scss";
+import "./styling/navbar.styles.scss";
+import "./styling/search-bar.styles.scss";
+import "./styling/top-nav.styles.scss";
+import "./styling/project-info-bar.styles.scss";
+import "./styling/project-members.styles.scss";
+import "./styling/project-stages.styles.scss";
+
+// Styles
+// import "./styles/main-styles.scss";
+// import "./styles/nav-styles.scss";
+// import "./styles/create-styles.scss";
+// import "./styles/input-styles.scss";
+// import "./styles/form-styles.scss";
+// import "./styles/project-overview-styles.scss";
+// import "./styles/task-overview-styles.scss";
+// import "./styles/notification-tab-styles.scss";
+// import "./styles/projects-styles.scss";
+// import "./styles/profile-tab-styles.scss";
+// import "./styles/back-button-styles.scss";
+// import "./styles/progress-bar-styles.scss";
+// import "./styles/project-info-bar-styles.scss";
+// import "./styles/project-members-styles.scss";
+// import "./styles/error-popup-styles.scss";
+// import "./styles/task-styles.scss";
+// import "./styles/chat-styles.scss";
+// import "./styles/chat-message-styles.scss";
+// import "./styles/project-stages-styles.scss";
+// import "./styles/spinner-styles.scss";
+// import "./styles/label-styles.scss";
+// import "./styles/labels-container-styles.scss";
+// import "./styles/three-dots-menu-styles.scss";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -71,24 +84,32 @@ const App = () => {
 
   return (
     <div className='main'>
-      <NavBar/>
-      <Create/>
-      <ErrorPopup/>
-      <div className="main-content">
-          {notificationTabOpen ? <NotificationTab/> : null}
-          {profileTabOpen ? <ProfileTab/> : null}
-        <Routes>
-          <Route path="/" element={<ProjectManagement/>}/>
-          <Route path="/projects" element={<Projects/>}/>
-          <Route path="/projects/:id" element={<ProjectOverview/>}/>
-          <Route path="/projects/:id/notifications" element={<Notifications/>}/>
-          <Route path="/projects/:id/:stage_id/:task_id" element={<Task/>}/>
-          <Route path="/profile" element={<Profile/>}/>
-          <Route path="/logout" element={<Logout/>}/>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/register" element={<Register/>}/>
-        </Routes>
-        <div className="flex1"></div>
+      <div className="sections-container">
+        <NavBar/>
+        <Create/>
+        <ErrorPopup/>
+        <div className="main-content">
+          <div className="top-nav">
+            <SearchBar/>
+            <div className="flex1"></div>
+            <button className="btn blue"><IconContainer icon={<BsPlus className='icon'/>}/>Create New Board</button>
+            <button className="btn white"><IconContainer icon={<BsBell className='icon'/>}/></button>
+          </div>
+            {/* {notificationTabOpen ? <NotificationTab/> : null}
+            {profileTabOpen ? <ProfileTab/> : null} */}
+          <Routes>
+            <Route path="/" element={<ProjectManagement/>}/>
+            <Route path="/projects" element={<Projects/>}/>
+            <Route path="/projects/:id" element={<ProjectOverview/>}/>
+            <Route path="/projects/:id/notifications" element={<Notifications/>}/>
+            <Route path="/projects/:id/:stage_id/:task_id" element={<Task/>}/>
+            <Route path="/profile" element={<Profile/>}/>
+            <Route path="/logout" element={<Logout/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/register" element={<Register/>}/>
+          </Routes>
+          <div className="flex1"></div>
+        </div>
       </div>
     </div>
   )

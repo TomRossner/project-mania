@@ -1,0 +1,52 @@
+@import "./general.styles.scss";
+
+.current-board-info-bar{
+    display: flex;
+    align-items: center;
+    position: relative;
+    gap: 2rem;
+    margin-bottom: 1rem;
+
+    .project-title-container{
+        display: flex;
+        flex-direction: column;
+
+        h3{
+            font-weight: 600;
+            color: $grey;
+            font-size: 1rem;
+        }
+        
+        .project-title{
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-inline: 0.5rem;
+    
+    
+            .icon{
+                scale: 1.5;
+                color: $blue;
+            }
+        }
+    }
+
+    .icon-span.menu{
+        border: 1px solid $light_grey;
+        border-radius: 5px;
+        transition: background-color 0.1s;
+
+        .icon{
+            color: $blue;
+            scale: 1.5;
+        }
+
+        &:hover{
+            background-color: $blue;
+
+            .icon{
+                color: $light;
+            }
+        }
+    }
+}
