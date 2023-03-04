@@ -17,12 +17,14 @@ import Logout from "./components/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/user/user.actions";
 import { getUser, getUserInfo } from "./httpRequests/auth";
-import { selectCurrentProject, selectProject } from "./store/project/project.selector";
+import { selectCurrentProject, selectProject, selectUserProjects } from "./store/project/project.selector";
 import { updateProject } from "./httpRequests/projectsRequests";
 import SearchBar from "./components/common/SearchBar";
 import { selectCurrentUser } from "./store/user/user.selector";
 import {BsBell, BsPlus} from "react-icons/bs";
 import IconContainer from "./components/common/IconContainer";
+import { getProjects } from "./httpRequests/projectsRequests";
+import { setBoards } from "./store/project/project.actions";
 
 // Styles
 import "./styling/general.styles.scss";
@@ -32,6 +34,7 @@ import "./styling/top-nav.styles.scss";
 import "./styling/project-info-bar.styles.scss";
 import "./styling/project-members.styles.scss";
 import "./styling/project-stages.styles.scss";
+import "./styling/create-form.styles.scss";
 
 // Styles
 // import "./styles/main-styles.scss";
@@ -62,6 +65,8 @@ const App = () => {
   const dispatch = useDispatch();
   const {notificationTabOpen, profileTabOpen} = useSelector(selectProject);
   const currentProject = useSelector(selectCurrentProject);
+  const currentUser = useSelector(selectCurrentUser);
+  const boards = useSelector(selectUserProjects);
 
   const loadUser = () => dispatch(setUser(getUser()));
 
@@ -82,11 +87,27 @@ const App = () => {
     loadUser();
   }, [])
 
+  useEffect(() => {
+    if (currentUser && !boards.length){
+      const loadBoards = () => {
+        return async (dispatch) => {
+          const {data} = await getProjects(currentUser._id);
+          dispatch(setBoards(data));
+        }
+      }
+      dispatch(loadBoards());
+    }
+  }, [currentUser])
+
+  useEffect(() => {
+    if (!boards.length) return;
+    console.log(boards);
+  }, [boards])
+
   return (
     <div className='main'>
       <div className="sections-container">
         <NavBar/>
-        <Create/>
         <ErrorPopup/>
         <div className="main-content">
           <div className="top-nav">
@@ -95,6 +116,7 @@ const App = () => {
             <button className="btn blue"><IconContainer icon={<BsPlus className='icon'/>}/>Create New Board</button>
             <button className="btn white"><IconContainer icon={<BsBell className='icon'/>}/></button>
           </div>
+          <Create/>
             {/* {notificationTabOpen ? <NotificationTab/> : null}
             {profileTabOpen ? <ProfileTab/> : null} */}
           <Routes>

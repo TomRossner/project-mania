@@ -14,21 +14,36 @@
         .stage-title-container{
             display: flex;
             align-items: center;
-            overflow: hidden;
             background-color: white;
             box-shadow: 0 3px 20px $light_grey;
             border-radius: 10px;
             padding-inline: 0.5rem;
+            position: relative;
 
             .buttons-container{
                 position: relative;
                 display: flex;
                 align-items: center;
-                overflow: hidden;
                 justify-content: space-between;
 
-                .icon.plus{
-                    scale: 1.4;
+                .icon-span.plus{
+                    padding: 0.3rem;
+                    border-radius: 5px;
+                    border: 1px solid $light_grey;
+                    transition: border 0.15s;
+
+                    .icon.plus{
+                        scale: 1.4;
+                        transition: color 0.15s;
+                    }
+
+                    &:hover{
+                        border: 1px solid $blue;
+
+                        .icon.plus{
+                            color: $blue;
+                        }
+                    }
                 }
             }
 
@@ -45,11 +60,21 @@
             }
 
             .icon-span{
-                // background-color: white;
 
                 .icon.dots-menu{
                     transform: rotateZ(90deg);
+                    transition: color 0.15s;
                 }
+
+                &:hover{
+                    .icon.dots-menu{
+                        color: $blue;
+                    }
+                }
+            }
+
+            .options-menu{
+                right: 4rem;
             }
         }
     }

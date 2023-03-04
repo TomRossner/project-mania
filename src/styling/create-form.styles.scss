@@ -1,0 +1,17 @@
+@import "./general.styles.scss";
+
+.create-popup-container{
+    border: 1px solid red;
+    width: 40%;
+    position: absolute;
+    background-color: $light;
+    z-index: 10;
+    display: none;
+
+    &.active{
+        display: flex;
+        animation: fadeIn forwards 0.2s;
+        align-items: center;
+
+    }
+}

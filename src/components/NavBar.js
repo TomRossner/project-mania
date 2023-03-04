@@ -5,7 +5,7 @@ import { IoIosNotifications } from "react-icons/io";
 import { BsCircleFill } from "react-icons/bs";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectProject, selectUserProjects } from '../store/project/project.selector';
-import { setCreatePopupOpen, setNotificationTabOpen, setProjectMenuOpen, setProfileTabOpen } from '../store/project/project.actions';
+import { setCreatePopupOpen, setNotificationTabOpen, setProjectMenuOpen, setProfileTabOpen, setBoards } from '../store/project/project.actions';
 import IconContainer from './common/IconContainer';
 import { selectCurrentUser } from '../store/user/user.selector';
 import { getUserInfo } from '../httpRequests/auth';
@@ -20,19 +20,8 @@ const NavBar = () => {
   const {profileTabOpen, notificationTabOpen, projectMenuOpen, createPopupOpen} = useSelector(selectProject);
   const currentUser = useSelector(selectCurrentUser);
   const boards = useSelector(selectUserProjects);
-  const [projects, setProjects] = useState([]);
   const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!currentUser) return;
-    const loadBoards = async () => {
-      const {data: boards} = await getProjects(currentUser._id);
-      setProjects(boards);
-    }
-    loadBoards();
-  }, [])
-  
   const [userName, setUserName] = useState("");
 
   const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
@@ -70,13 +59,16 @@ const NavBar = () => {
   }
 
   useEffect(() => {
-    if (!currentUser) return;
-    const getUser = async () => {
-      const {data: user} = await getUserInfo(currentUser._id); 
-      setUserName(`${user.first_name} ${user.last_name}`);
+    if (currentUser) {
+      const getUser = () => {
+        return async () => {
+          const {data: user} = await getUserInfo(currentUser._id); 
+          setUserName(`${user.first_name} ${user.last_name}`);
+        }
+      }
+      dispatch(getUser());
     }
-    getUser();
-  }, [])
+  }, [currentUser])
 
   return (
     <nav>
@@ -88,7 +80,7 @@ const NavBar = () => {
               <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
             </li>
             <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
-              {projects.map(project => <p onClick={() => handleClick(project)} key={project._id}>{project.title}</p>)}
+              {boards?.map(project => <p onClick={() => handleClick(project)} key={project._id}>{project.title}</p>)}
             </div>
             {/* <Link className='link' onClick={handleCreateClick}>Create</Link> */}
             <li><IconContainer icon={<BsChatLeftText className='icon small'/>}/><Link className='link'>Messages</Link></li>

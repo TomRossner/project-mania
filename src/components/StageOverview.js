@@ -19,6 +19,7 @@ const StageOverview = ({stage}) => {
     const boards = useSelector(selectUserProjects);
     
     const toggleStageOptions = (stageToUpdate) => {
+        console.log(stageToUpdate)
         if (!stageToUpdate) return;
 
         const updatedStage = {...stageToUpdate, options_menu_open: !stageToUpdate.options_menu_open}
@@ -124,8 +125,8 @@ const StageOverview = ({stage}) => {
                 {edit_active ? <span className='icon-span' onClick={() => validate(inputValue, stage)}><FiCheck className='icon'/></span> : null}
             </div>
             <div className='buttons-container'>
-                <IconContainer icon={<BsThreeDotsVertical className='icon dots-menu'/>} fn={() => toggleStageOptions(stage)}></IconContainer>
-                <IconContainer icon={<BsPlus className='icon plus'/>}/>
+                <IconContainer icon={<BsThreeDotsVertical className='icon dots-menu'/>} onClick={() => toggleStageOptions(stage)}/>
+                <span className='icon-span plus' onClick={handleAddTask}>{<BsPlus className='icon plus'/>}</span>
             </div>
         </div>
         <div className='stage-tasks'>

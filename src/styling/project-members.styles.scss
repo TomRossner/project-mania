@@ -1,9 +1,62 @@
 @import "./general.styles.scss";
 
 .current-board-members-container{
+    width: 30%;
+
     h3{
         color: $grey;
         font-weight: 600;
         font-size: 1rem;
+    }
+
+    .team-container{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding-inline: 0.3rem;
+    }
+
+    .icon-span{
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 0.1rem;
+
+        &.add{
+            background-color: white;
+            border-radius: 5px;
+            padding: 0.2rem 0.1rem;
+            transition: background-color 0.15s;
+            padding: 0.5rem;
+            
+            .icon{
+                font-size: 1.1rem;
+            }
+
+            &:hover{
+                background-color: $blue_hover;
+    
+                .icon{
+                    color: white;
+                }
+            }
+        }
+
+        .icon{
+            font-size: 2rem;
+            color: $blue;
+        }
+
+        .name-overlay{
+            position: absolute;
+            z-index: 1;
+            color: $light;
+
+            &.small{
+                font-size: 0.8rem;
+            }
+        }
     }
 }

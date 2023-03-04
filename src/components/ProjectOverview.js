@@ -14,7 +14,6 @@ const ProjectOverview = () => {
     const boards = useSelector(selectUserProjects);
 
     useEffect(() => {
-        console.log(currentProject);
         if (!currentProject) return;
         const updateBoards = () => dispatch(setBoards([...boards.map(board => {
             if (board._id === currentProject._id) {
