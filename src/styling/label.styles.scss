@@ -1,0 +1,82 @@
+@import "./general.styles.scss";
+
+.label-container{
+    padding: 0.2rem 0.5rem;
+    background-color: $light_grey;
+    border-radius: 7px;
+    font-weight: 600;
+    color: $grey;
+    font-size: 0.8rem;
+    max-width: fit-content;
+    text-transform: uppercase;
+    cursor: default;
+
+    &.green-bg{
+        background-color: $light_green;
+
+        &.border{
+            border: 1px solid $green;
+        }
+
+        .label-content{
+            color: $green;
+        }
+    }
+    &.orange-bg{
+        background-color: $light_orange;
+
+        &.border{
+            border: 1px solid $orange;
+        }
+
+        .label-content{
+            color: $orange;
+        }
+    }
+    &.red-bg{
+        background-color: $light_red;
+
+        &.border{
+            border: 1px solid $red;
+        }
+
+        .label-content{
+            color: $red;
+        }
+    }
+
+    .label{
+        &.green{
+            color: $green;
+        }
+        &.orange{
+            color: $orange;
+        }
+        &.red{
+            color: $red;
+        }
+    }
+
+    &.selected{
+        outline: 1px solid $grey;
+    }
+
+    &:hover{
+        outline: 1px solid $grey;
+    }
+
+    &.no-hover{
+        &:hover{
+            outline: none;
+        }
+    }
+
+    
+
+    .label-content{
+        text-transform: capitalize;
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: $dark;
+    }
+}

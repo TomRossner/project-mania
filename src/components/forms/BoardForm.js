@@ -9,6 +9,8 @@ import { addProject } from '../../httpRequests/projectsRequests';
 import { selectAvailableMembers, selectProject, selectProjectMembers, selectUserProjects } from '../../store/project/project.selector';
 import { setCreatePopupOpen, setProjectMembers, setBoards, setError, setErrorPopupOpen } from '../../store/project/project.actions';
 import { selectCurrentUser } from '../../store/user/user.selector';
+import CancelButton from '../common/CancelButton';
+import IconContainer from '../common/IconContainer';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
@@ -77,7 +79,10 @@ const BoardForm = () => {
   }
 
   useEffect(() => {
-    if (!readOnly) FormTitleRef.current.focus();
+    if (!readOnly) {
+      FormTitleRef.current.select();
+      FormTitleRef.current.focus();
+    }
   }, [readOnly]);
 
   useEffect(() => {
@@ -88,8 +93,8 @@ const BoardForm = () => {
     <form onSubmit={handleFormSubmit}>
       <div className='form-title-container'>
         <input className="form-title-input" type="text" name='title' readOnly={readOnly} ref={FormTitleRef} onChange={handleInputChange} value={title}></input>
-        {readOnly && <span className='icon-span' onClick={handleEditFormTitle}><RiEdit2Fill className='icon'/></span>}
-        {!readOnly && <span className='icon-span' onClick={validate}><FiCheck className='icon'/></span>}
+        {readOnly && <IconContainer onClick={handleEditFormTitle} icon={<RiEdit2Fill className='icon'/>}></IconContainer>}
+        {!readOnly && <IconContainer additionalClass="check" onClick={validate} icon={<FiCheck className='icon'/>}></IconContainer>}
       </div>
         <div className='form-inputs-container'>
 
@@ -123,7 +128,10 @@ const BoardForm = () => {
             </div>
 
         </div>
-        <button type='submit' className='btn form'>Create {element}</button>
+        <div className='buttons-container'>
+          <button type='submit' className='btn form'>Create {element}</button>
+          <CancelButton fn={closeCreatePopup}>Cancel</CancelButton>
+        </div>
     </form>
   )
 }

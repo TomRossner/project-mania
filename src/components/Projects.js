@@ -29,7 +29,7 @@ const Projects = () => {
       return;
     }
 
-    if (createPopupOpen) setCreatePopupOpen(false);
+    if (createPopupOpen) dispatch(setCreatePopupOpen(false));
 
     const fetchUserProjects = (id) => {
       return async (dispatch) => {

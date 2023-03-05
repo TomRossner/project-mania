@@ -1,0 +1,71 @@
+@import "./general.styles.scss";
+
+.right-nav-content{
+    height: 100%;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+
+    .project-content{
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        border-bottom: 2px solid $light_grey;
+        padding: 1rem 0;
+
+        .current-project-info{
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            gap: 0.2rem;
+    
+            h3{
+                font-size: 1.5rem;
+            }
+    
+            p{
+                font-size: 1rem;
+                color: $grey;
+                font-weight: 400;
+                width: 100%;
+            }
+        }
+    
+        .current-project-admins{
+            span{
+                color: $grey;
+                font-size: 0.8rem;
+                font-weight: 300;
+            }
+
+            .admins{
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+                
+                .admin{
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+
+                    .icon-span{
+                        padding: 0.5rem 0;
+                        .icon{
+                            font-size: 2rem;
+                        }
+                    }
+                    
+                    span{
+                        font-size: 1rem;
+                        font-weight: 700;
+                        color: black;
+                    }
+                }
+            }
+        }
+    }
+
+    .activity{
+        flex: 1;
+    }    
+}

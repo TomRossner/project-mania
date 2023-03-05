@@ -5,16 +5,18 @@ import {defaultStageProperties} from "../../utils/defaultProperties";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentProject, selectProject, selectUserProjects } from '../../store/project/project.selector';
 import { setCreatePopupOpen, setError, setCurrentProject, setBoards } from '../../store/project/project.actions';
+import IconContainer from '../common/IconContainer';
+import CancelButton from '../common/CancelButton';
 
 const StageForm = () => {
     const [readOnly, setReadOnly] = useState(true);
     const {element, createPopupOpen} = useSelector(selectProject);
     const [inputValues, setInputValues] = useState({...defaultStageProperties, type: element});
-    const {stage_name, description} = inputValues;
+    const {stage_name} = inputValues;
     const FormTitleRef = useRef(null);
     const boards = useSelector(selectUserProjects);
     const currentProject = useSelector(selectCurrentProject);
-    const [selectedProject, setSelectedProject] = useState(boards.length ? boards[0] : null);
+    const [selectedProject, setSelectedProject] = useState(boards.length ? currentProject : null);
     const dispatch = useDispatch();
 
     const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
@@ -33,11 +35,11 @@ const StageForm = () => {
 
     const handleFormSubmit = (e) => {
       e.preventDefault();
-      addStage(inputValues, selectedProject);
+      return addStage(inputValues, selectedProject);
     }
 
     const handleSelectProject = (project) => {
-      dispatch(setSelectedProject(project));
+      return setSelectedProject(project);
     }
 
     const handleEditFormTitle = () => {
@@ -49,15 +51,18 @@ const StageForm = () => {
     }
     
     useEffect(() => {
-      if (!readOnly) FormTitleRef.current.focus(); 
+      if (!readOnly) {
+        FormTitleRef.current.select();
+        FormTitleRef.current.focus();
+      }
     }, [readOnly]);
 
   return (
     <form onSubmit={handleFormSubmit}>
       <div className='form-title-container'>
-        <input className="form-title-input" type="text" name="stage_name" readOnly={readOnly} ref={FormTitleRef} onChange={handleInputChange} value={stage_name}></input>
-        {readOnly && <span className='icon-span' onClick={handleEditFormTitle}><RiEdit2Fill className='icon'/></span>}
-        {!readOnly && <span className='icon-span' onClick={handleEditFormTitle}><FiCheck className='icon'/></span>}
+        <input className="form-title-input" type="text" name="stage_name" readOnly={readOnly} ref={FormTitleRef} onChange={handleInputChange} value={stage_name} placeholder="Title"/>
+        {readOnly && <IconContainer onClick={handleEditFormTitle} icon={<RiEdit2Fill className='icon'/>}/>}
+        {!readOnly && <IconContainer additionalClass="check" onClick={handleEditFormTitle} icon={<FiCheck className='icon'/>}/>}
       </div>
         <div className='form-inputs-container'>
 
@@ -73,13 +78,16 @@ const StageForm = () => {
             </div>
           </div>
 
-            <div className='textarea-container'>
+            {/* <div className='textarea-container'>
               <label htmlFor='description'>Description <span>(optional)</span></label>
               <textarea value={description} maxLength="500" id='description' name="description" onChange={handleInputChange}/>
-            </div>
+            </div> */}
 
         </div>
-        <button type='submit' className='btn form'>Create {element}</button>
+        <div className='buttons-container'>
+          <button type='submit' className='btn form'>Create {element}</button>
+          <CancelButton fn={closeCreatePopup}>Cancel</CancelButton>
+        </div>
     </form>
   )
 }

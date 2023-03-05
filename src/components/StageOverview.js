@@ -88,6 +88,7 @@ const StageOverview = ({stage}) => {
         dispatch(setStage(stageToAddTaskTo));
         dispatch(setCreatePopupOpen(true));
         dispatch(setElement("task"));
+        dispatch(setStage(stage));
     }
 
     const handleDeleteStage = (stageToDelete) => {
@@ -122,11 +123,11 @@ const StageOverview = ({stage}) => {
                     defaultValue={stage_name}
                     className={edit_active ? "stage-title-input active" : "stage-title-input"}
                 />
-                {edit_active ? <span className='icon-span' onClick={() => validate(inputValue, stage)}><FiCheck className='icon'/></span> : null}
+                {edit_active ? <span className='icon-span green' onClick={() => validate(inputValue, stage)}><FiCheck className='icon'/></span> : null}
             </div>
             <div className='buttons-container'>
                 <IconContainer icon={<BsThreeDotsVertical className='icon dots-menu'/>} onClick={() => toggleStageOptions(stage)}/>
-                <span className='icon-span plus' onClick={handleAddTask}>{<BsPlus className='icon plus'/>}</span>
+                <IconContainer additionalClass='plus' onClick={handleAddTask} icon={<BsPlus className='icon plus'/>}></IconContainer>
             </div>
         </div>
         <div className='stage-tasks'>

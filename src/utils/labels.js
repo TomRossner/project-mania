@@ -1,7 +1,7 @@
 export const priorities = [
     {
         name: "Low",
-        color_class: "yellow",
+        color_class: "green",
         id: "priority_low" 
     },
     {
@@ -31,5 +31,15 @@ export const labels = [
         name: "Bug",
         color_class: "brown",
         id: "label_bug"
+    },
+    {
+        name: "Time",
+        color_class: "light",
+        id: "label_time"
+    },
+    {
+        name: "Due Today",
+        color_class: "orange",
+        id: "label_due_today"
     },
 ]

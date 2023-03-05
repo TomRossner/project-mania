@@ -74,13 +74,15 @@ const NavBar = () => {
     <nav>
         <Logo/>
         <ul className='flex1'>
-            <li onClick={handleToggleProjectsDropdown}>
-              <IconContainer icon={<AiOutlineProject className='icon'/>}/>
-                <Link className='link flex1'>Projects</Link>
-              <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
-            </li>
-            <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
-              {boards?.map(project => <p onClick={() => handleClick(project)} key={project._id}>{project.title}</p>)}
+            <div className='li-expand'>
+              <li onClick={handleToggleProjectsDropdown}>
+                <IconContainer icon={<AiOutlineProject className='icon'/>}/>
+                  <Link className='link flex1'>Projects</Link>
+                <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
+              </li>
+              <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
+                {boards?.map(project => <p onClick={() => handleClick(project)} key={project._id}>{project.title}</p>)}
+              </div>
             </div>
             {/* <Link className='link' onClick={handleCreateClick}>Create</Link> */}
             <li><IconContainer icon={<BsChatLeftText className='icon small'/>}/><Link className='link'>Messages</Link></li>

@@ -1,0 +1,49 @@
+@import "./general.styles.scss";
+
+.input-container{
+    display: flex;
+    position: relative;
+    align-items: center;
+
+    input{
+        &:focus{
+            outline: none;
+        }
+    }
+
+    input[name=subtitle]{
+        background-color: transparent;
+        border: none;
+        border-bottom: 2px solid $blue;
+        width: 50%;
+
+        &:focus{
+            outline: none;
+        }
+    }
+
+    label{
+        span{
+            color: $grey;
+            font-weight: 400;
+        }
+    }
+
+    .icon-span{
+        position: absolute;
+        z-index: 10;
+        right: 0rem;
+        padding: 0.3rem;
+        border-radius: 5px;
+
+        &.green{
+            .icon{
+                color: $green;
+            }
+            &:hover{
+                background-color: $light_green;
+            }
+        }
+
+    }
+}

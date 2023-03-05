@@ -49,19 +49,19 @@ const ProjectMembers = () => {
         <div className='team-container'>
             {projectMembers.length > NUMBER_OF_MEMBERS_TO_DISPLAY
             ?
-            <>
-            {projectMembers.filter((_, index) => index < NUMBER_OF_MEMBERS_TO_DISPLAY)
-            .map(member =>
-                <span key={member._id} className='icon-span' onClick={() => handleAddMember(member)}>
-                    <BsCircleFill className='icon'/>
-                    <span className='name-overlay' title={`${member.first_name} ${member.last_name}`}>
-                        {member.first_name.substring(0, 1).toUpperCase()}{member.last_name.substring(0, 1).toUpperCase()}
-                    </span>
-                </span>)}
-            <span>+ {projectMembers.filter((_, index) => index > 3).length}</span>
-            </>
+            <div className='team'>
+                {projectMembers.filter((_, index) => index < NUMBER_OF_MEMBERS_TO_DISPLAY)
+                .map(member =>
+                    <span key={member._id} className='icon-span' onClick={() => handleAddMember(member)}>
+                        <BsCircleFill className='icon'/>
+                        <span className='name-overlay' title={`${member.first_name} ${member.last_name}`}>
+                            {member.first_name.substring(0, 1).toUpperCase()}{member.last_name.substring(0, 1).toUpperCase()}
+                        </span>
+                    </span>)}
+                <span>+ {projectMembers.filter((_, index) => index > 3).length}</span>
+            </div>
             :
-            <>
+            <div className='team'>
             {projectMembers.map(member => {
                 if (member._id === user._id) {
                     return (
@@ -78,7 +78,7 @@ const ProjectMembers = () => {
                     </span>
                 </span>)
             })}
-            </>
+            </div>
             }
         <span className='icon-span add' onClick={toggleMembersPopUpTab}><RxPlus className='icon'/>
         {membersPopUpTabOpen

@@ -38,12 +38,6 @@ export const defaultTaskProperties = {
     edit_active: false,
     files: [],
     description: "",
-    priority: "low"
+    priority: "low",
+    subtitle: ""
 }
-
-// module.exports = {
-//     defaultStages,
-//     defaultStageProperties,
-//     defaultTaskProperties,
-//     boardProperties
-// }

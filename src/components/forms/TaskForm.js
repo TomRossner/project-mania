@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentProject, selectProject } from '../../store/project/project.selector';
 import { setStage, setCreatePopupOpen, setError, setTaskPriority, setErrorPopupOpen, setCurrentProject } from '../../store/project/project.actions';
 import { generateId } from '../../utils/IdGenerator';
+import CancelButton from '../common/CancelButton';
+import LabelContainer from '../common/LabelContainer';
 
 const TaskForm = () => {
     const [readOnly, setReadOnly] = useState(true);
@@ -47,7 +49,7 @@ const TaskForm = () => {
   }
 
     const handleSelectStage = (stage) => {
-      dispatch(setStage(stage));
+      return dispatch(setStage(stage));
     }
 
     const handleFormSubmit = (e) => {
@@ -74,25 +76,18 @@ const TaskForm = () => {
     }
 
     useEffect(() => {
-      if (!readOnly) FormTitleRef.current.focus();
+      if (!readOnly) {
+        FormTitleRef.current.select();
+        FormTitleRef.current.focus();
+      }
     }, [readOnly]);
-
-    // useEffect(() => {
-    //   if (!user) {
-    //     navigate("/login");
-    //     setError("You must be logged in to create projects/stages/tasks.");
-    //     setErrorPopupOpen(true);
-    //     setCreatePopupOpen(false);
-    //     return;
-    //   }
-    // }, [])
     
   return (
     <form onSubmit={handleFormSubmit}>
       <div className='form-title-container'>
         <input className="form-title-input" type="text" name='title' readOnly={readOnly} ref={FormTitleRef} onChange={handleInputChange} value={title}></input>
         {readOnly && <IconContainer onClick={handleEditFormTitle} icon={<RiEdit2Fill className='icon'/>}></IconContainer>}
-        {!readOnly && <IconContainer onClick={handleEditFormTitle} icon={<FiCheck className='icon'/>}></IconContainer>}
+        {!readOnly && <IconContainer additionalClass='check' onClick={handleEditFormTitle} icon={<FiCheck className='icon'/>}></IconContainer>}
       </div>
         <div className='form-inputs-container'>
           <div className='radio-buttons-container'>
@@ -108,9 +103,12 @@ const TaskForm = () => {
               <p>Priority:</p>
               <div className='radio-buttons'>
                 {priorities.map(priority => 
-                  <div className={priority.name === taskPriority.name ? "label-container selected": "label-container"} onClick={() => handleSetPriority(priority)}>
-                    <PriorityLabel key={priority.id} priority={priority}/>
-                  </div>
+                  <LabelContainer
+                    key={priority.id}
+                    priority={priority}
+                    fn={() => handleSetPriority(priority)}
+                    additionalClass={`${priority.name === taskPriority.name ? "selected" : ""}`}
+                  />
                   )}
               </div>
           </div>
@@ -122,13 +120,25 @@ const TaskForm = () => {
               onChange={handleInputChange}
               text="Due date"
             />
+            <Input
+              type="text"
+              value={inputValues.subtitle}
+              id='subtitle'
+              name="subtitle"
+              onChange={handleInputChange}
+              text="Subtitle"
+              optional="(optional)"
+            />
             <div className='textarea-container'>
               <label htmlFor='description'>Description <span>(optional)</span></label>
               <textarea value={description} maxLength="500" id='description' name="description" onChange={handleInputChange}/>
             </div>
 
         </div>
-        <button type='submit' className='btn form'>Create {element}</button>
+        <div className='buttons-container'>
+          <button type='submit' className='btn form'>Create {element}</button>
+          <CancelButton fn={closeCreatePopup}>Cancel</CancelButton>
+        </div>
     </form>
   )
 }

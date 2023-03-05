@@ -4,11 +4,12 @@
     display: flex;
     justify-content: space-around;
     flex-wrap: nowrap;
+    gap: 1rem;
 
     .stage-container{
-        // border: 1px solid red;
+
         .stage-tasks{
-            padding: 0.5rem;
+            padding: 0.5rem 0;
         }
 
         .stage-title-container{

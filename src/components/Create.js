@@ -29,7 +29,7 @@ const Create = () => {
     <>
     {createPopupOpen ?
         (<div className='create-popup-container active'>
-            <IconContainer icon={<RxCross2 className='icon'/>} onClick={handleCreatePopup}/>
+            <span onClick={handleCreatePopup} className="icon-span" id="close">{<RxCross2 className='icon'/>}</span>
             <div className='create-popup active'>
                 <div className='element-options'>
                     <span>Create a new: </span>

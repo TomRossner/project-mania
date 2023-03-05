@@ -1,6 +1,6 @@
 import React from 'react';
 
-const IconContainer = ({icon, onClick: functionToRun}) => {
+const IconContainer = ({icon, onClick: functionToRun, additionalClass}) => {
     
     const handleClick = () => {
       if (functionToRun) functionToRun();
@@ -8,7 +8,7 @@ const IconContainer = ({icon, onClick: functionToRun}) => {
     }
 
   return (
-    <span className='icon-span' onClick={handleClick}>{icon}</span>
+    <span className={`${additionalClass ? `icon-span ${additionalClass}` : `icon-span`}`} onClick={handleClick}>{icon}</span>
   )
 }
 

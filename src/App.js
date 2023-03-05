@@ -21,10 +21,10 @@ import { selectCurrentProject, selectProject, selectUserProjects } from "./store
 import { updateProject } from "./httpRequests/projectsRequests";
 import SearchBar from "./components/common/SearchBar";
 import { selectCurrentUser } from "./store/user/user.selector";
-import {BsBell, BsPlus} from "react-icons/bs";
+import {BsBell, BsPlus, BsPersonCircle} from "react-icons/bs";
 import IconContainer from "./components/common/IconContainer";
 import { getProjects } from "./httpRequests/projectsRequests";
-import { setBoards } from "./store/project/project.actions";
+import { setBoards, setCreatePopupOpen, setElement } from "./store/project/project.actions";
 
 // Styles
 import "./styling/general.styles.scss";
@@ -35,6 +35,13 @@ import "./styling/project-info-bar.styles.scss";
 import "./styling/project-members.styles.scss";
 import "./styling/project-stages.styles.scss";
 import "./styling/create-form.styles.scss";
+import "./styling/form.styles.scss";
+import "./styling/label.styles.scss";
+import "./styling/task-overview.styles.scss";
+import "./styling/input-container.styles.scss";
+import "./styling/right-nav.styles.scss";
+import RightNav from "./components/RightNav";
+import TopNav from "./components/TopNav";
 
 // Styles
 // import "./styles/main-styles.scss";
@@ -70,6 +77,11 @@ const App = () => {
 
   const loadUser = () => dispatch(setUser(getUser()));
 
+  const handleCreateBoard = () => {
+    dispatch(setCreatePopupOpen(true));
+    dispatch(setElement("board"));
+  }
+
   const update = async (project) => {
     try {
         await updateProject(project);
@@ -99,24 +111,14 @@ const App = () => {
     }
   }, [currentUser])
 
-  useEffect(() => {
-    if (!boards.length) return;
-    console.log(boards);
-  }, [boards])
-
   return (
     <div className='main'>
+      <Create/>
       <div className="sections-container">
         <NavBar/>
         <ErrorPopup/>
         <div className="main-content">
-          <div className="top-nav">
-            <SearchBar/>
-            <div className="flex1"></div>
-            <button className="btn blue"><IconContainer icon={<BsPlus className='icon'/>}/>Create New Board</button>
-            <button className="btn white"><IconContainer icon={<BsBell className='icon'/>}/></button>
-          </div>
-          <Create/>
+          <TopNav fn={handleCreateBoard}/>
             {/* {notificationTabOpen ? <NotificationTab/> : null}
             {profileTabOpen ? <ProfileTab/> : null} */}
           <Routes>
@@ -132,6 +134,7 @@ const App = () => {
           </Routes>
           <div className="flex1"></div>
         </div>
+        <RightNav></RightNav>
       </div>
     </div>
   )

@@ -2,6 +2,10 @@
 
 .current-board-members-container{
     width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    // gap: 0.5rem;
 
     h3{
         color: $grey;
@@ -14,6 +18,12 @@
         align-items: center;
         gap: 1rem;
         padding-inline: 0.3rem;
+
+        .team{
+            display: flex;
+            align-items: center;
+            // gap: ;
+        }
     }
 
     .icon-span{

@@ -1,0 +1,49 @@
+@import "./general.styles.scss";
+
+.listed-task-container{
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid white;
+    padding: 0.5rem 0.7rem;
+    transition: border 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    user-select: none;
+
+    &:hover{
+        border: 1px solid $blue_hover;
+    }
+
+    .listed-task-content{
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        width: 100%;
+
+        .listed-task-title-and-subtitle{
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+
+            .listed-task-title{
+                font-size: 1.05rem;
+                font-weight: 700;
+                text-align: left;
+            }
+    
+            .listed-task-subtitle{
+                font-size: 0.95rem;
+                text-align: left;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: $grey;
+                font-weight: 300;
+            }
+        }
+
+    }
+}
