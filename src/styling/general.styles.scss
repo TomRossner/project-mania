@@ -215,3 +215,13 @@ hr.line{
     width: 95%;
     margin: 0 auto 2rem auto;
 }
+
+.link{
+    text-decoration: none;
+    color: $grey;
+    transition: color 0.15s;
+
+    &:hover{
+        color: $dark;
+    }
+}

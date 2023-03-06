@@ -60,6 +60,7 @@ const Register = () => {
                     value={first_name}
                     type='text'
                     text='First name'
+                    placeholderText="First name"
                 />
 
                 <Input
@@ -69,6 +70,7 @@ const Register = () => {
                     onChange={handleInputChange}
                     value={last_name}
                     text="Last name"
+                    placeholderText="Last name"
                 />
                                
                 <Input
@@ -78,6 +80,7 @@ const Register = () => {
                     onChange={handleInputChange}
                     value={email}
                     text="Email"
+                    placeholderText="Email"
                 />
             
                 <Input
@@ -87,6 +90,7 @@ const Register = () => {
                     onChange={handleInputChange}
                     value={password}
                     text="Password"
+                    placeholderText="Password"
                 />
             
                 <Input
@@ -96,9 +100,10 @@ const Register = () => {
                     onChange={handleInputChange}
                     value={confirm_password}
                     text="Confirm password"
+                    placeholderText="Confirm password"
                 />
                 
-                <button type='submit' className='btn'>Create my account</button>
+                <button type='submit' className='btn form'>Create my account</button>
             </div>
             <p>Already registered? <Link to="/login" className='link blue'>Log in</Link></p>
         </form>

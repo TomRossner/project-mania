@@ -60,14 +60,16 @@ const NavBar = () => {
 
   useEffect(() => {
     if (currentUser) {
-      const getUser = () => {
-        return async () => {
+      const getUser = async () => { 
           const {data: user} = await getUserInfo(currentUser._id); 
           setUserName(`${user.first_name} ${user.last_name}`);
-        }
       }
-      dispatch(getUser());
+      getUser();
     }
+  }, [currentUser])
+
+  useEffect(() => {
+    if (currentUser){}
   }, [currentUser])
 
   return (
@@ -84,15 +86,22 @@ const NavBar = () => {
                 {boards?.map(project => <p onClick={() => handleClick(project)} key={project._id}>{project.title}</p>)}
               </div>
             </div>
-            {/* <Link className='link' onClick={handleCreateClick}>Create</Link> */}
             <li><IconContainer icon={<BsChatLeftText className='icon small'/>}/><Link className='link'>Messages</Link></li>
             <li><IconContainer icon={<IoSettingsOutline className="icon"/>}/><Link className='link'>Settings</Link></li>
         </ul>
-        <div className='profile'>
-            {/* <IconContainer onClick={handleToggleNotificationTab} icon={<IoIosNotifications className='icon'/>}/> */}
-            <IconContainer onClick={handleToggleProfileTab} icon={<BsPersonCircle className='icon profile'/>}/>
-            <span>{userName}</span>
-        </div>
+        <ul id='left-nav-bottom-ul'>
+          <div className='li-expand'>
+            <div className="dropdown open">
+              <Link className="link" to="/login">Login</Link>
+              <Link className="link" to="/register">Register</Link>
+              <div className='flex1'></div>
+            </div>
+          </div>
+          <div className='profile'>
+              <IconContainer onClick={handleToggleProfileTab} icon={<BsPersonCircle className='icon profile'/>}/>
+              <span>{userName}</span>
+          </div>
+        </ul>
     </nav>
   )
 }

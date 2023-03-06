@@ -4,8 +4,6 @@ import Projects from "./components/Projects";
 import Notifications from "./components/Notifications"
 import Profile from "./components/Profile"
 import { useEffect } from "react";
-import NotificationTab from "./components/NotificationTab";
-import ProfileTab from "./components/ProfileTab";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ProjectOverview from "./components/ProjectOverview";
@@ -16,15 +14,14 @@ import ErrorPopup from "./components/ErrorPopup";
 import Logout from "./components/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/user/user.actions";
-import { getUser, getUserInfo } from "./httpRequests/auth";
+import { getUser } from "./httpRequests/auth";
 import { selectCurrentProject, selectProject, selectUserProjects } from "./store/project/project.selector";
 import { updateProject } from "./httpRequests/projectsRequests";
-import SearchBar from "./components/common/SearchBar";
 import { selectCurrentUser } from "./store/user/user.selector";
-import {BsBell, BsPlus, BsPersonCircle} from "react-icons/bs";
-import IconContainer from "./components/common/IconContainer";
 import { getProjects } from "./httpRequests/projectsRequests";
 import { setBoards, setCreatePopupOpen, setElement } from "./store/project/project.actions";
+import RightNav from "./components/RightNav";
+import TopNav from "./components/TopNav";
 
 // Styles
 import "./styling/general.styles.scss";
@@ -40,8 +37,8 @@ import "./styling/label.styles.scss";
 import "./styling/task-overview.styles.scss";
 import "./styling/input-container.styles.scss";
 import "./styling/right-nav.styles.scss";
-import RightNav from "./components/RightNav";
-import TopNav from "./components/TopNav";
+import "./styling/auth.styles.scss";
+import "./styling/back-button.styles.scss";
 
 // Styles
 // import "./styles/main-styles.scss";
@@ -70,7 +67,6 @@ import TopNav from "./components/TopNav";
 
 const App = () => {
   const dispatch = useDispatch();
-  const {notificationTabOpen, profileTabOpen} = useSelector(selectProject);
   const currentProject = useSelector(selectCurrentProject);
   const currentUser = useSelector(selectCurrentUser);
   const boards = useSelector(selectUserProjects);
@@ -119,8 +115,6 @@ const App = () => {
         <ErrorPopup/>
         <div className="main-content">
           <TopNav fn={handleCreateBoard}/>
-            {/* {notificationTabOpen ? <NotificationTab/> : null}
-            {profileTabOpen ? <ProfileTab/> : null} */}
           <Routes>
             <Route path="/" element={<ProjectManagement/>}/>
             <Route path="/projects" element={<Projects/>}/>

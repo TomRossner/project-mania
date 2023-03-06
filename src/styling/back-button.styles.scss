@@ -1,0 +1,31 @@
+@import "./general.styles.scss";
+
+.back-button{
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid $light_grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    font-weight: 400;
+    transition: border 0.15s, scale 0.1s, color 0.15s;
+
+    .icon{
+        font-size: 1.3rem;
+        transition: transform 0.15s;
+    }
+
+    &:hover{
+        border-color: $blue_hover;
+        color: $blue_hover;
+
+        .icon{
+            transform: translateX(-5px);
+        }
+    }
+
+    &:active{
+        scale: 0.9;
+    }
+}

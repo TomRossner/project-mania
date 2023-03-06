@@ -14,13 +14,11 @@ const RightNav = () => {
 
     useEffect(() => {
         if (currentUser) {
-          const getUser = () => {
-            return async () => {
-              const {data: user} = await getUserInfo(currentUser._id); 
-              setUserName(`${user.first_name} ${user.last_name}`);
-            }
+          const getUser = async () => {
+            const {data: user} = await getUserInfo(currentUser._id); 
+            setUserName(`${user.first_name} ${user.last_name}`);
           }
-          dispatch(getUser());
+          getUser();
         }
       }, [currentUser])
 
@@ -30,8 +28,8 @@ const RightNav = () => {
 
         <div className="project-content">
             <div className="current-project-info">
-            <h3>{currentProject.title}</h3>
-            <p>{currentProject.subtitle}</p>
+            <h3>{currentProject?.title}</h3>
+            <p>{currentProject?.subtitle}</p>
             </div>
 
             <div className="current-project-admins">

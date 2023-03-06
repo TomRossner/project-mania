@@ -1,0 +1,102 @@
+@import "./general.styles.scss";
+
+.form-container{
+    width: 40%;
+    margin: 0 auto;
+    border-radius: 20px;
+    border: 1px solid $blue_hover;
+    box-shadow: 0 0 8px $grey;
+    background-color: white;
+    
+    form{
+        padding: 1rem 2rem 1rem 2rem;
+
+        h2{
+            color: $blue_hover;
+        }
+
+        .form-inputs-container{
+            width: 60%;
+            padding: 1rem 0;
+
+            .input-container:focus-within{
+                label{
+                    transform: translateY(-18px);
+                    display: block;
+                    animation: fadeIn forwards 0.1s;
+                }
+                input{
+                    &::placeholder{
+                        transform: translateY(-15px);
+                        opacity: 0;
+                    }
+                }
+            }
+
+            .input-container:hover{
+                input{
+                    &::placeholder{
+                        color: $dark;
+                    }
+                }
+            }
+
+            input{
+                background-color: transparent;
+                border: none;
+                border-bottom: 2px solid $blue_hover;
+                width: 100%;
+                cursor: default;
+                font-size: 1rem;
+                
+                &::placeholder{
+                    font-weight: 300;
+                    transition: transform 0.1s, opacity 0.1s, color 0.15s;
+                    font-size: 1.05rem;
+                    color: $grey;
+                }
+            }
+            label{
+                flex: 1;
+                position: absolute;
+                margin: 0 auto;
+                color: $grey;
+                font-weight: 300;
+                padding-left: 0.1em;
+                transition: transform 0.2s;
+                display: none;
+            }
+
+
+            .buttons-container{
+                flex-direction: column;
+                gap: 0.5rem;
+
+                p{
+                    color: $grey;
+                }
+            }
+            .btn.form{
+                width: fit-content;
+                align-self: center;
+
+                .icon{
+                    font-size: 1.2rem;
+                }
+
+                &.white{
+                    background-color: white;
+                    color: $dark;
+
+                    .icon{
+                        font-size: 1.5rem;
+                    }
+
+                    &:hover{
+                        background-color: $light_grey2;
+                    }
+                }
+            }
+        }
+    }
+}
