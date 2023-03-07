@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BackButton from "./common/BackButton";
-import { getUser, loginUser } from "../httpRequests/auth";
+import { getUser, loginUser, saveJWT } from "../httpRequests/auth";
 import Input from "./common/Input";
 import { signInUser } from "../firebase/config";
 import {BsShieldCheck} from "react-icons/bs";
@@ -46,8 +46,8 @@ const Login = () => {
     }
 
     const handleGoogleSignIn = async () => {
-        await signInUser();
-        dispatch(setUser(getUser()));
+        const user = await signInUser();
+        dispatch(setUser(user));
         navigate("/");
     }
 

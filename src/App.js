@@ -100,7 +100,7 @@ const App = () => {
       const loadBoards = () => {
         return async (dispatch) => {
           try {
-            const {data: userProjects} = await getProjects(currentUser._id);
+            const {data: userProjects} = await getProjects(currentUser._id || currentUser.user_id);
             dispatch(setBoards(userProjects));
           } catch (error) {
             console.log(error);

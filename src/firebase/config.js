@@ -1,6 +1,8 @@
+import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { saveJWT } from "../httpRequests/auth";
+import { getJWT, saveJWT } from "../httpRequests/auth";
+import { getUser } from "../httpRequests/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCzHWnlFjJOsfMh0xabylPxg_Wy-zZwvA8",
@@ -19,7 +21,10 @@ const auth = getAuth();
 
 export const signInUser = async () => {
     const {user} = await signInWithPopup(auth, provider);
-    const {displayName, email, photoURL, accessToken} = user;
-    saveJWT(accessToken);
-    return {displayName, email, photoURL, accessToken};
+    const {accessToken} = user;
+    const {data} = await axios.post("/auth/login/google", {googleToken: accessToken});
+    const {token} = data;
+    saveJWT(token);
+    const JWT_user = await getUser();
+    return JWT_user;
 }

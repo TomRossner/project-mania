@@ -61,15 +61,11 @@ const NavBar = () => {
   useEffect(() => {
     if (currentUser) {
       const getUser = async () => { 
-          const {data: user} = await getUserInfo(currentUser._id); 
-          setUserName(`${user.first_name} ${user.last_name}`);
+          const {data: user} = await getUserInfo(currentUser._id || currentUser.user_id);
+          setUserName(!user.name ? `${user.first_name} ${user.last_name}` : user.name);
       }
       getUser();
     }
-  }, [currentUser])
-
-  useEffect(() => {
-    if (currentUser){}
   }, [currentUser])
 
   return (
