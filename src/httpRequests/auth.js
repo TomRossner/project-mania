@@ -11,14 +11,14 @@ export function saveJWT(token) {
 }
 
 export async function loginUser(values) {
-    const {data: {token}} = await axios.post(`/auth/login`, values);
+    const {data: {token}} = await axios.post(`/auth/sign-in`, values);
     saveJWT(token);
     return setTokenHeader();
 }
 
 export async function addNewUser(values) {
     const {first_name, last_name, email, password} = values; // Everything except confirmedPassword
-    return await axios.post(`/auth/register`, {first_name, last_name, email, password});
+    return await axios.post(`/auth/sign-up`, {first_name, last_name, email, password});
 }
 
 export async function getUserInfo(id) {
@@ -39,6 +39,7 @@ export function setCommonHeader(headerName, value) {
 
 export function getUser() {
     try {
+        console.log(jwtDecode(getJWT()))
         return jwtDecode(getJWT());
     } catch {
         return null;

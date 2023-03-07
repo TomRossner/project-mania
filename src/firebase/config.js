@@ -22,9 +22,17 @@ const auth = getAuth();
 export const signInUser = async () => {
     const {user} = await signInWithPopup(auth, provider);
     const {accessToken} = user;
-    const {data} = await axios.post("/auth/login/google", {googleToken: accessToken});
+    const {data} = await axios.post("/auth/sign-in/google", {googleToken: accessToken});
     const {token} = data;
     saveJWT(token);
     const JWT_user = await getUser();
     return JWT_user;
+}
+
+export const signUpUser = async () => {
+    const {user} = await signInWithPopup(auth, provider);
+    const {accessToken, email, displayName, uid} = user;
+    const response = await axios.post("/auth/sign-up/google", {accessToken, email, displayName, uid});
+    console.log(response);
+    return response;
 }

@@ -5,6 +5,8 @@ import { addNewUser } from '../httpRequests/auth';
 import Input from './common/Input';
 import { useDispatch } from 'react-redux';
 import { setError, setErrorPopupOpen } from '../store/project/project.actions';
+import {FcGoogle} from "react-icons/fc";
+import { signUpUser } from '../firebase/config';
 
 const defaultRegistrationFormValues = {
     first_name: "",
@@ -43,6 +45,10 @@ const Register = () => {
     
     const handleInputChange = (e) => {
        return setFormValues({...formValues, [e.target.name]: e.target.value ? e.target.value: formValues[e.target.name].value});
+    }
+
+    const handleGoogleSignUp = async () => {
+        await signUpUser();
     }
 
   return (
@@ -103,7 +109,11 @@ const Register = () => {
                     placeholderText="Confirm password"
                 />
                 
-                <button type='submit' className='btn form'>Create my account</button>
+                <div className="buttons-container">
+                    <button type='submit' className='btn form'>Create my account</button>
+                    <p>OR</p>
+                    <button type="button" className="btn form white" onClick={handleGoogleSignUp}><FcGoogle className="icon"/>Sign up with Google</button>
+                </div>
             </div>
             <p>Already registered? <Link to="/login" className='link blue'>Log in</Link></p>
         </form>
