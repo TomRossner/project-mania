@@ -8,6 +8,7 @@ import {BsShieldCheck} from "react-icons/bs";
 import {FcGoogle} from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/user/user.actions";
+import {setError, setErrorPopupOpen} from "../store/project/project.actions"
 
 const defaultLoginFormValues = {
     email: "",
@@ -22,24 +23,26 @@ const Login = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+
         try {
             await loginUser(formValues);
+            dispatch(setUser(getUser()));
             navigate("/");
             resetFormValues();
-        } catch (error) {
-            // if ((response.data.error && response.status === 400)
-            // || (response.data.error && response.status === 404)) {
-            //     setError(response.data.error);
-            //     setErrorPopupOpen(true);
-            // }
-            console.log(error);
+        } catch ({response}) {
+            if ((response.data.error && response.status === 400)
+            || (response.data.error && response.status === 404)) {
+                dispatch(setError(response.data.error));
+                dispatch(setErrorPopupOpen(true));
+            }
         }
     }
 
     const resetFormValues = () => setFormValues(defaultLoginFormValues);
     
-    const handInputChange = (e) => {
-       return setFormValues({...formValues, [e.target.name]: e.target.value ? e.target.value: formValues[e.target.name].value});
+    const handleInputChange = (e) => {
+       return setFormValues({...formValues,
+        [e.target.name]: e.target.value ? e.target.value: formValues[e.target.name].value});
     }
 
     const handleGoogleSignIn = async () => {
@@ -60,7 +63,7 @@ const Login = () => {
                     id="email"
                     name="email"
                     type="email"
-                    onChange={handInputChange}
+                    onChange={handleInputChange}
                     value={email}
                     text="Email"
                     placeholderText="Email"
@@ -70,7 +73,7 @@ const Login = () => {
                     id="password"
                     name="password"
                     type="password"
-                    onChange={handInputChange}
+                    onChange={handleInputChange}
                     value={password}
                     text="Password"
                     placeholderText="Password"

@@ -22,23 +22,27 @@ const Projects = () => {
   }
 
   useEffect(() => {
-    if (!user) {
-      navigate("/login");
-      dispatch(setError("You must be logged in to access projects."));
-      dispatch(setErrorPopupOpen(true));
-      return;
-    }
+    // if (!user) {
+    //   navigate("/login");
+    //   dispatch(setError("You must be logged in to access projects."));
+    //   dispatch(setErrorPopupOpen(true));
+    //   return;
+    // }
 
     if (createPopupOpen) dispatch(setCreatePopupOpen(false));
 
-    const fetchUserProjects = (id) => {
-      return async (dispatch) => {
-        const {data: userProjects} = await getProjects(id);
-        dispatch(setBoards(userProjects));
-      }
-    }
-
-    dispatch(fetchUserProjects(user._id));
+  //   const fetchUserProjects = (id) => {
+  //     return async (dispatch) => {
+  //       try {
+  //         const {data: userProjects} = await getProjects(id);
+  //         dispatch(setBoards(userProjects));
+  //       } catch ({response}) {
+  //         console.log(response);
+  //       }
+  //     }
+  //   }
+  //   if (!user) return;
+  //   dispatch(fetchUserProjects(user._id));
   }, [])
 
   return (

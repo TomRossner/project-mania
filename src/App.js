@@ -71,7 +71,7 @@ const App = () => {
   const currentUser = useSelector(selectCurrentUser);
   const boards = useSelector(selectUserProjects);
 
-  const loadUser = () => dispatch(setUser(getUser()));
+  const refreshUser = () => dispatch(setUser(getUser()));
 
   const handleCreateBoard = () => {
     dispatch(setCreatePopupOpen(true));
@@ -92,15 +92,19 @@ const App = () => {
   }, [currentProject])
 
   useEffect(() => {
-    loadUser();
+    refreshUser();
   }, [])
 
   useEffect(() => {
     if (currentUser && !boards.length){
       const loadBoards = () => {
         return async (dispatch) => {
-          const {data} = await getProjects(currentUser._id);
-          dispatch(setBoards(data));
+          try {
+            const {data: userProjects} = await getProjects(currentUser._id);
+            dispatch(setBoards(userProjects));
+          } catch (error) {
+            console.log(error);
+          }
         }
       }
       dispatch(loadBoards());

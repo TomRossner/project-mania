@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { saveJWT } from "../httpRequests/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCzHWnlFjJOsfMh0xabylPxg_Wy-zZwvA8",
@@ -19,6 +20,6 @@ const auth = getAuth();
 export const signInUser = async () => {
     const {user} = await signInWithPopup(auth, provider);
     const {displayName, email, photoURL, accessToken} = user;
-
+    saveJWT(accessToken);
     return {displayName, email, photoURL, accessToken};
 }
