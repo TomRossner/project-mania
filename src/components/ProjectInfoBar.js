@@ -6,13 +6,19 @@ import ProjectMembers from './ProjectMembers';
 import { projectMenuOptions } from "../utils/projectMenuOptions";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentProject, selectProject } from '../store/project/project.selector';
-import { setProjectMenuOpen, setCreatePopupOpen, setElement } from '../store/project/project.actions';
+import { setProjectMenuOpen, setCreatePopupOpen, setElement, setCurrentProject } from '../store/project/project.actions';
 import {AiFillProject} from "react-icons/ai";
+import { deleteProject } from '../httpRequests/projectsRequests';
+import { useNavigate } from 'react-router-dom';
+import { selectBoards } from '../store/boards/boards.selector';
+import { setBoards } from '../store/boards/boards.actions';
 
 const ProjectInfoBar = () => {
     const dispatch = useDispatch();
     const {projectMenuTabOpen} = useSelector(selectProject);
     const currentProject = useSelector(selectCurrentProject);
+    const boards = useSelector(selectBoards);
+    const navigate = useNavigate();
     
     const handleMenuClick = () => {
         dispatch(setProjectMenuOpen(!projectMenuTabOpen));
@@ -21,13 +27,27 @@ const ProjectInfoBar = () => {
     const handleMenuOption = (opt) => {
         if (!opt || typeof opt !== 'string') return;
 
-        if (opt.toLowerCase() === 'view project summary') return console.log(opt);
-        if (opt.toLowerCase() === 'add stage') return handleAddStage();
-        if (opt.toLowerCase() === 'add/remove members') return console.log(opt);
-        if (opt.toLowerCase() === 'edit project') return console.log(opt);
-        if (opt.toLowerCase() === 'delete project') return console.log(opt);
-        
-        else return console.log(`Unknown/unhandled option "${opt}".`);
+        switch(opt.toLowerCase()) {
+            case 'view project summary':
+                return console.log(opt);
+            case 'add stage':
+                return handleAddStage();
+            case 'manage team':
+                return console.log(opt);
+            case 'edit project':
+                return console.log(opt);
+            case 'delete project':
+                return handleDeleteProject(currentProject._id);
+            default:
+                return opt;
+        }
+    }
+
+    const handleDeleteProject = async (id) => {
+        await deleteProject(id);
+        dispatch(setCurrentProject(null));
+        dispatch(setBoards([...boards.filter(board => board._id !== currentProject._id)]));
+        navigate("/");
     }
 
     const handleAddStage = () => {

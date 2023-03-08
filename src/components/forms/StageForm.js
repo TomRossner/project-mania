@@ -3,10 +3,12 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { FiCheck } from "react-icons/fi";
 import {defaultStageProperties} from "../../utils/defaultProperties";
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject, selectProject, selectUserProjects } from '../../store/project/project.selector';
-import { setCreatePopupOpen, setError, setCurrentProject, setBoards } from '../../store/project/project.actions';
+import { selectCurrentProject, selectProject } from '../../store/project/project.selector';
+import { setCreatePopupOpen, setError, setCurrentProject } from '../../store/project/project.actions';
 import IconContainer from '../common/IconContainer';
 import CancelButton from '../common/CancelButton';
+import { selectBoards } from '../../store/boards/boards.selector';
+import { setBoards } from '../../store/boards/boards.actions';
 
 const StageForm = () => {
     const [readOnly, setReadOnly] = useState(true);
@@ -14,7 +16,7 @@ const StageForm = () => {
     const [inputValues, setInputValues] = useState({...defaultStageProperties, type: element});
     const {stage_name} = inputValues;
     const FormTitleRef = useRef(null);
-    const boards = useSelector(selectUserProjects);
+    const boards = useSelector(selectBoards);
     const currentProject = useSelector(selectCurrentProject);
     const [selectedProject, setSelectedProject] = useState(boards.length ? currentProject : null);
     const dispatch = useDispatch();

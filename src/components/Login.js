@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BackButton from "./common/BackButton";
-import { getUser, loginUser, saveJWT } from "../httpRequests/auth";
 import Input from "./common/Input";
 import { signInUser } from "../firebase/config";
 import {BsShieldCheck} from "react-icons/bs";
 import {FcGoogle} from "react-icons/fc";
-import { useDispatch } from "react-redux";
-import { setUser } from "../store/user/user.actions";
-import {setError, setErrorPopupOpen} from "../store/project/project.actions"
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../store/auth/auth.actions";
+import {setError, setErrorPopupOpen} from "../store/project/project.actions";
+import useAuth from "../hooks/useAuth";
+import { selectAuth } from "../store/auth/auth.selector";
+import ButtonSpinner from "./common/ButtonSpinner";
 
 const defaultLoginFormValues = {
     email: "",
@@ -20,22 +22,19 @@ const Login = () => {
     const {email, password} = formValues;
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const {login, googleSignIn, user, isAuthenticated} = useAuth();
+    const {isLoading} = useSelector(selectAuth);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            await loginUser(formValues);
-            dispatch(setUser(getUser()));
-            navigate("/");
-            resetFormValues();
-        } catch ({response}) {
-            if ((response.data.error && response.status === 400)
-            || (response.data.error && response.status === 404)) {
-                dispatch(setError(response.data.error));
-                dispatch(setErrorPopupOpen(true));
-            }
+        if (!email || !password) {
+            dispatch(setError("Please provide an email and a password"));
+            dispatch(setErrorPopupOpen(true));
+            return;
         }
+        
+        return login(formValues);
     }
 
     const resetFormValues = () => setFormValues(defaultLoginFormValues);
@@ -46,10 +45,16 @@ const Login = () => {
     }
 
     const handleGoogleSignIn = async () => {
-        const user = await signInUser();
+        const user = await googleSignIn();
         dispatch(setUser(user));
-        navigate("/");
     }
+
+    useEffect(() => {
+        if (user && isAuthenticated) {
+            resetFormValues();
+            navigate("/");
+        }
+    }, [user, isAuthenticated])
 
   return (
     <>
@@ -80,12 +85,14 @@ const Login = () => {
                 />
                
                 <div className="buttons-container">
-                    <button type="submit" className="btn form"><BsShieldCheck className="icon"/>Sign in</button>
+                    <button type="submit" className={isLoading ? "btn spinner form" : "btn form"}>
+                        {isLoading ? <ButtonSpinner/> : <><BsShieldCheck className="icon"/>Sign in</>}
+                    </button>
                     <p>OR</p>
                     <button type="button" className="btn form white" onClick={handleGoogleSignIn}><FcGoogle className="icon"/>Sign in with Google</button>
                 </div>
             </div>
-            <p>Not registered? <Link to="/register" className="link blue">Register now</Link></p>
+            <p>Not registered? <Link to="/sign-up" className="link blue">Register now</Link></p>
         </form>
     </div>
     </>

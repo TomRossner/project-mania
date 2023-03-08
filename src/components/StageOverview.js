@@ -5,18 +5,20 @@ import TaskOverview from './TaskOverview';
 import { stageOptions } from '../utils/stageOptionsMenu';
 import ProgressBar from './common/ProgressBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject, selectUserProjects } from '../store/project/project.selector';
-import { setCurrentProject, setStage, setCreatePopupOpen, setElement, setBoards } from '../store/project/project.actions';
+import { selectCurrentProject } from '../store/project/project.selector';
+import { setCurrentProject, setStage, setCreatePopupOpen, setElement} from '../store/project/project.actions';
 import ThreeDotsMenu from './common/ThreeDotsMenu';
 import OptionsMenu from './common/OptionsMenu';
 import IconContainer from './common/IconContainer';
+import { selectBoards } from '../store/boards/boards.selector';
+import { setBoards } from '../store/boards/boards.actions';
 
 const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
     const [inputValue, setInputValue] = useState("");
     const dispatch = useDispatch();
     const currentProject = useSelector(selectCurrentProject);
-    const boards = useSelector(selectUserProjects);
+    const boards = useSelector(selectBoards);
     
     const toggleStageOptions = (stageToUpdate) => {
         console.log(stageToUpdate)

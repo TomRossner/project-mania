@@ -25,8 +25,8 @@ const ErrorPopup = () => {
             <h3 className='red'>Error</h3>
             <IconContainer icon={<RxCross2 className='icon'/>} onClick={handleCloseErrorPopup}/>
             <p className='flex1'>{error}
-              <button className='btn red error-btn' onClick={handleCloseErrorPopup}>OK</button>
             </p>
+            <button className='btn white' onClick={handleCloseErrorPopup}>OK</button>
         </div>
       </div>
     )

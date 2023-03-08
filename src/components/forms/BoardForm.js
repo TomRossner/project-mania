@@ -6,11 +6,16 @@ import Input from '../common/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfo } from '../../httpRequests/auth';
 import { addProject } from '../../httpRequests/projectsRequests';
-import { selectAvailableMembers, selectProject, selectProjectMembers, selectUserProjects } from '../../store/project/project.selector';
-import { setCreatePopupOpen, setProjectMembers, setBoards, setError, setErrorPopupOpen } from '../../store/project/project.actions';
-import { selectCurrentUser } from '../../store/user/user.selector';
+import { selectProject } from '../../store/project/project.selector';
+import { setCreatePopupOpen, setError, setErrorPopupOpen } from '../../store/project/project.actions';
 import CancelButton from '../common/CancelButton';
 import IconContainer from '../common/IconContainer';
+import useAuth from '../../hooks/useAuth';
+import { selectBoards } from '../../store/boards/boards.selector';
+import { selectMembers } from '../../store/members/members.selector';
+import { setBoards } from '../../store/boards/boards.actions';
+import { selectProjectMembers } from '../../store/projectMembers/projectMembers.selector';
+import { setProjectMembers } from '../../store/projectMembers/projectMembers.actions';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
@@ -19,10 +24,14 @@ const BoardForm = () => {
   const [inputValues, setInputValues] = useState({...boardProperties, type: element});
   const {title, subtitle, due_date} = inputValues;
   const projectMembers = useSelector(selectProjectMembers);
-  const availableMembers = useSelector(selectAvailableMembers);
-  const boards = useSelector(selectUserProjects);
-  const user = useSelector(selectCurrentUser);
+  const members = useSelector(selectMembers);
+  const boards = useSelector(selectBoards);
+  const {user} = useAuth();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(members)
+  }, [members])
 
   const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
 
@@ -66,9 +75,9 @@ const BoardForm = () => {
 
   const handleAddMembers = (e) => {
     if (!e.target.value) return;
-    const newMember = availableMembers?.find(member => e.target.value.trim() === member._id);
+    const newMember = members?.find(member => e.target.value.trim() === member._id);
     if (projectMembers.find(member => newMember._id === member._id)) return;
-    else dispatch(setProjectMembers([...projectMembers, availableMembers?.find(member => e.target.value.trim() === member._id)]));
+    else dispatch(setProjectMembers([...projectMembers, members?.find(member => e.target.value.trim() === member._id)]));
   }
 
   const handleRemoveMemberFromProject = (id) => {
@@ -106,7 +115,7 @@ const BoardForm = () => {
               <label htmlFor='members'>Members</label>
               <select onChange={handleAddMembers}>
                 <option value="">Choose members</option>
-                {availableMembers?.map(member => <option key={member._id} value={member._id}>{member.first_name} {member.last_name}</option>)}
+                {members?.map(member => <option key={member._id} value={member._id}>{member.first_name} {member.last_name}</option>)}
               </select>
             </div>
 
@@ -114,14 +123,14 @@ const BoardForm = () => {
               {projectMembers.length > 4
               ?
               <>
-                {projectMembers.filter((_, index) => index < 4)
+                {projectMembers?.filter((_, index) => index < 4)
                   .map(member =>
                     <span key={member._id} className='form-project-member-added' onClick={() => handleRemoveMemberFromProject(member._id)}>
                       {member.first_name} {member.last_name.substring(0, 1)}.
                     </span>)}
                 <span>+ {projectMembers.filter((_, index) => index > 3).length} more</span>
               </>
-              : projectMembers.map(member =>
+              : projectMembers?.map(member =>
                   <span key={member._id} className='form-project-member-added' onClick={() => handleRemoveMemberFromProject(member._id)}>
                     {member.first_name} {member.last_name.substring(0, 1)}.
                   </span>)}

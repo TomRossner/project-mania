@@ -1,0 +1,17 @@
+@import "./general.styles.scss";
+
+.btn.spinner.form{
+    min-width: 100px;
+    justify-content: center;
+    padding: 0.2rem;
+
+    .spinner-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        img{
+            width: 30px;
+        }
+    }   
+}

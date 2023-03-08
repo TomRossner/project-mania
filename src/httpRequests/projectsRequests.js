@@ -8,11 +8,13 @@ export const getTask = async (ids) => {
 }
 
 export const getMembers = async () => {
-    return await axios.get(`/auth/users`);
+    const {data} = await axios.get(`/auth/users`);
+    return data;
 }
 
 export const getProjects = async (id) => {
-    return await axios.get(`/projects/${id}/all`);
+    const {data} = await axios.get(`/projects/${id}/all`);
+    return data;
 }
 
 export const updateProject = async (project) => {
@@ -26,4 +28,8 @@ export const addProject = async (values) => {
 export const deleteTask = async (ids) => {
     const {id, stage_id, task_id} = ids;
     return await axios.delete(`/projects/${id}/${stage_id}/${task_id}`);
+}
+
+export const deleteProject = async (id) => {
+    return await axios.delete(`projects/delete/${id}`);
 }

@@ -7,19 +7,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectProject, selectUserProjects } from '../store/project/project.selector';
 import { setCreatePopupOpen, setNotificationTabOpen, setProjectMenuOpen, setProfileTabOpen, setBoards } from '../store/project/project.actions';
 import IconContainer from './common/IconContainer';
-import { selectCurrentUser } from '../store/user/user.selector';
 import { getUserInfo } from '../httpRequests/auth';
 import {BsChatLeftText, BsChevronDown, BsPersonCircle} from "react-icons/bs";
 import {IoSettingsOutline} from "react-icons/io5";
 import {AiOutlineProject} from "react-icons/ai";
 import { getProjects } from '../httpRequests/projectsRequests';
 import { setCurrentProject } from '../store/project/project.actions';
+import useAuth from '../hooks/useAuth';
+import {selectBoards} from "../store/boards/boards.selector";
 
 const NavBar = () => {
   const dispatch = useDispatch();
   const {profileTabOpen, notificationTabOpen, projectMenuOpen, createPopupOpen} = useSelector(selectProject);
-  const currentUser = useSelector(selectCurrentUser);
-  const boards = useSelector(selectUserProjects);
+  const {user, isAuthenticated, userInfo} = useAuth();
+  const boards = useSelector(selectBoards);
   const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
@@ -59,14 +60,10 @@ const NavBar = () => {
   }
 
   useEffect(() => {
-    if (currentUser) {
-      const getUser = async () => { 
-          const {data: user} = await getUserInfo(currentUser._id || currentUser.user_id);
-          setUserName(!user.name ? `${user.first_name} ${user.last_name}` : user.name);
-      }
-      getUser();
-    }
-  }, [currentUser])
+    if (userInfo) {
+          setUserName(`${userInfo.first_name} ${userInfo.last_name}` || userInfo.name);
+    } else setUserName("");
+  }, [userInfo])
 
   return (
     <nav>
@@ -78,9 +75,12 @@ const NavBar = () => {
                   <Link className='link flex1'>Projects</Link>
                 <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
               </li>
+              {boards.length ?
+              <>
               <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
                 {boards?.map(project => <p onClick={() => handleClick(project)} key={project._id}>{project.title}</p>)}
               </div>
+              </> : null}
             </div>
             <li><IconContainer icon={<BsChatLeftText className='icon small'/>}/><Link className='link'>Messages</Link></li>
             <li><IconContainer icon={<IoSettingsOutline className="icon"/>}/><Link className='link'>Settings</Link></li>
@@ -88,8 +88,14 @@ const NavBar = () => {
         <ul id='left-nav-bottom-ul'>
           <div className='li-expand'>
             <div className="dropdown open">
-              <Link className="link" to="/login">Login</Link>
-              <Link className="link" to="/register">Register</Link>
+              {
+                !user || !isAuthenticated ?
+                <>
+                  <Link className="link" to="/sign-in">Login</Link>
+                  <Link className="link" to="/sign-up">Sign up</Link>
+                </> :
+                  <Link className="link" to="/logout">Logout</Link>
+              }
               <div className='flex1'></div>
             </div>
           </div>

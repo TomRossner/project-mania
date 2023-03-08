@@ -148,6 +148,7 @@ body{
 
         &:hover{
             background-color: $blue_hover;
+            color: $light;
 
             .icon{
                 color: $light;
@@ -163,6 +164,8 @@ body{
         color: $light;
         background-color: $blue;
         border-radius: 8px;
+        min-width: 100px;
+        min-height: 35px;
 
         &:hover{
             background-color: $blue_hover;
@@ -192,6 +195,7 @@ body{
     opacity: 1;
     display: none;
     user-select: none;
+    text-align: left;
     border: 1px solid $light_grey;
 
     p{
@@ -224,4 +228,78 @@ hr.line{
     &:hover{
         color: $dark;
     }
+}
+
+.background-blur{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 100;
+    
+    /* From https://css.glass */
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    &.active{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .error-popup-container{
+            border: 1px solid red;
+            width: 25%;
+            min-height: 20vh;
+            margin: 30vh auto auto auto;
+            padding: 0.5rem 1rem;
+            position: relative;
+            border: 1px solid $dark;
+            border-radius: 10px;
+            background-color: $light;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            animation: fadeIn forwards 0.2s;
+
+            .icon-span{
+                position: absolute;
+                top: 0.25rem;
+                right: 0.25rem;
+                padding: 0.2rem;
+                border: 1px solid $grey;
+                border-radius: 5px;
+                background-color: white;
+                transition: background-color 0.15s;
+        
+                &:hover{
+                    background-color: $light_grey2;
+                }
+                .icon{
+                    font-size: 1.1rem;
+                }
+            }
+
+            p{
+                border: 1px solid $grey;
+                border-radius: 7px;
+                padding: 0.3rem;
+
+                &.flex1{
+                    flex: 1;
+                }
+            }
+
+            .btn{
+                width: fit-content;
+                // position: absolute;
+                // right: 0.3rem;
+                // bottom: 0.3rem;
+                align-self: flex-end;
+            }
+        }
+    }
+
 }

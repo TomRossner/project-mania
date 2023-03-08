@@ -1,8 +1,8 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
-// axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
-axios.defaults.baseURL = 'http://localhost:5000/projectmania';
+axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
+// axios.defaults.baseURL = 'http://localhost:5000/projectmania';
 const token = 'token';
 setTokenHeader();
 
@@ -13,7 +13,8 @@ export function saveJWT(token) {
 export async function loginUser(values) {
     const {data: {token}} = await axios.post(`/auth/sign-in`, values);
     saveJWT(token);
-    return setTokenHeader();
+    setTokenHeader();
+    return getUser();
 }
 
 export async function addNewUser(values) {
@@ -39,14 +40,13 @@ export function setCommonHeader(headerName, value) {
 
 export function getUser() {
     try {
-        console.log(jwtDecode(getJWT()))
         return jwtDecode(getJWT());
     } catch {
         return null;
     }
 }
 
-export function logout() {
+export function LS_logout() {
     localStorage.removeItem(token);
     return setTokenHeader();
 }

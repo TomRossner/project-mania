@@ -2,17 +2,18 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Spinner from './common/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentUser } from '../store/user/user.selector';
-import { setBoards, setCurrentProject } from '../store/project/project.actions';
-import { selectProject, selectUserProjects } from '../store/project/project.selector';
+import { setCurrentProject } from '../store/project/project.actions';
+import { selectProject } from '../store/project/project.selector';
 import { setError, setErrorPopupOpen, setCreatePopupOpen } from '../store/project/project.actions';
 import { getProjects } from '../httpRequests/projectsRequests';
+import useAuth from '../hooks/useAuth';
+import { selectBoards } from '../store/boards/boards.selector';
 
 const Projects = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector(selectCurrentUser);
-  const projects = useSelector(selectUserProjects);
+  const {user} = useAuth();
+  const projects = useSelector(selectBoards);
   const {createPopupOpen} = useSelector(selectProject);
   
 
@@ -23,7 +24,7 @@ const Projects = () => {
 
   useEffect(() => {
     // if (!user) {
-    //   navigate("/login");
+    //   navigate("/sign-in");
     //   dispatch(setError("You must be logged in to access projects."));
     //   dispatch(setErrorPopupOpen(true));
     //   return;

@@ -1,15 +1,14 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '../store/user/user.selector';
+import useAuth from '../hooks/useAuth';
 
 
 const ProjectManagement = () => {
-  const user = useSelector(selectCurrentUser);
+  const {user} = useAuth();
 
   return (
     <>
-    {user ? <Navigate to="/projects"/> : <Navigate to="/login"/>}
+    {user ? <Navigate to="/projects"/> : <Navigate to="/sign-in"/>}
     </>
   )
 }

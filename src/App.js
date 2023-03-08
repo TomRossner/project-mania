@@ -13,15 +13,16 @@ import Create from "./components/Create";
 import ErrorPopup from "./components/ErrorPopup";
 import Logout from "./components/Logout";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "./store/user/user.actions";
+import { fetchUserAsync, setIsAuthenticated, setUser } from "./store/auth/auth.actions";
 import { getUser } from "./httpRequests/auth";
-import { selectCurrentProject, selectProject, selectUserProjects } from "./store/project/project.selector";
+import { selectCurrentProject, selectProject } from "./store/project/project.selector";
 import { updateProject } from "./httpRequests/projectsRequests";
-import { selectCurrentUser } from "./store/user/user.selector";
-import { getProjects } from "./httpRequests/projectsRequests";
-import { setBoards, setCreatePopupOpen, setElement } from "./store/project/project.actions";
+import { setCreatePopupOpen, setCurrentProject, setElement } from "./store/project/project.actions";
 import RightNav from "./components/RightNav";
 import TopNav from "./components/TopNav";
+import useAuth from "./hooks/useAuth";
+import { selectBoards } from "./store/boards/boards.selector";
+import { fetchBoardsAsync } from "./store/boards/boards.actions";
 
 // Styles
 import "./styling/general.styles.scss";
@@ -39,6 +40,7 @@ import "./styling/input-container.styles.scss";
 import "./styling/right-nav.styles.scss";
 import "./styling/auth.styles.scss";
 import "./styling/back-button.styles.scss";
+import "./styling/spinner.styles.scss";
 
 // Styles
 // import "./styles/main-styles.scss";
@@ -68,10 +70,11 @@ import "./styling/back-button.styles.scss";
 const App = () => {
   const dispatch = useDispatch();
   const currentProject = useSelector(selectCurrentProject);
-  const currentUser = useSelector(selectCurrentUser);
-  const boards = useSelector(selectUserProjects);
+  const {user, isAuthenticated} = useAuth();
 
-  const refreshUser = () => dispatch(setUser(getUser()));
+  const refreshUser = () => {
+    dispatch(setUser(getUser()));
+  }
 
   const handleCreateBoard = () => {
     dispatch(setCreatePopupOpen(true));
@@ -79,6 +82,8 @@ const App = () => {
   }
 
   const update = async (project) => {
+    if (!project) return;
+
     try {
         await updateProject(project);
     } catch (error) {
@@ -96,27 +101,16 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if (currentUser && !boards.length){
-      const loadBoards = () => {
-        return async (dispatch) => {
-          try {
-            const {data: userProjects} = await getProjects(currentUser._id || currentUser.user_id);
-            dispatch(setBoards(userProjects));
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      }
-      dispatch(loadBoards());
-    }
-  }, [currentUser])
+    if (user && isAuthenticated) dispatch(fetchBoardsAsync(user._id));
+    if (!user || !isAuthenticated) dispatch(setCurrentProject(null));
+  }, [user])
 
   return (
     <div className='main'>
       <Create/>
+      <ErrorPopup/>
       <div className="sections-container">
         <NavBar/>
-        <ErrorPopup/>
         <div className="main-content">
           <TopNav fn={handleCreateBoard}/>
           <Routes>
@@ -127,8 +121,8 @@ const App = () => {
             <Route path="/projects/:id/:stage_id/:task_id" element={<Task/>}/>
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/logout" element={<Logout/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/>
+            <Route path="/sign-in" element={<Login/>}/>
+            <Route path="/sign-up" element={<Register/>}/>
           </Routes>
           <div className="flex1"></div>
         </div>

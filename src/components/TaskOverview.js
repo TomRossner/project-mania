@@ -4,7 +4,6 @@ import { ImAttachment } from "react-icons/im";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { selectCurrentProject } from '../store/project/project.selector';
-import IconContainer from './common/IconContainer';
 import LabelContainer from "./common/LabelContainer";
 import { labels } from '../utils/labels';
 

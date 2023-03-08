@@ -1,7 +1,7 @@
 export const projectMenuOptions = [
     "View project summary",
     "Add stage",
-    "Add/remove members",
+    "Manage team",
     "Edit project",
     "Delete project",
 ]

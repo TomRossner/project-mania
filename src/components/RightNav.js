@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentUser } from '../store/user/user.selector';
 import { getUserInfo } from '../httpRequests/auth';
 import { selectCurrentProject } from '../store/project/project.selector';
 import { BsPersonCircle } from 'react-icons/bs';
 import IconContainer from './common/IconContainer';
+import useAuth from '../hooks/useAuth';
 
 const RightNav = () => {
-    const currentUser = useSelector(selectCurrentUser);
+    const {user} = useAuth();
     const currentProject = useSelector(selectCurrentProject);
     const [userName, setUserName] = useState("");
-    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (currentUser) {
+        if (user) {
           const getUser = async () => {
-            const {data: user} = await getUserInfo(currentUser._id); 
-            setUserName(`${user.first_name} ${user.last_name}`);
+            const {data} = await getUserInfo(user._id); 
+            setUserName(`${data.first_name} ${data.last_name}`);
           }
           getUser();
-        }
-      }, [currentUser])
+        } else return setUserName("");
+      }, [user])
 
   return (
     <nav id="right-nav">
@@ -52,4 +51,4 @@ const RightNav = () => {
   )
 }
 
-export default RightNav
+export default RightNav;

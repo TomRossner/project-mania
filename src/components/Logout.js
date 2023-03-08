@@ -1,23 +1,16 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getUser, logout } from '../httpRequests/auth';
-import { setUser } from '../store/user/user.actions';
+import useAuth from '../hooks/useAuth';
 
 const Logout = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
-    const refreshUser = () => dispatch(setUser(getUser));
+    const {logout} = useAuth();
 
     useEffect(() => {
-      const logoutUser = async () => {
-        logout();
-        refreshUser();
-      }
-
-      logoutUser();
-      navigate("/login");
+      logout();
+      navigate("/sign-in");
     }, [])
 
   return null;

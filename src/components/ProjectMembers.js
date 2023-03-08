@@ -2,23 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { BsCircleFill } from "react-icons/bs";
 import { RxPlus } from "react-icons/rx";
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentUser } from '../store/user/user.selector';
-import { selectProjectMembers, selectAvailableMembers, selectCurrentProject } from '../store/project/project.selector';
-import { setCurrentProject, setProjectMembers } from '../store/project/project.actions';
-import { getMembers } from '../httpRequests/projectsRequests';
-import { setAvailableMembers } from '../store/project/project.actions';
+import { selectCurrentProject } from '../store/project/project.selector';
+import { setCurrentProject } from '../store/project/project.actions';
+import useAuth from '../hooks/useAuth';
+import { fetchMembersAsync } from '../store/members/members.actions';
+import {selectMembers} from "../store/members/members.selector";
+import { selectProjectMembers } from '../store/projectMembers/projectMembers.selector';
+import { setProjectMembers } from '../store/projectMembers/projectMembers.actions';
 
 const ProjectMembers = () => {
     const NUMBER_OF_MEMBERS_TO_DISPLAY = 4;
     const [membersPopUpTabOpen, setMembersPopUpTabOpen] = useState(false);
-    const user = useSelector(selectCurrentUser);
+    const {userInfo, user} = useAuth();
     const currentProject = useSelector(selectCurrentProject);
     const projectMembers = useSelector(selectProjectMembers);
-    const availableMembers = useSelector(selectAvailableMembers);
     const dispatch = useDispatch();
+    const members = useSelector(selectMembers);
 
     const toggleMembersPopUpTab = () => {
-        setMembersPopUpTabOpen(!membersPopUpTabOpen);
+        return setMembersPopUpTabOpen(!membersPopUpTabOpen);
     }
 
     const handleAddMember = (member) => {
@@ -30,17 +32,13 @@ const ProjectMembers = () => {
         else dispatch(setCurrentProject({...currentProject, members: [...currentProject.members, member]}));
     }
 
-    const fetchAvailableMembers = () => {
-        return async (dispatch) => {
-          const {data: users} = await getMembers();
-          dispatch(setProjectMembers(users));
-          dispatch(setAvailableMembers(users));
-        }
-      }
-
     useEffect(() => {
-        dispatch(fetchAvailableMembers());
+        dispatch(fetchMembersAsync());
     }, [])
+
+    // useEffect(() => { // Update project members each time projectMembers changes
+    //     dispatch(setCurrentProject({...currentProject, members: projectMembers}));
+    // }, projectMembers) // LINE 32 DOES THAT
 
   return (
     <>
@@ -83,7 +81,7 @@ const ProjectMembers = () => {
         <span className='icon-span add' onClick={toggleMembersPopUpTab}><RxPlus className='icon'/>
         {membersPopUpTabOpen
             ?   <div className='options-menu open'>
-                    {availableMembers.map((member, index) => {
+                    {members.map((member, index) => {
                         if (member._id === user._id) return '';
                         if (projectMembers.find(project_member => project_member._id === member._id)) {
                             return (

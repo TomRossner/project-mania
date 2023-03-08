@@ -1,12 +1,6 @@
 import { PROJECT_ACTION_TYPES } from "./project.types";
 import { createAction } from "../action-creator";
 
-export const setAvailableMembers = (members) => {
-    return createAction(PROJECT_ACTION_TYPES.SET_AVAILABLE_MEMBERS, members);
-}
-export const setBoards = (boards) => {
-    return createAction(PROJECT_ACTION_TYPES.SET_BOARDS, boards);
-}
 export const setCreatePopupOpen = (bool) => {
     return createAction(PROJECT_ACTION_TYPES.SET_CREATE_POPUP, bool);
 }
@@ -27,9 +21,6 @@ export const setNotificationTabOpen = (bool) => {
 }
 export const setProfileTabOpen = (bool) => {
     return createAction(PROJECT_ACTION_TYPES.SET_PROFILE_TAB, bool);
-}
-export const setProjectMembers = (members) => {
-    return createAction(PROJECT_ACTION_TYPES.SET_PROJECT_MEMBERS, members);
 }
 export const setProjectMenuOpen = (bool) => {
     return createAction(PROJECT_ACTION_TYPES.SET_PROJECT_MENU_TAB, bool);

@@ -7,7 +7,6 @@ const INITIAL_STATE = {
     currentProject: null,
     notificationTabOpen: false,
     profileTabOpen: false,
-    availableMembers: [],
     createPopupOpen: false,
     stage: null,
     projectMenuTabOpen: false,
@@ -20,16 +19,10 @@ export const projectReducer = (state = INITIAL_STATE, action) => {
     const {type, payload} = action;
 
     switch(type) {
-        case PROJECT_ACTION_TYPES.SET_BOARDS:
-            return {...state, boards: payload};
         case PROJECT_ACTION_TYPES.SET_CURRENT_PROJECT:
             return {...state, currentProject: payload};
         case PROJECT_ACTION_TYPES.SET_SELECTED_STAGE:
             return {...state, stage: payload};
-        case PROJECT_ACTION_TYPES.SET_PROJECT_MEMBERS:
-            return {...state, projectMembers: payload};
-        case PROJECT_ACTION_TYPES.SET_AVAILABLE_MEMBERS:
-            return {...state, availableMembers: payload};
         case PROJECT_ACTION_TYPES.SET_ELEMENT:
             return {...state, element: payload};
         case PROJECT_ACTION_TYPES.SET_TASK_PRIORITY:

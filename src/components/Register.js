@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { setError, setErrorPopupOpen } from '../store/project/project.actions';
 import {FcGoogle} from "react-icons/fc";
 import { signUpUser } from '../firebase/config';
+import useAuth from '../hooks/useAuth';
 
 const defaultRegistrationFormValues = {
     first_name: "",
@@ -21,6 +22,7 @@ const Register = () => {
     const {first_name, last_name, email, password, confirm_password} = formValues;
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const {googleSignUp} = useAuth();
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -32,7 +34,7 @@ const Register = () => {
         try {
             await addNewUser(formValues);
             resetFormValues();
-            navigate('/login');
+            navigate('/sign-in');
         } catch ({response}) {
             if (response.data.error && response.status === 400) {
                 dispatch(setError(response.data.error));
@@ -48,7 +50,7 @@ const Register = () => {
     }
 
     const handleGoogleSignUp = async () => {
-        await signUpUser();
+        await googleSignUp();
     }
 
   return (
@@ -115,7 +117,7 @@ const Register = () => {
                     <button type="button" className="btn form white" onClick={handleGoogleSignUp}><FcGoogle className="icon"/>Sign up with Google</button>
                 </div>
             </div>
-            <p>Already registered? <Link to="/login" className='link blue'>Log in</Link></p>
+            <p>Already registered? <Link to="/sign-in" className='link blue'>Log in</Link></p>
         </form>
     </div>
     </>
