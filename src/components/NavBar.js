@@ -15,6 +15,9 @@ import { getProjects } from '../httpRequests/projectsRequests';
 import { setCurrentProject } from '../store/project/project.actions';
 import useAuth from '../hooks/useAuth';
 import {selectBoards} from "../store/boards/boards.selector";
+import {MdLogout, MdLogin} from "react-icons/md";
+import {ImUserPlus} from "react-icons/im";
+import {HiUserGroup} from "react-icons/hi";
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -75,13 +78,14 @@ const NavBar = () => {
                   <Link className='link flex1'>Projects</Link>
                 <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
               </li>
-              {boards.length ?
+              {user && isAuthenticated && boards.length ?
               <>
               <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
                 {boards?.map(project => <p onClick={() => handleClick(project)} key={project._id}>{project.title}</p>)}
               </div>
               </> : null}
             </div>
+            <li><IconContainer icon={<HiUserGroup className='icon'/>}/><Link className='link' to="/users">Browse users</Link></li>
             <li><IconContainer icon={<BsChatLeftText className='icon small'/>}/><Link className='link'>Messages</Link></li>
             <li><IconContainer icon={<IoSettingsOutline className="icon"/>}/><Link className='link'>Settings</Link></li>
         </ul>
@@ -91,10 +95,10 @@ const NavBar = () => {
               {
                 !user || !isAuthenticated ?
                 <>
-                  <Link className="link" to="/sign-in">Login</Link>
-                  <Link className="link" to="/sign-up">Sign up</Link>
+                  <Link className="link flex-align" to="/sign-in"><IconContainer icon={<MdLogin className="icon"/>}/>Login</Link>
+                  <Link className="link flex-align" to="/sign-up"><IconContainer icon={<ImUserPlus className="icon"/>}/>Sign up</Link>
                 </> :
-                  <Link className="link" to="/logout">Logout</Link>
+                  <Link className="link flex-align" to="/logout"><IconContainer icon={<MdLogout className="icon"/>}/>Logout</Link>
               }
               <div className='flex1'></div>
             </div>

@@ -7,8 +7,8 @@ import { setCurrentProject } from '../store/project/project.actions';
 import useAuth from '../hooks/useAuth';
 import { fetchMembersAsync } from '../store/members/members.actions';
 import {selectMembers} from "../store/members/members.selector";
-import { selectProjectMembers } from '../store/projectMembers/projectMembers.selector';
-import { setProjectMembers } from '../store/projectMembers/projectMembers.actions';
+import { selectProjectMembers } from '../store/project/project.selector';
+import { setProjectMembers } from '../store/project/project.actions';
 
 const ProjectMembers = () => {
     const NUMBER_OF_MEMBERS_TO_DISPLAY = 4;
@@ -34,6 +34,10 @@ const ProjectMembers = () => {
 
     useEffect(() => {
         dispatch(fetchMembersAsync());
+    }, [])
+
+    useEffect(() => {
+        if (currentProject) dispatch(setProjectMembers(currentProject.members));
     }, [])
 
     // useEffect(() => { // Update project members each time projectMembers changes

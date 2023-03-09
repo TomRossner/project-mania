@@ -197,6 +197,8 @@ body{
     user-select: none;
     text-align: left;
     border: 1px solid $light_grey;
+    min-width: 100px;
+    max-width: fit-content;
 
     p{
         padding: 0.2rem 0.5rem;
@@ -301,5 +303,24 @@ hr.line{
             }
         }
     }
+}
 
+.create-to-get-started{
+    width: 40%;
+    margin: 10vh auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-direction: column;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 5px $grey;
+    border: 1px solid $blue_hover;
+}
+
+.flex-align{
+    display: flex;
+    align-items: center;
+    padding: 0;
 }

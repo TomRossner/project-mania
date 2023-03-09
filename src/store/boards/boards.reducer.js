@@ -10,6 +10,8 @@ export const boardsReducer = (state = INITIAL_STATE, action) => {
     const {type, payload} = action;
 
     switch(type) {
+        case BOARDS_ACTION_TYPES.SET_BOARDS:
+            return {...state, boards: payload};
         case BOARDS_ACTION_TYPES.FETCH_BOARDS_START:
             return {...state, isLoading: true};
         case BOARDS_ACTION_TYPES.FETCH_BOARDS_SUCCESS:

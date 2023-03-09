@@ -21,8 +21,6 @@ export const projectReducer = (state = INITIAL_STATE, action) => {
     switch(type) {
         case PROJECT_ACTION_TYPES.SET_CURRENT_PROJECT:
             return {...state, currentProject: payload};
-        case PROJECT_ACTION_TYPES.SET_SELECTED_STAGE:
-            return {...state, stage: payload};
         case PROJECT_ACTION_TYPES.SET_ELEMENT:
             return {...state, element: payload};
         case PROJECT_ACTION_TYPES.SET_TASK_PRIORITY:
@@ -41,6 +39,8 @@ export const projectReducer = (state = INITIAL_STATE, action) => {
             return {...state, profileTabOpen: payload};
         case PROJECT_ACTION_TYPES.SET_STAGE:
             return {...state, stage: payload};
+        case PROJECT_ACTION_TYPES.SET_PROJECT_MEMBERS:
+            return {...state, projectMembers: payload};
         default:
             return state;
     }

@@ -12,6 +12,7 @@
     flex-direction: column;
     gap: 0.5rem;
     user-select: none;
+    animation: fadeIn forwards 0.3s;
 
     &:hover{
         border: 1px solid $blue_hover;

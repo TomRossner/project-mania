@@ -9,7 +9,8 @@
     justify-content: center;
     gap: 0.3rem;
     font-weight: 400;
-    transition: border 0.15s, scale 0.1s, color 0.15s;
+    width: fit-content;
+    transition: border 0.15s, scale 0.2s, color 0.15s;
 
     .icon{
         font-size: 1.3rem;
@@ -27,5 +28,6 @@
 
     &:active{
         scale: 0.9;
+        transition: scale 0.1s;
     }
 }

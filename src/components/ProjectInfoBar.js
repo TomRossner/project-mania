@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import IconContainer from './common/IconContainer';
 import { BsCircleFill } from 'react-icons/bs';
 import { CgMenuGridO } from 'react-icons/cg';
@@ -26,6 +26,7 @@ const ProjectInfoBar = () => {
 
     const handleMenuOption = (opt) => {
         if (!opt || typeof opt !== 'string') return;
+        dispatch(setProjectMenuOpen(false));
 
         switch(opt.toLowerCase()) {
             case 'view project summary':
@@ -33,7 +34,7 @@ const ProjectInfoBar = () => {
             case 'add stage':
                 return handleAddStage();
             case 'manage team':
-                return console.log(opt);
+                return handleManageTeam();
             case 'edit project':
                 return console.log(opt);
             case 'delete project':
@@ -43,13 +44,17 @@ const ProjectInfoBar = () => {
         }
     }
 
+    const handleManageTeam = () => {
+        navigate("/users");
+    }
+
     const handleDeleteProject = async (id) => {
         await deleteProject(id);
         dispatch(setCurrentProject(null));
         dispatch(setBoards([...boards.filter(board => board._id !== currentProject._id)]));
         navigate("/");
     }
-
+    
     const handleAddStage = () => {
         dispatch(setCreatePopupOpen(true));
         dispatch(setProjectMenuOpen(false));

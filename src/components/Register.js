@@ -50,7 +50,20 @@ const Register = () => {
     }
 
     const handleGoogleSignUp = async () => {
-        await googleSignUp();
+        try {
+            await googleSignUp();
+        } catch ({response}) {
+            if (response.data.error && response.status === 400) {
+                if (response.data.error === 'User already registered') {
+                    dispatch(setError(`${response.data.error}. You may log in using your Google account.`));
+                    dispatch(setErrorPopupOpen(true));
+                    return;
+                } else {
+                    dispatch(setError(response.data.error));
+                    dispatch(setErrorPopupOpen(true));
+                }
+            }
+        }
     }
 
   return (

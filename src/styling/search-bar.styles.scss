@@ -7,13 +7,14 @@
     border-radius: 10px;
     border: 1px solid $light_grey;
     width: fit-content;
+    transition: border 0.15s, background-color 0.15s;
 
     input{
         border: none;
         font-size: 1.2rem;
         background-color: transparent;
         padding: 0.2em 0.5em;
-        color: $blue;
+        color: $dark;
 
         &:focus{
             outline: none;
@@ -25,5 +26,10 @@
             font-weight: 300;
             opacity: 0.8;
         }
+    }
+
+    &:focus-within{
+        border: 1px solid $dark;
+        background-color: $light;
     }
 }

@@ -23,6 +23,7 @@ import TopNav from "./components/TopNav";
 import useAuth from "./hooks/useAuth";
 import { selectBoards } from "./store/boards/boards.selector";
 import { fetchBoardsAsync } from "./store/boards/boards.actions";
+import Users from "./components/Users";
 
 // Styles
 import "./styling/general.styles.scss";
@@ -41,6 +42,8 @@ import "./styling/right-nav.styles.scss";
 import "./styling/auth.styles.scss";
 import "./styling/back-button.styles.scss";
 import "./styling/spinner.styles.scss";
+import "./styling/users.styles.scss";
+import PrivateRoute from "./components/common/PrivateRoute";
 
 // Styles
 // import "./styles/main-styles.scss";
@@ -114,19 +117,20 @@ const App = () => {
         <div className="main-content">
           <TopNav fn={handleCreateBoard}/>
           <Routes>
-            <Route path="/" element={<ProjectManagement/>}/>
-            <Route path="/projects" element={<Projects/>}/>
-            <Route path="/projects/:id" element={<ProjectOverview/>}/>
-            <Route path="/projects/:id/notifications" element={<Notifications/>}/>
-            <Route path="/projects/:id/:stage_id/:task_id" element={<Task/>}/>
-            <Route path="/profile" element={<Profile/>}/>
-            <Route path="/logout" element={<Logout/>}/>
+            <Route path="/" element={<PrivateRoute element={<ProjectManagement/>}/>}/>
+            <Route path="/projects" element={<PrivateRoute element={<Projects/>}/>}/>
+            <Route path="/projects/:id" element={<PrivateRoute element={<ProjectOverview/>}/>}/>
+            <Route path="/projects/:id/notifications" element={<PrivateRoute element={<Notifications/>}/>}/>
+            <Route path="/projects/:id/:stage_id/:task_id" element={<PrivateRoute element={<Task/>}/>}/>
+            <Route path="/profile" element={<PrivateRoute element={<Profile/>}/>}/>
+            <Route path="/logout" element={<PrivateRoute element={<Logout/>}/>}/>
             <Route path="/sign-in" element={<Login/>}/>
             <Route path="/sign-up" element={<Register/>}/>
+            <Route path="/users" element={<PrivateRoute element={<Users/>}/>}/>
           </Routes>
           <div className="flex1"></div>
         </div>
-        <RightNav></RightNav>
+        <RightNav/>
       </div>
     </div>
   )

@@ -14,8 +14,8 @@ import useAuth from '../../hooks/useAuth';
 import { selectBoards } from '../../store/boards/boards.selector';
 import { selectMembers } from '../../store/members/members.selector';
 import { setBoards } from '../../store/boards/boards.actions';
-import { selectProjectMembers } from '../../store/projectMembers/projectMembers.selector';
-import { setProjectMembers } from '../../store/projectMembers/projectMembers.actions';
+import { selectProjectMembers } from '../../store/project/project.selector';
+import { setProjectMembers } from '../../store/project/project.actions';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
@@ -29,10 +29,6 @@ const BoardForm = () => {
   const {user} = useAuth();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(members)
-  }, [members])
-
   const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
 
   const addBoard = async (values) => {
@@ -40,8 +36,7 @@ const BoardForm = () => {
     if (createPopupOpen) closeCreatePopup();
     try {
         const {data: userInfo} = await getUserInfo(user._id);
-        const response = await addProject({...values, members: [...projectMembers, userInfo]});
-        const newProject = response.data;
+        const {data: newProject} = await addProject({...values, members: [...projectMembers, userInfo]});
         dispatch(setBoards([...boards, {...newProject, due_date: new Date(newProject.due_date).toDateString()}]));
     } catch ({response}) {
         if (response.data.error && response.status === 400) {
@@ -49,7 +44,7 @@ const BoardForm = () => {
             dispatch(setErrorPopupOpen(true));
         }
     }
-}
+  }
 
 
   const handleFormSubmit = (e) => {
@@ -94,7 +89,7 @@ const BoardForm = () => {
     }
   }, [readOnly]);
 
-  useEffect(() => {
+  useEffect(() => { // Reset projectMembers when opening the form so the user can choose members
     if (projectMembers.length) dispatch(setProjectMembers([]));
   }, [])
 
@@ -107,15 +102,40 @@ const BoardForm = () => {
       </div>
         <div className='form-inputs-container'>
 
-            <Input name="subtitle" type="text" value={subtitle} onChange={handleInputChange} id="subtitle" text="Subtitle"/>
+            <Input
+              name="subtitle"
+              type="text"
+              value={subtitle}
+              onChange={handleInputChange}
+              id="subtitle"
+              text="Subtitle"
+            />
 
-            <Input name="due_date" type="date" value={due_date} onChange={handleInputChange} id="due_date" text="Due date"/>
+            <Input
+              name="due_date"
+              type="date"
+              value={due_date}
+              onChange={handleInputChange}
+              id="due_date"
+              text="Due date"
+            />
 
             <div className='input-container'>
               <label htmlFor='members'>Members</label>
               <select onChange={handleAddMembers}>
                 <option value="">Choose members</option>
-                {members?.map(member => <option key={member._id} value={member._id}>{member.first_name} {member.last_name}</option>)}
+                {members?.map(member => {
+                  if (member._id === user._id) {
+                    return (
+                    <option key={member._id}value={member._id}>
+                      {member.first_name} {member.last_name} (You)
+                    </option>);
+                  }
+                  else return (
+                    <option key={member._id} value={member._id}>
+                      {member.first_name} {member.last_name}
+                    </option>)
+                })}
               </select>
             </div>
 

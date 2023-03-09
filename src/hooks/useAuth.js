@@ -54,10 +54,6 @@ const useAuth = () => {
         
     }, [user, isAuthenticated])
 
-    useEffect(() => {
-        console.log(userInfo)
-    }, [userInfo])
-
     return {
         isAuthenticated,
         user,
