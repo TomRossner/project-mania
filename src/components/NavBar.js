@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 import { IoIosNotifications } from "react-icons/io";
-import { BsCircleFill } from "react-icons/bs";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectProject, selectUserProjects } from '../store/project/project.selector';
 import { setCreatePopupOpen, setNotificationTabOpen, setProjectMenuOpen, setProfileTabOpen, setBoards } from '../store/project/project.actions';
@@ -15,7 +14,7 @@ import { getProjects } from '../httpRequests/projectsRequests';
 import { setCurrentProject } from '../store/project/project.actions';
 import useAuth from '../hooks/useAuth';
 import {selectBoards} from "../store/boards/boards.selector";
-import {MdLogout, MdLogin} from "react-icons/md";
+import {MdLogout, MdLogin, MdPerson} from "react-icons/md";
 import {ImUserPlus} from "react-icons/im";
 import {HiUserGroup} from "react-icons/hi";
 
@@ -97,8 +96,12 @@ const NavBar = () => {
                 <>
                   <Link className="link flex-align" to="/sign-in"><IconContainer icon={<MdLogin className="icon"/>}/>Login</Link>
                   <Link className="link flex-align" to="/sign-up"><IconContainer icon={<ImUserPlus className="icon"/>}/>Sign up</Link>
-                </> :
+                </>
+                :
+                <>
+                  <Link className="link flex-align" to="/profile"><IconContainer icon={<MdPerson className="icon large"/>}/>My Profile</Link>
                   <Link className="link flex-align" to="/logout"><IconContainer icon={<MdLogout className="icon"/>}/>Logout</Link>
+                </>
               }
               <div className='flex1'></div>
             </div>

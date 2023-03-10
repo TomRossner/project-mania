@@ -31,7 +31,7 @@
 
 nav{
     padding-inline: 1rem;
-    width: 17%;
+    width: 15%;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -87,7 +87,7 @@ nav{
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 0.5rem 0;
+            padding: 0.5rem 0 1.5rem 0;
         }
     }
 
@@ -95,13 +95,16 @@ nav{
         display: flex;
         align-items: center;
         gap: 1.5rem;
-
         font-size: 1.2rem;
         font-weight: 700;
 
-        .icon-span .icon.profile{
-            scale: 2;
-            color: $blue;
+        .icon-span {
+            padding: 1rem;
+
+            .icon.profile{
+                scale: 2;
+                color: $blue;
+            }
         }
     }
 }

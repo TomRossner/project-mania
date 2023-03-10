@@ -1,0 +1,66 @@
+@import "./general.styles.scss";
+
+.notifs-tab{
+    position: absolute;
+    top: 2rem;
+    right: 6rem;
+    z-index: 10;
+    width: 20vw;
+    max-height: 35vh;
+    padding: 0.5rem 1rem;
+    border: 1px solid $blue_hover;
+    border-radius: 10px;
+    box-shadow: 0 0 8px $grey;
+    background-color: white;
+    animation: fadeIn forwards 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    h3{
+        font-size: 1.5rem;
+        padding-inline: 0.3rem;
+    }
+
+    .line{
+        margin-bottom: 0;
+    }
+
+    .notifications-container{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        overflow-y: auto;
+        
+        .notification{
+            padding: 0.2rem 0.5rem;
+            min-height: 5vh;
+            border-radius: 5px;
+            background-color: $light;
+            border: 1px solid $light_grey;
+            transition: border 0.15s, background-color 0.15s;
+            
+            &.marked{
+                border: 1px solid $blue_hover;
+                background-color: $light_bg;
+            }
+        }
+    }
+
+
+    .buttons-container{
+        justify-content: flex-end;
+    }
+
+    .btn{
+        
+        .icon-span{
+            padding: 0.2rem;
+
+            .icon{
+                scale: 1.2;
+            }
+        }
+    }
+}

@@ -69,11 +69,11 @@ body{
     }
 
     .main-content{
-        // flex: 1;
-        max-width: 65%;
+        flex: 1;
         background-color: $light_grey2;
         border-radius: 20px;
         padding: 0.5rem 1.5rem;
+        position: relative;
     }
 }
 
@@ -85,6 +85,7 @@ body{
     padding: 0.5rem;
     display: flex;
     align-items: center;
+    position: relative;
 
     .icon{
         color: $grey;
@@ -96,6 +97,22 @@ body{
 
         &.reversed{
             transform: rotateZ(90deg);
+        }
+
+        &.large{
+            scale: 1.2;
+        }
+    }
+
+    &.absolute{
+        position: absolute;    
+        background-color: transparent;
+        top: 0.3rem;
+        right: 1.4rem;
+        animation: fadeIn forwards 0.3s;
+        
+        .icon{
+            scale: 0.7;
         }
     }
 }
@@ -253,7 +270,6 @@ hr.line{
         align-items: center;
 
         .error-popup-container{
-            border: 1px solid red;
             width: 25%;
             min-height: 20vh;
             margin: 30vh auto auto auto;
@@ -297,9 +313,6 @@ hr.line{
 
             .btn{
                 width: fit-content;
-                // position: absolute;
-                // right: 0.3rem;
-                // bottom: 0.3rem;
                 align-self: flex-end;
             }
         }
@@ -318,6 +331,7 @@ hr.line{
     border-radius: 10px;
     box-shadow: 0 0 5px $grey;
     border: 1px solid $blue_hover;
+    background-color: white;
 }
 
 .flex-align{

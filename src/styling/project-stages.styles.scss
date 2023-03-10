@@ -33,6 +33,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                width: fit-content;
 
                 .icon-span.plus{
                     padding: 0.3rem;
@@ -57,7 +58,6 @@
 
             .input-container{
                 flex: 1;
-                max-width: 70%;
 
                 input{
                     background-color: transparent;

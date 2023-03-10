@@ -41,3 +41,31 @@ export const defaultTaskProperties = {
     priority: "low",
     subtitle: ""
 }
+
+export const activityProperties = {
+    created_at: new Date(),
+    text: "",
+    subject: "",
+    specified_members_names: [],
+    specified_element: [],
+    created_by: null
+}
+
+export const activitySubjects = {
+    ADD_TASK: "ADD_TASK",
+    DELETE_TASK: "DELETE_TASK",
+    EDIT_TASK: "EDIT_TASK",
+    CHECK_TASK: "CHECK_TASK",
+    MOVE_TASK: "MOVE_TASK",
+    UNCHECK_TASK: "UNCHECK_TASK",
+    CREATE_PROJECT: "CREATE_PROJECT",
+    DELETE_PROJECT: "DELETE_PROJECT",
+    EDIT_PROJECT: "EDIT_PROJECT",
+    ADD_MEMBER_TO_PROJECT: "ADD_MEMBER_TO_PROJECT",
+    REMOVE_MEMBER_FROM_PROJECT: "REMOVE_MEMBER_FROM_PROJECT",
+    ADD_STAGE: "ADD_STAGE",
+    DELETE_STAGE: "DELETE_STAGE",
+    EDIT_STAGE: "EDIT_STAGE",
+    SEND_MESSAGE: "SEND_MESSAGE",
+    RECEIVE_MESSAGE: "RECEIVE_MESSAGE"
+}

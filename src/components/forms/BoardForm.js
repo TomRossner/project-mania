@@ -16,6 +16,7 @@ import { selectMembers } from '../../store/members/members.selector';
 import { setBoards } from '../../store/boards/boards.actions';
 import { selectProjectMembers } from '../../store/project/project.selector';
 import { setProjectMembers } from '../../store/project/project.actions';
+import { fetchMembersAsync } from '../../store/members/members.actions';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
@@ -36,7 +37,7 @@ const BoardForm = () => {
     if (createPopupOpen) closeCreatePopup();
     try {
         const {data: userInfo} = await getUserInfo(user._id);
-        const {data: newProject} = await addProject({...values, members: [...projectMembers, userInfo]});
+        const {data: newProject} = await addProject({...values, members: [...projectMembers, userInfo], admins: [userInfo]});
         dispatch(setBoards([...boards, {...newProject, due_date: new Date(newProject.due_date).toDateString()}]));
     } catch ({response}) {
         if (response.data.error && response.status === 400) {
@@ -45,7 +46,6 @@ const BoardForm = () => {
         }
     }
   }
-
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -89,8 +89,13 @@ const BoardForm = () => {
     }
   }, [readOnly]);
 
-  useEffect(() => { // Reset projectMembers when opening the form so the user can choose members
+  useEffect(() => {
+
+    // Reset projectMembers when opening the form so the user can choose members
     if (projectMembers.length) dispatch(setProjectMembers([]));
+
+    // Fetch all members
+    dispatch(fetchMembersAsync());
   }, [])
 
   return (

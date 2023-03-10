@@ -26,6 +26,7 @@ import Users from "./components/Users";
 import PrivateRoute from "./components/common/PrivateRoute";
 import Space from "./components/common/Space";
 import { setNotificationTabOpen, setProfileTabOpen } from "./store/project/project.actions";
+import NotificationTab from "./components/NotificationTab";
 
 // Styles
 import "./styling/general.styles.scss";
@@ -45,6 +46,8 @@ import "./styling/auth.styles.scss";
 import "./styling/back-button.styles.scss";
 import "./styling/spinner.styles.scss";
 import "./styling/users.styles.scss";
+import "./styling/notifications.styles.scss";
+import "./styling/activity.styles.scss";
 
 // Styles
 // import "./styles/main-styles.scss";
@@ -113,7 +116,7 @@ const App = () => {
   useEffect(() => {
     if (user && isAuthenticated) dispatch(fetchBoardsAsync(user._id));
     if (!user || !isAuthenticated) dispatch(setCurrentProject(null));
-  }, [user])
+  }, [user, isAuthenticated])
 
   return (
     <div className='main'>
@@ -122,6 +125,7 @@ const App = () => {
       <div className="sections-container">
         <NavBar/>
         <div className="main-content">
+          {notificationTabOpen ? <NotificationTab/> : null}
           <TopNav fn={handleCreateBoard} fn2={handleToggleNotificationTab}/>
           <Routes>
             <Route path="/" element={<PrivateRoute element={<ProjectManagement/>}/>}/>

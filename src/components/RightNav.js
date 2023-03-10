@@ -5,6 +5,7 @@ import { selectCurrentProject } from '../store/project/project.selector';
 import { BsPersonCircle } from 'react-icons/bs';
 import IconContainer from './common/IconContainer';
 import useAuth from '../hooks/useAuth';
+import Activity from './Activity';
 
 const RightNav = () => {
     const {user} = useAuth();
@@ -31,20 +32,27 @@ const RightNav = () => {
             <p>{currentProject?.subtitle}</p>
             </div>
 
-            <div className="current-project-admins">
-            <span>BOARD ADMINS</span>
-            <div className="admins">
-                <div className="admin">
-                <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>
-                <span>{userName}</span>
-                </div>
-            </div>
-            </div>
+            {currentProject?.admins?.length ? <div className="current-project-admins">
+              <span>BOARD ADMINS</span>
+              <div className="admins">
+                {currentProject.admins.map(admin => {
+                  if (admin._id === user._id) {
+                    return (
+                      <div className="admin">
+                        <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>
+                        <span>{userName} (You)</span>
+                      </div>)
+                  } else return (
+                      <div className="admin">
+                        <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>
+                        <span>{admin.first_name} {admin.last_name}</span>
+                      </div>) 
+                })}
+              </div>
+            </div> : null}
         </div>
 
-        <div className="activity">
-            <h3>Recent Activity</h3>
-        </div>
+        <Activity/>
 
         </div>
     </nav>

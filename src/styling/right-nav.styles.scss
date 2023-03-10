@@ -1,5 +1,9 @@
 @import "./general.styles.scss";
 
+#right-nav{
+    width: 17%;
+}
+
 .right-nav-content{
     height: 100%;
     display: flex;
@@ -63,9 +67,5 @@
                 }
             }
         }
-    }
-
-    .activity{
-        flex: 1;
-    }    
+    }   
 }
