@@ -13,7 +13,7 @@ import Create from "./components/Create";
 import ErrorPopup from "./components/ErrorPopup";
 import Logout from "./components/Logout";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserAsync, setIsAuthenticated, setUser } from "./store/auth/auth.actions";
+import { setUser } from "./store/auth/auth.actions";
 import { getUser } from "./httpRequests/auth";
 import { selectCurrentProject, selectProject } from "./store/project/project.selector";
 import { updateProject } from "./httpRequests/projectsRequests";
@@ -21,9 +21,11 @@ import { setCreatePopupOpen, setCurrentProject, setElement } from "./store/proje
 import RightNav from "./components/RightNav";
 import TopNav from "./components/TopNav";
 import useAuth from "./hooks/useAuth";
-import { selectBoards } from "./store/boards/boards.selector";
 import { fetchBoardsAsync } from "./store/boards/boards.actions";
 import Users from "./components/Users";
+import PrivateRoute from "./components/common/PrivateRoute";
+import Space from "./components/common/Space";
+import { setNotificationTabOpen, setProfileTabOpen } from "./store/project/project.actions";
 
 // Styles
 import "./styling/general.styles.scss";
@@ -43,7 +45,6 @@ import "./styling/auth.styles.scss";
 import "./styling/back-button.styles.scss";
 import "./styling/spinner.styles.scss";
 import "./styling/users.styles.scss";
-import PrivateRoute from "./components/common/PrivateRoute";
 
 // Styles
 // import "./styles/main-styles.scss";
@@ -74,6 +75,7 @@ const App = () => {
   const dispatch = useDispatch();
   const currentProject = useSelector(selectCurrentProject);
   const {user, isAuthenticated} = useAuth();
+  const {notificationTabOpen, profileTabOpen} = useSelector(selectProject)
 
   const refreshUser = () => {
     dispatch(setUser(getUser()));
@@ -82,6 +84,11 @@ const App = () => {
   const handleCreateBoard = () => {
     dispatch(setCreatePopupOpen(true));
     dispatch(setElement("board"));
+  }
+
+  const handleToggleNotificationTab = () => {
+    dispatch(setNotificationTabOpen(!notificationTabOpen));
+    if (profileTabOpen) dispatch(setProfileTabOpen(false));
   }
 
   const update = async (project) => {
@@ -115,7 +122,7 @@ const App = () => {
       <div className="sections-container">
         <NavBar/>
         <div className="main-content">
-          <TopNav fn={handleCreateBoard}/>
+          <TopNav fn={handleCreateBoard} fn2={handleToggleNotificationTab}/>
           <Routes>
             <Route path="/" element={<PrivateRoute element={<ProjectManagement/>}/>}/>
             <Route path="/projects" element={<PrivateRoute element={<Projects/>}/>}/>
@@ -128,7 +135,7 @@ const App = () => {
             <Route path="/sign-up" element={<Register/>}/>
             <Route path="/users" element={<PrivateRoute element={<Users/>}/>}/>
           </Routes>
-          <div className="flex1"></div>
+          <Space/>
         </div>
         <RightNav/>
       </div>

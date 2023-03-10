@@ -3,7 +3,6 @@ import BoardForm from './forms/BoardForm';
 import StageForm from './forms/StageForm';
 import TaskForm from './forms/TaskForm';
 import { RxCross2 } from 'react-icons/rx';
-import IconContainer from './common/IconContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentProject, selectProject } from '../store/project/project.selector';
 import { setCreatePopupOpen, setElement } from '../store/project/project.actions';
@@ -18,7 +17,7 @@ const Create = () => {
         dispatch(setElement(element));
     }
 
-    const handleCreatePopup = () => dispatch(setCreatePopupOpen(false));
+    const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
 
     // Reset element every time popup is closed 
     useEffect(() => {
@@ -29,7 +28,7 @@ const Create = () => {
     <>
     {createPopupOpen ?
         (<div className='create-popup-container active'>
-            <span onClick={handleCreatePopup} className="icon-span" id="close">{<RxCross2 className='icon'/>}</span>
+            <span onClick={closeCreatePopup} className="icon-span" id="close">{<RxCross2 className='icon'/>}</span>
             <div className='create-popup active'>
                 <div className='element-options'>
                     <span>Create a new: </span>

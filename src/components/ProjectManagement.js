@@ -4,11 +4,11 @@ import useAuth from '../hooks/useAuth';
 
 
 const ProjectManagement = () => {
-  const {user} = useAuth();
+  const {user, isAuthenticated} = useAuth();
 
   return (
     <>
-    {user ? <Navigate to="/projects"/> : <Navigate to="/sign-in"/>}
+    {user && isAuthenticated ? <Navigate to="/projects"/> : <Navigate to="/sign-in"/>}
     </>
   )
 }

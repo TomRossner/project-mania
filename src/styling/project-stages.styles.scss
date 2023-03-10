@@ -5,8 +5,14 @@
     justify-content: space-around;
     flex-wrap: nowrap;
     gap: 1rem;
+    flex: 1;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-height: 20vh;
 
     .stage-container{
+        min-width: 30%;
 
         .stage-tasks{
             padding: 0.5rem 0;
@@ -14,6 +20,7 @@
 
         .stage-title-container{
             display: flex;
+            width: 100%;
             align-items: center;
             background-color: white;
             box-shadow: 0 3px 20px $light_grey;
@@ -50,6 +57,7 @@
 
             .input-container{
                 flex: 1;
+                max-width: 70%;
 
                 input{
                     background-color: transparent;
@@ -75,7 +83,7 @@
             }
 
             .options-menu{
-                right: 4rem;
+                right: 4.5rem;
             }
         }
     }

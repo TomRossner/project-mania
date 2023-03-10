@@ -69,7 +69,8 @@ body{
     }
 
     .main-content{
-        flex: 1;
+        // flex: 1;
+        max-width: 65%;
         background-color: $light_grey2;
         border-radius: 20px;
         padding: 0.5rem 1.5rem;

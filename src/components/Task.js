@@ -13,6 +13,7 @@ import { task_options } from '../utils/taskMenuOptions';
 import EditElement from './EditElement';
 import { defaultTaskProperties } from '../utils/defaultProperties';
 import {MdRemoveDone} from "react-icons/md";
+import Space from './common/Space';
 
 const Task = () => {
     const {id, stage_id, task_id} = useParams();
@@ -124,7 +125,7 @@ const Task = () => {
             </div>
           </div>
           <p className='task-desc'>{activeTask.description}</p>
-          <div className="flex1"></div>
+          <Space/>
           <Chat/>
         </div>
       ) : <div className='task-container'></div>}

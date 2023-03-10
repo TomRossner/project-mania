@@ -17,7 +17,7 @@ export async function loginUser(values) {
     return getUser();
 }
 
-export async function addNewUser(values) {
+export async function registerUser(values) {
     const {first_name, last_name, email, password} = values; // Everything except confirmedPassword
     return await axios.post(`/auth/sign-up`, {first_name, last_name, email, password});
 }

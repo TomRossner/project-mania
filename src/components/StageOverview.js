@@ -7,7 +7,6 @@ import ProgressBar from './common/ProgressBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentProject } from '../store/project/project.selector';
 import { setCurrentProject, setStage, setCreatePopupOpen, setElement} from '../store/project/project.actions';
-import ThreeDotsMenu from './common/ThreeDotsMenu';
 import OptionsMenu from './common/OptionsMenu';
 import IconContainer from './common/IconContainer';
 import { selectBoards } from '../store/boards/boards.selector';
@@ -138,11 +137,13 @@ const StageOverview = ({stage}) => {
             : null)}
         </div>
         <div className='flex1'></div>
+        {stage_tasks.length ?
         <div className='stage-status'>
             <h4 className='white'>Status</h4>
-            <p className='white'>{stage_tasks.length ? ((stage_tasks.filter(task => task.isDone === true).length / stage_tasks.length) * 100).toFixed() : 0}% completed</p>
+            <p className='white'>{((stage_tasks.filter(task => task.isDone === true).length / stage_tasks.length) * 100).toFixed()}% completed</p>
             <ProgressBar stage={stage} tasksDone={Number(stage.tasks_done)} totalTasks={Number(stage_tasks.length)}/>
         </div>
+        : null}
     </div>
   )
 }

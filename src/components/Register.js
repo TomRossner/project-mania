@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import BackButton from './common/BackButton';
-import { addNewUser } from '../httpRequests/auth';
+import { registerUser } from '../httpRequests/auth';
 import Input from './common/Input';
 import { useDispatch } from 'react-redux';
 import { setError, setErrorPopupOpen } from '../store/project/project.actions';
 import {FcGoogle} from "react-icons/fc";
-import { signUpUser } from '../firebase/config';
 import useAuth from '../hooks/useAuth';
 
 const defaultRegistrationFormValues = {
@@ -31,8 +30,9 @@ const Register = () => {
             dispatch(setErrorPopupOpen(true));
             return;
         }
+        
         try {
-            await addNewUser(formValues);
+            await registerUser(formValues);
             resetFormValues();
             navigate('/sign-in');
         } catch ({response}) {
