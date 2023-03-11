@@ -49,7 +49,7 @@ const StageForm = () => {
     }
 
     const handleInputChange = (e) => {
-      return dispatch(setInputValues({...inputValues, [e.target.name]: e.target.value}));
+      return setInputValues({...inputValues, [e.target.name]: e.target.value});
     }
     
     useEffect(() => {

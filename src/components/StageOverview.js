@@ -20,7 +20,6 @@ const StageOverview = ({stage}) => {
     const boards = useSelector(selectBoards);
     
     const toggleStageOptions = (stageToUpdate) => {
-        console.log(stageToUpdate)
         if (!stageToUpdate) return;
 
         const updatedStage = {...stageToUpdate, options_menu_open: !stageToUpdate.options_menu_open}

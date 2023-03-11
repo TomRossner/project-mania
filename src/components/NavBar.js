@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 import { IoIosNotifications } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
-import { selectProject, selectUserProjects } from '../store/project/project.selector';
-import { setCreatePopupOpen, setNotificationTabOpen, setProjectMenuOpen, setProfileTabOpen, setBoards } from '../store/project/project.actions';
+import { selectCurrentProject, selectProject, selectUserProjects } from '../store/project/project.selector';
+import { setCreatePopupOpen, setNotificationTabOpen, setProjectMenuOpen, setProfileTabOpen, setTasks } from '../store/project/project.actions';
 import IconContainer from './common/IconContainer';
 import { getUserInfo } from '../httpRequests/auth';
 import {BsChatLeftText, BsChevronDown, BsPersonCircle} from "react-icons/bs";
@@ -26,6 +26,7 @@ const NavBar = () => {
   const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
+  const currentProject = useSelector(selectCurrentProject);
 
   const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
 

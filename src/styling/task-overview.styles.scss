@@ -47,4 +47,20 @@
         }
 
     }
+
+    .listed-task-infos{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .quick-actions{
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+
+            .icon{
+                animation: fadeIn forwards 0.15s;
+            }
+        }
+    }
 }

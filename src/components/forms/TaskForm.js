@@ -7,8 +7,8 @@ import IconContainer from "../common/IconContainer";
 import { priorities } from '../../utils/labels';
 import PriorityLabel from '../common/PriorityLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject, selectProject } from '../../store/project/project.selector';
-import { setStage, setCreatePopupOpen, setError, setTaskPriority, setErrorPopupOpen, setCurrentProject } from '../../store/project/project.actions';
+import { selectCurrentProject, selectProject, selectTasks } from '../../store/project/project.selector';
+import { setStage, setCreatePopupOpen, setError, setTaskPriority, setErrorPopupOpen, setCurrentProject, setTasks } from '../../store/project/project.actions';
 import { generateId } from '../../utils/IdGenerator';
 import CancelButton from '../common/CancelButton';
 import LabelContainer from '../common/LabelContainer';
@@ -21,6 +21,7 @@ const TaskForm = () => {
     const FormTitleRef = useRef(null);
     const currentProject = useSelector(selectCurrentProject);
     const dispatch = useDispatch();
+    const tasks = useSelector(selectTasks);
 
     const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
     
@@ -46,6 +47,7 @@ const TaskForm = () => {
                   return {...current_project_stage, stage_tasks: [...current_project_stage.stage_tasks, newTask]}
               } else return current_project_stage;
       })]}))
+      dispatch(setTasks([...tasks, newTask]));
   }
 
     const handleSelectStage = (stage) => {
@@ -81,6 +83,10 @@ const TaskForm = () => {
         FormTitleRef.current.focus();
       }
     }, [readOnly]);
+
+    useEffect(() => {
+      dispatch(setTaskPriority(priorities[0]));
+    }, [])
     
   return (
     <form onSubmit={handleFormSubmit}>
@@ -107,7 +113,7 @@ const TaskForm = () => {
                     key={priority.id}
                     priority={priority}
                     fn={() => handleSetPriority(priority)}
-                    additionalClass={`${priority.name === taskPriority.name ? "selected" : ""}`}
+                    additionalClass={`${priority.name === taskPriority?.name ? "selected" : ""}`}
                   />
                   )}
               </div>

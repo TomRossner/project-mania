@@ -12,7 +12,8 @@ const INITIAL_STATE = {
     projectMenuTabOpen: false,
     error: "",
     errorPopupOpen: false,
-    taskPriority: ""
+    taskPriority: "",
+    tasks: []
 }
 
 export const projectReducer = (state = INITIAL_STATE, action) => {
@@ -41,6 +42,8 @@ export const projectReducer = (state = INITIAL_STATE, action) => {
             return {...state, stage: payload};
         case PROJECT_ACTION_TYPES.SET_PROJECT_MEMBERS:
             return {...state, projectMembers: payload};
+        case PROJECT_ACTION_TYPES.SET_TASKS:
+            return {...state, tasks: payload};
         default:
             return state;
     }

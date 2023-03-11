@@ -34,3 +34,6 @@ export const setTaskPriority = (priority) => {
 export const setProjectMembers = (members) => {
     return createAction(PROJECT_ACTION_TYPES.SET_PROJECT_MEMBERS, members);
 }
+export const setTasks = (tasks) => {
+    return createAction(PROJECT_ACTION_TYPES.SET_TASKS, tasks);
+}

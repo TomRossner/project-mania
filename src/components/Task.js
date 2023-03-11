@@ -4,8 +4,8 @@ import { deleteTask, getTask } from '../httpRequests/projectsRequests';
 import Chat from "../components/Chat";
 import BackButton from "../components/common/BackButton";
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject } from '../store/project/project.selector';
-import { setCurrentProject } from '../store/project/project.actions';
+import { selectCurrentProject, selectTasks } from '../store/project/project.selector';
+import { setCurrentProject, setTasks } from '../store/project/project.actions';
 import {IoMdDoneAll} from "react-icons/io";
 import IconContainer from './common/IconContainer';
 import ThreeDotsMenu from './common/ThreeDotsMenu';
@@ -24,6 +24,7 @@ const Task = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [editMenuOpen, setEditMenuOpen] = useState(false);
     const [isDone, setIsDone] = useState(false);
+    const tasks = useSelector(selectTasks);
 
     const handleMarkAsDone = () => {
       setIsDone(true);
@@ -36,7 +37,6 @@ const Task = () => {
           })]};
         } else return stage;
       })]}))
-      
     }
 
     const handleMarkAsNotDone = () => {
@@ -56,10 +56,11 @@ const Task = () => {
     const handleDeleteTask = async () => {
       dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
         if (stage._id === activeTask.current_stage.id) {
-          return {...stage, tasks_done: stage.tasks_done - 1, stage_tasks: [...stage.stage_tasks.filter(task => task._id !== activeTask._id)]}
+          return {...stage, tasks_done: stage.tasks_done === 0 ? 0 : stage.tasks_done - 1, stage_tasks: [...stage.stage_tasks.filter(task => task._id !== activeTask._id)]}
         } else return stage;
       })]}))
       await deleteTask({id, stage_id, task_id});
+      dispatch(setTasks([...tasks.filter(task => task._id !== task_id)]));
       setActiveTask(null);
       navigate(-1);
     }

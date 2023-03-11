@@ -25,7 +25,7 @@ import { fetchBoardsAsync } from "./store/boards/boards.actions";
 import Users from "./components/Users";
 import PrivateRoute from "./components/common/PrivateRoute";
 import Space from "./components/common/Space";
-import { setNotificationTabOpen, setProfileTabOpen } from "./store/project/project.actions";
+import { setNotificationTabOpen, setProfileTabOpen, setTasks } from "./store/project/project.actions";
 import NotificationTab from "./components/NotificationTab";
 
 // Styles
@@ -107,6 +107,13 @@ const App = () => {
   useEffect(() => {
     if (!currentProject) return;
     update(currentProject);
+
+    // Each time currentProject changes update tasks
+    const projectTasks = currentProject?.stages.map(stage => {
+      return stage.stage_tasks.map(task => task);
+      // Each stage is returned as an array, so projectTasks is an array of arrays
+    })
+    dispatch(setTasks(projectTasks.flatMap(arr => arr)));
   }, [currentProject])
 
   useEffect(() => {

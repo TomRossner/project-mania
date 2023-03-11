@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getUserInfo } from '../httpRequests/auth';
 import { selectCurrentProject } from '../store/project/project.selector';
 import { BsPersonCircle } from 'react-icons/bs';
@@ -28,15 +28,15 @@ const RightNav = () => {
 
         <div className="project-content">
             <div className="current-project-info">
-            <h3>{currentProject?.title}</h3>
-            <p>{currentProject?.subtitle}</p>
+              <h3>{currentProject?.title}</h3>
+              <p>{currentProject?.subtitle}</p>
             </div>
 
             {currentProject?.admins?.length ? <div className="current-project-admins">
               <span>BOARD ADMINS</span>
               <div className="admins">
                 {currentProject.admins.map(admin => {
-                  if (admin._id === user._id) {
+                  if (admin._id === user?._id) {
                     return (
                       <div className="admin">
                         <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>
