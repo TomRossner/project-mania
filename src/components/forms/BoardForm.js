@@ -4,52 +4,33 @@ import { FiCheck } from "react-icons/fi";
 import { boardProperties } from "../../utils/defaultProperties";
 import Input from '../common/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserInfo } from '../../httpRequests/auth';
-import { addProject } from '../../httpRequests/projectsRequests';
-import { selectProject } from '../../store/project/project.selector';
-import { setCreatePopupOpen, setError, setErrorPopupOpen } from '../../store/project/project.actions';
+import { setCreatePopupOpen } from '../../store/project/project.actions';
 import CancelButton from '../common/CancelButton';
 import IconContainer from '../common/IconContainer';
 import useAuth from '../../hooks/useAuth';
-import { selectBoards } from '../../store/boards/boards.selector';
 import { selectMembers } from '../../store/members/members.selector';
-import { setBoards } from '../../store/boards/boards.actions';
-import { selectProjectMembers } from '../../store/project/project.selector';
-import { setProjectMembers } from '../../store/project/project.actions';
 import { fetchMembersAsync } from '../../store/members/members.actions';
+import useProject from '../../hooks/useProject';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
   const FormTitleRef = useRef(null);
-  const {element, createPopupOpen} = useSelector(selectProject);
+  const {element, closeCreatePopup, handleRemoveMemberFromProject, addBoard} = useProject();
   const [inputValues, setInputValues] = useState({...boardProperties, type: element});
   const {title, subtitle, due_date} = inputValues;
-  const projectMembers = useSelector(selectProjectMembers);
   const members = useSelector(selectMembers);
-  const boards = useSelector(selectBoards);
   const {user} = useAuth();
   const dispatch = useDispatch();
+  const [team, setTeam] =  useState([]);
+  //FIX TEAM
 
-  const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
-
-  const addBoard = async (values) => {
-    if (values.type !== 'board') return setError("Invalid values. Could not create board");
-    if (createPopupOpen) closeCreatePopup();
-    try {
-        const {data: userInfo} = await getUserInfo(user._id);
-        const {data: newProject} = await addProject({...values, members: [...projectMembers, userInfo], admins: [userInfo]});
-        dispatch(setBoards([...boards, {...newProject, due_date: new Date(newProject.due_date).toDateString()}]));
-    } catch ({response}) {
-        if (response.data.error && response.status === 400) {
-            dispatch(setError(response.data.error));
-            dispatch(setErrorPopupOpen(true));
-        }
-    }
+  const handleAddMember = (member) => {
+    setTeam([...team, member]);
   }
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    addBoard(inputValues);
+    addBoard({...inputValues, members: team});
     dispatch(setCreatePopupOpen(false));
   }
 
@@ -68,20 +49,6 @@ const BoardForm = () => {
     return setReadOnly(!readOnly);
   }
 
-  const handleAddMembers = (e) => {
-    if (!e.target.value) return;
-    const newMember = members?.find(member => e.target.value.trim() === member._id);
-    if (projectMembers.find(member => newMember._id === member._id)) return;
-    else dispatch(setProjectMembers([...projectMembers, members?.find(member => e.target.value.trim() === member._id)]));
-  }
-
-  const handleRemoveMemberFromProject = (id) => {
-    if (!id) return;
-    const memberToRemove = projectMembers.find(member => member._id === id);
-    if (!memberToRemove) throw new Error("Member not found");
-    else dispatch(setProjectMembers(projectMembers.filter(member => member._id !== memberToRemove._id)));
-  }
-
   useEffect(() => {
     if (!readOnly) {
       FormTitleRef.current.select();
@@ -90,10 +57,6 @@ const BoardForm = () => {
   }, [readOnly]);
 
   useEffect(() => {
-
-    // Reset projectMembers when opening the form so the user can choose members
-    if (projectMembers.length) dispatch(setProjectMembers([]));
-
     // Fetch all members
     dispatch(fetchMembersAsync());
   }, [])
@@ -127,12 +90,12 @@ const BoardForm = () => {
 
             <div className='input-container'>
               <label htmlFor='members'>Members</label>
-              <select onChange={handleAddMembers}>
+              <select onChange={handleAddMember}>
                 <option value="">Choose members</option>
                 {members?.map(member => {
                   if (member._id === user._id) {
                     return (
-                    <option key={member._id}value={member._id}>
+                    <option key={member._id} value={member._id}>
                       {member.first_name} {member.last_name} (You)
                     </option>);
                   }
@@ -145,17 +108,17 @@ const BoardForm = () => {
             </div>
 
             <div className='form-project-members'>
-              {projectMembers.length > 4
+              {team.length > 4
               ?
               <>
-                {projectMembers?.filter((_, index) => index < 4)
+                {team?.filter((_, index) => index < 4)
                   .map(member =>
                     <span key={member._id} className='form-project-member-added' onClick={() => handleRemoveMemberFromProject(member._id)}>
                       {member.first_name} {member.last_name.substring(0, 1)}.
                     </span>)}
-                <span>+ {projectMembers.filter((_, index) => index > 3).length} more</span>
+                <span>+ {team.filter((_, index) => index > 3).length} more</span>
               </>
-              : projectMembers?.map(member =>
+              : team?.map(member =>
                   <span key={member._id} className='form-project-member-added' onClick={() => handleRemoveMemberFromProject(member._id)}>
                     {member.first_name} {member.last_name.substring(0, 1)}.
                   </span>)}

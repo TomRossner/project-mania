@@ -2,19 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import PriorityLabel from './common/PriorityLabel';
 import IconContainer from './common/IconContainer';
 import { priorities } from '../utils/labels';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject, selectProject } from '../store/project/project.selector';
-import { setCurrentProject, setTaskPriority } from '../store/project/project.actions';
+import { useDispatch} from 'react-redux';
+import { setTaskPriority } from '../store/project/project.actions';
 import Input from './common/Input';
 import {RiEdit2Fill} from "react-icons/ri";
 import { FiCheck } from 'react-icons/fi';
-
+import useProject from '../hooks/useProject';
 
 const EditElement = ({element, elementDefaultValues, open}) => {
-    const {taskPriority} = useSelector(selectProject);
+    const {taskPriority} = useProject();
     const [readOnly, setReadOnly] = useState(true);
     const dispatch = useDispatch();
-    const currentProject = useSelector(selectCurrentProject);
     const [inputValues, setInputValues] = useState(elementDefaultValues);
     const FormTitleRef = useRef(null);
 

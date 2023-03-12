@@ -1,61 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
-import { IoIosNotifications } from "react-icons/io";
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject, selectProject, selectUserProjects } from '../store/project/project.selector';
-import { setCreatePopupOpen, setNotificationTabOpen, setProjectMenuOpen, setProfileTabOpen, setTasks } from '../store/project/project.actions';
+import { useDispatch } from 'react-redux';
 import IconContainer from './common/IconContainer';
-import { getUserInfo } from '../httpRequests/auth';
 import {BsChatLeftText, BsChevronDown, BsPersonCircle} from "react-icons/bs";
 import {IoSettingsOutline} from "react-icons/io5";
 import {AiOutlineProject} from "react-icons/ai";
-import { getProjects } from '../httpRequests/projectsRequests';
 import { setCurrentProject } from '../store/project/project.actions';
 import useAuth from '../hooks/useAuth';
-import {selectBoards} from "../store/boards/boards.selector";
 import {MdLogout, MdLogin, MdPerson} from "react-icons/md";
 import {ImUserPlus} from "react-icons/im";
 import {HiUserGroup} from "react-icons/hi";
+import useProject from '../hooks/useProject';
 
 const NavBar = () => {
   const dispatch = useDispatch();
-  const {profileTabOpen, notificationTabOpen, projectMenuOpen, createPopupOpen} = useSelector(selectProject);
-  const {user, isAuthenticated, userInfo} = useAuth();
-  const boards = useSelector(selectBoards);
-  const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const {boards, handleToggleProfileTab} = useProject();
+  const {user, isAuthenticated, userInfo} = useAuth();
+  const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
   const [userName, setUserName] = useState("");
-  const currentProject = useSelector(selectCurrentProject);
-
-  const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
 
   const handleToggleProjectsDropdown = () => {
     return setProjectsDropdownOpen(!projectsDropdownOpen);
-  }
-
-  const handleProjectsClick = () => {
-    closeCreatePopup();
-    if (notificationTabOpen) dispatch(setNotificationTabOpen(false));
-    if (profileTabOpen) dispatch(setProfileTabOpen(false));
-  }
-
-  const handleCreateClick = () => {
-    dispatch(setCreatePopupOpen(!createPopupOpen));
-    if (projectMenuOpen) dispatch(setProjectMenuOpen(false));
-    if (notificationTabOpen) dispatch(setNotificationTabOpen(false));
-    if (profileTabOpen) dispatch(setProfileTabOpen(false));
-  }
-
-  const handleToggleNotificationTab = () => {
-    dispatch(setNotificationTabOpen(!notificationTabOpen));
-    if (profileTabOpen) dispatch(setProfileTabOpen(false));
-  }
-
-  const handleToggleProfileTab = () => {
-    dispatch(setProfileTabOpen(!profileTabOpen));
-    if (notificationTabOpen) dispatch(setNotificationTabOpen(false));
-  }
+  }  
 
   const handleClick = (board) => {
     dispatch(setCurrentProject(board));
@@ -64,7 +32,7 @@ const NavBar = () => {
 
   useEffect(() => {
     if (userInfo) {
-          setUserName(`${userInfo.first_name} ${userInfo.last_name}` || userInfo.name);
+        setUserName(`${userInfo.first_name} ${userInfo.last_name}` || userInfo.name);
     } else setUserName("");
   }, [userInfo])
 

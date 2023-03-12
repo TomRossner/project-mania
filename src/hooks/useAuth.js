@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LS_logout, setTokenHeader } from '../httpRequests/auth';
 import { fetchUserAsync, logout, setUser } from '../store/auth/auth.actions';
 import { selectIsAuthenticated, selectUser } from '../store/auth/auth.selector';
-import { setError, setErrorPopupOpen } from '../store/project/project.actions';
 import { saveJWT } from '../httpRequests/auth';
 import { provider, auth } from '../firebase/config';
 import { signInWithPopup } from 'firebase/auth';
@@ -17,6 +16,8 @@ const useAuth = () => {
     const dispatch = useDispatch();
     const [userInfo, setUserInfo] = useState(null);
 
+    const refreshUser = () => dispatch(setUser(getUser()));
+
     const login = (credentials) => dispatch(fetchUserAsync(credentials));
 
     const handleLogout = () => {
@@ -29,15 +30,18 @@ const useAuth = () => {
         const {accessToken} = user;
         const {data} = await axios.post("/auth/sign-in/google", {googleToken: accessToken});
         const {token} = data;
+
         saveJWT(token);
         setTokenHeader();
         dispatch(setUser(getUser()));
+
         return getUser();
     }
     
     const google_signUpUser = async () => {
         const {user} = await signInWithPopup(auth, provider);
         const {accessToken, email, displayName, uid} = user;
+        
         return await axios.post("/auth/sign-up/google", {accessToken, email, displayName, uid});
     }
 
@@ -58,10 +62,11 @@ const useAuth = () => {
         isAuthenticated,
         user,
         userInfo,
+        refreshUser,
         login,
         logout: handleLogout,
         googleSignIn: google_signInUser,
-        googleSignUp: google_signUpUser
+        googleSignUp: google_signUpUser,
     }
 }
 

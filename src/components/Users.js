@@ -1,27 +1,23 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectIsAuthenticated, selectUser } from '../store/auth/auth.selector';
 import { selectMembers } from '../store/members/members.selector';
 import BackButton from './common/BackButton';
 import SearchBar from './common/SearchBar';
 import { fetchMembersAsync } from '../store/members/members.actions';
 import { useNavigate } from 'react-router-dom';
 import Line from './common/Line';
+import useAuth from '../hooks/useAuth';
 
 const Users = () => {
   const members = useSelector(selectMembers);
-  const user = useSelector(selectUser);
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const {user, isAuthenticated} = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user || !isAuthenticated) return navigate("/sign-in");
-  }, [])
-
-  useEffect(() => {
     dispatch(fetchMembersAsync());
-}, [])
+    if (!user || !isAuthenticated) navigate("/sign-in");
+  }, [])
 
   return (
       <>

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { getUserInfo } from '../httpRequests/auth';
-import { selectCurrentProject } from '../store/project/project.selector';
 import { BsPersonCircle } from 'react-icons/bs';
 import IconContainer from './common/IconContainer';
 import useAuth from '../hooks/useAuth';
 import Activity from './Activity';
+import useProject from '../hooks/useProject';
 
 const RightNav = () => {
     const {user} = useAuth();
-    const currentProject = useSelector(selectCurrentProject);
+    const {currentProject} = useProject();
     const [userName, setUserName] = useState("");
 
     useEffect(() => {
@@ -38,7 +37,7 @@ const RightNav = () => {
                 {currentProject.admins.map(admin => {
                   if (admin._id === user?._id) {
                     return (
-                      <div className="admin">
+                      <div className="admin" key={admin._id}>
                         <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>
                         <span>{userName} (You)</span>
                       </div>)

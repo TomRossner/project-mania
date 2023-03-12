@@ -60,6 +60,10 @@
 
             .icon{
                 animation: fadeIn forwards 0.15s;
+
+                &.green{
+                    color: $green;
+                }
             }
         }
     }

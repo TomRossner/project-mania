@@ -2,34 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { BsCircleFill } from "react-icons/bs";
 import { RxPlus } from "react-icons/rx";
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject } from '../store/project/project.selector';
-import { setCurrentProject } from '../store/project/project.actions';
 import useAuth from '../hooks/useAuth';
 import { fetchMembersAsync } from '../store/members/members.actions';
 import {selectMembers} from "../store/members/members.selector";
-import { selectProjectMembers } from '../store/project/project.selector';
+import useProject from '../hooks/useProject';
 import { setProjectMembers } from '../store/project/project.actions';
 
 const ProjectMembers = () => {
     const NUMBER_OF_MEMBERS_TO_DISPLAY = 4;
     const [membersPopUpTabOpen, setMembersPopUpTabOpen] = useState(false);
-    const {userInfo, user} = useAuth();
-    const currentProject = useSelector(selectCurrentProject);
-    const projectMembers = useSelector(selectProjectMembers);
-    const dispatch = useDispatch();
+    const {user} = useAuth();
+    const {projectMembers, handleAddMember, currentProject} = useProject();
     const members = useSelector(selectMembers);
+    const dispatch = useDispatch();
 
     const toggleMembersPopUpTab = () => {
         return setMembersPopUpTabOpen(!membersPopUpTabOpen);
-    }
-
-    const handleAddMember = (member) => {
-        if (!member) return;
-
-        const MemberAlreadyAdded = projectMembers.find(m => m._id === member._id);
-        if (MemberAlreadyAdded) return;
-
-        else dispatch(setCurrentProject({...currentProject, members: [...currentProject.members, member]}));
     }
 
     useEffect(() => {
@@ -37,12 +25,9 @@ const ProjectMembers = () => {
     }, [])
 
     useEffect(() => {
-        if (currentProject) dispatch(setProjectMembers(currentProject.members));
-    }, [])
-
-    // useEffect(() => { // Update project members each time projectMembers changes
-    //     dispatch(setCurrentProject({...currentProject, members: projectMembers}));
-    // }, projectMembers) // LINE 32 DOES THAT
+        if (!currentProject) return;
+        dispatch(setProjectMembers(currentProject.members));
+    }, [currentProject])
 
   return (
     <>

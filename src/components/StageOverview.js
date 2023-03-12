@@ -1,70 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FiCheck } from 'react-icons/fi';
 import { BsThreeDotsVertical, BsPlus } from 'react-icons/bs';
 import TaskOverview from './TaskOverview';
 import { stageOptions } from '../utils/stageOptionsMenu';
 import ProgressBar from './common/ProgressBar';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject } from '../store/project/project.selector';
-import { setCurrentProject, setStage, setCreatePopupOpen, setElement} from '../store/project/project.actions';
+import { useDispatch } from 'react-redux';
+import { setCurrentProject } from '../store/project/project.actions';
 import OptionsMenu from './common/OptionsMenu';
 import IconContainer from './common/IconContainer';
-import { selectBoards } from '../store/boards/boards.selector';
-import { setBoards } from '../store/boards/boards.actions';
+import useProject from '../hooks/useProject';
 
 const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
     const [inputValue, setInputValue] = useState("");
+    const {currentProject, handleAddTask, validate, handleDeleteStage, toggleStageOptions} = useProject();
     const dispatch = useDispatch();
-    const currentProject = useSelector(selectCurrentProject);
-    const boards = useSelector(selectBoards);
-    
-    const toggleStageOptions = (stageToUpdate) => {
-        if (!stageToUpdate) return;
-
-        const updatedStage = {...stageToUpdate, options_menu_open: !stageToUpdate.options_menu_open}
-        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-            if (stage.options_menu_open && stage._id !== stageToUpdate._id) {
-                return {...stage, options_menu_open: false};
-            }
-            else if (!stage.options_menu_open && stage._id !== stageToUpdate._id) {
-                return stage;
-            }
-            else return updatedStage;
-        })]}));
-    }
-
-    const handleOption = (stage, opt) => {
-        if (!stage || !opt || typeof opt !== 'string') return;
-
-        if (opt.toLowerCase() === "edit") return handleEdit(stage);
-        if (opt.toLowerCase() === "add task") return handleAddTask(stage);
-        if (opt.toLowerCase() === "delete") return handleDeleteStage(stage);
-        else return console.log(`Unknown/unhandled option "${opt}".`);
-    }
 
     const handleInputChange = (e) => {
         return setInputValue(e.target.value);
-    }
-
-    const validate = (inputValue, stageToUpdate) => {
-        if (!inputValue || !stageToUpdate) return;
-
-        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-            if (stage._id === stageToUpdate._id) {
-                return {...stage, stage_name: inputValue, edit_active: false, stage_tasks: [...stage.stage_tasks.map(task => {
-                    return {...task, current_stage: {...task.current_stage, name: inputValue}};
-                })]};
-            } else return stage;
-        })]}));
-    }
-
-    const closeStageOptionMenus = () => {
-        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-            if (stage.options_menu_open) {
-                return {...stage, options_menu_open: false};
-            } else return stage;
-        })]}));
     }
 
     const handleEdit = (stageToUpdate) => {
@@ -83,32 +36,14 @@ const StageOverview = ({stage}) => {
         })]}));
     }
 
-    const handleAddTask = (stageToAddTaskTo) => {
-        closeStageOptionMenus();
-        dispatch(setStage(stageToAddTaskTo));
-        dispatch(setCreatePopupOpen(true));
-        dispatch(setElement("task"));
-        dispatch(setStage(stage));
+    const handleOption = (stage, opt) => {
+        if (!stage || !opt || typeof opt !== 'string') return;
+
+        if (opt.toLowerCase() === "edit") return handleEdit(stage);
+        if (opt.toLowerCase() === "add task") return handleAddTask(stage);
+        if (opt.toLowerCase() === "delete") return handleDeleteStage(stage);
+        else return console.log(`Unknown/unhandled option "${opt}".`);
     }
-
-    const handleDeleteStage = (stageToDelete) => {
-        if (!stageToDelete) return;
-
-        closeStageOptionMenus();
-        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.filter(stage => stage._id !== stageToDelete._id)]}));
-    }
-
-    // Update boards every time currentProject changes
-    useEffect(() => {
-        if (!currentProject) return;
-        const updateBoards = () => dispatch(setBoards([...boards.map(board => {
-            if (board._id === currentProject._id) {
-                return {...currentProject};
-            } else return board;
-        })]))
-
-        updateBoards();
-    }, [currentProject])
 
   return (
     <div className='stage-container'>
@@ -127,7 +62,7 @@ const StageOverview = ({stage}) => {
             </div>
             <div className='buttons-container'>
                 <IconContainer icon={<BsThreeDotsVertical className='icon dots-menu'/>} onClick={() => toggleStageOptions(stage)}/>
-                <IconContainer additionalClass='plus' onClick={handleAddTask} icon={<BsPlus className='icon plus'/>}></IconContainer>
+                <IconContainer additionalClass='plus' onClick={() => handleAddTask(stage)} icon={<BsPlus className='icon plus'/>}></IconContainer>
             </div>
         </div>
         <div className='stage-tasks'>

@@ -1,27 +1,9 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject, selectTasks } from '../store/project/project.selector';
 import StageOverview from './StageOverview';
-import { setCurrentProject, setCreatePopupOpen, setElement } from '../store/project/project.actions';
+import useProject from '../hooks/useProject';
 
 const ProjectStagesContainer = () => {
-  const currentProject = useSelector(selectCurrentProject);
-  const tasks = useSelector(selectTasks);
-  const dispatch = useDispatch();
-
-  const handleCreate = (type) => {
-    closeStageOptionMenus();
-    dispatch(setCreatePopupOpen(true));
-    dispatch(setElement(type));
-  }
-
-  const closeStageOptionMenus = () => {
-    return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-        if (stage.options_menu_open) {
-            return {...stage, options_menu_open: false};
-        } else return stage;
-    })]}));
-  }
+  const {tasks, currentProject, handleCreate} = useProject();
 
   return (
     <>

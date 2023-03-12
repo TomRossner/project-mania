@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BackButton from "./common/BackButton";
 import Input from "./common/Input";
-import { signInUser } from "../firebase/config";
 import {BsShieldCheck} from "react-icons/bs";
 import {FcGoogle} from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";

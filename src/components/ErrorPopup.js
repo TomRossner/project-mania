@@ -1,13 +1,13 @@
 import React from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import IconContainer from './common/IconContainer';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectProject } from '../store/project/project.selector';
+import { useDispatch } from 'react-redux';
 import { setError, setErrorPopupOpen } from '../store/project/project.actions';
+import useProject from '../hooks/useProject';
 
 const ErrorPopup = () => {
     const dispatch = useDispatch();
-    const {error, errorPopupOpen} = useSelector(selectProject);
+    const {error, errorPopupOpen} = useProject();
 
     const resetErrorMessage = () => dispatch(setError(""));
 

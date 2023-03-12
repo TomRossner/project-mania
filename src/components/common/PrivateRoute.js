@@ -1,11 +1,9 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { selectIsAuthenticated, selectUser } from '../../store/auth/auth.selector';
+import useAuth from '../../hooks/useAuth';
 
 const PrivateRoute = ({element}) => {
-    const user = useSelector(selectUser);
-    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const {user, isAuthenticated} = useAuth();
 
     return !user || !isAuthenticated ? <Navigate to='/sign-in'/> : element;
 }

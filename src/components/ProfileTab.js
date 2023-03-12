@@ -1,18 +1,11 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setProfileTabOpen } from '../store/project/project.actions';
-import { selectProject } from '../store/project/project.selector';
 import useAuth from '../hooks/useAuth';
+import useProject from '../hooks/useProject';
 
 const ProfileTab = () => {
     const {user} = useAuth();
-    const {profileTabOpen} = useSelector(selectProject);
-    const dispatch = useDispatch();
-
-    const handleToggleProfileTab = () => {
-        return dispatch(setProfileTabOpen(!profileTabOpen));
-    }
+    const {handleToggleProfileTab} = useProject();
     
   return (
     <div className='profile-tab-container'>

@@ -102,9 +102,24 @@ body{
         &.large{
             scale: 1.2;
         }
+
+        &.green{
+            color: $green;
+        }
     }
     &.small{
         padding: 0 0.1rem;
+    }
+
+    &.dots-menu{
+        transform: rotate(90deg);
+    }
+
+    &:hover{
+
+        &.dots-menu{
+            color: $blue;
+        }
     }
 }
 

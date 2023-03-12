@@ -12,12 +12,8 @@ import Task from "./components/Task";
 import Create from "./components/Create";
 import ErrorPopup from "./components/ErrorPopup";
 import Logout from "./components/Logout";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "./store/auth/auth.actions";
-import { getUser } from "./httpRequests/auth";
-import { selectCurrentProject, selectProject } from "./store/project/project.selector";
-import { updateProject } from "./httpRequests/projectsRequests";
-import { setCreatePopupOpen, setCurrentProject, setElement } from "./store/project/project.actions";
+import { useDispatch} from "react-redux";
+import { setCurrentProject } from "./store/project/project.actions";
 import RightNav from "./components/RightNav";
 import TopNav from "./components/TopNav";
 import useAuth from "./hooks/useAuth";
@@ -25,8 +21,8 @@ import { fetchBoardsAsync } from "./store/boards/boards.actions";
 import Users from "./components/Users";
 import PrivateRoute from "./components/common/PrivateRoute";
 import Space from "./components/common/Space";
-import { setNotificationTabOpen, setProfileTabOpen, setTasks } from "./store/project/project.actions";
 import NotificationTab from "./components/NotificationTab";
+import useProject from "./hooks/useProject";
 
 // Styles
 import "./styling/general.styles.scss";
@@ -76,45 +72,8 @@ import "./styling/activity.styles.scss";
 
 const App = () => {
   const dispatch = useDispatch();
-  const currentProject = useSelector(selectCurrentProject);
-  const {user, isAuthenticated} = useAuth();
-  const {notificationTabOpen, profileTabOpen} = useSelector(selectProject)
-
-  const refreshUser = () => {
-    dispatch(setUser(getUser()));
-  }
-
-  const handleCreateBoard = () => {
-    dispatch(setCreatePopupOpen(true));
-    dispatch(setElement("board"));
-  }
-
-  const handleToggleNotificationTab = () => {
-    dispatch(setNotificationTabOpen(!notificationTabOpen));
-    if (profileTabOpen) dispatch(setProfileTabOpen(false));
-  }
-
-  const update = async (project) => {
-    if (!project) return;
-
-    try {
-        await updateProject(project);
-    } catch (error) {
-        console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    if (!currentProject) return;
-    update(currentProject);
-
-    // Each time currentProject changes update tasks
-    const projectTasks = currentProject?.stages.map(stage => {
-      return stage.stage_tasks.map(task => task);
-      // Each stage is returned as an array, so projectTasks is an array of arrays
-    })
-    dispatch(setTasks(projectTasks.flatMap(arr => arr)));
-  }, [currentProject])
+  const {user, isAuthenticated, refreshUser} = useAuth();
+  const {notificationTabOpen, handleCreateBoard, handleToggleNotificationTab} = useProject();
 
   useEffect(() => {
     refreshUser();

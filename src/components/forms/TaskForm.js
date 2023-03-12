@@ -5,58 +5,23 @@ import {defaultTaskProperties} from "../../utils/defaultProperties";
 import Input from "../common/Input";
 import IconContainer from "../common/IconContainer";
 import { priorities } from '../../utils/labels';
-import PriorityLabel from '../common/PriorityLabel';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject, selectProject, selectTasks } from '../../store/project/project.selector';
-import { setStage, setCreatePopupOpen, setError, setTaskPriority, setErrorPopupOpen, setCurrentProject, setTasks } from '../../store/project/project.actions';
-import { generateId } from '../../utils/IdGenerator';
+import { useDispatch } from 'react-redux';
+import { setCreatePopupOpen, setError, setTaskPriority, setErrorPopupOpen } from '../../store/project/project.actions';
 import CancelButton from '../common/CancelButton';
 import LabelContainer from '../common/LabelContainer';
+import useProject from '../../hooks/useProject';
 
 const TaskForm = () => {
     const [readOnly, setReadOnly] = useState(true);
-    const {element, stage: selectedStage, createPopupOpen, taskPriority} = useSelector(selectProject);
+    const {element, stage: selectedStage, taskPriority, currentProject, closeCreatePopup, addTask, handleSelectStage, handleSetPriority} = useProject();
     const [inputValues, setInputValues] = useState({...defaultTaskProperties, type: element});
     const {title, description} = inputValues;
     const FormTitleRef = useRef(null);
-    const currentProject = useSelector(selectCurrentProject);
     const dispatch = useDispatch();
-    const tasks = useSelector(selectTasks);
-
-    const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
-    
-    const addTask = (values, stageToUpdate) => {
-      if (!values || values.type !== 'task') return setError("Invalid values. Could not create task");
-      if (createPopupOpen) closeCreatePopup();
-      const newTask = {
-          ...values,
-          current_stage: {
-              name: stageToUpdate.stage_name,
-              id: stageToUpdate._id
-          },
-          project: {
-              title: currentProject.title,
-              id: currentProject._id
-          },
-          _id: generateId(),
-          messages: [],
-          priority: taskPriority
-      };
-      dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(current_project_stage => {
-              if (current_project_stage._id === stageToUpdate._id) {
-                  return {...current_project_stage, stage_tasks: [...current_project_stage.stage_tasks, newTask]}
-              } else return current_project_stage;
-      })]}))
-      dispatch(setTasks([...tasks, newTask]));
-  }
-
-    const handleSelectStage = (stage) => {
-      return dispatch(setStage(stage));
-    }
 
     const handleFormSubmit = (e) => {
       e.preventDefault();
-      dispatch(setCreatePopupOpen(false));
+      closeCreatePopup();
       if (!selectedStage) {
         dispatch(setError("Couldn't create task. Please choose in which stage you would like to add your task to."));
         return dispatch(setErrorPopupOpen(true));
@@ -71,10 +36,6 @@ const TaskForm = () => {
 
     const handleInputChange = (e) => {
       return setInputValues({...inputValues, [e.target.name]: e.target.value});
-    }
-
-    const handleSetPriority = (priority=null) => {
-      return dispatch(setTaskPriority(priority));
     }
 
     useEffect(() => {

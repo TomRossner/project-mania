@@ -1,28 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import BoardForm from './forms/BoardForm';
 import StageForm from './forms/StageForm';
 import TaskForm from './forms/TaskForm';
 import { RxCross2 } from 'react-icons/rx';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject, selectProject } from '../store/project/project.selector';
-import { setCreatePopupOpen, setElement } from '../store/project/project.actions';
 import {elements} from "../utils/elements";
+import useProject from '../hooks/useProject';
 
 const Create = () => {
-    const currentProject = useSelector(selectCurrentProject);
-    const {createPopupOpen, element: selectedElement} = useSelector(selectProject);
-    const dispatch = useDispatch();
-
-    const handleElementClick = (element) => {
-        dispatch(setElement(element));
-    }
-
-    const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
-
-    // Reset element every time popup is closed 
-    useEffect(() => {
-        if (!createPopupOpen) dispatch(setElement(""));
-    }, [createPopupOpen])
+    const {createPopupOpen, element: selectedElement, currentProject, closeCreatePopup, handleElementClick} = useProject();
 
   return (
     <>

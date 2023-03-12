@@ -4,8 +4,6 @@ import IconContainer from './common/IconContainer';
 import { BsPlus, BsBell } from 'react-icons/bs';
 import Space from './common/Space';
 import {BsFillCircleFill} from "react-icons/bs";
-import { useSelector } from 'react-redux';
-import { selectCurrentProject } from '../store/project/project.selector';
 
 const TopNav = ({fn, fn2}) => {
   const [notifications, setNotifications] = useState([]);

@@ -1,28 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import IconContainer from './common/IconContainer';
-import { BsCircleFill } from 'react-icons/bs';
 import { CgMenuGridO } from 'react-icons/cg';
 import ProjectMembers from './ProjectMembers';
 import { projectMenuOptions } from "../utils/projectMenuOptions";
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentProject, selectProject } from '../store/project/project.selector';
-import { setProjectMenuOpen, setCreatePopupOpen, setElement, setCurrentProject } from '../store/project/project.actions';
+import { useDispatch } from 'react-redux';
+import { setProjectMenuOpen } from '../store/project/project.actions';
 import {AiFillProject} from "react-icons/ai";
-import { deleteProject } from '../httpRequests/projectsRequests';
 import { useNavigate } from 'react-router-dom';
-import { selectBoards } from '../store/boards/boards.selector';
-import { setBoards } from '../store/boards/boards.actions';
+import useProject from '../hooks/useProject';
 
 const ProjectInfoBar = () => {
     const dispatch = useDispatch();
-    const {projectMenuTabOpen} = useSelector(selectProject);
-    const currentProject = useSelector(selectCurrentProject);
-    const boards = useSelector(selectBoards);
     const navigate = useNavigate();
-    
-    const handleMenuClick = () => {
-        dispatch(setProjectMenuOpen(!projectMenuTabOpen));
-    }
+    const {projectMenuTabOpen, currentProject, handleAddStage, handleMenuClick, handleDeleteProject} = useProject();
 
     const handleMenuOption = (opt) => {
         if (!opt || typeof opt !== 'string') return;
@@ -46,19 +36,6 @@ const ProjectInfoBar = () => {
 
     const handleManageTeam = () => {
         navigate("/users");
-    }
-
-    const handleDeleteProject = async (id) => {
-        await deleteProject(id);
-        dispatch(setCurrentProject(null));
-        dispatch(setBoards([...boards.filter(board => board._id !== currentProject._id)]));
-        navigate("/");
-    }
-    
-    const handleAddStage = () => {
-        dispatch(setCreatePopupOpen(true));
-        dispatch(setProjectMenuOpen(false));
-        dispatch(setElement("stage"));
     }
 
   return (

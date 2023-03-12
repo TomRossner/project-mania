@@ -1,27 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Spinner from './common/Spinner';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setCurrentProject } from '../store/project/project.actions';
-import { selectProject } from '../store/project/project.selector';
-import { setCreatePopupOpen } from '../store/project/project.actions';
-import { selectBoards } from '../store/boards/boards.selector';
+import useProject from '../hooks/useProject';
 
 const Projects = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const projects = useSelector(selectBoards);
-  const {createPopupOpen} = useSelector(selectProject);
+  const {boards: projects} = useProject();
   
 
   const handleClick = (board) => {
     dispatch(setCurrentProject(board));
     navigate(`/projects/${board._id}`);
   }
-
-  useEffect(() => {
-    if (createPopupOpen) dispatch(setCreatePopupOpen(false));
-  }, [])
 
   return (
     <div className='projects-list-container'>
