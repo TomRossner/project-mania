@@ -55,8 +55,19 @@ const useAuth = () => {
             }
             getUser();
         }
-        
     }, [user, isAuthenticated])
+
+    // useEffect(() => {
+        // if (currentProject && user && isAuthenticated && userInfo) {
+        //   const isProjectAdmin = currentProject.admins.find(admin => admin._id === user._id);
+    
+        //   if (isProjectAdmin) {
+        //     setUserInfo({...userInfo, admin: true});
+        //   } else {
+        //     setUserInfo({...userInfo, admin: false});
+        //   }
+        // }
+    //   }, [currentProject]) // THIS CAUSES INFINITE LOOP, MOVE TO COMPONENT
 
     return {
         isAuthenticated,

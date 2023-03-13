@@ -37,3 +37,6 @@ export const setProjectMembers = (members) => {
 export const setTasks = (tasks) => {
     return createAction(PROJECT_ACTION_TYPES.SET_TASKS, tasks);
 }
+export const setAdminPassFormOpen = (bool) => {
+    return createAction(PROJECT_ACTION_TYPES.SET_ADMIN_PASS_FORM_OPEN, bool);
+}

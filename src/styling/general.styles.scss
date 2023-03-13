@@ -110,6 +110,13 @@ body{
     &.small{
         padding: 0 0.1rem;
     }
+    &.big{
+        padding: 3rem;
+
+        .icon{
+            scale: 5;
+        }
+    }
 
     &.dots-menu{
         transform: rotate(90deg);
@@ -394,4 +401,13 @@ hr.line{
 
 .space-between{
     justify-content: space-between;
+}
+
+.profile-img-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 2rem 0 0 0;
 }

@@ -1,6 +1,7 @@
 import axios from "axios";
 
-axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
+// axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
+axios.defaults.baseURL = 'http://localhost:5000/projectmania';
 
 export const getTask = async (ids) => {
     const {id, task_id} = ids;

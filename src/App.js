@@ -23,6 +23,8 @@ import PrivateRoute from "./components/common/PrivateRoute";
 import Space from "./components/common/Space";
 import NotificationTab from "./components/NotificationTab";
 import useProject from "./hooks/useProject";
+import AdminForm from "./components/forms/AdminForm";
+import UserCards from "./components/UserCards";
 
 // Styles
 import "./styling/general.styles.scss";
@@ -73,7 +75,7 @@ import "./styling/activity.styles.scss";
 const App = () => {
   const dispatch = useDispatch();
   const {user, isAuthenticated, refreshUser} = useAuth();
-  const {notificationTabOpen, handleCreateBoard, handleToggleNotificationTab} = useProject();
+  const {notificationTabOpen, handleCreateBoard, handleToggleNotificationTab, adminFormOpen} = useProject();
 
   useEffect(() => {
     refreshUser();
@@ -88,6 +90,7 @@ const App = () => {
     <div className='main'>
       <Create/>
       <ErrorPopup/>
+      {adminFormOpen && <AdminForm/>}
       <div className="sections-container">
         <NavBar/>
         <div className="main-content">
@@ -107,7 +110,8 @@ const App = () => {
           </Routes>
           <Space/>
         </div>
-        <RightNav/>
+        {/* <RightNav/> */}
+        <UserCards/>
       </div>
     </div>
   )

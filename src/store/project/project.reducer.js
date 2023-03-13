@@ -13,7 +13,8 @@ const INITIAL_STATE = {
     error: "",
     errorPopupOpen: false,
     taskPriority: "",
-    tasks: []
+    tasks: [],
+    adminFormOpen: false
 }
 
 export const projectReducer = (state = INITIAL_STATE, action) => {
@@ -44,6 +45,8 @@ export const projectReducer = (state = INITIAL_STATE, action) => {
             return {...state, projectMembers: payload};
         case PROJECT_ACTION_TYPES.SET_TASKS:
             return {...state, tasks: payload};
+        case PROJECT_ACTION_TYPES.SET_ADMIN_PASS_FORM_OPEN:
+            return {...state, adminFormOpen: payload};
         default:
             return state;
     }

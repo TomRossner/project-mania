@@ -1,8 +1,8 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
-axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
-// axios.defaults.baseURL = 'http://localhost:5000/projectmania';
+// axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
+axios.defaults.baseURL = 'http://localhost:5000/projectmania';
 const token = 'token';
 setTokenHeader();
 

@@ -67,5 +67,15 @@
                 }
             }
         }
-    }   
+    } 
+    
+    &.user-card{
+        h3{
+            font-weight: 700;
+        }
+        
+        p{
+            color: $green;
+        }
+    }
 }

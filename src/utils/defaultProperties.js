@@ -17,9 +17,11 @@ export const defaultStages = [
 export const boardProperties = {
     stages: [...defaultStages],
     members: [],
-    due_date: new Date().toDateString(),
+    due_date: new Date().toISOString().slice(0, 10),
     title: "New Board",
     subtitle: "",
+    admin_pass: "",
+    admins: []
 }
 
 export const defaultTaskProperties = {
@@ -33,7 +35,7 @@ export const defaultTaskProperties = {
         id: ""
     },
     title: "New Task",
-    due_date: new Date().toDateString(),
+    due_date: new Date().toISOString().slice(0, 10),
     isDone: false,
     edit_active: false,
     files: [],

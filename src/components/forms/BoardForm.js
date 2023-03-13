@@ -4,7 +4,7 @@ import { FiCheck } from "react-icons/fi";
 import { boardProperties } from "../../utils/defaultProperties";
 import Input from '../common/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCreatePopupOpen } from '../../store/project/project.actions';
+import { setCreatePopupOpen, setError, setErrorPopupOpen } from '../../store/project/project.actions';
 import CancelButton from '../common/CancelButton';
 import IconContainer from '../common/IconContainer';
 import useAuth from '../../hooks/useAuth';
@@ -24,8 +24,13 @@ const BoardForm = () => {
   const [team, setTeam] =  useState([]);
   //FIX TEAM
 
-  const handleAddMember = (member) => {
-    setTeam([...team, member]);
+  const handleAddMember = (e) => {
+    const user = members.find(member => member._id === e.target.value);
+    if (user) return setTeam([...team, user]);
+    else {
+      dispatch(setError("Failed adding user"));
+      dispatch(setErrorPopupOpen(true));
+    }
   }
 
   const handleFormSubmit = (e) => {
@@ -127,7 +132,7 @@ const BoardForm = () => {
         </div>
         <div className='buttons-container'>
           <button type='submit' className='btn form'>Create {element}</button>
-          <CancelButton fn={closeCreatePopup}>Cancel</CancelButton>
+          <CancelButton fn={closeCreatePopup}/>
         </div>
     </form>
   )

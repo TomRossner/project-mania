@@ -8,7 +8,6 @@ const Projects = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {boards: projects} = useProject();
-  
 
   const handleClick = (board) => {
     dispatch(setCurrentProject(board));

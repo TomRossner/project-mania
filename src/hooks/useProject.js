@@ -22,7 +22,8 @@ import {
     setStage,
     setError,
     setErrorPopupOpen,
-    setTaskPriority
+    setTaskPriority,
+    setAdminPassFormOpen
 } from "../store/project/project.actions";
 
 const useProject = () => {
@@ -44,7 +45,8 @@ const useProject = () => {
         error,
         errorPopupOpen,
         taskPriority,
-        tasks
+        tasks,
+        adminFormOpen
     } = useSelector(selectProject);
 
     const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
@@ -234,6 +236,7 @@ const useProject = () => {
             const {data: userInfo} = await getUserInfo(user._id);
             const {data: newProject} = await addProject({...values, members: [...values.members, userInfo], admins: [userInfo]});
             dispatch(setBoards([...boards, {...newProject, due_date: new Date(newProject.due_date).toDateString()}]));
+            dispatch(setAdminPassFormOpen(true));
         } catch ({response}) {
             if (response.data.error && response.status === 400) {
                 dispatch(setError(response.data.error));
@@ -241,6 +244,8 @@ const useProject = () => {
             }
         }
     }
+
+    const closeAdminForm = () => dispatch(setAdminPassFormOpen(false));
 
     const addStage = (values, project) => {
         if (!values || values.type !== 'stage') return dispatch(setError("Invalid values. Could not create stage"));
@@ -326,6 +331,7 @@ const useProject = () => {
         errorPopupOpen,
         taskPriority,
         tasks,
+        adminFormOpen,
         handleCreateBoard,
         handleCreate, // handleCreate and handleCreateBoard are similar
         handleToggleNotificationTab,
@@ -352,7 +358,8 @@ const useProject = () => {
         addTask,
         handleSelectStage,
         handleSetPriority,
-        handleElementClick
+        handleElementClick,
+        closeAdminForm
     }
 }
 

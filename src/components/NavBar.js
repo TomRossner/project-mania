@@ -6,12 +6,13 @@ import IconContainer from './common/IconContainer';
 import {BsChatLeftText, BsChevronDown, BsPersonCircle} from "react-icons/bs";
 import {IoSettingsOutline} from "react-icons/io5";
 import {AiOutlineProject} from "react-icons/ai";
-import { setCurrentProject } from '../store/project/project.actions';
+import { setCurrentProject, setProjectMembers } from '../store/project/project.actions';
 import useAuth from '../hooks/useAuth';
 import {MdLogout, MdLogin, MdPerson} from "react-icons/md";
 import {ImUserPlus} from "react-icons/im";
 import {HiUserGroup} from "react-icons/hi";
 import useProject from '../hooks/useProject';
+import Space from "./common/Space";
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const NavBar = () => {
               {user && isAuthenticated && boards.length ?
               <>
               <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
-                {boards?.map(project => <p onClick={() => handleClick(project)} key={project._id}>{project.title}</p>)}
+                {boards?.map(project => <p key={project._id} onClick={() => handleClick(project)}>{project.title}</p>)}
               </div>
               </> : null}
             </div>
@@ -72,7 +73,7 @@ const NavBar = () => {
                   <Link className="link flex-align" to="/logout"><IconContainer icon={<MdLogout className="icon"/>}/>Logout</Link>
                 </>
               }
-              <div className='flex1'></div>
+              <Space/>
             </div>
           </div>
           <div className='profile'>
