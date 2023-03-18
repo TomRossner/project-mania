@@ -45,6 +45,7 @@ const Login = () => {
 
     const handleGoogleSignIn = async () => {
         const user = await googleSignIn();
+        console.log(user)
         dispatch(setUser(user));
     }
 
@@ -88,7 +89,9 @@ const Login = () => {
                         {isLoading ? <ButtonSpinner/> : <><BsShieldCheck className="icon"/>Sign in</>}
                     </button>
                     <p>OR</p>
-                    <button type="button" className="btn form white" onClick={handleGoogleSignIn}><FcGoogle className="icon"/>Sign in with Google</button>
+                    <button type="button" className="btn form white" onClick={handleGoogleSignIn}>
+                        <FcGoogle className="icon"/>Sign in with Google
+                    </button>
                 </div>
             </div>
             <p>Not registered? <Link to="/sign-up" className="link blue">Register now</Link></p>
