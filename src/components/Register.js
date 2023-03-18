@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import BackButton from './common/BackButton';
-import { registerUser } from '../httpRequests/auth';
+import { registerUser } from '../httpRequests/http.auth';
 import Input from './common/Input';
 import { useDispatch } from 'react-redux';
 import { setError, setErrorPopupOpen } from '../store/project/project.actions';

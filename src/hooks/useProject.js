@@ -2,11 +2,11 @@ import {useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBoards } from "../store/boards/boards.selector";
 import { selectCurrentProject, selectProject, selectProjectMembers } from "../store/project/project.selector";
-import { updateProject, deleteProject } from "../httpRequests/projectsRequests";
+import { updateProject, deleteProject } from "../httpRequests/http.project";
 import { useNavigate } from "react-router-dom";
 import { setBoards } from "../store/boards/boards.actions";
-import {deleteTask, addProject} from "../httpRequests/projectsRequests";
-import {getUserInfo} from "../httpRequests/auth";
+import {deleteTask, addProject} from "../httpRequests/http.project";
+import {getUserInfo} from "../httpRequests/http.auth";
 import { selectMembers } from "../store/members/members.selector";
 import useAuth from "./useAuth";
 import { generateId } from "../utils/IdGenerator";
@@ -23,7 +23,8 @@ import {
     setError,
     setErrorPopupOpen,
     setTaskPriority,
-    setAdminPassFormOpen
+    setAdminPassFormOpen,
+    setNotifications
 } from "../store/project/project.actions";
 
 const useProject = () => {
@@ -46,7 +47,8 @@ const useProject = () => {
         errorPopupOpen,
         taskPriority,
         tasks,
-        adminFormOpen
+        adminFormOpen,
+        notifications
     } = useSelector(selectProject);
 
     const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
@@ -105,7 +107,11 @@ const useProject = () => {
     }
 
     const update = async (project) => {
-        if (!project) return;
+        if (!project) {
+            dispatch(setError("No project to update"));
+            dispatch(setErrorPopupOpen(true));
+            return;
+        }
     
         try {
             await updateProject(project);
@@ -292,6 +298,12 @@ const useProject = () => {
         return dispatch(setTaskPriority(priority));
     }
 
+    const clearNotifications = () => dispatch(setCurrentProject({...currentProject, notifications: []}));
+
+    const addNotification = (notification) => {
+        return dispatch(setCurrentProject({...currentProject, notifications: [...currentProject.notifications, notification]}));
+    }
+
     useEffect(() => {
         if (!currentProject) return;
         update(currentProject);
@@ -305,6 +317,9 @@ const useProject = () => {
 
         // Update boards every time currentProject changes
         updateBoards();
+
+        // Set notifications
+        dispatch(setNotifications([...currentProject.notifications]));
 
     }, [currentProject])
 
@@ -332,6 +347,7 @@ const useProject = () => {
         taskPriority,
         tasks,
         adminFormOpen,
+        notifications,
         handleCreateBoard,
         handleCreate, // handleCreate and handleCreateBoard are similar
         handleToggleNotificationTab,
@@ -359,7 +375,9 @@ const useProject = () => {
         handleSelectStage,
         handleSetPriority,
         handleElementClick,
-        closeAdminForm
+        closeAdminForm,
+        clearNotifications,
+        addNotification
     }
 }
 

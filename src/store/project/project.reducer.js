@@ -14,7 +14,8 @@ const INITIAL_STATE = {
     errorPopupOpen: false,
     taskPriority: "",
     tasks: [],
-    adminFormOpen: false
+    adminFormOpen: false,
+    notifications: []
 }
 
 export const projectReducer = (state = INITIAL_STATE, action) => {

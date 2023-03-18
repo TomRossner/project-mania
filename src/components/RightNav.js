@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getUserInfo } from '../httpRequests/auth';
+import { getUserInfo } from '../httpRequests/http.auth';
 import { BsPersonCircle } from 'react-icons/bs';
 import IconContainer from './common/IconContainer';
 import useAuth from '../hooks/useAuth';

@@ -9,7 +9,7 @@ import { store } from './store/store';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename='/project-mania-frontend'>
+    <BrowserRouter basename='/project-mania'>
       <Provider store={store}>
         <App />
       </Provider>

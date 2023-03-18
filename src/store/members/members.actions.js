@@ -1,5 +1,5 @@
-import { getMembers } from "../../httpRequests/projectsRequests";
-import { createAction } from "../action-creator";
+import { getMembers } from "../../httpRequests/http.project";
+import { createAction } from "../utils";
 import { MEMBERS_ACTION_TYPES } from "./members.types";
 
 export const fetchMembersStart = () => {

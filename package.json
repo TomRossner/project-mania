@@ -1,8 +1,8 @@
 {
-  "name": "project-management",
+  "name": "project-mania",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://TomRossner.github.io/project-mania-frontend",
+  "homepage": "https://TomRossner.github.io/project-mania",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

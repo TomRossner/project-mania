@@ -1,5 +1,5 @@
 import { PROJECT_ACTION_TYPES } from "./project.types";
-import { createAction } from "../action-creator";
+import { createAction } from "../utils";
 
 export const setCreatePopupOpen = (bool) => {
     return createAction(PROJECT_ACTION_TYPES.SET_CREATE_POPUP, bool);
@@ -39,4 +39,7 @@ export const setTasks = (tasks) => {
 }
 export const setAdminPassFormOpen = (bool) => {
     return createAction(PROJECT_ACTION_TYPES.SET_ADMIN_PASS_FORM_OPEN, bool);
+}
+export const setNotifications= (notification) => {
+    return createAction(PROJECT_ACTION_TYPES.SET_NOTIFICATIONS, notification);
 }

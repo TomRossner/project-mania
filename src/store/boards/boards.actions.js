@@ -1,5 +1,5 @@
-import { getProjects } from "../../httpRequests/projectsRequests";
-import { createAction } from "../action-creator"
+import { getProjects } from "../../httpRequests/http.project";
+import { createAction } from "../utils"
 import { BOARDS_ACTION_TYPES } from "./boards.types"
 
 export const setBoards = (boards) => {

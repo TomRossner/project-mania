@@ -1,6 +1,6 @@
 import { AUTH_ACTION_TYPES } from "./auth.types";
-import {createAction} from "../action-creator";
-import { loginUser } from "../../httpRequests/auth";
+import {createAction} from "../utils";
+import { loginUser } from "../../httpRequests/http.auth";
 
 export const setUser = (user) => {
     return createAction(AUTH_ACTION_TYPES.SET_USER, user);

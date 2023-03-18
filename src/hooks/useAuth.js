@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { LS_logout, setTokenHeader } from '../httpRequests/auth';
+import { LS_logout, setTokenHeader } from '../httpRequests/http.auth';
 import { fetchUserAsync, logout, setUser } from '../store/auth/auth.actions';
 import { selectIsAuthenticated, selectUser } from '../store/auth/auth.selector';
-import { saveJWT } from '../httpRequests/auth';
+import { saveJWT } from '../httpRequests/http.auth';
 import { provider, auth } from '../firebase/config';
 import { signInWithPopup } from 'firebase/auth';
-import { getUser } from '../httpRequests/auth';
+import { getUser } from '../httpRequests/http.auth';
 import axios from 'axios';
-import { getUserInfo } from '../httpRequests/auth';
+import { getUserInfo } from '../httpRequests/http.auth';
 
 const useAuth = () => {
     const isAuthenticated = useSelector(selectIsAuthenticated);

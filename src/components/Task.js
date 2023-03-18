@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { deleteTask, getTask } from '../httpRequests/projectsRequests';
+import { deleteTask, getTask } from '../httpRequests/http.project';
 import Chat from "../components/Chat";
 import BackButton from "../components/common/BackButton";
 import { useDispatch } from 'react-redux';

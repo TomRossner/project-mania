@@ -71,3 +71,8 @@ export const activitySubjects = {
     SEND_MESSAGE: "SEND_MESSAGE",
     RECEIVE_MESSAGE: "RECEIVE_MESSAGE"
 }
+
+export const defaultNotificationProperties = {
+    message: "",
+    created_at: new Date()
+}
