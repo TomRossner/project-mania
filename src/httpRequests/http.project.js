@@ -1,16 +1,12 @@
 import axios from "axios";
 
-axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
-// axios.defaults.baseURL = 'http://localhost:5000/projectmania';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development'
+? process.env.DEV_BASE_URL
+: process.env.PROD_BASE_URL;
 
 export const getTask = async (ids) => {
     const {id, task_id} = ids;
     return await axios.get(`/projects/${id}/${task_id}`);
-}
-
-export const getMembers = async () => {
-    const {data} = await axios.get(`/auth/users`);
-    return data;
 }
 
 export const getProjects = async (id) => {

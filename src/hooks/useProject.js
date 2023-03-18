@@ -327,10 +327,6 @@ const useProject = () => {
     useEffect(() => {
         if (!createPopupOpen) dispatch(setElement(""));
     }, [createPopupOpen])
-
-    // useEffect(() => {
-    //     if (currentProject) dispatch(setProjectMembers(currentProject.members));
-    // }, [])
     
     return {
         currentProject,
