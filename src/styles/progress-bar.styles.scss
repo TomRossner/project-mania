@@ -1,0 +1,17 @@
+@import "./general.styles.scss";
+
+.progress-bar{
+    width: 100%;
+    height: 5px;
+    border: 1px solid $light_grey2;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    .progress-bar-loader{
+        height: 100%;
+        background-color: $blue_hover;
+        transition: width 0.1s;
+    }
+}

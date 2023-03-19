@@ -46,6 +46,7 @@ import "./styles/spinner.styles.scss";
 import "./styles/users.styles.scss";
 import "./styles/notifications.styles.scss";
 import "./styles/activity.styles.scss";
+import "./styles/progress-bar.styles.scss";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -83,7 +84,7 @@ const App = () => {
             <Route path="/sign-up" element={<Register/>}/>
             <Route path="/users" element={<PrivateRoute element={<Users/>}/>}/>
           </Routes>
-          <Space/>
+          {/* <Space/> */}
         </div>
         {/* <RightNav/> */}
         <UserCards/>

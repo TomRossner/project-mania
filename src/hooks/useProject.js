@@ -220,7 +220,8 @@ const useProject = () => {
     const handleDeleteTask = async (task) => {
         dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
           if (stage._id === task.current_stage.id) {
-            return {...stage, tasks_done: stage.tasks_done === 0 ? 0 : stage.tasks_done - 1, stage_tasks: [...stage.stage_tasks.filter(t => t._id !== task._id)]}
+            return {...stage, tasks_done: stage.tasks_done === 0 ? 0 : stage.tasks_done - 1,
+                stage_tasks: [...stage.stage_tasks.filter(t => t._id !== task._id)]};
           } else return stage;
         })]}))
         await deleteTask({id: currentProject._id, stage_id: task.current_stage.id, task_id: task._id});
@@ -232,11 +233,15 @@ const useProject = () => {
         const newMember = members?.find(member => e.target.value.trim() === member._id);
         if (projectMembers.find(member => newMember._id === member._id)) return;
         if (newMember._id === user._id) return;
-        else dispatch(setProjectMembers([...projectMembers, members?.find(member => e.target.value.trim() === member._id)]));
+        else dispatch(setProjectMembers([...projectMembers, newMember])); // newMember was members?.find(member => e.target.value.trim() === member._id) so changed it to newMember
     }
 
     const addBoard = async (values) => {
-        if (values.type !== 'board') return setError("Invalid values. Could not create board");
+        if (values.type !== 'board') {
+            dispatch(setError("Invalid values. Could not create board"));
+            dispatch(setErrorPopupOpen(true));
+            return;
+        }
         if (createPopupOpen) closeCreatePopup();
         try {
             const {data: userInfo} = await getUserInfo(user._id);
@@ -254,7 +259,11 @@ const useProject = () => {
     const closeAdminForm = () => dispatch(setAdminPassFormOpen(false));
 
     const addStage = (values, project) => {
-        if (!values || values.type !== 'stage') return dispatch(setError("Invalid values. Could not create stage"));
+        if (!values || values.type !== 'stage') {
+            dispatch(setError("Invalid values. Could not create stage"));
+            dispatch(setErrorPopupOpen(true));
+            return;
+        }
         if (createPopupOpen) closeCreatePopup();
         const newStage = {...values, project: project.title};
         const projectToAddStage = boards.find(board => board._id === project._id);
@@ -266,7 +275,11 @@ const useProject = () => {
     }
 
     const addTask = (values, stageToUpdate) => {
-        if (!values || values.type !== 'task') return setError("Invalid values. Could not create task");
+        if (!values || values.type !== 'task') {
+            dispatch(setError("Invalid values. Could not create task"));
+            dispatch(setErrorPopupOpen(true));
+            return;
+        }
         if (createPopupOpen) closeCreatePopup();
         const newTask = {
             ...values,

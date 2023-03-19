@@ -9,12 +9,32 @@ import { setCurrentProject } from '../store/project/project.actions';
 import OptionsMenu from './common/OptionsMenu';
 import IconContainer from './common/IconContainer';
 import useProject from '../hooks/useProject';
+import { useDrop } from 'react-dnd';
 
 const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
     const [inputValue, setInputValue] = useState("");
     const {currentProject, handleAddTask, validate, handleDeleteStage, toggleStageOptions} = useProject();
     const dispatch = useDispatch();
+    const [{isOver}, drop] = useDrop({
+        accept: 'task',
+        drop: (task) => handleDropEnd(task),
+        collect: monitor => ({
+            isOver: !!monitor.isOver()
+        })
+    });
+
+    const handleDropEnd = (task) => {
+        if (stage._id !== task.current_stage.id) {
+            return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(s => {
+                if (s._id === stage._id) {
+                    return {...s, stage_tasks: [...s.stage_tasks, {...task, current_stage: {name: s.stage_name, id: s._id}}]};
+                } else if (s._id === task.current_stage.id) {
+                    return {...s, stage_tasks: [...s.stage_tasks.filter(t => t._id !== task._id)]};
+                } else return s;
+            })]}))
+        } else return;
+    }
 
     const handleInputChange = (e) => {
         return setInputValue(e.target.value);
@@ -65,12 +85,12 @@ const StageOverview = ({stage}) => {
                 <IconContainer additionalClass='plus' onClick={() => handleAddTask(stage)} icon={<BsPlus className='icon plus'/>}></IconContainer>
             </div>
         </div>
-        <div className='stage-tasks'>
+        <div className={isOver ? 'stage-tasks drag' : 'stage-tasks'} ref={drop}>
             {stage_tasks?.map((task, index) => task.current_stage.name === stage_name
             ? <TaskOverview key={index} task={task}/>
             : null)}
         </div>
-        <div className='flex1'></div>
+        {/* <div className='flex1'></div> */}
         {stage_tasks.length ?
         <div className='stage-status'>
             <h4 className='white'>Status</h4>

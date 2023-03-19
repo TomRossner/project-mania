@@ -8,11 +8,20 @@ import { FiCheck } from 'react-icons/fi';
 import {MdDoneAll, MdOpenInNew} from "react-icons/md";
 import ThreeDotsMenu from "./common/ThreeDotsMenu";
 import useProject from '../hooks/useProject';
+import { useDrag } from 'react-dnd';
 
 const TaskOverview = ({task}) => {
     const {title, due_date, files, _id, priority, current_stage, subtitle} = task;
     const { currentProject, handleMarkAsDone, handleMarkAsNotDone} = useProject();
     const navigate = useNavigate();
+
+    const [{isDragging}, drag] = useDrag({
+        type: 'task',
+        item: task,
+        collect: monitor => ({
+            isDragging: !!monitor.isDragging()
+        })
+    });
 
     const timeLabel = labels.filter(label => label.id === "label_time")[0];
     const dueTodayLabel = labels.filter(label => label.id === "label_due_today")[0];
@@ -24,7 +33,7 @@ const TaskOverview = ({task}) => {
 
   return (
     <>
-    <div className='listed-task-container'>
+    <div className={isDragging ? 'listed-task-container drag' : 'listed-task-container'} ref={drag}>
         <div className='listed-task-content'>
             <div className='flex-align space-between'>
                 <LabelContainer priority={priority} additionalClass="no-hover"/>

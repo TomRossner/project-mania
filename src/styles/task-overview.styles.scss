@@ -18,6 +18,11 @@
         border: 1px solid $blue_hover;
     }
 
+    &.drag{
+        display: none;
+        cursor: grabbing;
+    }
+
     .listed-task-content{
         display: flex;
         flex-direction: column;

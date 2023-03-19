@@ -9,19 +9,28 @@
     width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
-    min-height: 20vh;
 
     .stage-container{
         min-width: 30%;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
 
         .stage-tasks{
-            padding: 0.5rem 0;
+            margin: 0.5rem 0 1rem 0;
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
-            height: 100%;
+            flex: 1;
             overflow-y: auto;
+            border: 2px solid transparent;
+
+            &.drag{
+                border: 2px dashed $light_grey;
+                background-color: $light_bg;
+                border-radius: 10px;
+                transition: background-color 0.15s;
+            }   
         }
 
         .stage-title-container{
@@ -90,6 +99,28 @@
 
             .options-menu{
                 right: 4.5rem;
+            }
+        }
+    
+        .stage-status{
+            border: 1px solid $red;
+            padding: 0.3rem 0.7rem;
+            border-radius: 10px;
+            background-color: white;
+            border: 1px solid $light_grey;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            h4{
+                width: fit-content;
+                align-items: start; 
+            }
+
+            p{
+                font-style: italic;
+                color: $grey;
+                align-self: self-end;
             }
         }
     }
