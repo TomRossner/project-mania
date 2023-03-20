@@ -228,6 +228,14 @@ const useProject = () => {
         dispatch(setTasks([...tasks.filter(t => t._id !== task._id)]));
     }
 
+    const handleClearStageTasks = (stageToClearTasksFrom) => {
+        dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(s => {
+            if (s._id === stageToClearTasksFrom._id) {
+                return {...s, stage_tasks: [], tasks_done: 0};
+            } else return s;
+        })]}))
+    }
+
     const handleAddMembers = (e) => {
         if (!e.target.value) return;
         const newMember = members?.find(member => e.target.value.trim() === member._id);
@@ -386,7 +394,8 @@ const useProject = () => {
         handleElementClick,
         closeAdminForm,
         clearNotifications,
-        addNotification
+        addNotification,
+        handleClearStageTasks
     }
 }
 

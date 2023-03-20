@@ -14,7 +14,7 @@ import { useDrop } from 'react-dnd';
 const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
     const [inputValue, setInputValue] = useState("");
-    const {currentProject, handleAddTask, validate, handleDeleteStage, toggleStageOptions} = useProject();
+    const {currentProject, handleAddTask, validate, handleDeleteStage, toggleStageOptions, handleClearStageTasks} = useProject();
     const dispatch = useDispatch();
     const [{isOver}, drop] = useDrop({
         accept: 'task',
@@ -61,7 +61,8 @@ const StageOverview = ({stage}) => {
 
         if (opt.toLowerCase() === "edit") return handleEdit(stage);
         if (opt.toLowerCase() === "add task") return handleAddTask(stage);
-        if (opt.toLowerCase() === "delete") return handleDeleteStage(stage);
+        if (opt.toLowerCase() === "delete stage") return handleDeleteStage(stage);
+        if (opt.toLowerCase() === "clear tasks") return handleClearStageTasks(stage);
         else return console.log(`Unknown/unhandled option "${opt}".`);
     }
 
@@ -90,11 +91,10 @@ const StageOverview = ({stage}) => {
             ? <TaskOverview key={index} task={task}/>
             : null)}
         </div>
-        {/* <div className='flex1'></div> */}
         {stage_tasks.length ?
         <div className='stage-status'>
-            <h4 className='white'>Status</h4>
-            <p className='white'>{((stage_tasks.filter(task => task.isDone === true).length / stage_tasks.length) * 100).toFixed()}% completed</p>
+            <h4>Status</h4>
+            <p>{((stage_tasks.filter(task => task.isDone === true).length / stage_tasks.length) * 100).toFixed()}% completed</p>
             <ProgressBar stage={stage} tasksDone={Number(stage.tasks_done)} totalTasks={Number(stage_tasks.length)}/>
         </div>
         : null}

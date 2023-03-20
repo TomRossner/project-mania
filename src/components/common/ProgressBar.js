@@ -9,7 +9,7 @@ const ProgressBar = ({tasksDone = 0, totalTasks = 0}) => {
 
   return (
     <div className='progress-bar'>
-        <div className='progress-bar-loader' style={width ? {width: `${width.toFixed()}%`} : {width: '0%'}}></div>
+        <div className='progress-bar-loader' style={width ? {width: `${width.toFixed(2)}%`} : {width: '0%'}}></div>
     </div>
   )
 }

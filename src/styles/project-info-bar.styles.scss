@@ -22,13 +22,36 @@
             align-items: center;
             gap: 0.5rem;
             padding-inline: 0.5rem;
-    
-    
+
             .icon{
-                scale: 1.5;
+                scale: 1.7;
                 color: $blue;
             }
+    
+            .icon.check{
+                scale: 1.3;
+                color: $green;
+                // animation: fadeIn forwards 0.15s;
+            }
+
+            .input-container{
+                input{
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    border: none;
+                    background-color: transparent;
+
+                    &.title-input{
+
+                        &.active{
+                            font-style: italic;
+                            color: $grey;
+                        }
+                    }
+                }
+            }
         }
+
     }
 
     .icon-span.menu{
