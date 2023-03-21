@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiCheck } from 'react-icons/fi';
 import { BsThreeDotsVertical, BsPlus } from 'react-icons/bs';
 import TaskOverview from './TaskOverview';
@@ -12,7 +12,7 @@ import useProject from '../hooks/useProject';
 import { useDrop } from 'react-dnd';
 
 const StageOverview = ({stage}) => {
-    const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
+    const {stage_name, stage_tasks, edit_active, options_menu_open, tasks_done} = stage;
     const [inputValue, setInputValue] = useState("");
     const {currentProject, handleAddTask, validate, handleDeleteStage, toggleStageOptions, handleClearStageTasks} = useProject();
     const dispatch = useDispatch();
@@ -23,6 +23,13 @@ const StageOverview = ({stage}) => {
             isOver: !!monitor.isOver()
         })
     });
+    const [stageTasks, setStageTasks] = useState([]);
+    const [tasksDone, setTasksDone] = useState(0);
+
+    useEffect(() => {
+        setStageTasks(stage_tasks);
+        setTasksDone(Number(stage_tasks.filter(t => t.isDone === true).length));
+    }, [stage_tasks])
 
     const handleDropEnd = (task) => {
         if (stage._id !== task.current_stage.id) {
@@ -94,8 +101,8 @@ const StageOverview = ({stage}) => {
         {stage_tasks.length ?
         <div className='stage-status'>
             <h4>Status</h4>
-            <p>{((stage_tasks.filter(task => task.isDone === true).length / stage_tasks.length) * 100).toFixed()}% completed</p>
-            <ProgressBar stage={stage} tasksDone={Number(stage.tasks_done)} totalTasks={Number(stage_tasks.length)}/>
+            <p>{((tasksDone / stageTasks.length) * 100).toFixed()}% completed</p>
+            <ProgressBar stage={stage} tasksDone={tasksDone} totalTasks={Number(stageTasks.length)}/>
         </div>
         : null}
     </div>
