@@ -34,7 +34,7 @@ const useProject = () => {
     const boards = useSelector(selectBoards);
     const projectMembers = useSelector(selectProjectMembers);
     const members = useSelector(selectMembers);
-    const {user} = useAuth();
+    const {user, userInfo, setUserInfo} = useAuth();
     const {
         element,
         projectMenuOpen,
@@ -187,7 +187,7 @@ const useProject = () => {
         return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.filter(stage => stage._id !== stageToDelete._id)]}));
     }
 
-    const updateBoards = () => dispatch(setBoards([...boards.map(board => {
+    const updateCurrentProjectInBoardsArray = () => dispatch(setBoards([...boards.map(board => {
         if (board._id === currentProject._id) {
             return {...currentProject};
         } else return board;
@@ -241,7 +241,8 @@ const useProject = () => {
         const newMember = members?.find(member => e.target.value.trim() === member._id);
         if (projectMembers.find(member => newMember._id === member._id)) return;
         if (newMember._id === user._id) return;
-        else dispatch(setProjectMembers([...projectMembers, newMember])); // newMember was members?.find(member => e.target.value.trim() === member._id) so changed it to newMember
+        const {email, first_name, last_name, online, admin, imgUrl} = newMember;
+        dispatch(setProjectMembers([...projectMembers, {email, first_name, last_name, online, admin, imgUrl}])); // newMember was members?.find(member => e.target.value.trim() === member._id) so changed it to newMember
     }
 
     const addBoard = async (values) => {
@@ -253,7 +254,8 @@ const useProject = () => {
         if (createPopupOpen) closeCreatePopup();
         try {
             const {data: userInfo} = await getUserInfo(user._id);
-            const {data: newProject} = await addProject({...values, members: [...values.members, userInfo], admins: [userInfo]});
+            const {email, first_name, last_name, online, admin, imgUrl} = userInfo;
+            const {data: newProject} = await addProject({...values, members: [...values.members, {email, first_name, last_name, online, admin, imgUrl, _id: user._id}], admins: [email]});
             dispatch(setBoards([...boards, {...newProject, due_date: new Date(newProject.due_date).toDateString()}]));
             dispatch(setAdminPassFormOpen(true));
         } catch ({response}) {
@@ -337,11 +339,14 @@ const useProject = () => {
         dispatch(setTasks(projectTasks.flatMap(arr => arr)));
 
         // Update boards every time currentProject changes
-        updateBoards();
+        updateCurrentProjectInBoardsArray();
 
         // Set notifications
         dispatch(setNotifications([...currentProject.notifications]));
 
+        // Set admin property to true if the user's email is in admins array (DOES NOT UPDATE ADMIN PROPERTY IN DB)
+        if (user.email in currentProject.admins) setUserInfo({...userInfo, admin: true});
+        // console.log(currentProject);
     }, [currentProject])
 
     // Reset element every time popup is closed 

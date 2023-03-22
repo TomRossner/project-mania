@@ -77,7 +77,9 @@ const NavBar = () => {
             </div>
           </div>
           <div className='profile'>
-              <IconContainer onClick={handleToggleProfileTab} icon={<BsPersonCircle className='icon profile'/>}/>
+              {userInfo?.imgUrl
+              ? <div className='profile-img-container'><img src={userInfo.imgUrl.toString()} alt="profile"/></div>
+              : <IconContainer onClick={handleToggleProfileTab} icon={<BsPersonCircle className='icon profile'/>}/>}
               <span>{userName}</span>
           </div>
         </ul>

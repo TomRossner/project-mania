@@ -5,11 +5,22 @@ import IconContainer from './common/IconContainer';
 import useAuth from '../hooks/useAuth';
 import Activity from './Activity';
 import useProject from '../hooks/useProject';
+import { getUserByEmail } from '../httpRequests/http.members';
 
 const RightNav = () => {
     const {user} = useAuth();
     const {currentProject} = useProject();
     const [userName, setUserName] = useState("");
+    const adminEmails = currentProject?.admins;
+    const [admins, setAdmins] = useState([]);
+
+    const getAdmins = async () => {
+      for (let i = 0; i < adminEmails.length; i++) {
+        const adminObj = await getUserByEmail(adminEmails[i]);
+        if (admins.find(adm => adm.email === adminObj.email)) return; // Don't add the same admin twice
+        setAdmins([...admins, adminObj]);
+      }
+    }
 
     useEffect(() => {
         if (user) {
@@ -21,6 +32,11 @@ const RightNav = () => {
         } else return setUserName("");
       }, [user])
 
+      useEffect(() => {
+        if (!currentProject) return;
+        getAdmins();
+      }, [currentProject])
+
   return (
     <nav id="right-nav">
         <div className="right-nav-content">
@@ -31,19 +47,23 @@ const RightNav = () => {
               <p>{currentProject?.subtitle}</p>
             </div>
 
-            {currentProject?.admins?.length ? <div className="current-project-admins">
+            {admins?.length ? <div className="current-project-admins">
               <span>BOARD ADMINS</span>
               <div className="admins">
-                {currentProject.admins.map(admin => {
-                  if (admin._id === user?._id) {
+                {admins.map(admin => {
+                  if (admin.email === user?.email) {
                     return (
-                      <div className="admin" key={admin._id}>
-                        <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>
+                      <div className="admin" key={admin.email}>
+                        {admin.imgUrl
+                        ? <div className='profile-img-container'><img src={admin.imgUrl.toString()} alt="profile"/></div>
+                        : <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>}
                         <span>{userName} (You)</span>
                       </div>)
                   } else return (
                       <div className="admin">
-                        <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>
+                        {admin.imgUrl
+                        ? <div className='profile-img-container'><img src={admin.imgUrl.toString()} alt="profile"/></div>
+                        : <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>}
                         <span>{admin.first_name} {admin.last_name}</span>
                       </div>) 
                 })}

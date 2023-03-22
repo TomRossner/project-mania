@@ -77,7 +77,6 @@ const ProjectInfoBar = () => {
             titleRef.current.select();
             titleRef.current.focus();
         }
-        console.log(tasks)
     }, [currentProject])
 
   return (

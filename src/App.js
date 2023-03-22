@@ -47,6 +47,7 @@ import "./styles/users.styles.scss";
 import "./styles/notifications.styles.scss";
 import "./styles/activity.styles.scss";
 import "./styles/progress-bar.styles.scss";
+import "./styles/profile.styles.scss";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -86,8 +87,8 @@ const App = () => {
           </Routes>
           {/* <Space/> */}
         </div>
-        {/* <RightNav/> */}
-        <UserCards/>
+        <RightNav/>
+        {/* <UserCards/> */}
       </div>
     </div>
   )

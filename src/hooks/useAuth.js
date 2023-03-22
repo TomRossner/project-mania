@@ -40,17 +40,19 @@ const useAuth = () => {
     
     const google_signUpUser = async () => {
         const {user} = await signInWithPopup(auth, provider);
-        const {accessToken, email, displayName, uid} = user;
+        const {accessToken, email, displayName, uid, photoURL} = user;
+        console.log(photoURL)
         
-        return await axios.post("/auth/sign-up/google", {accessToken, email, displayName, uid});
+        return await axios.post("/auth/sign-up/google", {accessToken, email, displayName, uid, imgUrl: photoURL});
     }
 
     useEffect(() => { // FIX THIS
-        if (!user || !isAuthenticated) {
-            return setUserInfo(null);
-        } else if (user && isAuthenticated) {
+        if (!user || !isAuthenticated) return setUserInfo(null);
+        if (user && isAuthenticated && userInfo?.email === user.email) return;
+        else if (user && isAuthenticated) {
             const getUser = async () => {
                 const {data} = await getUserInfo(user._id || user.user_id);
+                // console.log(data)
                 return setUserInfo(data);
             }
             getUser();
@@ -73,6 +75,7 @@ const useAuth = () => {
         isAuthenticated,
         user,
         userInfo,
+        setUserInfo,
         refreshUser,
         login,
         logout: handleLogout,

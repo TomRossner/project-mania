@@ -37,6 +37,16 @@
                 }
             }
 
+            .profile-img-container{
+                width: 30px;
+                height: 30px;
+                z-index: 1;
+
+                img{
+                    width: 30px;
+                }
+            }
+
             .icon-span{
                 padding: 0.5rem;
                 background-color: white;
