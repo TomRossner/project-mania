@@ -45,7 +45,6 @@ const Login = () => {
 
     const handleGoogleSignIn = async () => {
         const user = await googleSignIn();
-        console.log(user)
         dispatch(setUser(user));
     }
 

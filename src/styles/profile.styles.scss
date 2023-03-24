@@ -13,12 +13,77 @@
     border: 1px solid $blue_hover;
     background-color: white;
 
-    .profile-img-container{
-        width: 110px;
-        height: 110px;
+    .img-container{
+        position: relative;
 
-        img{
+        input{
+            display: none;
+        }
+
+        .profile-img-container{
             width: 110px;
+            height: 110px;
+    
+            img{
+                width: 110px;
+            }
+        }
+
+        .icon-span{
+            position: absolute;
+            border-radius: 8px;
+            border: 1px solid $grey;
+            background-color: $light;
+            bottom: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem;
+        }
+
+        &:hover{
+
+            img{
+                opacity: 0.5;
+                transition: opacity 0.15s;
+            }
+
+            .icon-span{
+                border-color: $blue;
+
+                .icon{
+                    color: $blue;
+                }
+            }
+        }
+    }
+
+    .header-container{
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        height: 10%;
+        border-radius: 10px;
+        overflow: hidden;
+
+        .icon-span{
+            position: absolute;
+            border-radius: 8px;
+            border: 1px solid $grey;
+            background-color: $light;
+            bottom: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem;
+        }
+
+        &:hover{
+            .icon-span{
+                border-color: $blue;
+
+                .icon{
+                    color: $blue_hover;
+                }
+            }
         }
     }
 

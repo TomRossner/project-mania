@@ -29,6 +29,10 @@ const ProjectMembers = () => {
         dispatch(setProjectMembers(currentProject.members));
     }, [currentProject])
 
+    useEffect(() => {
+        console.log(members)
+    }, [members])
+
   return (
     <>
     <div className='current-board-members-container'>
@@ -70,7 +74,7 @@ const ProjectMembers = () => {
         <span className='icon-span add' onClick={toggleMembersPopUpTab}><RxPlus className='icon'/>
         {membersPopUpTabOpen
             ?   <div className='options-menu open'>
-                    {members.map((member, index) => {
+                    {members?.map((member, index) => {
                         if (member._id === user._id) return '';
                         if (projectMembers.find(project_member => project_member._id === member._id)) {
                             return (

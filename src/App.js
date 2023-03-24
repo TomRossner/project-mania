@@ -20,7 +20,6 @@ import useAuth from "./hooks/useAuth";
 import { fetchBoardsAsync } from "./store/boards/boards.actions";
 import Users from "./components/Users";
 import PrivateRoute from "./components/common/PrivateRoute";
-import Space from "./components/common/Space";
 import NotificationTab from "./components/NotificationTab";
 import useProject from "./hooks/useProject";
 import AdminForm from "./components/forms/AdminForm";
@@ -49,6 +48,7 @@ import "./styles/notifications.styles.scss";
 import "./styles/activity.styles.scss";
 import "./styles/progress-bar.styles.scss";
 import "./styles/profile.styles.scss";
+import "./styles/user-header.styles.scss";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -61,10 +61,7 @@ const App = () => {
 
   useEffect(() => {
     if (user && isAuthenticated) dispatch(fetchBoardsAsync(user._id));
-    if (!user || !isAuthenticated) {
-      // dispatch(setUserInfo(null));
-      dispatch(setCurrentProject(null));
-    }
+    if (!user || !isAuthenticated) dispatch(setCurrentProject(null));
   }, [user, isAuthenticated])
 
   return (
@@ -89,7 +86,6 @@ const App = () => {
             <Route path="/sign-up" element={<Register/>}/>
             <Route path="/users" element={<PrivateRoute element={<Users/>}/>}/>
           </Routes>
-          {/* <Space/> */}
         </div>
         <RightNav/>
         {/* <UserCards/> */}

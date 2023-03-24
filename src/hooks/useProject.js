@@ -333,7 +333,7 @@ const useProject = () => {
     
         // Each time currentProject changes update tasks
         const projectTasks = currentProject?.stages.map(stage => {
-        return stage.stage_tasks.map(task => task);
+            return stage.stage_tasks.map(task => task);
         // Each stage is returned as an array, so projectTasks is an array of arrays
         })
         dispatch(setTasks(projectTasks.flatMap(arr => arr)));
@@ -346,7 +346,6 @@ const useProject = () => {
 
         // Set admin property to true if the user's email is in admins array
         if (user.email in currentProject.admins) dispatch(setUserInfo({...userInfo, admin: true}));
-        // console.log(currentProject);
     }, [currentProject])
 
     // Reset element every time popup is closed 

@@ -31,6 +31,14 @@ export async function getUserInfo(id) {
     return await axios.get(`/auth/get/${id}`);
 }
 
+export async function updateUser(user) {
+    return await axios.put('/auth/update', {user});
+}
+
+export async function updateProfilePicture(values) {
+    return await axios.post('/auth/update-profile-picture', values);
+}
+
 export function getJWT() {
     return localStorage.getItem(token);
 }

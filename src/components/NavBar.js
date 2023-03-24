@@ -13,6 +13,7 @@ import {ImUserPlus} from "react-icons/im";
 import {HiUserGroup} from "react-icons/hi";
 import useProject from '../hooks/useProject';
 import Space from "./common/Space";
+import BlankProfilePicture from './common/BlankProfilePicture';
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -79,7 +80,7 @@ const NavBar = () => {
           <div className='profile'>
               {userInfo?.imgUrl
               ? <div className='profile-img-container'><img src={userInfo.imgUrl.toString()} alt="profile"/></div>
-              : <IconContainer onClick={handleToggleProfileTab} icon={<BsPersonCircle className='icon profile'/>}/>}
+              : <BlankProfilePicture/>}
               <span>{userName}</span>
           </div>
         </ul>

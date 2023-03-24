@@ -37,13 +37,13 @@
                 }
             }
 
-            .profile-img-container{
+            .profile-img-container.blank{
                 width: 30px;
                 height: 30px;
                 z-index: 1;
 
-                img{
-                    width: 30px;
+                #blank-profile{
+                    width: 40px;
                 }
             }
 

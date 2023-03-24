@@ -36,6 +36,10 @@
         }
     
         .current-project-admins{
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
             span{
                 color: $grey;
                 font-size: 0.8rem;

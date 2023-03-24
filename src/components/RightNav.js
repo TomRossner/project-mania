@@ -11,7 +11,7 @@ const RightNav = () => {
     const {user, userInfo} = useAuth();
     const {currentProject} = useProject();
     const [userName, setUserName] = useState("");
-    const adminEmails = currentProject?.admins;
+    const [adminEmails, setAdminEmails] = useState([]);
     const [admins, setAdmins] = useState([]);
 
     const getAdmins = async () => {
@@ -29,8 +29,13 @@ const RightNav = () => {
       }, [userInfo])
 
       useEffect(() => {
-        if (!currentProject) return;
+        if (!currentProject || !adminEmails.length) return;
         getAdmins();
+      }, [currentProject, adminEmails])
+
+      useEffect(() => {
+        if (!currentProject) return;
+        setAdminEmails(currentProject.admins);
       }, [currentProject])
 
   return (

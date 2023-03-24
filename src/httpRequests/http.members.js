@@ -13,6 +13,6 @@ export const getMembers = async () => {
 }
 
 export const getUserByEmail = async (email) => {
-    const {data} = await axios.get(`/members/${email}`);
+    const {data} = await axios.post(`/members`, {email});
     return data;
 }
