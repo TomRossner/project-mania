@@ -25,6 +25,7 @@ import NotificationTab from "./components/NotificationTab";
 import useProject from "./hooks/useProject";
 import AdminForm from "./components/forms/AdminForm";
 import UserCards from "./components/UserCards";
+import { setUserInfo } from "./store/userInfo/userInfo.actions";
 
 // Styles
 import "./styles/general.styles.scss";
@@ -60,7 +61,10 @@ const App = () => {
 
   useEffect(() => {
     if (user && isAuthenticated) dispatch(fetchBoardsAsync(user._id));
-    if (!user || !isAuthenticated) dispatch(setCurrentProject(null));
+    if (!user || !isAuthenticated) {
+      // dispatch(setUserInfo(null));
+      dispatch(setCurrentProject(null));
+    }
   }, [user, isAuthenticated])
 
   return (

@@ -8,13 +8,16 @@ import { provider, auth } from '../firebase/config';
 import { signInWithPopup } from 'firebase/auth';
 import { getUser } from '../httpRequests/http.auth';
 import axios from 'axios';
-import { getUserInfo } from '../httpRequests/http.auth';
+import { setUserInfo } from '../store/userInfo/userInfo.actions';
+import { selectUserInfo } from '../store/userInfo/userInfo.selector';
+import { fetchUserInfoAsync } from '../store/userInfo/userInfo.actions';
 
 const useAuth = () => {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const user = useSelector(selectUser);
+    const userInfo = useSelector(selectUserInfo);
     const dispatch = useDispatch();
-    const [userInfo, setUserInfo] = useState(null);
+    // const [userInfo, setUserInfo] = useState(null);
 
     const refreshUser = () => dispatch(setUser(getUser()));
 
@@ -41,7 +44,6 @@ const useAuth = () => {
     const google_signUpUser = async () => {
         const {user} = await signInWithPopup(auth, provider);
         const {accessToken, email, displayName, uid, photoURL} = user;
-        console.log(photoURL)
         
         return await axios.post("/auth/sign-up/google", {accessToken, email, displayName, uid, imgUrl: photoURL});
     }
@@ -50,12 +52,10 @@ const useAuth = () => {
         if (!user || !isAuthenticated) return setUserInfo(null);
         if (user && isAuthenticated && userInfo?.email === user.email) return;
         else if (user && isAuthenticated) {
-            const getUser = async () => {
-                const {data} = await getUserInfo(user._id || user.user_id);
-                // console.log(data)
-                return setUserInfo(data);
-            }
-            getUser();
+            // dispatch(fetchUserInfoAsync(user._id || user.user_id));
+            user._id
+            ? dispatch(fetchUserInfoAsync(user._id))
+            : dispatch(fetchUserInfoAsync(user.user_id));
         }
     }, [user, isAuthenticated])
 
@@ -75,7 +75,6 @@ const useAuth = () => {
         isAuthenticated,
         user,
         userInfo,
-        setUserInfo,
         refreshUser,
         login,
         logout: handleLogout,

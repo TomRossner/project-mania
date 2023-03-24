@@ -8,7 +8,7 @@ import useProject from '../hooks/useProject';
 import { getUserByEmail } from '../httpRequests/http.members';
 
 const RightNav = () => {
-    const {user} = useAuth();
+    const {user, userInfo} = useAuth();
     const {currentProject} = useProject();
     const [userName, setUserName] = useState("");
     const adminEmails = currentProject?.admins;
@@ -23,14 +23,10 @@ const RightNav = () => {
     }
 
     useEffect(() => {
-        if (user) {
-          const getUser = async () => {
-            const {data} = await getUserInfo(user._id); 
-            setUserName(`${data.first_name} ${data.last_name}`);
-          }
-          getUser();
+        if (userInfo) {
+          setUserName(`${userInfo.first_name} ${userInfo.last_name}`);
         } else return setUserName("");
-      }, [user])
+      }, [userInfo])
 
       useEffect(() => {
         if (!currentProject) return;

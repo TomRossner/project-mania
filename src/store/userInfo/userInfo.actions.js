@@ -1,0 +1,30 @@
+import { createAction } from "../utils";
+import { USER_INFO_ACTION_TYPES } from "./userInfo.types";
+import { getUserInfo } from "../../httpRequests/http.auth";
+
+export const setUserInfo = (user_info) => {
+    return createAction(USER_INFO_ACTION_TYPES.SET_USER_INFO, user_info);
+}
+
+export const fetchUserInfoStart = () => {
+    return createAction(USER_INFO_ACTION_TYPES.FETCH_USER_INFO_START);
+}
+
+export const fetchUserInfoSuccess = (user_info) => {
+    return createAction(USER_INFO_ACTION_TYPES.FETCH_USER_INFO_SUCCESS, user_info);
+}
+
+export const fetchUserInfoFailed = (error) => {
+    return createAction(USER_INFO_ACTION_TYPES.FETCH_USER_INFO_FAILED, error);
+}
+
+export const fetchUserInfoAsync = (id) => async (dispatch) => {
+    dispatch(fetchUserInfoStart());
+
+    try {
+        const {data: userInfo} = await getUserInfo(id);
+        dispatch(fetchUserInfoSuccess(userInfo));
+    } catch (error) {
+        dispatch(fetchUserInfoFailed(error));
+    }
+}

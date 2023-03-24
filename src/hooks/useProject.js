@@ -344,8 +344,8 @@ const useProject = () => {
         // Set notifications
         dispatch(setNotifications([...currentProject.notifications]));
 
-        // Set admin property to true if the user's email is in admins array (DOES NOT UPDATE ADMIN PROPERTY IN DB)
-        if (user.email in currentProject.admins) setUserInfo({...userInfo, admin: true});
+        // Set admin property to true if the user's email is in admins array
+        if (user.email in currentProject.admins) dispatch(setUserInfo({...userInfo, admin: true}));
         // console.log(currentProject);
     }, [currentProject])
 
