@@ -12,7 +12,7 @@ const Profile = () => {
   const {userInfo} = useAuth();
   const [readOnly, setReadOnly] = useState(true);
   const [header, setHeader] = useState("");
-  const [upload, setUpload] = useState(null);
+  const [headerModal, setHeaderModal] = useState(true);
 
   const toggleReadOnly = () => setReadOnly(!readOnly);
 
@@ -24,7 +24,6 @@ const Profile = () => {
 
   const handleUploadChange = (e) => {
     handleUpload(e.target.files[0]);
-    setUpload(e.target.files[0]);
   }
 
   const handleUpload = (file) => {
@@ -36,9 +35,9 @@ const Profile = () => {
     }
   }
 
-  useEffect(() => {
-    console.log(userInfo)
-  }, [userInfo])
+  const closeHeaderModal = () => {
+    setHeaderModal(false);
+  }
 
   return (
     <>
@@ -56,9 +55,26 @@ const Profile = () => {
           </div>
           <h1>{userInfo.first_name} {userInfo.last_name}</h1>
           <div className='header-container'>
-            <UserHeader readOnly={readOnly} setReadOnly={setReadOnly} header={header} setHeader={setHeader}/>
-            {readOnly  && <IconContainer icon={<RiEditLine className='icon'/>} onClick={toggleReadOnly} title="Edit header"/>}
-            {!readOnly && <IconContainer icon={<FiCheck className='icon green'/>} onClick={() => handleSaveHeader(header.trim())} title="Save changes"/>}
+            {userInfo.header
+            ? <>
+                <UserHeader readOnly={readOnly} setReadOnly={setReadOnly} header={header} setHeader={setHeader}/>
+                {readOnly  && <IconContainer icon={<RiEditLine className='icon'/>} onClick={toggleReadOnly} title="Edit header"/>}
+                {!readOnly && <IconContainer icon={<FiCheck className='icon green'/>} onClick={() => handleSaveHeader(header.trim())} title="Save changes"/>}
+              </>
+            : <>
+                {headerModal
+                ? <div className='header-modal'>
+                    <p>Enhance you profile</p>
+                    <button className='btn white' onClick={closeHeaderModal}>Add a header</button>
+                  </div>
+                : <>
+                    <UserHeader readOnly={readOnly} setReadOnly={setReadOnly} header={header} setHeader={setHeader}/>
+                    {readOnly  && <IconContainer icon={<RiEditLine className='icon'/>} onClick={toggleReadOnly} title="Edit header"/>}
+                    {!readOnly && <IconContainer icon={<FiCheck className='icon green'/>} onClick={() => handleSaveHeader(header.trim())} title="Save changes"/>}
+                  </>
+                }
+              </>
+              }
           </div>
         </>
         : <Spinner/>}
