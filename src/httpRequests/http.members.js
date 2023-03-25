@@ -4,8 +4,8 @@ import axios from "axios";
 // ? process.env.DEV_BASE_URL
 // : process.env.PROD_BASE_URL;
 
-// axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
-axios.defaults.baseURL = 'http://localhost:5000/projectmania';
+axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
+// axios.defaults.baseURL = 'http://localhost:5000/projectmania';
 
 export const getMembers = async () => {
     const {data} = await axios.get(`/members/all`);
