@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LS_logout, setTokenHeader } from '../httpRequests/http.auth';
 import { fetchUserAsync, logout, setUser } from '../store/auth/auth.actions';
@@ -11,7 +11,7 @@ import axios from 'axios';
 import { setUserInfo } from '../store/userInfo/userInfo.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';
 import { fetchUserInfoAsync } from '../store/userInfo/userInfo.actions';
-import { setError, setErrorPopupOpen } from '../store/project/project.actions';
+import { setError, setErrorPopupOpen } from '../store/globalStates/globalStates.actions';
 
 const useAuth = () => {
     const isAuthenticated = useSelector(selectIsAuthenticated);

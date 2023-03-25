@@ -4,7 +4,7 @@ import BackButton from './common/BackButton';
 import { registerUser } from '../httpRequests/http.auth';
 import Input from './common/Input';
 import { useDispatch } from 'react-redux';
-import { setError, setErrorPopupOpen } from '../store/project/project.actions';
+import { setError, setErrorPopupOpen } from '../store/globalStates/globalStates.actions';
 import {FcGoogle} from "react-icons/fc";
 import useAuth from '../hooks/useAuth';
 

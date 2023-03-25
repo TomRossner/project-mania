@@ -6,7 +6,7 @@ import Input from "../common/Input";
 import IconContainer from "../common/IconContainer";
 import { priorities } from '../../utils/labels';
 import { useDispatch } from 'react-redux';
-import { setCreatePopupOpen, setError, setTaskPriority, setErrorPopupOpen } from '../../store/project/project.actions';
+import { setError, setTaskPriority, setErrorPopupOpen } from '../../store/globalStates/globalStates.actions';
 import CancelButton from '../common/CancelButton';
 import LabelContainer from '../common/LabelContainer';
 import useProject from '../../hooks/useProject';

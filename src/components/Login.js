@@ -6,7 +6,7 @@ import {BsShieldCheck} from "react-icons/bs";
 import {FcGoogle} from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/auth/auth.actions";
-import {setError, setErrorPopupOpen} from "../store/project/project.actions";
+import { setError, setErrorPopupOpen } from "../store/globalStates/globalStates.actions";
 import useAuth from "../hooks/useAuth";
 import { selectAuth } from "../store/auth/auth.selector";
 import ButtonSpinner from "./common/ButtonSpinner";

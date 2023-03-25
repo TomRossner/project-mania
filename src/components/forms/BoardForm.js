@@ -4,7 +4,7 @@ import { FiCheck } from "react-icons/fi";
 import { boardProperties } from "../../utils/defaultProperties";
 import Input from '../common/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCreatePopupOpen, setError, setErrorPopupOpen } from '../../store/project/project.actions';
+import { setCreatePopupOpen, setError, setErrorPopupOpen } from '../../store/globalStates/globalStates.actions';
 import CancelButton from '../common/CancelButton';
 import IconContainer from '../common/IconContainer';
 import useAuth from '../../hooks/useAuth';

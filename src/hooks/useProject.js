@@ -17,15 +17,15 @@ import {
     setCreatePopupOpen,
     setElement,
     setProjectMenuOpen,
-    setCurrentProject,
-    setProjectMembers,
     setStage,
     setError,
     setErrorPopupOpen,
     setTaskPriority,
     setAdminPassFormOpen,
     setNotifications
-} from "../store/project/project.actions";
+} from "../store/globalStates/globalStates.actions";
+import { setCurrentProject, setProjectMembers } from "../store/project/project.actions";
+import {selectGlobalStates} from "../store/globalStates/globalStates.selector";
 
 const useProject = () => {
     const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const useProject = () => {
         tasks,
         adminFormOpen,
         notifications
-    } = useSelector(selectProject);
+    } = useSelector(selectGlobalStates);
 
     const closeCreatePopup = () => dispatch(setCreatePopupOpen(false));
 

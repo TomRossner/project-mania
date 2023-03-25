@@ -2,7 +2,7 @@ import React from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import IconContainer from './common/IconContainer';
 import { useDispatch } from 'react-redux';
-import { setError, setErrorPopupOpen } from '../store/project/project.actions';
+import { setError, setErrorPopupOpen } from '../store/globalStates/globalStates.actions';
 import useProject from '../hooks/useProject';
 
 const ErrorPopup = () => {

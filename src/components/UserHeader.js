@@ -1,6 +1,5 @@
-import React,  { useEffect, useRef, useState } from 'react';
+import React,  { useEffect, useRef } from 'react';
 import useAuth from '../hooks/useAuth';
-import { updateUser } from '../httpRequests/http.auth';
 
 const UserHeader = ({readOnly, setHeader}) => {
     const textRef = useRef();

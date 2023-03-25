@@ -4,6 +4,4 @@ export const selectCurrentProject = (state) => state.project.currentProject;
 
 export const selectProjectMembers = (state) => state.project.projectMembers;
 
-export const selectTasks = (state) => state.project.tasks;
-
-export const selectNotifications = (state) => state.project.notifications;
+export const selectBoards = (state) => state.project.boards;

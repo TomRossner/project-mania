@@ -13,7 +13,7 @@ import Create from "./components/Create";
 import ErrorPopup from "./components/ErrorPopup";
 import Logout from "./components/Logout";
 import { useDispatch} from "react-redux";
-import { setCurrentProject, setError } from "./store/project/project.actions";
+import { setCurrentProject } from "./store/project/project.actions";
 import RightNav from "./components/RightNav";
 import TopNav from "./components/TopNav";
 import useAuth from "./hooks/useAuth";
@@ -51,7 +51,7 @@ import "./styles/user-header.styles.scss";
 
 const App = () => {
   const dispatch = useDispatch();
-  const {user, isAuthenticated, refreshUser, error} = useAuth();
+  const {user, isAuthenticated, refreshUser} = useAuth();
   const {notificationTabOpen, handleCreateBoard, handleToggleNotificationTab, adminFormOpen} = useProject();
 
   useEffect(() => {

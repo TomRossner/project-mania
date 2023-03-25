@@ -3,7 +3,7 @@ import PriorityLabel from './common/PriorityLabel';
 import IconContainer from './common/IconContainer';
 import { priorities } from '../utils/labels';
 import { useDispatch} from 'react-redux';
-import { setTaskPriority } from '../store/project/project.actions';
+import { setTaskPriority } from '../store/globalStates/globalStates.actions';
 import Input from './common/Input';
 import {RiEdit2Fill} from "react-icons/ri";
 import { FiCheck } from 'react-icons/fi';

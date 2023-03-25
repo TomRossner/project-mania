@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useProject from '../../hooks/useProject';
-import { setCurrentProject, setError, setErrorPopupOpen } from '../../store/project/project.actions';
+import { setError, setErrorPopupOpen } from '../../store/globalStates/globalStates.actions';
 import Input from '../common/Input';
+import { setCurrentProject } from '../../store/project/project.actions';
 
 const AdminForm = () => {
     const [inputValues, setInputValues] = useState({
