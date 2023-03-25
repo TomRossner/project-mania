@@ -16,13 +16,13 @@ export const authReducer = (state = INITIAL_STATE, action) => {
         case AUTH_ACTION_TYPES.FETCH_USER_START:
             return {...state, isLoading: true};
         case AUTH_ACTION_TYPES.FETCH_USER_SUCCESS:
-            return {...state, user: payload, isLoading: false, isAuthenticated: true};
+            return {...state, user: payload, isLoading: false, isAuthenticated: true, error: null};
         case AUTH_ACTION_TYPES.FETCH_USER_FAILED:
             return {...state, error: payload, isLoading: false};
         case AUTH_ACTION_TYPES.SET_IS_AUTHENTICATED:
             return {...state, isAuthenticated: payload};
         case AUTH_ACTION_TYPES.LOGOUT:
-            return {isAuthenticated: false, user: null};
+            return {...state, isAuthenticated: false, user: null, error: null};
         default: 
             return state;
     }

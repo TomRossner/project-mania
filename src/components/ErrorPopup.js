@@ -30,7 +30,7 @@ const ErrorPopup = () => {
         </div>
       </div>
     )
-  : null}
+    : null}
     </>
   )
 }

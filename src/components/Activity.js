@@ -13,7 +13,11 @@ const Activity = () => {
         <div className='timeline'>
             <div className='dashed-line'></div>
             <div className='activity'>
-                {userInfo?.imgUrl ? <div className='profile-img-container'><img src={userInfo.imgUrl} alt="profile"/></div> : <BlankProfilePicture/>}<p><span>Tom</span> created <span className='project-name'>ProjectMania</span></p>
+                {userInfo?.img_url || userInfo?.base64_img_data
+                ? <div className='profile-img-container'>
+                    <img src={userInfo.base64_img_data ? Buffer.from(userInfo.base64_img_data) : userInfo.img_url.toString()} alt="profile"/>
+                  </div>
+                : <BlankProfilePicture/>}<p><span>Tom</span> created <span className='project-name'>ProjectMania</span></p>
             </div>
         </div>
     </div>

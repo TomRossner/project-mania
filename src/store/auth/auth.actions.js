@@ -1,6 +1,6 @@
 import { AUTH_ACTION_TYPES } from "./auth.types";
 import {createAction} from "../utils";
-import { loginUser } from "../../httpRequests/http.auth";
+import { getUser, loginUser, saveJWT, setTokenHeader } from "../../httpRequests/http.auth";
 
 export const setUser = (user) => {
     return createAction(AUTH_ACTION_TYPES.SET_USER, user);
@@ -30,7 +30,10 @@ export const fetchUserAsync = (credentials) => async (dispatch) => {
     dispatch(fetchUserStart());
 
     try {
-        const user = await loginUser(credentials);
+        const {data: {token}} = await loginUser(credentials);
+        saveJWT(token);
+        setTokenHeader();
+        const user = getUser();
         dispatch(fetchUserSuccess(user));
     } catch (error) {
         dispatch(fetchUserFailed(error));

@@ -29,10 +29,6 @@ const ProjectMembers = () => {
         dispatch(setProjectMembers(currentProject.members));
     }, [currentProject])
 
-    useEffect(() => {
-        console.log(members)
-    }, [members])
-
   return (
     <>
     <div className='current-board-members-container'>

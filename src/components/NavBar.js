@@ -78,8 +78,8 @@ const NavBar = () => {
             </div>
           </div>
           <div className='profile'>
-              {userInfo?.imgUrl
-              ? <div className='profile-img-container'><img src={userInfo.imgUrl.toString()} alt="profile"/></div>
+              {userInfo?.img_url || userInfo?.base64_img_data
+              ? <div className='profile-img-container'><img src={userInfo.base64_img_data ? Buffer.from(userInfo.base64_img_data) : userInfo.img_url.toString()} alt="profile"/></div>
               : <BlankProfilePicture/>}
               <span>{userName}</span>
           </div>

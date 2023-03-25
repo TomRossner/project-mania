@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LS_logout, setTokenHeader } from '../httpRequests/http.auth';
 import { fetchUserAsync, logout, setUser } from '../store/auth/auth.actions';
-import { selectIsAuthenticated, selectUser } from '../store/auth/auth.selector';
+import { selectAuth, selectIsAuthenticated, selectUser } from '../store/auth/auth.selector';
 import { saveJWT } from '../httpRequests/http.auth';
 import { provider, auth } from '../firebase/config';
 import { signInWithPopup } from 'firebase/auth';
@@ -11,13 +11,14 @@ import axios from 'axios';
 import { setUserInfo } from '../store/userInfo/userInfo.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';
 import { fetchUserInfoAsync } from '../store/userInfo/userInfo.actions';
+import { setError, setErrorPopupOpen } from '../store/project/project.actions';
 
 const useAuth = () => {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const user = useSelector(selectUser);
     const userInfo = useSelector(selectUserInfo);
     const dispatch = useDispatch();
-    // const [userInfo, setUserInfo] = useState(null);
+    const {error} = useSelector(selectAuth);
 
     const refreshUser = () => dispatch(setUser(getUser()));
 
@@ -43,7 +44,6 @@ const useAuth = () => {
     
     const google_signUpUser = async () => {
         const {user} = await signInWithPopup(auth, provider);
-        console.log(user)
         const {accessToken, email, displayName, uid, photoURL} = user;
         
         return await axios.post("/auth/sign-up/google", {accessToken, email, displayName, uid, imgUrl: photoURL});
@@ -69,10 +69,20 @@ const useAuth = () => {
         // }
     //   }, [currentProject]) // THIS CAUSES INFINITE LOOP, MOVE TO COMPONENT
 
+    // Handle login error
+    useEffect(() => {
+        if (error && !user) {
+            const {response: {data: {error: errorMessage}}} = error;
+            dispatch(setError(errorMessage));
+            dispatch(setErrorPopupOpen(true));
+        }
+    }, [error])
+
     return {
         isAuthenticated,
         user,
         userInfo,
+        error,
         refreshUser,
         login,
         logout: handleLogout,

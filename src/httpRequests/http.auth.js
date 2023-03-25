@@ -16,10 +16,7 @@ export function saveJWT(token) {
 }
 
 export async function loginUser(values) {
-    const {data: {token}} = await axios.post(`/auth/sign-in`, values);
-    saveJWT(token);
-    setTokenHeader();
-    return getUser();
+    return await axios.post(`/auth/sign-in`, values);
 }
 
 export async function registerUser(values) {

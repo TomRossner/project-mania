@@ -34,8 +34,12 @@ const RightNav = () => {
       }, [currentProject, adminEmails])
 
       useEffect(() => {
-        if (!currentProject) return;
-        setAdminEmails(currentProject.admins);
+        if (!currentProject) {
+          setAdminEmails([]);
+          setAdmins([]);
+          return;
+        }
+        if (currentProject?.admins.length) setAdminEmails(currentProject.admins);
       }, [currentProject])
 
   return (
@@ -55,15 +59,19 @@ const RightNav = () => {
                   if (admin.email === user?.email) {
                     return (
                       <div className="admin" key={admin.email}>
-                        {admin.imgUrl
-                        ? <div className='profile-img-container'><img src={admin.imgUrl.toString()} alt="profile"/></div>
+                        {admin.img_url || admin.base64_img_data
+                        ? <div className='profile-img-container'>
+                            <img src={admin.base64_img_data ? Buffer.from(admin.base64_img_data) : admin.img_url.toString()} alt="profile"/>
+                          </div>
                         : <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>}
                         <span>{userName} (You)</span>
                       </div>)
                   } else return (
                       <div className="admin">
-                        {admin.imgUrl
-                        ? <div className='profile-img-container'><img src={admin.imgUrl.toString()} alt="profile"/></div>
+                        {admin.img_url || admin.base64_img_data
+                        ? <div className='profile-img-container'>
+                            <img src={admin.base64_img_data ? Buffer.from(admin.base64_img_data) : admin.img_url.toString()} alt="profile"/>
+                          </div>
                         : <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>}
                         <span>{admin.first_name} {admin.last_name}</span>
                       </div>) 
