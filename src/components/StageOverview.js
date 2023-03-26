@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FiCheck } from 'react-icons/fi';
 import { BsThreeDotsVertical, BsPlus } from 'react-icons/bs';
 import TaskOverview from './TaskOverview';
@@ -25,6 +25,7 @@ const StageOverview = ({stage}) => {
     });
     const [stageTasks, setStageTasks] = useState([]);
     const [tasksDone, setTasksDone] = useState(0);
+    const titleRef = useRef();
 
     useEffect(() => {
         setStageTasks(stage_tasks);
@@ -73,6 +74,13 @@ const StageOverview = ({stage}) => {
         else return console.log(`Unknown/unhandled option "${opt}".`);
     }
 
+    useEffect(() => {
+        if (edit_active) {
+            titleRef.current.focus();
+            titleRef.current.select();
+        }
+    }, [edit_active])
+
   return (
     <div className='stage-container'>
         <div className='stage-title-container'>
@@ -85,6 +93,7 @@ const StageOverview = ({stage}) => {
                     onChange={(e) => handleInputChange(e, stage)}
                     defaultValue={stage_name}
                     className={edit_active ? "stage-title-input active" : "stage-title-input"}
+                    ref={titleRef}
                 />
                 {edit_active ? <span className='icon-span green' onClick={() => validate(inputValue, stage)}><FiCheck className='icon'/></span> : null}
             </div>

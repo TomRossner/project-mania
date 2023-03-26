@@ -31,7 +31,7 @@ export const globalStatesReducer = (state = INITIAL_STATE, action) => {
             return {...state, error: payload};
         case GLOBAL_STATES_ACTION_TYPES.SET_NOTIFICATION_TAB:
             return {...state, notificationTabOpen: payload};
-        case GLOBAL_STATES_ACTION_TYPES.SET_GLOBAL_STATES_MENU_TAB:
+        case GLOBAL_STATES_ACTION_TYPES.SET_PROJECT_MENU_TAB:
             return {...state, projectMenuTabOpen: payload};
         case GLOBAL_STATES_ACTION_TYPES.SET_PROFILE_TAB:
             return {...state, profileTabOpen: payload};

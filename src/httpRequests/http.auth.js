@@ -1,12 +1,9 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
-// axios.defaults.baseURL = process.env.NODE_ENV === 'development'
-// ? process.env.DEV_BASE_URL
-// : process.env.PROD_BASE_URL;
-
-axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
-// axios.defaults.baseURL = 'http://localhost:5000/projectmania';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development'
+? 'http://localhost:5000/projectmania'
+: 'http://tomrossner.dev/projectmania';
 
 const token = 'token';
 setTokenHeader();

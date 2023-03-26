@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBoards } from "../store/boards/boards.selector";
-import { selectCurrentProject, selectProject, selectProjectMembers } from "../store/project/project.selector";
+import { selectCurrentProject, selectProjectMembers } from "../store/project/project.selector";
 import { updateProject, deleteProject } from "../httpRequests/http.project";
 import { useNavigate } from "react-router-dom";
 import { setBoards } from "../store/boards/boards.actions";
