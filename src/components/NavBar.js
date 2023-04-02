@@ -14,14 +14,16 @@ import {HiUserGroup} from "react-icons/hi";
 import useProject from '../hooks/useProject';
 import Space from "./common/Space";
 import BlankProfilePicture from './common/BlankProfilePicture';
+import useProfileImage from '../hooks/useProfileImage';
 
 const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {boards, handleToggleProfileTab} = useProject();
-  const {user, isAuthenticated, userInfo} = useAuth();
+  const {user, isAuthenticated, userInfo, profileImage} = useAuth();
   const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
   const [userName, setUserName] = useState("");
+  // const {profileImage} = useProfileImage();
 
   const handleToggleProjectsDropdown = () => {
     return setProjectsDropdownOpen(!projectsDropdownOpen);
@@ -37,6 +39,13 @@ const NavBar = () => {
         setUserName(`${userInfo.first_name} ${userInfo.last_name}` || userInfo.name);
     } else setUserName("");
   }, [userInfo])
+
+  // useEffect(() => {
+  //   if (!userInfo) return;
+  //   if (userInfo.base64_img_data || userInfo.img_url) return setProfileImage(Buffer.from(userInfo.base64_img_data));
+  //   if (!userInfo.base64_img_data && userInfo.img_url) return setProfileImage(userInfo.img_url.toString());
+  //   else setProfileImage("");
+  // }, [userInfo])
 
   return (
     <nav>
@@ -78,8 +87,8 @@ const NavBar = () => {
             </div>
           </div>
           <div className='profile'>
-              {userInfo?.img_url || userInfo?.base64_img_data
-              ? <div className='profile-img-container'><img src={userInfo.base64_img_data ? Buffer.from(userInfo.base64_img_data) : userInfo.img_url.toString()} alt="profile"/></div>
+              {profileImage
+              ? <div className='profile-img-container'><img src={profileImage} alt="profile"/></div>
               : <BlankProfilePicture/>}
               <span>{userName}</span>
           </div>

@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBoards } from "../store/boards/boards.selector";
-import { selectCurrentProject, selectProjectMembers } from "../store/project/project.selector";
+import { selectActivity, selectCurrentProject, selectProjectMembers } from "../store/project/project.selector";
 import { updateProject, deleteProject } from "../httpRequests/http.project";
 import { useNavigate } from "react-router-dom";
 import { setBoards } from "../store/boards/boards.actions";
@@ -26,6 +26,7 @@ import {
 } from "../store/globalStates/globalStates.actions";
 import { setCurrentProject, setProjectMembers } from "../store/project/project.actions";
 import {selectGlobalStates} from "../store/globalStates/globalStates.selector";
+import { getActivityText, createActivity } from "../utils/defaultProperties";
 
 const useProject = () => {
     const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const useProject = () => {
     const boards = useSelector(selectBoards);
     const projectMembers = useSelector(selectProjectMembers);
     const members = useSelector(selectMembers);
+    const activity = useSelector(selectActivity);
     const {user, userInfo, setUserInfo} = useAuth();
     const {
         element,
@@ -68,7 +70,19 @@ const useProject = () => {
         if (!id) return;
         const memberToRemove = projectMembers.find(member => member._id === id);
         if (!memberToRemove) throw new Error("Member not found");
-        else dispatch(setProjectMembers(projectMembers.filter(member => member._id !== memberToRemove._id)));
+
+        const removeMemberActivity = createActivity(
+            {
+                user_name: `${userInfo.first_name} ${userInfo.last_name}`,
+                email: userInfo.email,
+                image: userInfo.base64_img_data || userInfo.img_url
+            },
+            getActivityText(memberToRemove.first_name, 'REMOVE_MEMBER_FROM_PROJECT', currentProject.title, null),
+            new Date()
+        );
+
+        dispatch(setProjectMembers(projectMembers.filter(member => member._id !== memberToRemove._id)));
+        dispatch(setCurrentProject({...currentProject, activity: [...currentProject.activity, removeMemberActivity]}));
     }
 
     const handleCreateClick = () => {
@@ -81,13 +95,26 @@ const useProject = () => {
     const validate = (inputValue, stageToUpdate) => {
         if (!inputValue || !stageToUpdate) return;
 
-        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-            if (stage._id === stageToUpdate._id) {
-                return {...stage, stage_name: inputValue, edit_active: false, stage_tasks: [...stage.stage_tasks.map(task => {
-                    return {...task, current_stage: {...task.current_stage, name: inputValue}};
-                })]};
-            } else return stage;
-        })]}));
+        const editStageNameActivity = createActivity(
+            {
+                user_name: `${userInfo.first_name} ${userInfo.last_name}`,
+                email: userInfo.email,
+                image: userInfo.base64_img_data || userInfo.img_url
+            },
+            getActivityText(null, 'EDIT_STAGE', stageToUpdate.stage_name, inputValue),
+            new Date()
+        );
+
+        return dispatch(setCurrentProject({
+            ...currentProject,
+            stages: [...currentProject.stages.map(stage => {
+                if (stage._id === stageToUpdate._id) {
+                    return {...stage, stage_name: inputValue, edit_active: false, stage_tasks: [...stage.stage_tasks.map(task => {
+                        return {...task, current_stage: {...task.current_stage, name: inputValue}};
+                    })]};
+                } else return stage;
+            })],
+            activity: [...currentProject.activity, editStageNameActivity]}));
     }
 
     const handleToggleProfileTab = () => {
@@ -143,7 +170,14 @@ const useProject = () => {
         const MemberAlreadyAdded = projectMembers.find(m => m._id === member._id);
         if (MemberAlreadyAdded) return;
 
-        else dispatch(setCurrentProject({...currentProject, members: [...currentProject.members, member]}));
+        const addMemberActivity = createActivity({
+            user_name: `${userInfo.first_name} ${userInfo.last_name}`,
+            email: userInfo.email, image: userInfo.base64_img_data || userInfo.img_url
+        },
+        getActivityText(member.first_name, 'ADD_MEMBER', currentProject.title, null),
+        new Date());
+
+        dispatch(setCurrentProject({...currentProject, members: [...currentProject.members, member], activity: [...currentProject.activity, addMemberActivity]}));
     }
 
     const handleElementClick = (element) => {
@@ -184,7 +218,21 @@ const useProject = () => {
         if (!stageToDelete) return;
 
         closeStageOptionMenus();
-        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.filter(stage => stage._id !== stageToDelete._id)]}));
+
+        const deleteStageActivity = createActivity(
+            {
+                user_name: `${userInfo.first_name} ${userInfo.last_name}`,
+                email: userInfo.email, image: userInfo.base64_img_data || userInfo.img_url
+            },
+            getActivityText(null, 'DELETE_STAGE', stageToDelete.stage_name, null),
+            new Date()
+        );
+
+        return dispatch(setCurrentProject({
+            ...currentProject,
+            stages: [...currentProject.stages.filter(stage => stage._id !== stageToDelete._id)],
+            activity: [...currentProject.activity, deleteStageActivity]
+        }));
     }
 
     const updateCurrentProjectInBoardsArray = () => dispatch(setBoards([...boards.map(board => {
@@ -218,14 +266,25 @@ const useProject = () => {
     }
 
     const handleDeleteTask = async (task) => {
+        const deleteTaskActivity = createActivity(
+            {
+                user_name: `${userInfo.first_name} ${userInfo.last_name}`,
+                email: userInfo.email,
+                image: userInfo.base64_img_data || userInfo.img_url
+            },
+            getActivityText(null, 'DELETE_TASK', task.title, task.current_stage.name),
+            new Date()
+        );
+
         dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
           if (stage._id === task.current_stage.id) {
             return {...stage, tasks_done: stage.tasks_done === 0 ? 0 : stage.tasks_done - 1,
                 stage_tasks: [...stage.stage_tasks.filter(t => t._id !== task._id)]};
           } else return stage;
-        })]}))
-        await deleteTask({id: currentProject._id, stage_id: task.current_stage.id, task_id: task._id});
+        })], activity: [...currentProject.activity, deleteTaskActivity]}));
+        
         dispatch(setTasks([...tasks.filter(t => t._id !== task._id)]));
+        return await deleteTask({id: currentProject._id, stage_id: task.current_stage.id, task_id: task._id});
     }
 
     const handleClearStageTasks = (stageToClearTasksFrom) => {
@@ -241,8 +300,8 @@ const useProject = () => {
         const newMember = members?.find(member => e.target.value.trim() === member._id);
         if (projectMembers.find(member => newMember._id === member._id)) return;
         if (newMember._id === user._id) return;
-        const {email, first_name, last_name, online, admin, imgUrl} = newMember;
-        dispatch(setProjectMembers([...projectMembers, {email, first_name, last_name, online, admin, imgUrl}])); // newMember was members?.find(member => e.target.value.trim() === member._id) so changed it to newMember
+        const {email, first_name, last_name, online, admin, img_url, base64_img_data} = newMember;
+        dispatch(setProjectMembers([...projectMembers, {email, first_name, last_name, online, admin, image: base64_img_data || img_url}])); // newMember was members?.find(member => e.target.value.trim() === member._id) so changed it to newMember
     }
 
     const addBoard = async (values) => {
@@ -254,8 +313,24 @@ const useProject = () => {
         if (createPopupOpen) closeCreatePopup();
         try {
             const {data: userInfo} = await getUserInfo(user._id);
-            const {email, first_name, last_name, online, admin, imgUrl} = userInfo;
-            const {data: newProject} = await addProject({...values, members: [...values.members, {email, first_name, last_name, online, admin, imgUrl, _id: user._id}], admins: [email]});
+            const {email, first_name, last_name, online, admin, img_url, base64_img_data} = userInfo;
+
+            const createBoardActivity = createActivity(
+                {
+                    user_name: `${first_name} ${last_name}`,
+                    email,
+                    image: base64_img_data || img_url
+                },
+                getActivityText(null, 'CREATE_PROJECT', values.title, null),
+                new Date()
+            );
+
+            const {data: newProject} = await addProject({
+                ...values,
+                members: [...values.members, {email, first_name, last_name, online, admin, image: base64_img_data || img_url ? base64_img_data || img_url : "" , _id: user._id}],
+                admins: [email],
+                activity: [createBoardActivity]
+            });
             dispatch(setBoards([...boards, {...newProject, due_date: new Date(newProject.due_date).toDateString()}]));
             dispatch(setAdminPassFormOpen(true));
         } catch ({response}) {
@@ -277,10 +352,26 @@ const useProject = () => {
         if (createPopupOpen) closeCreatePopup();
         const newStage = {...values, project: project.title};
         const projectToAddStage = boards.find(board => board._id === project._id);
+        const {email, first_name, last_name, img_url, base64_img_data} = userInfo;
+
+        const createStageActivity = createActivity(
+            {
+                user_name: `${first_name} ${last_name}`,
+                email,
+                image: base64_img_data || img_url
+            },
+            getActivityText(null, 'ADD_STAGE', currentProject.title, null),
+            new Date()
+        );
+
         dispatch(setBoards([...boards.filter(board => board._id !== projectToAddStage._id),
             {...projectToAddStage, stages: [...projectToAddStage.stages, newStage]}]));
         if (projectToAddStage._id === currentProject._id) {
-            dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages, newStage]}));
+            dispatch(setCurrentProject({
+                ...currentProject,
+                stages: [...currentProject.stages, newStage],
+                activity: [...currentProject.activity, createStageActivity]
+            }));
         }
     }
 
@@ -305,11 +396,27 @@ const useProject = () => {
             messages: [],
             priority: taskPriority
         };
-        dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(current_project_stage => {
+
+        const addTaskActivity = createActivity(
+            {
+                user_name: `${userInfo.first_name} ${userInfo.last_name}`,
+                email: userInfo.email,
+                image: userInfo.base64_img_data || userInfo.img_url
+            },
+            getActivityText(null, 'ADD_TASK', stageToUpdate.stage_name, null),
+            new Date()
+        );
+
+        dispatch(setCurrentProject({
+            ...currentProject,
+            stages: [...currentProject.stages.map(current_project_stage => {
                 if (current_project_stage._id === stageToUpdate._id) {
                     return {...current_project_stage, stage_tasks: [...current_project_stage.stage_tasks, newTask]}
                 } else return current_project_stage;
-        })]}))
+            })],
+            activity: [...currentProject.activity, addTaskActivity]
+        }));
+
         dispatch(setTasks([...tasks, newTask]));
     }
 
@@ -369,6 +476,7 @@ const useProject = () => {
         tasks,
         adminFormOpen,
         notifications,
+        activity,
         handleCreateBoard,
         handleCreate, // handleCreate and handleCreateBoard are similar
         handleToggleNotificationTab,

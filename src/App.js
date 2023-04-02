@@ -24,6 +24,7 @@ import NotificationTab from "./components/NotificationTab";
 import useProject from "./hooks/useProject";
 import AdminForm from "./components/forms/AdminForm";
 import UserCards from "./components/UserCards";
+import {io} from "socket.io-client";
 
 // Styles
 import "./styles/general.styles.scss";
@@ -59,7 +60,11 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if (user && isAuthenticated) dispatch(fetchBoardsAsync(user._id));
+    if (user && isAuthenticated) {
+      dispatch(fetchBoardsAsync(user._id));
+      const socket = io("http://localhost:5000/");
+      socket.emit('connection', {message: 'Hello Tom'})
+    }
     if (!user || !isAuthenticated) dispatch(setCurrentProject(null));
   }, [user, isAuthenticated])
 

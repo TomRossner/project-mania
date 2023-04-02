@@ -47,13 +47,10 @@ export const defaultTaskProperties = {
 export const activityProperties = {
     created_at: new Date(),
     text: "",
-    subject: "",
-    specified_members_names: [],
-    specified_element: [],
     created_by: null
 }
 
-export const activitySubjects = {
+export const activityTypes = {
     ADD_TASK: "ADD_TASK",
     DELETE_TASK: "DELETE_TASK",
     EDIT_TASK: "EDIT_TASK",
@@ -70,6 +67,40 @@ export const activitySubjects = {
     EDIT_STAGE: "EDIT_STAGE",
     SEND_MESSAGE: "SEND_MESSAGE",
     RECEIVE_MESSAGE: "RECEIVE_MESSAGE"
+}
+
+export const createActivity = (user, activityTypeText, time) => {
+    const newActivity = {
+        created_by: user,
+        text: activityTypeText,
+        created_at: time
+    }
+    return newActivity;
+}
+
+export const getActivityText = (userName, type, elementName, newElementName) => {
+    switch(type) {
+        case activityTypes.CREATE_PROJECT:
+            return `created ${elementName}`;
+        case activityTypes.ADD_STAGE:
+            return `added a new stage to ${elementName}`;
+        case activityTypes.ADD_TASK:
+            return `added a new task to ${elementName}`;
+        case activityTypes.ADD_MEMBER_TO_PROJECT:
+            return `added ${userName} to ${elementName}`;
+        case activityTypes.REMOVE_MEMBER_FROM_PROJECT:
+            return `removed ${userName} from ${elementName}`;
+        case activityTypes.EDIT_STAGE:
+            return `changed ${elementName} to ${newElementName}`;
+        case activityTypes.DELETE_STAGE:
+            return `removed ${elementName}`;
+        case activityTypes.DELETE_TASK:
+            return `removed ${elementName} from ${newElementName}`;
+        case activityTypes.MOVE_TASK:
+            return `moved ${elementName} to ${newElementName}`;
+        default:
+            return "invalid/unhandled type";
+    }
 }
 
 export const defaultNotificationProperties = {

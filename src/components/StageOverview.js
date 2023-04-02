@@ -10,9 +10,11 @@ import OptionsMenu from './common/OptionsMenu';
 import IconContainer from './common/IconContainer';
 import useProject from '../hooks/useProject';
 import { useDrop } from 'react-dnd';
+import { createActivity, getActivityText } from '../utils/defaultProperties';
+import useAuth from '../hooks/useAuth';
 
 const StageOverview = ({stage}) => {
-    const {stage_name, stage_tasks, edit_active, options_menu_open, tasks_done} = stage;
+    const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
     const [inputValue, setInputValue] = useState("");
     const {currentProject, handleAddTask, validate, handleDeleteStage, toggleStageOptions, handleClearStageTasks} = useProject();
     const dispatch = useDispatch();
@@ -26,6 +28,7 @@ const StageOverview = ({stage}) => {
     const [stageTasks, setStageTasks] = useState([]);
     const [tasksDone, setTasksDone] = useState(0);
     const titleRef = useRef();
+    const {userInfo} = useAuth();
 
     useEffect(() => {
         setStageTasks(stage_tasks);
@@ -33,14 +36,28 @@ const StageOverview = ({stage}) => {
     }, [stage_tasks])
 
     const handleDropEnd = (task) => {
+        const moveTaskActivity = createActivity(
+            {
+                user_name: `${userInfo.first_name} ${userInfo.last_name}`,
+                email: userInfo.email,
+                image: userInfo.base64_img_data || userInfo.img_url
+            },
+            getActivityText(null, 'MOVE_TASK', task.title, stage.stage_name),
+            new Date()
+        );
+
         if (stage._id !== task.current_stage.id) {
-            return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(s => {
-                if (s._id === stage._id) {
-                    return {...s, stage_tasks: [...s.stage_tasks, {...task, current_stage: {name: s.stage_name, id: s._id}}]};
-                } else if (s._id === task.current_stage.id) {
-                    return {...s, stage_tasks: [...s.stage_tasks.filter(t => t._id !== task._id)]};
-                } else return s;
-            })]}))
+            return dispatch(setCurrentProject({
+                ...currentProject,
+                stages: [...currentProject.stages.map(s => {
+                    if (s._id === stage._id) {
+                        return {...s, stage_tasks: [...s.stage_tasks, {...task, current_stage: {name: s.stage_name, id: s._id}}]};
+                    } else if (s._id === task.current_stage.id) {
+                        return {...s, stage_tasks: [...s.stage_tasks.filter(t => t._id !== task._id)]};
+                    } else return s;
+                })],
+                activity: [...currentProject.activity, moveTaskActivity]
+            }));
         } else return;
     }
 

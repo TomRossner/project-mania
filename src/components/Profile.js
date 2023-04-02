@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import useAuth from '../hooks/useAuth';
 import Spinner from './common/ButtonSpinner';
 import BlankProfilePicture from "./common/BlankProfilePicture";
@@ -7,12 +7,14 @@ import {RiImageEditFill, RiEditLine} from "react-icons/ri";
 import UserHeader from './UserHeader';
 import {FiCheck} from "react-icons/fi";
 import { updateUser, updateProfilePicture } from '../httpRequests/http.auth';
+// import useProfileImage from '../hooks/useProfileImage';
 
 const Profile = () => {
-  const {userInfo} = useAuth();
+  const {userInfo, profileImage, setProfileImage} = useAuth();
   const [readOnly, setReadOnly] = useState(true);
   const [header, setHeader] = useState("");
   const [headerModal, setHeaderModal] = useState(true);
+  // const {profileImage, setProfileImage} = useProfileImage();
 
   const toggleReadOnly = () => setReadOnly(!readOnly);
 
@@ -31,13 +33,12 @@ const Profile = () => {
     reader.readAsDataURL(file);
     reader.onload = async () => {
       const base64EncodedFile = reader.result;
-      return await updateProfilePicture({email: userInfo.email, imgData: base64EncodedFile});
+      const {data: compressedImg} = await updateProfilePicture({email: userInfo.email, imgData: base64EncodedFile});
+      setProfileImage(Buffer.from(compressedImg));
     }
   }
 
-  const closeHeaderModal = () => {
-    setHeaderModal(false);
-  }
+  const closeHeaderModal = () => setHeaderModal(false);
 
   return (
     <>
@@ -46,12 +47,14 @@ const Profile = () => {
         <>
           <div className='img-container'>
             <div className='profile-img-container'>
-              {userInfo.img_url || userInfo.base64_img_data
-              ? <img src={userInfo.base64_img_data ? Buffer.from(userInfo.base64_img_data) : userInfo.img_url.toString()} alt="profile"/>
+              {profileImage
+              ? <img src={profileImage} alt="profile"/>
               : <BlankProfilePicture/>}
             </div>
-            <input type="file" id='imgUpload' onChange={handleUploadChange}/>
-            <label htmlFor='imgUpload' title='Upload an image. Max size: 5Mb'>{<IconContainer icon={<RiImageEditFill className='icon'/>}/>}</label>
+            <input type="file" id='imgUpload' accept="image/png, image/jpeg" onChange={handleUploadChange}/>
+            <label htmlFor='imgUpload' title='Upload an image. JPEG/PNG only. Max size: 5Mb'>
+              <IconContainer icon={<RiImageEditFill className='icon'/>}/>
+            </label>
           </div>
           <h1>{userInfo.first_name} {userInfo.last_name}</h1>
           <div className='header-container'>

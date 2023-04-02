@@ -10,3 +10,6 @@ export const setProjectMembers = (members) => {
 export const setBoards = (boards) => {
     return createAction(PROJECT_ACTION_TYPES.SET_BOARDS, boards);
 }
+export const addActivity = (activity) => {
+    return createAction(PROJECT_ACTION_TYPES.ADD_ACTIVITY, activity);
+}

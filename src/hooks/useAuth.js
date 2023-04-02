@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LS_logout, setTokenHeader } from '../httpRequests/http.auth';
 import { fetchUserAsync, logout, setUser } from '../store/auth/auth.actions';
@@ -6,7 +6,7 @@ import { selectAuth, selectIsAuthenticated, selectUser } from '../store/auth/aut
 import { saveJWT } from '../httpRequests/http.auth';
 import { provider, auth } from '../firebase/config';
 import { signInWithPopup } from 'firebase/auth';
-import { getUser } from '../httpRequests/http.auth';
+import { getUser, updateUser } from '../httpRequests/http.auth';
 import axios from 'axios';
 import { setUserInfo } from '../store/userInfo/userInfo.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';
@@ -19,12 +19,14 @@ const useAuth = () => {
     const userInfo = useSelector(selectUserInfo);
     const dispatch = useDispatch();
     const {error} = useSelector(selectAuth);
+    const [profileImage, setProfileImage] = useState("");
 
     const refreshUser = () => dispatch(setUser(getUser()));
 
     const login = (credentials) => dispatch(fetchUserAsync(credentials));
 
     const handleLogout = () => {
+        dispatch(setUserInfo({...userInfo, online: false}));
         dispatch(logout());
         LS_logout();
     }
@@ -58,6 +60,13 @@ const useAuth = () => {
     }, [user, isAuthenticated, userInfo])
 
     // useEffect(() => {
+    //     if (!userInfo) return;
+    //     if (userInfo.base64_img_data || userInfo.img_url) return setProfileImage(Buffer.from(userInfo.base64_img_data));
+    //     if (!userInfo.base64_img_data && userInfo.img_url) return setProfileImage(userInfo.img_url.toString());
+    //     else setProfileImage("");
+    // }, [userInfo])
+
+    // useEffect(() => {
         // if (currentProject && user && isAuthenticated && userInfo) {
         //   const isProjectAdmin = currentProject.admins.find(admin => admin._id === user._id);
     
@@ -78,11 +87,30 @@ const useAuth = () => {
         }
     }, [error])
 
+    useEffect(() => {
+        if (!userInfo) return;
+        const updateUserInfo = async () => {
+            const {data} = await updateUser(userInfo);
+            // dispatch(setUserInfo(data))
+        }
+        updateUserInfo();
+    }, [userInfo])
+
+    useEffect(() => {
+        if (!userInfo) return;
+        // console.log(userInfo)
+        if (userInfo.base64_img_data || userInfo.img_url) return setProfileImage(Buffer.from(userInfo.base64_img_data));
+        if (!userInfo.base64_img_data && userInfo.img_url) return setProfileImage(userInfo.img_url.toString());
+        else setProfileImage("");
+    }, [userInfo])
+
     return {
         isAuthenticated,
         user,
         userInfo,
         error,
+        profileImage,
+        setProfileImage,
         refreshUser,
         login,
         logout: handleLogout,

@@ -2,6 +2,8 @@ import { createAction } from "../utils";
 import { USER_INFO_ACTION_TYPES } from "./userInfo.types";
 import { getUserInfo } from "../../httpRequests/http.auth";
 
+// Old way of creating actions with Redux
+
 export const setUserInfo = (user_info) => {
     return createAction(USER_INFO_ACTION_TYPES.SET_USER_INFO, user_info);
 }
@@ -28,3 +30,6 @@ export const fetchUserInfoAsync = (id) => async (dispatch) => {
         dispatch(fetchUserInfoFailed(error));
     }
 }
+
+
+// New way @ userInfo.slice.js 

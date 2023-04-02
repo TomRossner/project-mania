@@ -79,8 +79,9 @@ const RightNav = () => {
               </div>
             </div> : null}
         </div>
-
-        <Activity/>
+        <div className='activity-section'>
+          <Activity/>
+        </div>
 
         </div>
     </nav>

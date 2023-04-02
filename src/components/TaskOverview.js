@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ImAttachment } from "react-icons/im";
 import { useNavigate } from 'react-router-dom';
 import LabelContainer from "./common/LabelContainer";
@@ -9,11 +9,14 @@ import {MdDoneAll, MdOpenInNew} from "react-icons/md";
 import ThreeDotsMenu from "./common/ThreeDotsMenu";
 import useProject from '../hooks/useProject';
 import { useDrag } from 'react-dnd';
+import OptionsMenu from './common/OptionsMenu';
+import { task_options } from '../utils/taskMenuOptions';
 
 const TaskOverview = ({task}) => {
     const {title, due_date, files, _id, priority, current_stage, subtitle} = task;
-    const { currentProject, handleMarkAsDone, handleMarkAsNotDone} = useProject();
+    const { currentProject, handleMarkAsDone, handleMarkAsNotDone, handleDeleteTask} = useProject();
     const navigate = useNavigate();
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const [{isDragging}, drag] = useDrag({
         type: 'task',
@@ -30,6 +33,8 @@ const TaskOverview = ({task}) => {
     const handleOpenTask = (task_id) => {
         navigate(`/projects/${currentProject._id}/${current_stage.id}/${task_id}`);
     }
+
+    const toggleTaskOptions = () => setMenuOpen(!menuOpen);
 
   return (
     <>
@@ -54,7 +59,8 @@ const TaskOverview = ({task}) => {
                 {new Date(due_date).toDateString() === new Date().toDateString() ? dueTodayLabel.name : new Date(due_date).toDateString()}</div>}>
             </LabelContainer>
             <div className='quick-actions'>
-                <ThreeDotsMenu/>
+                <ThreeDotsMenu fn={toggleTaskOptions}/>
+                <OptionsMenu options={task_options} boolean={menuOpen} fn={() => handleDeleteTask(task)}/>
                 {!task.isDone && <button className='btn white green' title='Mark as done' onClick={() => handleMarkAsDone(task)}><IconContainer additionalClass="small" icon={<FiCheck className='icon'/>}/></button>}
                 {task.isDone && <button className='btn white green' title='Mark as not done' onClick={() => handleMarkAsNotDone(task)}><IconContainer additionalClass="small" icon={<MdDoneAll className='icon green'/>}/></button>}
                 {/* <button className='btn white red' title='Delete task' onClick={handleDeleteTask}><IconContainer additionalClass="small" icon={<VscTrash className='icon'/>}/></button> */}
