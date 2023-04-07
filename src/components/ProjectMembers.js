@@ -49,44 +49,45 @@ const ProjectMembers = () => {
             </div>
             :
             <div className='team'>
-            {projectMembers.map(member => {
-                if (member._id === user._id) {
-                    return (
-                        <span key={member._id} className="icon-span">
+                {projectMembers.map(member => {
+                    if (member._id === user._id) {
+                        return (
+                            <span key={member._id} className="icon-span">
+                                <BsCircleFill className='icon'/>
+                                <span className='name-overlay small' title="You">YOU</span>
+                            </span>
+                        )
+                    } else return (
+                        <span key={member._id} className='icon-span'>
                             <BsCircleFill className='icon'/>
-                            <span className='name-overlay small' title="You">YOU</span>
+                            <span className='name-overlay' title={`${member.first_name} ${member.last_name}`}>
+                                {member.first_name.substring(0, 1).toUpperCase()}{member.last_name.substring(0, 1).toUpperCase()}
+                            </span>
                         </span>
                     )
-                }
-                else return (<span key={member._id} className='icon-span'>
-                    <BsCircleFill className='icon'/>
-                    <span className='name-overlay' title={`${member.first_name} ${member.last_name}`}>
-                        {member.first_name.substring(0, 1).toUpperCase()}{member.last_name.substring(0, 1).toUpperCase()}
-                    </span>
-                </span>)
-            })}
+                })}
             </div>
             }
         <span className='icon-span add' onClick={toggleMembersPopUpTab}><RxPlus className='icon'/>
-        {membersPopUpTabOpen
-            ?   <div className='options-menu open'>
-                    {members?.map((member, index) => {
-                        if (member._id === user._id) return '';
-                        if (projectMembers.find(project_member => project_member._id === member._id)) {
-                            return (
-                                <p key={index} className="member-already-in-project" title={`${member.first_name} is already added`}>
+            {membersPopUpTabOpen
+                ?   <div className='options-menu open'>
+                        {members?.map((member, index) => {
+                            if (member._id === user._id) return '';
+
+                            if (projectMembers.find(project_member => project_member._id === member._id)) {
+                                return (
+                                    <p key={index} className="member-already-in-project" title={`${member.first_name} is already added`}>
+                                        {member.first_name} {member.last_name}
+                                    </p>
+                                )
+                            } else return (
+                                <p key={index} onClick={() => handleAddMember(member)}>
                                     {member.first_name} {member.last_name}
                                 </p>
                             )
-                        }
-                        else return (
-                            <p key={index} onClick={() => handleAddMember(member)}>
-                                {member.first_name} {member.last_name}
-                            </p>
-                        )
-                    })}
-                </div>
-            : null}
+                        })}
+                    </div>
+                : null}
         </span>
         </div>
     </div>

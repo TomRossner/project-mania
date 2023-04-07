@@ -26,7 +26,7 @@ const ProjectInfoBar = () => {
     const [inputValue, setInputValue] = useState("");
     const titleRef = useRef();
 
-    const handleMenuOption = (opt) => {
+    const handleProjectMenuOptions = (opt) => {
         if (!opt || typeof opt !== 'string') return;
         dispatch(setProjectMenuOpen(false));
 
@@ -52,8 +52,8 @@ const ProjectInfoBar = () => {
 
     const handleInputChange = (e) => setInputValue(e.target.value);
 
-    const validateProjectName = (input = inputValue) => {
-        if (!input || !input.length) {
+    const validateProjectName = (input) => {
+        if (!input || !input.length || input.trim() === currentProject.title) {
             return dispatch(setCurrentProject({...currentProject, title: currentProject.title, edit_active: false}));
         } else {
             // Update project title and set edit_active to false
@@ -80,6 +80,11 @@ const ProjectInfoBar = () => {
         }
     }, [currentProject])
 
+    useEffect(() => {
+        if (!currentProject) return;
+        setInputValue(currentProject.title);
+    }, [currentProject])
+
   return (
     <>
     <div className="current-board-info-bar">
@@ -93,22 +98,26 @@ const ProjectInfoBar = () => {
                         ref={titleRef}
                         readOnly={!currentProject.edit_active}
                         onChange={handleInputChange}
-                        defaultValue={currentProject.title}
+                        value={inputValue}
                         className={currentProject.edit_active ? "title-input active" : "title-input"}
                     />
                     {currentProject.edit_active
-                    ?   <span className='icon-span green' id="check" onClick={() => validateProjectName(inputValue)}>
-                            <FiCheck className='icon check' title='Save'/>
-                        </span>
+                    ?   <IconContainer
+                            additionalClass="green"
+                            id="check"
+                            onClick={() => validateProjectName(inputValue)}
+                            icon={<FiCheck className='icon check' title='Save'/>}
+                        />
                     : null}
                 </div>
             </div>
         </div>
         <Space/>
         <ProjectMembers/>
-        <span className='icon-span menu' onClick={handleMenuClick}><CgMenuGridO className='icon'/></span>
+        {/* <span className='icon-span menu' onClick={handleMenuClick}><CgMenuGridO className='icon'/></span> */}
+        <IconContainer additionalClass='menu' onClick={handleMenuClick} icon={<CgMenuGridO className='icon'/>}/>
         <div className={projectMenuTabOpen ? "options-menu open" : "options-menu"}>
-            {projectMenuOptions.map(opt => <p key={opt} onClick={() => handleMenuOption(opt)}>{opt}</p>)}
+            {projectMenuOptions.map(opt => <p key={opt} onClick={() => handleProjectMenuOptions(opt)}>{opt}</p>)}
         </div>
     </div>
     </>

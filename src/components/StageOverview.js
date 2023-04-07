@@ -16,7 +16,7 @@ import useAuth from '../hooks/useAuth';
 const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
     const [inputValue, setInputValue] = useState("");
-    const {currentProject, handleAddTask, validate, handleDeleteStage, toggleStageOptions, handleClearStageTasks} = useProject();
+    const {currentProject, handleAddTask, saveStageName, handleDeleteStage, toggleStageOptions, handleClearStageTasks} = useProject();
     const dispatch = useDispatch();
     const [{isOver}, drop] = useDrop({
         accept: 'task',
@@ -112,7 +112,7 @@ const StageOverview = ({stage}) => {
                     className={edit_active ? "stage-title-input active" : "stage-title-input"}
                     ref={titleRef}
                 />
-                {edit_active ? <span className='icon-span green' onClick={() => validate(inputValue, stage)}><FiCheck className='icon'/></span> : null}
+                {edit_active ? <span className='icon-span green' onClick={() => saveStageName(inputValue, stage)}><FiCheck className='icon'/></span> : null}
             </div>
             <div className='buttons-container'>
                 <IconContainer icon={<BsThreeDotsVertical className='icon dots-menu'/>} onClick={() => toggleStageOptions(stage)}/>

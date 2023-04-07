@@ -21,16 +21,31 @@ const useAuth = () => {
     const {error} = useSelector(selectAuth);
     const [profileImage, setProfileImage] = useState("");
 
+    // Refresh user
     const refreshUser = () => dispatch(setUser(getUser()));
 
+    // Login
     const login = (credentials) => dispatch(fetchUserAsync(credentials));
 
+    // Logout handler
     const handleLogout = () => {
         dispatch(setUserInfo({...userInfo, online: false}));
         dispatch(logout());
         LS_logout();
     }
 
+    // Update user info
+    const updateUserInfo = async () => {
+        const {data} = await updateUser(userInfo);
+        // dispatch(setUserInfo(data));
+    }
+
+
+    /************
+        GOOGLE
+    *************/
+
+    // Google sign-in 
     const google_signInUser = async () => {
         const {user} = await signInWithPopup(auth, provider);
         const {accessToken} = user;
@@ -44,12 +59,18 @@ const useAuth = () => {
         return getUser();
     }
     
+    // Google sign-up
     const google_signUpUser = async () => {
         const {user} = await signInWithPopup(auth, provider);
+
         const {accessToken, email, displayName, uid, photoURL} = user;
         
         return await axios.post("/auth/sign-up/google", {accessToken, email, displayName, uid, imgUrl: photoURL});
     }
+
+
+
+
 
     useEffect(() => {
         if (!user || !isAuthenticated) dispatch(setUserInfo(null));
@@ -57,26 +78,7 @@ const useAuth = () => {
         || (user && isAuthenticated && user.email !== userInfo?.email)) {
             dispatch(fetchUserInfoAsync(user._id || user.user_id));
         }
-    }, [user, isAuthenticated, userInfo])
-
-    // useEffect(() => {
-    //     if (!userInfo) return;
-    //     if (userInfo.base64_img_data || userInfo.img_url) return setProfileImage(Buffer.from(userInfo.base64_img_data));
-    //     if (!userInfo.base64_img_data && userInfo.img_url) return setProfileImage(userInfo.img_url.toString());
-    //     else setProfileImage("");
-    // }, [userInfo])
-
-    // useEffect(() => {
-        // if (currentProject && user && isAuthenticated && userInfo) {
-        //   const isProjectAdmin = currentProject.admins.find(admin => admin._id === user._id);
-    
-        //   if (isProjectAdmin) {
-        //     setUserInfo({...userInfo, admin: true});
-        //   } else {
-        //     setUserInfo({...userInfo, admin: false});
-        //   }
-        // }
-    //   }, [currentProject]) // THIS CAUSES INFINITE LOOP, MOVE TO COMPONENT
+    }, [user, isAuthenticated, userInfo]);
 
     // Handle login error
     useEffect(() => {
@@ -85,24 +87,22 @@ const useAuth = () => {
             dispatch(setError(errorMessage));
             dispatch(setErrorPopupOpen(true));
         }
-    }, [error])
+    }, [error]);
 
+    // Update user info
+    // useEffect(() => {
+    //     if (!userInfo) return;
+        
+    //     updateUserInfo();
+    // }, [userInfo]); // CAUSES LAG
+
+    // Update profile image
     useEffect(() => {
         if (!userInfo) return;
-        const updateUserInfo = async () => {
-            const {data} = await updateUser(userInfo);
-            // dispatch(setUserInfo(data))
-        }
-        updateUserInfo();
-    }, [userInfo])
-
-    useEffect(() => {
-        if (!userInfo) return;
-        // console.log(userInfo)
         if (userInfo.base64_img_data || userInfo.img_url) return setProfileImage(Buffer.from(userInfo.base64_img_data));
         if (!userInfo.base64_img_data && userInfo.img_url) return setProfileImage(userInfo.img_url.toString());
         else setProfileImage("");
-    }, [userInfo])
+    }, [userInfo]);
 
     return {
         isAuthenticated,

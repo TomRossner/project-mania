@@ -9,3 +9,5 @@ export const selectStage = (state) => state.globalStates.stage;
 export const selectTaskPriority = (state) => state.globalStates.taskPriority;
 
 export const selectNotifications = (state) => state.globalStates.notifications;
+
+export const selectTaskToMove = (state) => state.globalStates.taskToMove;

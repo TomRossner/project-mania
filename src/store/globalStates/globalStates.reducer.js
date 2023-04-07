@@ -12,7 +12,9 @@ const INITIAL_STATE = {
     taskPriority: "",
     tasks: [],
     adminFormOpen: false,
-    notifications: []
+    notifications: [],
+    moveTaskPopupOpen: false,
+    taskToMove: null
 }
 
 export const globalStatesReducer = (state = INITIAL_STATE, action) => {
@@ -41,6 +43,10 @@ export const globalStatesReducer = (state = INITIAL_STATE, action) => {
             return {...state, tasks: payload};
         case GLOBAL_STATES_ACTION_TYPES.SET_ADMIN_PASS_FORM_OPEN:
             return {...state, adminFormOpen: payload};
+        case GLOBAL_STATES_ACTION_TYPES.SET_MOVE_TASK_POPUP_OPEN:
+            return {...state, moveTaskPopupOpen: payload};
+        case GLOBAL_STATES_ACTION_TYPES.SET_TASK_TO_MOVE:
+            return {...state, taskToMove: payload};
         default:
             return state;
     }

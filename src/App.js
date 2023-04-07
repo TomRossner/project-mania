@@ -1,30 +1,12 @@
-import ProjectManagement from "./components/ProjectManagement";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import Projects from "./components/Projects";
-import Notifications from "./components/Notifications"
-import Profile from "./components/Profile"
-import { useEffect } from "react";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import ProjectOverview from "./components/ProjectOverview";
-import NavBar from "./components/NavBar";
-import Task from "./components/Task";
-import Create from "./components/Create";
-import ErrorPopup from "./components/ErrorPopup";
-import Logout from "./components/Logout";
 import { useDispatch} from "react-redux";
-import { setCurrentProject } from "./store/project/project.actions";
-import RightNav from "./components/RightNav";
-import TopNav from "./components/TopNav";
-import useAuth from "./hooks/useAuth";
 import { fetchBoardsAsync } from "./store/boards/boards.actions";
-import Users from "./components/Users";
-import PrivateRoute from "./components/common/PrivateRoute";
-import NotificationTab from "./components/NotificationTab";
-import useProject from "./hooks/useProject";
-import AdminForm from "./components/forms/AdminForm";
-import UserCards from "./components/UserCards";
+import { setCurrentProject } from "./store/project/project.actions";
 import {io} from "socket.io-client";
+import useAuth from "./hooks/useAuth";
+import useProject from "./hooks/useProject";
+import PrivateRoute from "./components/common/PrivateRoute";
 
 // Styles
 import "./styles/general.styles.scss";
@@ -49,11 +31,41 @@ import "./styles/activity.styles.scss";
 import "./styles/progress-bar.styles.scss";
 import "./styles/profile.styles.scss";
 import "./styles/user-header.styles.scss";
+import "./styles/clock.styles.scss";
+
+const ProjectManagement = lazy(() => import("./components/ProjectManagement")); 
+const Projects = lazy(() => import("./components/Projects")); 
+const Notifications = lazy(() => import("./components/Notifications")); 
+const Profile = lazy(() => import("./components/Profile")); 
+const Login = lazy(() => import("./components/Login")); 
+const Register = lazy(() => import("./components/Register")); 
+const ProjectOverview = lazy(() => import("./components/ProjectOverview")); 
+const NavBar = lazy(() => import("./components/NavBar")); 
+const Task = lazy(() => import("./components/Task")); 
+const Create = lazy(() => import("./components/Create")); 
+const ErrorPopup = lazy(() => import("./components/ErrorPopup")); 
+const Logout = lazy(() => import("./components/Logout")); 
+const ActivitySection = lazy(() => import("./components/ActivitySection")); 
+const TopNav = lazy(() => import("./components/TopNav")); 
+const Users = lazy(() => import("./components/Users")); 
+const NotificationTab = lazy(() => import("./components/NotificationTab"));
+const AdminForm = lazy(() => import("./components/forms/AdminForm"));
+const UserCards = lazy(() => import("./components/UserCards"));
+const MoveTaskPopup = lazy(() => import("./components/MoveTaskPopup"));
 
 const App = () => {
   const dispatch = useDispatch();
   const {user, isAuthenticated, refreshUser} = useAuth();
-  const {notificationTabOpen, handleCreateBoard, handleToggleNotificationTab, adminFormOpen} = useProject();
+  const {
+    notificationTabOpen,
+    handleCreateBoard,
+    handleToggleNotificationTab,
+    adminFormOpen,
+    moveTaskPopupOpen,
+    currentProject
+  } = useProject();
+
+  const [userCardsActive, setUserCardsActive] = useState(false);
 
   useEffect(() => {
     refreshUser();
@@ -62,16 +74,20 @@ const App = () => {
   useEffect(() => {
     if (user && isAuthenticated) {
       dispatch(fetchBoardsAsync(user._id));
-      const socket = io("http://localhost:5000/");
-      socket.emit('connection', {message: 'Hello Tom'})
+      // const socket = io("http://localhost:5000/");
+      // socket.emit('connection', {message: 'Hello Tom'})
     }
+
+    // If user is not authenticated, set current project to null
     if (!user || !isAuthenticated) dispatch(setCurrentProject(null));
   }, [user, isAuthenticated])
 
   return (
-    <div className='main'>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className='main'>
       <Create/>
       <ErrorPopup/>
+      {moveTaskPopupOpen && <MoveTaskPopup/>}
       {adminFormOpen && <AdminForm/>}
       <div className="sections-container">
         <NavBar/>
@@ -88,13 +104,14 @@ const App = () => {
             <Route path="/logout" element={<PrivateRoute element={<Logout/>}/>}/>
             <Route path="/sign-in" element={<Login/>}/>
             <Route path="/sign-up" element={<Register/>}/>
-            <Route path="/users" element={<PrivateRoute element={<Users/>}/>}/>
+            <Route path="/users" element={<PrivateRoute element={<Users setUserCardsActive={setUserCardsActive}/>}/>}/>
           </Routes>
         </div>
-        <RightNav/>
-        {/* <UserCards/> */}
+        {!userCardsActive && currentProject && <ActivitySection/>}
+        {userCardsActive && <UserCards/>}
       </div>
     </div>
+    </Suspense>
   )
 }
 

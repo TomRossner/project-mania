@@ -63,16 +63,26 @@
             align-items: center;
             gap: 0.3rem;
 
-            .icon{
-                animation: fadeIn forwards 0.15s;
+            .icon-span{
 
-                &.green{
-                    color: $green;
+                .icon{
+                    animation: fadeIn forwards 0.15s;
+    
+                    &.green{
+                        color: $green;
+                    }
+                }
+                
+                &:hover{
+                    .icon{
+                        color: $blue_hover;
+                    }
                 }
             }
 
             .options-menu{
-                top: 6rem;
+                top: unset;
+                bottom: 1rem;
                 right: 5.5rem;
             }
         }

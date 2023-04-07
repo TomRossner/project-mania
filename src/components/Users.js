@@ -8,14 +8,20 @@ import { useNavigate } from 'react-router-dom';
 import Line from './common/Line';
 import useAuth from '../hooks/useAuth';
 
-const Users = () => {
+const Users = ({setUserCardsActive}) => {
   const members = useSelector(selectMembers);
   const {user, isAuthenticated} = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Disable userCardsActive @ App.js
+    setUserCardsActive(false);
+
+    // Fetch all users except current user
     dispatch(fetchMembersAsync());
+
+    // If user is not logged in redirect to sign-in page
     if (!user || !isAuthenticated) navigate("/sign-in");
   }, [])
 

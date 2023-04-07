@@ -37,3 +37,9 @@ export const setAdminPassFormOpen = (bool) => {
 export const setNotifications= (notification) => {
     return createAction(GLOBAL_STATES_ACTION_TYPES.SET_NOTIFICATIONS, notification);
 }
+export const setMoveTaskPopupOpen= (bool) => {
+    return createAction(GLOBAL_STATES_ACTION_TYPES.SET_MOVE_TASK_POPUP_OPEN, bool);
+}
+export const setTaskToMove= (task) => {
+    return createAction(GLOBAL_STATES_ACTION_TYPES.SET_TASK_TO_MOVE, task);
+}

@@ -14,7 +14,6 @@ import {HiUserGroup} from "react-icons/hi";
 import useProject from '../hooks/useProject';
 import Space from "./common/Space";
 import BlankProfilePicture from './common/BlankProfilePicture';
-import useProfileImage from '../hooks/useProfileImage';
 
 const NavBar = () => {
   const dispatch = useDispatch();

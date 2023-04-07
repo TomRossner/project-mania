@@ -1,3 +1,4 @@
 export const task_options = [
-    "Delete"
+    "Delete",
+    "Move task"
 ]
