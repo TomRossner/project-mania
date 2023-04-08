@@ -13,3 +13,9 @@ export const getUserByEmail = async (email) => {
     const {data} = await axios.post(`/members`, {email});
     return data;
 }
+
+export const sendMessage = async (message, targetUser) => {
+    const {data} = await axios.post('/members/send-message', {message, to: targetUser});
+    console.log(data);
+    return data;
+}

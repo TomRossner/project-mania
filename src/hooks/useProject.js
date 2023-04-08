@@ -559,7 +559,7 @@ const useProject = () => {
     useEffect(() => {
         if (!currentProject) return;
         
-        update(currentProject);
+        // update(currentProject);
     
         // Each time currentProject changes update tasks
         const projectTasks = currentProject?.stages.map(stage => {

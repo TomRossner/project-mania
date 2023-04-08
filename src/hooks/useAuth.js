@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LS_logout, setTokenHeader } from '../httpRequests/http.auth';
 import { fetchUserAsync, logout, setUser } from '../store/auth/auth.actions';
@@ -12,6 +12,7 @@ import { setUserInfo } from '../store/userInfo/userInfo.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';
 import { fetchUserInfoAsync } from '../store/userInfo/userInfo.actions';
 import { setError, setErrorPopupOpen } from '../store/globalStates/globalStates.actions';
+import io from "socket.io-client";
 
 const useAuth = () => {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -68,17 +69,28 @@ const useAuth = () => {
         return await axios.post("/auth/sign-up/google", {accessToken, email, displayName, uid, imgUrl: photoURL});
     }
 
-
-
-
-
     useEffect(() => {
         if (!user || !isAuthenticated) dispatch(setUserInfo(null));
+    }, [user, isAuthenticated]);
+
+    useEffect(() => {
         if ((user && isAuthenticated && !userInfo)
         || (user && isAuthenticated && user.email !== userInfo?.email)) {
             dispatch(fetchUserInfoAsync(user._id || user.user_id));
         }
     }, [user, isAuthenticated, userInfo]);
+
+    const socket = useMemo(() => io('http://localhost:5000', { 
+        transports: ['websocket'], 
+        allowEIO3: true
+    }), []);
+
+    useEffect(() => {
+        if (user && isAuthenticated && userInfo) {
+            const userName = `${userInfo?.first_name} ${userInfo?.last_name}`;
+            socket.emit('connection', {userName});
+        }
+    }, [user, isAuthenticated, userInfo, socket]);
 
     // Handle login error
     useEffect(() => {

@@ -1,10 +1,10 @@
 import React from 'react';
-import BoardForm from './forms/BoardForm';
-import StageForm from './forms/StageForm';
-import TaskForm from './forms/TaskForm';
 import { RxCross2 } from 'react-icons/rx';
 import {elements} from "../utils/elements";
 import useProject from '../hooks/useProject';
+import BoardForm from './forms/BoardForm';
+import StageForm from './forms/StageForm';
+import TaskForm from './forms/TaskForm';
 
 const Create = () => {
     const {createPopupOpen, element: selectedElement, currentProject, closeCreatePopup, handleElementClick} = useProject();
@@ -22,7 +22,9 @@ const Create = () => {
                             key={element}
                             className={element === selectedElement ? "create-element selected" : "create-element"}
                             onClick={() => handleElementClick(element)}
-                        >{element}</span>
+                        >
+                            {element}
+                        </span>
                     )}
                 </div>
                 {selectedElement === "board" && <BoardForm/>}

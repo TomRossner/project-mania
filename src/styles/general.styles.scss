@@ -38,6 +38,16 @@ body{
     justify-content: center;
 }
 
+#root{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &> .spinner-container{
+        align-self: center;
+        justify-self: center;
+    }
+}
 
 @keyframes fadeIn {
     0%{

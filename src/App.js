@@ -3,10 +3,22 @@ import { Route, Routes } from "react-router-dom";
 import { useDispatch} from "react-redux";
 import { fetchBoardsAsync } from "./store/boards/boards.actions";
 import { setCurrentProject } from "./store/project/project.actions";
-import {io} from "socket.io-client";
+
+// Custom Hooks
 import useAuth from "./hooks/useAuth";
 import useProject from "./hooks/useProject";
+
+//Components
 import PrivateRoute from "./components/common/PrivateRoute";
+import Spinner from "./components/common/Spinner";
+import Projects from "./components/Projects"; 
+import ProjectOverview from "./components/ProjectOverview"; 
+import Notifications from "./components/Notifications";
+import Create from "./components/Create"; 
+import ErrorPopup from "./components/ErrorPopup"; 
+import NotificationTab from "./components/NotificationTab";
+import AdminForm from "./components/forms/AdminForm";
+import MoveTaskPopup from "./components/MoveTaskPopup";
 
 // Styles
 import "./styles/general.styles.scss";
@@ -33,25 +45,19 @@ import "./styles/profile.styles.scss";
 import "./styles/user-header.styles.scss";
 import "./styles/clock.styles.scss";
 
+
+// Lazy-loading components
 const ProjectManagement = lazy(() => import("./components/ProjectManagement")); 
-const Projects = lazy(() => import("./components/Projects")); 
-const Notifications = lazy(() => import("./components/Notifications")); 
 const Profile = lazy(() => import("./components/Profile")); 
 const Login = lazy(() => import("./components/Login")); 
 const Register = lazy(() => import("./components/Register")); 
-const ProjectOverview = lazy(() => import("./components/ProjectOverview")); 
 const NavBar = lazy(() => import("./components/NavBar")); 
 const Task = lazy(() => import("./components/Task")); 
-const Create = lazy(() => import("./components/Create")); 
-const ErrorPopup = lazy(() => import("./components/ErrorPopup")); 
 const Logout = lazy(() => import("./components/Logout")); 
 const ActivitySection = lazy(() => import("./components/ActivitySection")); 
 const TopNav = lazy(() => import("./components/TopNav")); 
 const Users = lazy(() => import("./components/Users")); 
-const NotificationTab = lazy(() => import("./components/NotificationTab"));
-const AdminForm = lazy(() => import("./components/forms/AdminForm"));
 const UserCards = lazy(() => import("./components/UserCards"));
-const MoveTaskPopup = lazy(() => import("./components/MoveTaskPopup"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -72,18 +78,16 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if (user && isAuthenticated) {
+    if (isAuthenticated) {
       dispatch(fetchBoardsAsync(user._id));
-      // const socket = io("http://localhost:5000/");
-      // socket.emit('connection', {message: 'Hello Tom'})
     }
 
     // If user is not authenticated, set current project to null
-    if (!user || !isAuthenticated) dispatch(setCurrentProject(null));
-  }, [user, isAuthenticated])
+    if (!isAuthenticated) dispatch(setCurrentProject(null));
+  }, [isAuthenticated]);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spinner/>}>
       <div className='main'>
       <Create/>
       <ErrorPopup/>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCurrentProject } from '../store/project/project.actions';
 import useProject from '../hooks/useProject';
+import Spinner from './common/Spinner';
 
 const Projects = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Projects = () => {
               <span>{new Date(project.due_date).toDateString()}</span>
             </div>)
           })}
-        </div> ) : null}
+        </div> ) : <Spinner/>}
     </div>
   )
 }

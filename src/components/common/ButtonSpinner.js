@@ -1,7 +1,7 @@
 import React from 'react';
 import Loader from "../../assets/small_spinner.svg";
 
-const Spinner = () => {
+const ButtonSpinner = () => {
   return (
     <div className='spinner-container small'>
         <img src={Loader} alt="loading"></img>
@@ -9,4 +9,4 @@ const Spinner = () => {
   )
 }
 
-export default Spinner;
+export default ButtonSpinner;
