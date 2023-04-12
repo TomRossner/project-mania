@@ -1,11 +1,12 @@
-@import "./general.styles.scss";
+@import "./variables";
+
 .activity-section{
     overflow-y: hidden;
 
     .activity-container{
         display: flex;
         flex-direction: column;
-        height: 75vh;
+        height: 70vh;
         gap: 1rem;
         
         .timeline{
@@ -72,6 +73,7 @@
                         width: 35px;
                         height: 35px;
                     }
+                    
                     &.blank{
                         width: 30px;
                         height: 30px;

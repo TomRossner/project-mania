@@ -10,7 +10,7 @@ import {getUserInfo} from "../httpRequests/http.auth";
 import { selectMembers } from "../store/members/members.selector";
 import useAuth from "./useAuth";
 import { generateId } from "../utils/IdGenerator";
-import { setCurrentProject, setProjectMembers } from "../store/project/project.actions";
+import { setActivity, setCurrentProject, setProjectMembers } from "../store/project/project.actions";
 import {selectGlobalStates} from "../store/globalStates/globalStates.selector";
 import { getActivityText, createActivity } from "../utils/defaultProperties";
 import {
@@ -30,14 +30,14 @@ import {
     setMoveTaskPopupOpen
 } from "../store/globalStates/globalStates.actions";
 import {
-    addMemberActivity,
-    addTaskActivity,
-    createBoardActivity,
-    createStageActivity,
-    deleteStageActivity,
-    deleteTaskActivity,
-    editStageNameActivity,
-    removeMemberActivity
+    activity_addMember,
+    activity_addTask,
+    activity_createBoard,
+    activity_createStage,
+    activity_deleteStage,
+    activity_deleteTask,
+    activity_editStageName,
+    activity_removeMember
 } from "../utils/activities";
 
 const useProject = () => {
@@ -114,7 +114,7 @@ const useProject = () => {
                     return {...current_project_stage, stage_tasks: [...current_project_stage.stage_tasks, newTask]}
                 } else return current_project_stage;
             })],
-            activity: [...currentProject.activity, addTaskActivity(userInfo, stageToUpdate)]
+            activity: [...currentProject.activity, activity_addTask(userInfo, stageToUpdate)]
         }));
 
         dispatch(setTasks([...tasks, newTask]));
@@ -153,7 +153,7 @@ const useProject = () => {
             return {...stage, tasks_done: stage.tasks_done === 0 ? 0 : stage.tasks_done - 1,
                 stage_tasks: [...stage.stage_tasks.filter(t => t._id !== task._id)]};
         } else return stage;
-        })], activity: [...currentProject.activity, deleteTaskActivity(userInfo, task)]}));
+        })], activity: [...currentProject.activity, activity_deleteTask(userInfo, task)]}));
         
         dispatch(setTasks([...tasks.filter(t => t._id !== task._id)]));
         return await deleteTask({id: currentProject._id, stage_id: task.current_stage.id, task_id: task._id});
@@ -248,7 +248,7 @@ const useProject = () => {
             dispatch(setCurrentProject({
                 ...currentProject,
                 stages: [...currentProject.stages, newStage],
-                activity: [...currentProject.activity, createStageActivity(userInfo, currentProject)]
+                activity: [...currentProject.activity, activity_createStage(userInfo, currentProject)]
             }));
         }
     }
@@ -288,7 +288,7 @@ const useProject = () => {
         dispatch(setCurrentProject({
             ...currentProject,
             stages: [...currentProject.stages.filter(stage => stage._id !== stageToDelete._id)],
-            activity: [...currentProject.activity, deleteStageActivity(userInfo, stageToDelete)]
+            activity: [...currentProject.activity, activity_deleteStage(userInfo, stageToDelete)]
         }));
     }
 
@@ -307,7 +307,7 @@ const useProject = () => {
                     })]};
                 } else return stage;
             })],
-            activity: [...currentProject.activity, editStageNameActivity(userInfo, stageToUpdate, newStageName)]
+            activity: [...currentProject.activity, activity_editStageName(userInfo, stageToUpdate, newStageName)]
         }));
     }
 
@@ -360,7 +360,7 @@ const useProject = () => {
                     }
                 ],
                 admins: [email],
-                activity: [createBoardActivity(userInfo, values)]
+                activity: [activity_createBoard(userInfo, values)]
             });
 
             dispatch(setBoards([
@@ -447,7 +447,7 @@ const useProject = () => {
 
         dispatch(setCurrentProject({
             ...currentProject,
-            activity: [...currentProject.activity, removeMemberActivity(userInfo, memberToRemove, currentProject)]
+            activity: [...currentProject.activity, activity_removeMember(userInfo, memberToRemove, currentProject)]
         }));
     }
 
@@ -461,7 +461,7 @@ const useProject = () => {
         dispatch(setCurrentProject({
             ...currentProject,
             members: [...currentProject.members, member],
-            activity: [...currentProject.activity, addMemberActivity(userInfo, member, currentProject)]
+            activity: [...currentProject.activity, activity_addMember(userInfo, member, currentProject)]
         }));
     }
 
@@ -559,7 +559,7 @@ const useProject = () => {
     useEffect(() => {
         if (!currentProject) return;
         
-        // update(currentProject);
+        update(currentProject);
     
         // Each time currentProject changes update tasks
         const projectTasks = currentProject?.stages.map(stage => {
@@ -574,8 +574,18 @@ const useProject = () => {
         // Set notifications
         dispatch(setNotifications([...currentProject.notifications]));
 
-        // Set admin property to true if the user's email is in admins array
-        if (user.email in currentProject.admins) dispatch(setUserInfo({...userInfo, admin: true}));
+        // Set activity
+        dispatch(setActivity(currentProject.activity));
+
+        // Set admin property to true if the user's email is in admins list
+        if (user.email in currentProject.admins && !userInfo.admin) dispatch(setUserInfo({...userInfo, admin: true}));
+
+        // Set admin property to false if true and user is not in admins list
+        if (!user.email in currentProject.admins && userInfo.admin) {
+            console.log('Not in admins list');
+            dispatch(setUserInfo({...userInfo, admin: false}));
+        }
+
     }, [currentProject]);
 
 

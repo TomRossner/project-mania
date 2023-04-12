@@ -80,17 +80,17 @@ const useAuth = () => {
         }
     }, [user, isAuthenticated, userInfo]);
 
-    const socket = useMemo(() => io('http://localhost:5000', { 
-        transports: ['websocket'], 
-        allowEIO3: true
-    }), []);
+    // const socket = useMemo(() => io('http://localhost:5000', { 
+    //     transports: ['websocket'], 
+    //     allowEIO3: true
+    // }), []);
 
-    useEffect(() => {
-        if (user && isAuthenticated && userInfo) {
-            const userName = `${userInfo?.first_name} ${userInfo?.last_name}`;
-            socket.emit('connection', {userName});
-        }
-    }, [user, isAuthenticated, userInfo, socket]);
+    // useEffect(() => {
+    //     if (user && isAuthenticated && userInfo) {
+    //         const userName = `${userInfo?.first_name} ${userInfo?.last_name}`;
+    //         // socket.emit('connection', {userName});
+    //     }
+    // }, [user, isAuthenticated, userInfo]);
 
     // Handle login error
     useEffect(() => {

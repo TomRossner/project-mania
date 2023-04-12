@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { getUserInfo } from '../httpRequests/http.auth';
-import { BsPersonCircle } from 'react-icons/bs';
+import { BsCircleFill, BsPersonCircle } from 'react-icons/bs';
 import IconContainer from './common/IconContainer';
 import useAuth from '../hooks/useAuth';
 import Activity from './Activity';
 import useProject from '../hooks/useProject';
 import { getUserByEmail } from '../httpRequests/http.members';
+import BlankProfilePicture from './common/BlankProfilePicture';
 
-const RightNav = () => {
+const ActivitySection = () => {
     const {user, userInfo} = useAuth();
     const {currentProject} = useProject();
     const [userName, setUserName] = useState("");
@@ -60,19 +61,28 @@ const RightNav = () => {
                     return (
                       <div className="admin" key={admin.email}>
                         {admin.img_url || admin.base64_img_data
-                        ? <div className='profile-img-container'>
-                            <img src={admin.base64_img_data ? Buffer.from(admin.base64_img_data) : admin.img_url.toString()} alt="profile"/>
-                          </div>
+                        ? <>
+                            <div className='profile-img-container'>
+                              <img src={admin.base64_img_data ? Buffer.from(admin.base64_img_data) : admin.img_url.toString()} alt="profile"/>
+                            </div>
+                            <IconContainer icon={<BsCircleFill className={userInfo.online ? 'icon online-status green' : 'icon online-status red'}/>}/>
+                          </>
                         : <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>}
                         <span>{userName} (You)</span>
                       </div>)
                   } else return (
-                      <div className="admin">
+                      <div className="admin" key={admin.email}>
                         {admin.img_url || admin.base64_img_data
-                        ? <div className='profile-img-container'>
-                            <img src={admin.base64_img_data ? Buffer.from(admin.base64_img_data) : admin.img_url.toString()} alt="profile"/>
-                          </div>
-                        : <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>}
+                        ? <>
+                            <div className='profile-img-container'>
+                              <img src={admin.base64_img_data ? Buffer.from(admin.base64_img_data) : admin.img_url.toString()} alt="profile"/>
+                            </div>
+                            <IconContainer icon={<BsCircleFill className={userInfo.online ? 'icon online-status green' : 'icon online-status red'}/>}/>
+                          </>
+                        : <>
+                            <BlankProfilePicture/>
+                            <IconContainer icon={<BsCircleFill className={userInfo.online ? 'icon online-status green' : 'icon online-status red'}/>}/>
+                          </>}
                         <span>{admin.first_name} {admin.last_name}</span>
                       </div>) 
                 })}
@@ -88,4 +98,4 @@ const RightNav = () => {
   )
 }
 
-export default RightNav;
+export default ActivitySection;

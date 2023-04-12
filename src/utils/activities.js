@@ -12,13 +12,19 @@ const userDetails = (user) => {
     }
 }
 
-export const addTaskActivity = (user, stageToDelete) => createActivity(
+export const activity_createProject = (user) => createActivity(
+    userDetails(user),
+    getActivityText(null, 'CREATE_PROJECT', null, null),
+    date
+);
+
+export const activity_addTask = (user, stageToDelete) => createActivity(
     userDetails(user),
     getActivityText(null, 'ADD_TASK', stageToDelete.stage_name, null),
     date
 );
 
-export const createStageActivity = (user, project) => {
+export const activity_createStage = (user, project) => {
 
     return createActivity(
         userDetails(user),
@@ -27,7 +33,7 @@ export const createStageActivity = (user, project) => {
     );
 }
 
-export const createBoardActivity = (user, values) => {
+export const activity_createBoard = (user, values) => {
 
     return createActivity(
         userDetails(user),
@@ -36,7 +42,7 @@ export const createBoardActivity = (user, values) => {
     );
 }
 
-export const deleteTaskActivity = (user, task) => {
+export const activity_deleteTask = (user, task) => {
 
     return createActivity(
         userDetails(user),
@@ -45,7 +51,7 @@ export const deleteTaskActivity = (user, task) => {
     );
 }
 
-export const deleteStageActivity = (user, stageToDelete) => {
+export const activity_deleteStage = (user, stageToDelete) => {
     
     return createActivity(
         userDetails(user),
@@ -54,7 +60,7 @@ export const deleteStageActivity = (user, stageToDelete) => {
     );
 }
 
-export const addMemberActivity = (user, member, project) => {
+export const activity_addMember = (user, member, project) => {
 
     return createActivity(
         userDetails(user),
@@ -63,7 +69,7 @@ export const addMemberActivity = (user, member, project) => {
     );
 }
 
-export const editStageNameActivity = (user, stageToUpdate, inputValue) => {
+export const activity_editStageName = (user, stageToUpdate, inputValue) => {
 
     return createActivity(
         userDetails(user),
@@ -72,7 +78,7 @@ export const editStageNameActivity = (user, stageToUpdate, inputValue) => {
     );
 }
 
-export const removeMemberActivity = (user, memberToRemove, project) => {
+export const activity_removeMember = (user, memberToRemove, project) => {
 
     return createActivity(
         userDetails(user),

@@ -1,4 +1,4 @@
-@import "./general.styles.scss";
+@import "./variables";
 
 .current-board-stages-container{
     display: flex;
@@ -42,6 +42,20 @@
             border-radius: 10px;
             padding-inline: 0.5rem;
             position: relative;
+
+            .total-tasks{
+                width: 25px;
+                height: 25px;
+                border: 1px solid $grey;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: 600;
+                color: $grey;
+                font-family: Roboto, sans-serif;
+                margin-right: 0.5rem;
+            }
 
             .buttons-container{
                 position: relative;

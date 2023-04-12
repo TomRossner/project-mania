@@ -19,6 +19,8 @@ export const projectReducer = (state = INITIAL_STATE, action) => {
             return {...state, boards: payload};
         case PROJECT_ACTION_TYPES.ADD_ACTIVITY:
             return {...state, activity: payload};
+        case PROJECT_ACTION_TYPES.SET_ACTIVITY:
+            return {...state, activity: payload};
         default:
             return state;
     }

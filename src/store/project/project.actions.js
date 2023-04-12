@@ -13,3 +13,6 @@ export const setBoards = (boards) => {
 export const addActivity = (activity) => {
     return createAction(PROJECT_ACTION_TYPES.ADD_ACTIVITY, activity);
 }
+export const setActivity = (activities) => {
+    return createAction(PROJECT_ACTION_TYPES.SET_ACTIVITY, activities);
+}

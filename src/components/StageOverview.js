@@ -102,6 +102,7 @@ const StageOverview = ({stage}) => {
     <div className='stage-container'>
         <div className='stage-title-container'>
             <OptionsMenu options={stageOptions} boolean={options_menu_open} fn={handleOption} fn_arg={stage}/>
+            <span className='total-tasks'>{stage.stage_tasks.length}</span>
             <div className='input-container'>
                 <input
                     type="text"

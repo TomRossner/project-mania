@@ -3,4 +3,5 @@ export const PROJECT_ACTION_TYPES = {
     SET_PROJECT_MEMBERS: 'project/SET_PROJECT_MEMBERS',
     SET_BOARDS: 'project/SET_BOARDS',
     ADD_ACTIVITY: 'project/ADD_ACTIVITY',
+    SET_ACTIVITY: 'project/SET_ACTIVITY',
 }
