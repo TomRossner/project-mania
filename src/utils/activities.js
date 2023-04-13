@@ -12,9 +12,9 @@ const userDetails = (user) => {
     }
 }
 
-export const activity_createProject = (user) => createActivity(
+export const activity_createProject = (user, project) => createActivity(
     userDetails(user),
-    getActivityText(null, 'CREATE_PROJECT', null, null),
+    getActivityText(null, 'CREATE_PROJECT', project.title, null),
     date
 );
 

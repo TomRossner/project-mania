@@ -15,6 +15,8 @@ const ActivitySection = () => {
     const [adminEmails, setAdminEmails] = useState([]);
     const [admins, setAdmins] = useState([]);
 
+    const resetAdmins = () => setAdmins([]);
+
     const getAdmins = async () => {
       for (let i = 0; i < adminEmails.length; i++) {
         const adminObj = await getUserByEmail(adminEmails[i]);
@@ -41,59 +43,60 @@ const ActivitySection = () => {
           return;
         }
         if (currentProject?.admins.length) setAdminEmails(currentProject.admins);
+        // if (currentProject)
       }, [currentProject])
 
   return (
     <nav id="right-nav">
-        <div className="right-nav-content">
+      <div className="right-nav-content">
 
-        <div className="project-content">
-            <div className="current-project-info">
-              <h3>{currentProject?.title}</h3>
-              <p>{currentProject?.subtitle}</p>
+      <div className="project-content">
+          <div className="current-project-info">
+            <h3>{currentProject?.title}</h3>
+            <p>{currentProject?.subtitle}</p>
+          </div>
+
+          {admins?.length ? <div className="current-project-admins">
+            <span>BOARD ADMINS</span>
+            <div className="admins">
+              {admins.map(admin => {
+                if (admin.email === user?.email) {
+                  return (
+                    <div className="admin" key={admin.email}>
+                      {admin.img_url || admin.base64_img_data
+                      ? <>
+                          <div className='profile-img-container'>
+                            <img src={admin.base64_img_data ? Buffer.from(admin.base64_img_data) : admin.img_url.toString()} alt="profile"/>
+                          </div>
+                          <IconContainer title={userInfo.online ? 'Online' : 'Offline'} icon={<BsCircleFill className={userInfo.online ? 'icon online-status green' : 'icon online-status red'}/>}/>
+                        </>
+                      : <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>}
+                      <span>{userName} (You)</span>
+                    </div>)
+                } else return (
+                    <div className="admin" key={admin.email}>
+                      {admin.img_url || admin.base64_img_data
+                      ? <>
+                          <div className='profile-img-container'>
+                            <img src={admin.base64_img_data ? Buffer.from(admin.base64_img_data) : admin.img_url.toString()} alt="profile"/>
+                          </div>
+                          <IconContainer title={userInfo.online ? 'Online' : 'Offline'} icon={<BsCircleFill className={userInfo.online ? 'icon online-status green' : 'icon online-status red'}/>}/>
+                        </>
+                      : <>
+                          <BlankProfilePicture/>
+                          <IconContainer title={userInfo.online ? 'Online' : 'Offline'} icon={<BsCircleFill className={userInfo.online ? 'icon online-status green' : 'icon online-status red'}/>}/>
+                        </>}
+                      <span>{admin.first_name} {admin.last_name}</span>
+                    </div>) 
+              })}
             </div>
+          </div> : null}
+      </div>
+      <div className='activity-section'>
+        <Activity/>
+      </div>
 
-            {admins?.length ? <div className="current-project-admins">
-              <span>BOARD ADMINS</span>
-              <div className="admins">
-                {admins.map(admin => {
-                  if (admin.email === user?.email) {
-                    return (
-                      <div className="admin" key={admin.email}>
-                        {admin.img_url || admin.base64_img_data
-                        ? <>
-                            <div className='profile-img-container'>
-                              <img src={admin.base64_img_data ? Buffer.from(admin.base64_img_data) : admin.img_url.toString()} alt="profile"/>
-                            </div>
-                            <IconContainer icon={<BsCircleFill className={userInfo.online ? 'icon online-status green' : 'icon online-status red'}/>}/>
-                          </>
-                        : <IconContainer icon={<BsPersonCircle className='icon profile'/>}/>}
-                        <span>{userName} (You)</span>
-                      </div>)
-                  } else return (
-                      <div className="admin" key={admin.email}>
-                        {admin.img_url || admin.base64_img_data
-                        ? <>
-                            <div className='profile-img-container'>
-                              <img src={admin.base64_img_data ? Buffer.from(admin.base64_img_data) : admin.img_url.toString()} alt="profile"/>
-                            </div>
-                            <IconContainer icon={<BsCircleFill className={userInfo.online ? 'icon online-status green' : 'icon online-status red'}/>}/>
-                          </>
-                        : <>
-                            <BlankProfilePicture/>
-                            <IconContainer icon={<BsCircleFill className={userInfo.online ? 'icon online-status green' : 'icon online-status red'}/>}/>
-                          </>}
-                        <span>{admin.first_name} {admin.last_name}</span>
-                      </div>) 
-                })}
-              </div>
-            </div> : null}
-        </div>
-        <div className='activity-section'>
-          <Activity/>
-        </div>
-
-        </div>
+      </div>
     </nav>
   )
 }

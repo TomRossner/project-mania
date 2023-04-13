@@ -44,8 +44,8 @@
             position: relative;
 
             .total-tasks{
-                width: 25px;
-                height: 25px;
+                width: 20px;
+                height: 20px;
                 border: 1px solid $grey;
                 border-radius: 50%;
                 display: flex;
@@ -53,6 +53,7 @@
                 align-items: center;
                 font-weight: 600;
                 color: $grey;
+                font-size: 0.9rem;
                 font-family: Roboto, sans-serif;
                 margin-right: 0.5rem;
             }
