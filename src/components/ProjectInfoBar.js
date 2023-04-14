@@ -25,6 +25,11 @@ const ProjectInfoBar = () => {
     } = useProject();
     const [inputValue, setInputValue] = useState("");
     const titleRef = useRef();
+    const [editActive, setEditActive] = useState(false);
+
+    const toggleEditActive = () => {
+        setEditActive(!editActive);
+    }
 
     const handleProjectMenuOptions = (opt) => {
         if (!opt || typeof opt !== 'string') return;
@@ -69,9 +74,9 @@ const ProjectInfoBar = () => {
         }
     }
 
-    const toggleEditActive = () => {
-        dispatch(setCurrentProject({...currentProject, edit_active: !currentProject.edit_active}));
-    }
+    // const toggleEditActive = () => {
+    //     dispatch(setCurrentProject({...currentProject, edit_active: !currentProject.edit_active}));
+    // }
 
     useEffect(() => {
         if (currentProject.edit_active) {

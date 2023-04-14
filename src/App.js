@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch} from "react-redux";
-import { fetchBoardsAsync } from "./store/boards/boards.actions";
+import { fetchBoardsAsync, setBoards } from "./store/boards/boards.actions";
 import { setCurrentProject } from "./store/project/project.actions";
 
 // Custom Hooks
@@ -82,8 +82,11 @@ const App = () => {
       dispatch(fetchBoardsAsync(user._id));
     }
 
-    // If user is not authenticated, set current project to null
-    if (!isAuthenticated) dispatch(setCurrentProject(null));
+    // If user is not authenticated, set current project to null and empty projects array
+    if (!isAuthenticated) {
+      dispatch(setCurrentProject(null));
+      dispatch(setBoards([]));
+    }
   }, [isAuthenticated]);
 
   return (

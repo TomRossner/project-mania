@@ -4,20 +4,21 @@ import { BsThreeDotsVertical, BsPlus } from 'react-icons/bs';
 import TaskOverview from './TaskOverview';
 import { stageOptions } from '../utils/stageOptionsMenu';
 import ProgressBar from './common/ProgressBar';
-import { useDispatch } from 'react-redux';
-import { setCurrentProject } from '../store/project/project.actions';
 import OptionsMenu from './common/OptionsMenu';
 import IconContainer from './common/IconContainer';
 import useProject from '../hooks/useProject';
 import { useDrop } from 'react-dnd';
-import { createActivity, getActivityText } from '../utils/defaultProperties';
-import useAuth from '../hooks/useAuth';
 
 const StageOverview = ({stage}) => {
-    const {stage_name, stage_tasks, edit_active, options_menu_open} = stage;
+    const {stage_name, stage_tasks, edit_active} = stage;
     const [inputValue, setInputValue] = useState("");
-    const {currentProject, handleAddTask, saveStageName, handleDeleteStage, toggleStageOptions, handleClearStageTasks} = useProject();
-    const dispatch = useDispatch();
+    const {
+        handleAddTask,
+        saveStageName,
+        handleDeleteStage,
+        handleClearStageTasks,
+        moveTask
+    } = useProject();
     const [{isOver}, drop] = useDrop({
         accept: 'task',
         drop: (task) => handleDropEnd(task),
@@ -28,7 +29,16 @@ const StageOverview = ({stage}) => {
     const [stageTasks, setStageTasks] = useState([]);
     const [tasksDone, setTasksDone] = useState(0);
     const titleRef = useRef();
-    const {userInfo} = useAuth();
+    const [editActive, setEditActive] = useState(edit_active);
+    const [optionsMenuOpen, setOptionsMenuOpen] = useState(false);
+
+    const toggleEditActive = () => {
+        setEditActive(!editActive);
+    }
+
+    const toggleOptionsMenuOpen = () => {
+        setOptionsMenuOpen(!optionsMenuOpen);
+    }
 
     useEffect(() => {
         setStageTasks(stage_tasks);
@@ -36,29 +46,7 @@ const StageOverview = ({stage}) => {
     }, [stage_tasks])
 
     const handleDropEnd = (task) => {
-        const moveTaskActivity = createActivity(
-            {
-                user_name: `${userInfo.first_name} ${userInfo.last_name}`,
-                email: userInfo.email,
-                image: userInfo.base64_img_data || userInfo.img_url
-            },
-            getActivityText(null, 'MOVE_TASK', task.title, stage.stage_name),
-            new Date()
-        );
-
-        if (stage._id !== task.current_stage.id) {
-            return dispatch(setCurrentProject({
-                ...currentProject,
-                stages: [...currentProject.stages.map(s => {
-                    if (s._id === stage._id) {
-                        return {...s, stage_tasks: [...s.stage_tasks, {...task, current_stage: {name: s.stage_name, id: s._id}}]};
-                    } else if (s._id === task.current_stage.id) {
-                        return {...s, stage_tasks: [...s.stage_tasks.filter(t => t._id !== task._id)]};
-                    } else return s;
-                })],
-                activity: [...currentProject.activity, moveTaskActivity]
-            }));
-        } else return;
+        moveTask(task, stage);
     }
 
     const handleInputChange = (e) => {
@@ -66,57 +54,74 @@ const StageOverview = ({stage}) => {
     }
 
     const handleEdit = (stageToUpdate) => {
-        if (!stageToUpdate) return;
-
         setInputValue(stageToUpdate.stage_name);
-        const updatedStage = {...stageToUpdate, edit_active: !stageToUpdate.edit_active, options_menu_open: false}
-        return dispatch(setCurrentProject({...currentProject, stages: [...currentProject.stages.map(stage => {
-            if (stage.edit_active && stage._id !== stageToUpdate._id) {
-                return {...stage, edit_active: false, options_menu_open: false};
-            }
-            else if (!stage.edit_active && stage._id !== stageToUpdate._id) {
-                return {...stage, options_menu_open: false};
-            }
-            else return updatedStage;
-        })]}));
+        toggleEditActive();
+        // const updatedStage = {...stageToUpdate, edit_active: !stageToUpdate.edit_active, options_menu_open: false};
+
+        // return dispatch(setCurrentProject({
+        //     ...currentProject,
+        //     stages: [...currentProject.stages.map(stage => {
+        //         if (stage.edit_active && stage._id !== stageToUpdate._id) {
+        //             return {...stage};
+        //         }
+        //         else if (!stage.edit_active && stage._id !== stageToUpdate._id) {
+        //             return {...stage};
+        //         }
+        //         else return stageToUpdate;
+        //     })]
+        // }));
     }
 
     const handleOption = (stage, opt) => {
+        toggleOptionsMenuOpen();
+
         if (!stage || !opt || typeof opt !== 'string') return;
 
-        if (opt.toLowerCase() === "edit") return handleEdit(stage);
-        if (opt.toLowerCase() === "add task") return handleAddTask(stage);
-        if (opt.toLowerCase() === "delete stage") return handleDeleteStage(stage);
-        if (opt.toLowerCase() === "clear tasks") return handleClearStageTasks(stage);
-        else return console.log(`Unknown/unhandled option "${opt}".`);
+        switch(opt.toLowerCase()) {
+            case "edit":
+                return handleEdit(stage);
+            case "add task":
+                return handleAddTask(stage);
+            case "delete stage":
+                return handleDeleteStage(stage);
+            case "clear tasks":
+                return handleClearStageTasks(stage);
+            default:
+                return console.log(`Unknown/unhandled option "${opt}"`);
+        }
     }
 
+    const handleSave = (inputValue, stage) => {
+        toggleEditActive();
+        saveStageName(inputValue, stage);
+    } 
+
     useEffect(() => {
-        if (edit_active) {
+        if (editActive) {
             titleRef.current.focus();
             titleRef.current.select();
         }
-    }, [edit_active])
+    }, [editActive])
 
   return (
     <div className='stage-container'>
         <div className='stage-title-container'>
-            <OptionsMenu options={stageOptions} boolean={options_menu_open} fn={handleOption} fn_arg={stage}/>
+            <OptionsMenu options={stageOptions} boolean={optionsMenuOpen} fn={handleOption} fn_arg={stage}/>
             <span className='total-tasks'>{stage.stage_tasks.length}</span>
             <div className='input-container'>
                 <input
                     type="text"
                     name='stage_name'
-                    readOnly={!edit_active}
+                    readOnly={!editActive}
                     onChange={(e) => handleInputChange(e, stage)}
                     defaultValue={stage_name}
-                    className={edit_active ? "stage-title-input active" : "stage-title-input"}
+                    className={editActive ? "stage-title-input active" : "stage-title-input"}
                     ref={titleRef}
                 />
-                {edit_active ? <span className='icon-span green' onClick={() => saveStageName(inputValue, stage)}><FiCheck className='icon'/></span> : null}
+                {editActive ? <span className='icon-span green' onClick={() => handleSave(inputValue, stage)}><FiCheck className='icon'/></span> : null}
             </div>
             <div className='buttons-container'>
-                <IconContainer icon={<BsThreeDotsVertical className='icon dots-menu'/>} onClick={() => toggleStageOptions(stage)}/>
+                <IconContainer icon={<BsThreeDotsVertical className='icon dots-menu'/>} onClick={toggleOptionsMenuOpen}/>
                 <IconContainer additionalClass='plus' onClick={() => handleAddTask(stage)} icon={<BsPlus className='icon plus'/>}></IconContainer>
             </div>
         </div>

@@ -10,7 +10,7 @@ import {getUserInfo} from "../httpRequests/http.auth";
 import { selectMembers } from "../store/members/members.selector";
 import useAuth from "./useAuth";
 import { generateId } from "../utils/IdGenerator";
-import { setActivity, setCurrentProject, setProjectMembers } from "../store/project/project.actions";
+import { setActivity, setCurrentProject, setProjectMembers, updateCurrentProject } from "../store/project/project.actions";
 import {selectGlobalStates} from "../store/globalStates/globalStates.selector";
 import { getActivityText, createActivity } from "../utils/defaultProperties";
 import {
@@ -179,7 +179,7 @@ const useProject = () => {
                 email: userInfo.email,
                 image: userInfo.base64_img_data || userInfo.img_url
             },
-            getActivityText(null, 'MOVE_TASK', task.title, stage.stage_name),
+            getActivityText(null, 'MOVE_TASK', task.title, stageToMoveTaskTo.stage_name),
             new Date()
         );
 
@@ -238,12 +238,15 @@ const useProject = () => {
             dispatch(setErrorPopupOpen(true));
             return;
         }
+        
         if (createPopupOpen) closeCreatePopup();
+
         const newStage = {...values, project: project.title};
         const projectToAddStage = boards.find(board => board._id === project._id);
 
         dispatch(setBoards([...boards.filter(board => board._id !== projectToAddStage._id),
             {...projectToAddStage, stages: [...projectToAddStage.stages, newStage]}]));
+
         if (projectToAddStage._id === currentProject._id) {
             dispatch(setCurrentProject({
                 ...currentProject,
@@ -437,8 +440,6 @@ const useProject = () => {
 
     // Remove member from project
     const handleRemoveMemberFromProject = (id) => {
-        if (!id) return;
-
         const memberToRemove = projectMembers.find(member => member._id === id);
 
         if (!memberToRemove) throw new Error("Member not found");
@@ -559,7 +560,8 @@ const useProject = () => {
     useEffect(() => {
         if (!currentProject) return;
         
-        update(currentProject);
+        // update(currentProject);
+        dispatch(updateCurrentProject(currentProject));
     
         // Each time currentProject changes update tasks
         const projectTasks = currentProject?.stages.map(stage => {

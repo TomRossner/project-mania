@@ -16,3 +16,6 @@ export const addActivity = (activity) => {
 export const setActivity = (activities) => {
     return createAction(PROJECT_ACTION_TYPES.SET_ACTIVITY, activities);
 }
+export const updateCurrentProject = (project) => {
+    return createAction(PROJECT_ACTION_TYPES.UPDATE_CURRENT_PROJECT, project);
+}
