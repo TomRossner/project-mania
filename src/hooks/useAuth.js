@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LS_logout, setTokenHeader } from '../httpRequests/http.auth';
 import { fetchUserAsync, logout, setUser } from '../store/auth/auth.actions';
@@ -10,8 +10,6 @@ import { getUser, updateUser } from '../httpRequests/http.auth';
 import axios from 'axios';
 import { setUserInfo } from '../store/userInfo/userInfo.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';
-import { fetchUserInfoAsync } from '../store/userInfo/userInfo.actions';
-import { setError, setErrorPopupOpen } from '../store/globalStates/globalStates.actions';
 import io from "socket.io-client";
 
 const useAuth = () => {
@@ -21,6 +19,12 @@ const useAuth = () => {
     const dispatch = useDispatch();
     const {error} = useSelector(selectAuth);
     const [profileImage, setProfileImage] = useState("");
+    const [emittedConnection, setEmittedConnection] = useState(false);
+
+    //  const socket = io('http://localhost:5000', { 
+    //     transports: ['websocket'], 
+    //     allowEIO3: true
+    // })
 
     // Refresh user
     const refreshUser = () => dispatch(setUser(getUser()));
@@ -29,16 +33,25 @@ const useAuth = () => {
     const login = (credentials) => dispatch(fetchUserAsync(credentials));
 
     // Logout handler
-    const handleLogout = () => {
-        dispatch(setUserInfo({...userInfo, online: false}));
+    const handleLogout = async () => {
+        await updateUserInfo({...userInfo, online: false});
+
         dispatch(logout());
         LS_logout();
     }
 
     // Update user info
-    const updateUserInfo = async () => {
-        const {data} = await updateUser(userInfo);
-        // dispatch(setUserInfo(data));
+    const updateUserInfo = async (user) => {
+        const {data: updatedUserInfo} = await updateUser(user);
+
+        return dispatch(setUserInfo(updatedUserInfo));
+    }
+
+    // Load profile image
+    const loadProfileImage = () => {
+        if (userInfo.base64_img_data || userInfo.img_url) return setProfileImage(Buffer.from(userInfo.base64_img_data));
+        if (!userInfo.base64_img_data && userInfo.img_url) return setProfileImage(userInfo.img_url.toString());
+        else setProfileImage("");
     }
 
 
@@ -55,7 +68,7 @@ const useAuth = () => {
 
         saveJWT(token);
         setTokenHeader();
-        dispatch(setUser(getUser()));
+        refreshUser();
 
         return getUser();
     }
@@ -69,52 +82,10 @@ const useAuth = () => {
         return await axios.post("/auth/sign-up/google", {accessToken, email, displayName, uid, imgUrl: photoURL});
     }
 
+    // Refresh user, in this case try getting the JWT from LocalStorage to connect the user
     useEffect(() => {
-        if (!user || !isAuthenticated) dispatch(setUserInfo(null));
-    }, [user, isAuthenticated]);
-
-    useEffect(() => {
-        if ((user && isAuthenticated && !userInfo)
-        || (user && isAuthenticated && user.email !== userInfo?.email)) {
-            dispatch(fetchUserInfoAsync(user._id || user.user_id));
-        }
-    }, [user, isAuthenticated, userInfo]);
-
-    // const socket = useMemo(() => io('http://localhost:5000', { 
-    //     transports: ['websocket'], 
-    //     allowEIO3: true
-    // }), []);
-
-    // useEffect(() => {
-    //     if (user && isAuthenticated && userInfo) {
-    //         const userName = `${userInfo?.first_name} ${userInfo?.last_name}`;
-    //         // socket.emit('connection', {userName});
-    //     }
-    // }, [user, isAuthenticated, userInfo]);
-
-    // Handle login error
-    useEffect(() => {
-        if (error && !user) {
-            const {response: {data: {error: errorMessage}}} = error;
-            dispatch(setError(errorMessage));
-            dispatch(setErrorPopupOpen(true));
-        }
-    }, [error]);
-
-    // Update user info
-    // useEffect(() => {
-    //     if (!userInfo) return;
-        
-    //     updateUserInfo();
-    // }, [userInfo]); // CAUSES LAG
-
-    // Update profile image
-    useEffect(() => {
-        if (!userInfo) return;
-        if (userInfo.base64_img_data || userInfo.img_url) return setProfileImage(Buffer.from(userInfo.base64_img_data));
-        if (!userInfo.base64_img_data && userInfo.img_url) return setProfileImage(userInfo.img_url.toString());
-        else setProfileImage("");
-    }, [userInfo]);
+        refreshUser();
+    }, []);
 
     return {
         isAuthenticated,
@@ -128,6 +99,8 @@ const useAuth = () => {
         logout: handleLogout,
         googleSignIn: google_signInUser,
         googleSignUp: google_signUpUser,
+        setUserInfo,
+        loadProfileImage
     }
 }
 

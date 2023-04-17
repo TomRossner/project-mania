@@ -10,9 +10,8 @@ import {getUserInfo} from "../httpRequests/http.auth";
 import { selectMembers } from "../store/members/members.selector";
 import useAuth from "./useAuth";
 import { generateId } from "../utils/IdGenerator";
-import { setActivity, setCurrentProject, setProjectMembers, updateCurrentProject } from "../store/project/project.actions";
+import { setActivity, setCurrentProject, setProjectMembers, updateCurrentProjectStart } from "../store/project/project.actions";
 import {selectGlobalStates} from "../store/globalStates/globalStates.selector";
-import { getActivityText, createActivity } from "../utils/defaultProperties";
 import {
     setTasks,
     setNotificationTabOpen,
@@ -37,6 +36,7 @@ import {
     activity_deleteStage,
     activity_deleteTask,
     activity_editStageName,
+    activity_moveTask,
     activity_removeMember
 } from "../utils/activities";
 
@@ -173,16 +173,6 @@ const useProject = () => {
     const moveTask = (task, stageToMoveTaskTo) => {
         if (stageToMoveTaskTo._id === task.current_stage.id) return;
 
-        const moveTaskActivity = createActivity(
-            {
-                user_name: `${userInfo.first_name} ${userInfo.last_name}`,
-                email: userInfo.email,
-                image: userInfo.base64_img_data || userInfo.img_url
-            },
-            getActivityText(null, 'MOVE_TASK', task.title, stageToMoveTaskTo.stage_name),
-            new Date()
-        );
-
         dispatch(setCurrentProject({
             ...currentProject,
             stages: [...currentProject.stages.map(s => {
@@ -198,7 +188,7 @@ const useProject = () => {
 
                 else return s;
             })],
-            activity: [...currentProject.activity, moveTaskActivity]
+            activity: [...currentProject.activity, activity_moveTask(userInfo, task, stageToMoveTaskTo)]
         }));
     }
 
@@ -217,9 +207,24 @@ const useProject = () => {
     // Close move task popup
     const closeMoveTaskPopup = () => dispatch(setMoveTaskPopupOpen(false));
 
+    // Refresh tasks
+    const refreshTasks = () => {
+        
+        // Each time currentProject changes update tasks
+        const projectTasks = currentProject.stages.map(stage => {
+            const {stage_tasks} = stage;
+
+            // Each stage is returned as an array, so projectTasks is an array of arrays
+            return stage_tasks.map(task => task);
+        });
+        
+        return dispatch(setTasks(projectTasks.flatMap(arr => arr)));
+    }
 
 
 
+
+    
     /*****************************
         STAGE RELATED FUNCTIONS
     ******************************/
@@ -381,30 +386,58 @@ const useProject = () => {
     }
 
     // Update project in database
+    // const update = async (project) => {
+    //     try {
+    //         await updateProject(project);
+    //     } catch ({response}) {
+    //         if (
+    //             (response.data.error && response.status === 400)
+    //             ||
+    //             (response.data.error && response.status === 404)
+    //         ) {
+    //             dispatch(setError(response.data.error));
+    //             dispatch(setErrorPopupOpen(true));
+    //         } else {
+    //             dispatch(setError("Failed updating project"));
+    //             dispatch(setErrorPopupOpen(true));
+    //         }
+    //     }
+    // }
+
+    let isUpdatingProject = false;
+
     const update = async (project) => {
-        try {
-            await updateProject(project);
-        } catch ({response}) {
-            if (
-                (response.data.error && response.status === 400)
-                ||
-                (response.data.error && response.status === 404)
-            ) {
-                dispatch(setError(response.data.error));
-                dispatch(setErrorPopupOpen(true));
-            } else {
-                dispatch(setError("Failed updating project"));
-                dispatch(setErrorPopupOpen(true));
+        if (!isUpdatingProject) {
+            isUpdatingProject = true;
+
+            try {
+                await updateProject(project);
+            } catch ({response}) {
+                if (
+                    (response.data.error && response.status === 400)
+                    ||
+                    (response.data.error && response.status === 404)
+                ) {
+                    dispatch(setError(response.data.error));
+                    dispatch(setErrorPopupOpen(true));
+                } else {
+                    dispatch(setError("Failed updating project"));
+                    dispatch(setErrorPopupOpen(true));
+                }
+            } finally {
+                isUpdatingProject = false;
             }
         }
-    }
+    };
 
     // Update project in boards array
-    const updateCurrentProjectInBoardsArray = () => dispatch(setBoards([...boards.map(board => {
-        if (board._id === currentProject._id) {
-            return {...currentProject};
-        } else return board;
-    })]));
+    const updateCurrentProjectInBoardsArray = () => {
+        dispatch(setBoards([...boards.map(board => {
+            if (board._id === currentProject._id) {
+                return {...currentProject};
+            } else return board;
+        })]))
+    }
 
     // Create board handler
     const handleCreateBoard = () => {
@@ -555,49 +588,20 @@ const useProject = () => {
     
     const closeAdminForm = () => dispatch(setAdminPassFormOpen(false));
 
-    
-
-    useEffect(() => {
-        if (!currentProject) return;
-        
-        // update(currentProject);
-        dispatch(updateCurrentProject(currentProject));
-    
-        // Each time currentProject changes update tasks
-        const projectTasks = currentProject?.stages.map(stage => {
-            return stage.stage_tasks.map(task => task);
-        // Each stage is returned as an array, so projectTasks is an array of arrays
-        })
-        dispatch(setTasks(projectTasks.flatMap(arr => arr)));
-
-        // Update boards every time currentProject changes
-        updateCurrentProjectInBoardsArray();
-
-        // Set notifications
-        dispatch(setNotifications([...currentProject.notifications]));
-
-        // Set activity
-        dispatch(setActivity(currentProject.activity));
-
+    const checkIfAdmin = () => {
         // Set admin property to true if the user's email is in admins list
-        if (user.email in currentProject.admins && !userInfo.admin) dispatch(setUserInfo({...userInfo, admin: true}));
-
-        // Set admin property to false if true and user is not in admins list
-        if (!user.email in currentProject.admins && userInfo.admin) {
-            console.log('Not in admins list');
-            dispatch(setUserInfo({...userInfo, admin: false}));
+        if (currentProject.admins.includes(user.email) && userInfo.admin !== true) {
+            dispatch(setUserInfo({...userInfo, admin: true}));
+            return;
+        } else {
+            // Set admin property to false if true and user is not in admins list
+            if (!currentProject.admins.includes(user.email) && userInfo.admin === true) {
+                dispatch(setUserInfo({...userInfo, admin: false}));
+                return;
+            }
         }
 
-    }, [currentProject]);
-
-
-
-    // Reset element every time popup is closed 
-    useEffect(() => {
-        if (!createPopupOpen) dispatch(setElement(""));
-    }, [createPopupOpen]);
-
-
+    }
     
     return {
         currentProject,
@@ -652,7 +656,11 @@ const useProject = () => {
         handleMoveTask,
         handleTaskOptions,
         moveTask,
-        closeMoveTaskPopup
+        closeMoveTaskPopup,
+        checkIfAdmin,
+        updateCurrentProjectInBoardsArray,
+        update,
+        refreshTasks
     }
 }
 

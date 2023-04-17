@@ -1,4 +1,3 @@
-
 export const currentYear = () => new Date().getFullYear();
 
 export const currentHour = () => new Date().getHours();
@@ -66,6 +65,6 @@ export const setDateEnding = date => {
         case 3 || 23:
             return "rd";
         default:
-            return "th"
+            return "th";
     }
 }

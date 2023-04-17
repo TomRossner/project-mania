@@ -3,10 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 import { useDispatch } from 'react-redux';
 import IconContainer from './common/IconContainer';
-import {BsChatLeftText, BsChevronDown, BsPersonCircle} from "react-icons/bs";
+import {BsChatLeftText, BsChevronDown} from "react-icons/bs";
 import {IoSettingsOutline} from "react-icons/io5";
 import {AiOutlineProject} from "react-icons/ai";
-import { setCurrentProject, setProjectMembers } from '../store/project/project.actions';
+import { setCurrentProject } from '../store/project/project.actions';
 import useAuth from '../hooks/useAuth';
 import {MdLogout, MdLogin, MdPerson} from "react-icons/md";
 import {ImUserPlus} from "react-icons/im";
@@ -18,11 +18,10 @@ import BlankProfilePicture from './common/BlankProfilePicture';
 const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {boards, handleToggleProfileTab} = useProject();
+  const {boards} = useProject();
   const {user, isAuthenticated, userInfo, profileImage} = useAuth();
   const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
   const [userName, setUserName] = useState("");
-  // const {profileImage} = useProfileImage();
 
   const handleToggleProjectsDropdown = () => {
     return setProjectsDropdownOpen(!projectsDropdownOpen);
@@ -37,14 +36,7 @@ const NavBar = () => {
     if (userInfo) {
         setUserName(`${userInfo.first_name} ${userInfo.last_name}` || userInfo.name);
     } else setUserName("");
-  }, [userInfo])
-
-  // useEffect(() => {
-  //   if (!userInfo) return;
-  //   if (userInfo.base64_img_data || userInfo.img_url) return setProfileImage(Buffer.from(userInfo.base64_img_data));
-  //   if (!userInfo.base64_img_data && userInfo.img_url) return setProfileImage(userInfo.img_url.toString());
-  //   else setProfileImage("");
-  // }, [userInfo])
+  }, [userInfo]);
 
   return (
     <nav>

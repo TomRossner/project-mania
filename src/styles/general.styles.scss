@@ -107,6 +107,20 @@ body{
         &.green{
             color: $green;
         }
+
+        &.online-status{
+            &.green{
+                color: $green;
+            }
+            
+            &.red{
+                color: $red;
+            }
+
+            &.grey{
+                color: $grey;
+            }
+        }
     }
 
     &.small{

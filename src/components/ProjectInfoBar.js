@@ -27,12 +27,11 @@ const ProjectInfoBar = () => {
     const titleRef = useRef();
     const [editActive, setEditActive] = useState(false);
 
-    const toggleEditActive = () => {
-        setEditActive(!editActive);
-    }
+    const toggleEditActive = () => setEditActive(!editActive);
 
     const handleProjectMenuOptions = (opt) => {
         if (!opt || typeof opt !== 'string') return;
+
         dispatch(setProjectMenuOpen(false));
 
         switch(opt.toLowerCase()) {
@@ -58,11 +57,13 @@ const ProjectInfoBar = () => {
     const handleInputChange = (e) => setInputValue(e.target.value);
 
     const validateProjectName = (input) => {
+        setEditActive(false);
+
         if (!input || !input.length || input.trim() === currentProject.title) {
-            return dispatch(setCurrentProject({...currentProject, title: currentProject.title, edit_active: false}));
+            return dispatch(setCurrentProject({...currentProject, title: currentProject.title}));
         } else {
             // Update project title and set edit_active to false
-            dispatch(setCurrentProject({...currentProject, title: input.trim(), edit_active: false}));
+            dispatch(setCurrentProject({...currentProject, title: input.trim()}));
 
             // Update all tasks. Each task object contains a project property which contains the project name and id
             return dispatch(setTasks([...tasks.map(t => {
@@ -74,21 +75,16 @@ const ProjectInfoBar = () => {
         }
     }
 
-    // const toggleEditActive = () => {
-    //     dispatch(setCurrentProject({...currentProject, edit_active: !currentProject.edit_active}));
-    // }
-
     useEffect(() => {
-        if (currentProject.edit_active) {
+        if (!currentProject) return;
+
+        setInputValue(currentProject.title);
+
+        if (editActive) {
             titleRef.current.select();
             titleRef.current.focus();
         }
-    }, [currentProject])
-
-    useEffect(() => {
-        if (!currentProject) return;
-        setInputValue(currentProject.title);
-    }, [currentProject])
+    }, [currentProject]);
 
   return (
     <>
@@ -101,12 +97,12 @@ const ProjectInfoBar = () => {
                     <input
                         type="text"
                         ref={titleRef}
-                        readOnly={!currentProject.edit_active}
+                        readOnly={!editActive}
                         onChange={handleInputChange}
                         value={inputValue}
-                        className={currentProject.edit_active ? "title-input active" : "title-input"}
+                        className={editActive ? "title-input active" : "title-input"}
                     />
-                    {currentProject.edit_active
+                    {editActive
                     ?   <IconContainer
                             additionalClass="green"
                             id="check"
@@ -119,7 +115,6 @@ const ProjectInfoBar = () => {
         </div>
         <Space/>
         <ProjectMembers/>
-        {/* <span className='icon-span menu' onClick={handleMenuClick}><CgMenuGridO className='icon'/></span> */}
         <IconContainer additionalClass='menu' onClick={handleMenuClick} icon={<CgMenuGridO className='icon'/>}/>
         <div className={projectMenuTabOpen ? "options-menu open" : "options-menu"}>
             {projectMenuOptions.map(opt => <p key={opt} onClick={() => handleProjectMenuOptions(opt)}>{opt}</p>)}

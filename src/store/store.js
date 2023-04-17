@@ -9,10 +9,15 @@ import { rootSaga } from './rootSaga';
 
 //Old way of creating a Redux store
 const sagaMiddleware = createSagaMiddleware();
+
 const middleWares = [thunk, sagaMiddleware];
+
 const composedEnhancers = compose(applyMiddleware(...middleWares));
+
 export const store = createStore(rootReducer, undefined, composedEnhancers);
+
 sagaMiddleware.run(rootSaga);
+
 // New way
 
 // const middleware = [logger];

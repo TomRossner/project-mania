@@ -7,14 +7,15 @@ import {RiImageEditFill, RiEditLine} from "react-icons/ri";
 import UserHeader from './UserHeader';
 import {FiCheck} from "react-icons/fi";
 import { updateUser, updateProfilePicture } from '../httpRequests/http.auth';
-// import useProfileImage from '../hooks/useProfileImage';
+import { useDispatch } from 'react-redux';
+import { fetchUserInfoAsync } from '../store/userInfo/userInfo.actions';
 
 const Profile = () => {
-  const {userInfo, profileImage, setProfileImage} = useAuth();
+  const {user, userInfo, profileImage, setProfileImage} = useAuth();
   const [readOnly, setReadOnly] = useState(true);
   const [header, setHeader] = useState("");
   const [headerModal, setHeaderModal] = useState(true);
-  // const {profileImage, setProfileImage} = useProfileImage();
+  const dispatch = useDispatch();
 
   const toggleReadOnly = () => setReadOnly(!readOnly);
 
@@ -35,6 +36,7 @@ const Profile = () => {
       const base64EncodedFile = reader.result;
       const {data: compressedImg} = await updateProfilePicture({email: userInfo.email, imgData: base64EncodedFile});
       setProfileImage(Buffer.from(compressedImg));
+      dispatch(fetchUserInfoAsync(user._id || user.user_id));
     }
   }
 

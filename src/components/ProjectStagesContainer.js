@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import StageOverview from './StageOverview';
 import useProject from '../hooks/useProject';
 
 const ProjectStagesContainer = () => {
-  const {tasks, currentProject, handleCreate} = useProject();
+  const {tasks, currentProject, handleCreate, refreshTasks} = useProject();
+
+  useEffect(() => {
+    if (!currentProject) return;
+
+    // Refresh tasks
+    refreshTasks();
+    
+  }, [currentProject]);
 
   return (
     <>

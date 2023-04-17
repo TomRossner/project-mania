@@ -9,6 +9,7 @@ const ChatMessage = ({message}) => {
         if (!message) return;
         console.log(message);
     }, [message])
+    
   return (
     <div className='message-container'>
         <IconContainer icon={<VscTriangleLeft className='icon blue'/>}/>

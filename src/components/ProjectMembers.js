@@ -22,12 +22,15 @@ const ProjectMembers = () => {
 
     useEffect(() => {
         dispatch(fetchMembersAsync());
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (!currentProject) return;
+
+        // Set project members
         dispatch(setProjectMembers(currentProject.members));
-    }, [currentProject])
+        
+    }, [currentProject]);
 
   return (
     <>

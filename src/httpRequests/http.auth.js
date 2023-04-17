@@ -22,7 +22,15 @@ export async function loginUser(values) {
 // Register user
 export async function registerUser(values) {
     const {first_name, last_name, email, password} = values; // Excluding confirmedPassword
-    return await axios.post(`/auth/sign-up`, {first_name, last_name, email, password});
+
+    const newUser = {
+        first_name,
+        last_name,
+        email,
+        password
+    };
+
+    return await axios.post(`/auth/sign-up`, {newUser});
 }
 
 // Get user details
@@ -30,9 +38,9 @@ export async function getUserInfo(id) {
     return await axios.get(`/auth/get/${id}`);
 }
 
-// Update user
+// Update user details
 export async function updateUser(user) {
-    return await axios.put('/auth/update', {user});
+    return await axios.put('/auth/update', user);
 }
 
 // Update user's profile image

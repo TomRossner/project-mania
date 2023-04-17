@@ -1,8 +1,10 @@
 import { Suspense, lazy, useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { useDispatch} from "react-redux";
 import { fetchBoardsAsync, setBoards } from "./store/boards/boards.actions";
 import { setCurrentProject } from "./store/project/project.actions";
+import { setUserInfo, fetchUserInfoAsync } from "./store/userInfo/userInfo.actions";
+import { setError, setErrorPopupOpen, setElement } from "./store/globalStates/globalStates.actions";
 
 // Custom Hooks
 import useAuth from "./hooks/useAuth";
@@ -61,24 +63,59 @@ const UserCards = lazy(() => import("./components/UserCards"));
 
 const App = () => {
   const dispatch = useDispatch();
-  const {user, isAuthenticated, refreshUser} = useAuth();
+  const {user, isAuthenticated, userInfo, emittedConnection, error, loadProfileImage} = useAuth();
   const {
     notificationTabOpen,
     handleCreateBoard,
     handleToggleNotificationTab,
     adminFormOpen,
     moveTaskPopupOpen,
-    currentProject
+    currentProject,
+    update,
+    updateCurrentProjectInBoardsArray,
+    checkIfAdmin,
+    createPopupOpen
   } = useProject();
+  const navigate = useNavigate();
 
   const [userCardsActive, setUserCardsActive] = useState(false);
 
-  useEffect(() => {
-    refreshUser();
-  }, [])
+
+
+
+
+  /**********************************
+      PROJECT RELATED SIDE EFFECTS
+  ***********************************/
+
+
 
   useEffect(() => {
-    if (isAuthenticated) {
+      if (!currentProject) return navigate('/projects');
+      
+      // Update project;
+      update(currentProject);
+
+      // Update boards every time currentProject changes
+      updateCurrentProjectInBoardsArray();
+
+  }, [currentProject]);
+
+
+
+  useEffect(() => {
+    if (!userInfo || !currentProject) return;
+
+    // Check if user is an admin
+    checkIfAdmin();
+
+  }, [currentProject, userInfo]);
+
+
+
+  useEffect(() => {
+    if (user && isAuthenticated) {
+      // Fetch user's projects from server/database
       dispatch(fetchBoardsAsync(user._id));
     }
 
@@ -87,7 +124,67 @@ const App = () => {
       dispatch(setCurrentProject(null));
       dispatch(setBoards([]));
     }
-  }, [isAuthenticated]);
+  }, [user, isAuthenticated]);
+
+
+  // Reset element every time popup is closed 
+  useEffect(() => {
+      if (!createPopupOpen) dispatch(setElement(""));
+  }, [createPopupOpen]);
+
+
+
+
+  /********************************
+      USER RELATED SIDE EFFECTS
+  *********************************/
+
+
+
+  useEffect(() => {
+      if (!user || !isAuthenticated) dispatch(setUserInfo(null));
+  }, [user, isAuthenticated]);
+
+
+
+  useEffect(() => {
+      if ((user && isAuthenticated && !userInfo)
+      || (user && isAuthenticated && user.email !== userInfo?.email)) {
+          dispatch(fetchUserInfoAsync(user._id || user.user_id));
+          // runFetchUserInfo();
+      }
+  }, [user, isAuthenticated, userInfo]);
+
+  useEffect(() => {
+      if (!userInfo) return;
+      if (userInfo && !emittedConnection) {
+          const userName = `${userInfo?.first_name} ${userInfo?.last_name}`;
+          // socket.emit('connection', {userName});
+          // setEmittedConnection(true);
+      }
+  }, [userInfo])
+
+  // Handle login error
+  useEffect(() => {
+      if (error && !user) {
+          const {response: {data: {error: errorMessage}}} = error;
+          dispatch(setError(errorMessage));
+          dispatch(setErrorPopupOpen(true));
+      }
+  }, [error]);
+
+
+
+  // Update profile image
+  useEffect(() => {
+      if (!userInfo) return;
+
+      loadProfileImage();
+      
+  }, [userInfo]);
+
+
+
 
   return (
     <Suspense fallback={<Spinner/>}>

@@ -20,16 +20,34 @@ export const fetchUserInfoFailed = (error) => {
     return createAction(USER_INFO_ACTION_TYPES.FETCH_USER_INFO_FAILED, error);
 }
 
+// export const fetchUserInfoAsync = (id) => async (dispatch) => {
+//     dispatch(fetchUserInfoStart());
+
+//     try {
+//         const {data: userInfo} = await getUserInfo(id);
+//         dispatch(fetchUserInfoSuccess(userInfo));
+//     } catch (error) {
+//         dispatch(fetchUserInfoFailed(error));
+//     }
+// }
+
+let isFetchingUserInfo = false;
+
 export const fetchUserInfoAsync = (id) => async (dispatch) => {
+  if (!isFetchingUserInfo) {
+    isFetchingUserInfo = true;
+
     dispatch(fetchUserInfoStart());
 
     try {
-        const {data: userInfo} = await getUserInfo(id);
-        dispatch(fetchUserInfoSuccess(userInfo));
+      const {data: userInfo} = await getUserInfo(id);
+      dispatch(fetchUserInfoSuccess(userInfo));
     } catch (error) {
-        dispatch(fetchUserInfoFailed(error));
+      dispatch(fetchUserInfoFailed(error));
+    } finally {
+      isFetchingUserInfo = false;
     }
+  }
 }
-
 
 // New way @ userInfo.slice.js 

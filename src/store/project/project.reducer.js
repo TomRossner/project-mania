@@ -4,7 +4,9 @@ const INITIAL_STATE = {
     boards: [],
     projectMembers: [],
     currentProject: null,
-    activity: []
+    activity: [],
+    isUpdating: false,
+    error: null
 }
 
 export const projectReducer = (state = INITIAL_STATE, action) => {
@@ -21,8 +23,12 @@ export const projectReducer = (state = INITIAL_STATE, action) => {
             return {...state, activity: payload};
         case PROJECT_ACTION_TYPES.SET_ACTIVITY:
             return {...state, activity: payload};
-        case PROJECT_ACTION_TYPES.UPDATE_CURRENT_PROJECT:
-            return {...state, currentProject: payload};
+        case PROJECT_ACTION_TYPES.UPDATE_CURRENT_PROJECT_START:
+            return {...state, currentProject: payload, isUpdating: true};
+        case PROJECT_ACTION_TYPES.UPDATE_CURRENT_PROJECT_SUCCESS:
+            return {...state, isUpdating: false};
+        case PROJECT_ACTION_TYPES.UPDATE_CURRENT_PROJECT_FAILED:
+            return {...state, isUpdating: false, error: payload};
         default:
             return state;
     }

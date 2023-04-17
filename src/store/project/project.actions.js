@@ -16,6 +16,12 @@ export const addActivity = (activity) => {
 export const setActivity = (activities) => {
     return createAction(PROJECT_ACTION_TYPES.SET_ACTIVITY, activities);
 }
-export const updateCurrentProject = (project) => {
-    return createAction(PROJECT_ACTION_TYPES.UPDATE_CURRENT_PROJECT, project);
+export const updateCurrentProjectStart = (project) => {
+    return createAction(PROJECT_ACTION_TYPES.UPDATE_CURRENT_PROJECT_START, project);
+}
+export const updateCurrentProjectSuccess = () => {
+    return createAction(PROJECT_ACTION_TYPES.UPDATE_CURRENT_PROJECT_SUCCESS);
+}
+export const updateCurrentProjectFailed = (error) => {
+    return createAction(PROJECT_ACTION_TYPES.UPDATE_CURRENT_PROJECT_FAILED, error);
 }

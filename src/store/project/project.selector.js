@@ -7,3 +7,5 @@ export const selectProjectMembers = (state) => state.project.projectMembers;
 export const selectBoards = (state) => state.project.boards;
 
 export const selectActivity = (state) => state.project.activity;
+
+export const selectIsUpdating = (state) => state.project.isUpdating;
