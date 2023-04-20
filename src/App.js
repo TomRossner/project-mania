@@ -5,6 +5,7 @@ import { fetchBoardsAsync, setBoards } from "./store/boards/boards.actions";
 import { setCurrentProject } from "./store/project/project.actions";
 import { setUserInfo, fetchUserInfoAsync } from "./store/userInfo/userInfo.actions";
 import { setError, setErrorPopupOpen, setElement } from "./store/globalStates/globalStates.actions";
+import {socket} from "./utils/socket";
 
 // Custom Hooks
 import useAuth from "./hooks/useAuth";
@@ -63,7 +64,15 @@ const UserCards = lazy(() => import("./components/UserCards"));
 
 const App = () => {
   const dispatch = useDispatch();
-  const {user, isAuthenticated, userInfo, emittedConnection, error, loadProfileImage} = useAuth();
+  const {
+    user,
+    isAuthenticated,
+    userInfo,
+    emittedConnection,
+    error,
+    loadProfileImage,
+    setEmittedConnection
+  } = useAuth();
   const {
     notificationTabOpen,
     handleCreateBoard,
@@ -74,7 +83,7 @@ const App = () => {
     update,
     updateCurrentProjectInBoardsArray,
     checkIfAdmin,
-    createPopupOpen
+    createPopupOpen,
   } = useProject();
   const navigate = useNavigate();
 
@@ -109,7 +118,7 @@ const App = () => {
     // Check if user is an admin
     checkIfAdmin();
 
-  }, [currentProject, userInfo]);
+  }, [currentProject]);
 
 
 
@@ -159,10 +168,10 @@ const App = () => {
       if (!userInfo) return;
       if (userInfo && !emittedConnection) {
           const userName = `${userInfo?.first_name} ${userInfo?.last_name}`;
-          // socket.emit('connection', {userName});
-          // setEmittedConnection(true);
+          socket.emit('connection', {userName});
+          setEmittedConnection(true);
       }
-  }, [userInfo])
+  }, [userInfo]);
 
   // Handle login error
   useEffect(() => {
@@ -180,7 +189,7 @@ const App = () => {
       if (!userInfo) return;
 
       loadProfileImage();
-      
+
   }, [userInfo]);
 
 
@@ -189,32 +198,32 @@ const App = () => {
   return (
     <Suspense fallback={<Spinner/>}>
       <div className='main'>
-      <Create/>
-      <ErrorPopup/>
-      {moveTaskPopupOpen && <MoveTaskPopup/>}
-      {adminFormOpen && <AdminForm/>}
-      <div className="sections-container">
-        <NavBar/>
-        <div className="main-content">
-          {notificationTabOpen ? <NotificationTab/> : null}
-          <TopNav fn={handleCreateBoard} fn2={handleToggleNotificationTab}/>
-          <Routes>
-            <Route path="/" element={<PrivateRoute element={<ProjectManagement/>}/>}/>
-            <Route path="/projects" element={<PrivateRoute element={<Projects/>}/>}/>
-            <Route path="/projects/:id" element={<PrivateRoute element={<ProjectOverview/>}/>}/>
-            <Route path="/projects/:id/notifications" element={<PrivateRoute element={<Notifications/>}/>}/>
-            <Route path="/projects/:id/:stage_id/:task_id" element={<PrivateRoute element={<Task/>}/>}/>
-            <Route path="/profile" element={<PrivateRoute element={<Profile/>}/>}/>
-            <Route path="/logout" element={<PrivateRoute element={<Logout/>}/>}/>
-            <Route path="/sign-in" element={<Login/>}/>
-            <Route path="/sign-up" element={<Register/>}/>
-            <Route path="/users" element={<PrivateRoute element={<Users setUserCardsActive={setUserCardsActive}/>}/>}/>
-          </Routes>
+        <Create/>
+        <ErrorPopup/>
+        {moveTaskPopupOpen && <MoveTaskPopup/>}
+        {adminFormOpen && <AdminForm/>}
+        <div className="sections-container">
+          <NavBar/>
+          <div className="main-content">
+            {notificationTabOpen ? <NotificationTab/> : null}
+            <TopNav fn={handleCreateBoard} fn2={handleToggleNotificationTab}/>
+            <Routes>
+              <Route path="/" element={<PrivateRoute element={<ProjectManagement/>}/>}/>
+              <Route path="/projects" element={<PrivateRoute element={<Projects/>}/>}/>
+              <Route path="/projects/:id" element={<PrivateRoute element={<ProjectOverview/>}/>}/>
+              <Route path="/projects/:id/notifications" element={<PrivateRoute element={<Notifications/>}/>}/>
+              <Route path="/projects/:id/:stage_id/:task_id" element={<PrivateRoute element={<Task/>}/>}/>
+              <Route path="/profile" element={<PrivateRoute element={<Profile/>}/>}/>
+              <Route path="/logout" element={<PrivateRoute element={<Logout/>}/>}/>
+              <Route path="/sign-in" element={<Login/>}/>
+              <Route path="/sign-up" element={<Register/>}/>
+              <Route path="/users" element={<PrivateRoute element={<Users setUserCardsActive={setUserCardsActive}/>}/>}/>
+            </Routes>
+          </div>
+          {!userCardsActive && currentProject && <ActivitySection/>}
+          {userCardsActive && <UserCards/>}
         </div>
-        {!userCardsActive && currentProject && <ActivitySection/>}
-        {userCardsActive && <UserCards/>}
       </div>
-    </div>
     </Suspense>
   )
 }

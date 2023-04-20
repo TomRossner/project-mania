@@ -1,10 +1,16 @@
-export  const colorRandomizer = () => {
-    const max = 255;
+// Generate RGB
+export const generateRGB = () => {
 
-    const red = Math.floor(Math.random() * max);
-    const green = Math.floor(Math.random() * max);
-    const blue = Math.floor(Math.random() * max);
+    const MAX = 255;
+
+    const randomNum = () => Math.floor(Math.random() * MAX);
+
+    const red = randomNum();
+    const green = randomNum();
+    const blue = randomNum();
 
     const rgb = `(${red}, ${green}, ${blue})`;
+    // Output => (1, 2, 3)
+
     return rgb;
 }

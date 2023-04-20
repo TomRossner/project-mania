@@ -2,9 +2,8 @@
 
 .current-board-stages-container{
     display: flex;
-    justify-content: space-around;
     flex-wrap: nowrap;
-    gap: 1rem;
+    gap: 1.5rem;
     flex: 1;
     width: 100%;
     overflow-x: auto;
@@ -12,6 +11,7 @@
 
     .stage-container{
         min-width: 30%;
+        flex: 1;
         overflow: hidden;
         display: flex;
         flex-direction: column;

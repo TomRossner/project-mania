@@ -38,7 +38,10 @@ const TaskOverview = ({task}) => {
 
   return (
     <>
-    <div className={isDragging ? 'listed-task-container drag' : 'listed-task-container'} ref={drag}>
+    <div
+        className={isDragging ? 'listed-task-container drag' : 'listed-task-container'}
+        ref={drag}
+    >
         <div className='listed-task-content'>
             <div className='flex-align space-between'>
                 <LabelContainer priority={priority} additionalClass="no-hover"/>

@@ -74,6 +74,15 @@
                 }
                 
                 &:hover{
+
+                    &.green{
+                        color: $green;
+                        
+                        .icon{
+                            color: $green;
+                        }
+                    }
+                    
                     .icon{
                         color: $blue_hover;
                     }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useAuth from '../hooks/useAuth';
 import Spinner from './common/ButtonSpinner';
 import BlankProfilePicture from "./common/BlankProfilePicture";
@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { fetchUserInfoAsync } from '../store/userInfo/userInfo.actions';
 
 const Profile = () => {
-  const {user, userInfo, profileImage, setProfileImage} = useAuth();
+  const {user, userInfo, profileImage, setProfileImage, loadProfileImage} = useAuth();
   const [readOnly, setReadOnly] = useState(true);
   const [header, setHeader] = useState("");
   const [headerModal, setHeaderModal] = useState(true);
@@ -41,6 +41,14 @@ const Profile = () => {
   }
 
   const closeHeaderModal = () => setHeaderModal(false);
+
+  // Update profile image
+  useEffect(() => {
+    if (!userInfo) return;
+
+    loadProfileImage();
+
+  }, [userInfo]);
 
   return (
     <>

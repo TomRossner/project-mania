@@ -10,7 +10,6 @@ import { getUser, updateUser } from '../httpRequests/http.auth';
 import axios from 'axios';
 import { setUserInfo } from '../store/userInfo/userInfo.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';
-import io from "socket.io-client";
 
 const useAuth = () => {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -20,11 +19,7 @@ const useAuth = () => {
     const {error} = useSelector(selectAuth);
     const [profileImage, setProfileImage] = useState("");
     const [emittedConnection, setEmittedConnection] = useState(false);
-
-    //  const socket = io('http://localhost:5000', { 
-    //     transports: ['websocket'], 
-    //     allowEIO3: true
-    // })
+    const [userName, setUserName] = useState("");
 
     // Refresh user
     const refreshUser = () => dispatch(setUser(getUser()));
@@ -87,12 +82,21 @@ const useAuth = () => {
         refreshUser();
     }, []);
 
+    useEffect(() => {
+        if (userInfo) {
+          setUserName(`${userInfo.first_name} ${userInfo.last_name}`);
+        } else return setUserName("");
+    }, [userInfo]);
+
     return {
         isAuthenticated,
         user,
         userInfo,
         error,
         profileImage,
+        emittedConnection,
+        userName,
+        setEmittedConnection,
         setProfileImage,
         refreshUser,
         login,

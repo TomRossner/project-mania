@@ -4,15 +4,13 @@ import { selectMembers } from '../store/members/members.selector';
 import BackButton from './common/BackButton';
 import SearchBar from './common/SearchBar';
 import { fetchMembersAsync } from '../store/members/members.actions';
-import { useNavigate } from 'react-router-dom';
 import Line from './common/Line';
 import useAuth from '../hooks/useAuth';
 
 const Users = ({setUserCardsActive}) => {
   const members = useSelector(selectMembers);
-  const {user, isAuthenticated} = useAuth();
+  const {user} = useAuth();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Disable userCardsActive @ App.js
@@ -21,14 +19,12 @@ const Users = ({setUserCardsActive}) => {
     // Fetch all users except current user
     dispatch(fetchMembersAsync());
 
-    // If user is not logged in redirect to sign-in page
-    if (!user || !isAuthenticated) navigate("/sign-in");
-  }, [])
+  }, []);
 
   return (
       <>
       <div className='users-container'>
-      <BackButton/>
+        <BackButton/>
         <div className='title'>
           <h1>Users</h1>
           <SearchBar placeholderText={"Search users"}/>

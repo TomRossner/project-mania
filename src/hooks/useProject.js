@@ -1,4 +1,3 @@
-import {useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBoards } from "../store/boards/boards.selector";
 import { selectActivity, selectCurrentProject, selectProjectMembers } from "../store/project/project.selector";
@@ -10,7 +9,7 @@ import {getUserInfo} from "../httpRequests/http.auth";
 import { selectMembers } from "../store/members/members.selector";
 import useAuth from "./useAuth";
 import { generateId } from "../utils/IdGenerator";
-import { setActivity, setCurrentProject, setProjectMembers, updateCurrentProjectStart } from "../store/project/project.actions";
+import { setCurrentProject, setProjectMembers } from "../store/project/project.actions";
 import {selectGlobalStates} from "../store/globalStates/globalStates.selector";
 import {
     setTasks,
@@ -24,7 +23,6 @@ import {
     setErrorPopupOpen,
     setTaskPriority,
     setAdminPassFormOpen,
-    setNotifications,
     setTaskToMove,
     setMoveTaskPopupOpen
 } from "../store/globalStates/globalStates.actions";

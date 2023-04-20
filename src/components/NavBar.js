@@ -19,7 +19,7 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {boards} = useProject();
-  const {user, isAuthenticated, userInfo, profileImage} = useAuth();
+  const {user, isAuthenticated, userInfo, profileImage, loadProfileImage} = useAuth();
   const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
   const [userName, setUserName] = useState("");
 
@@ -36,6 +36,14 @@ const NavBar = () => {
     if (userInfo) {
         setUserName(`${userInfo.first_name} ${userInfo.last_name}` || userInfo.name);
     } else setUserName("");
+  }, [userInfo]);
+
+  // Update profile image
+  useEffect(() => {
+    if (!userInfo) return;
+
+    loadProfileImage();
+
   }, [userInfo]);
 
   return (

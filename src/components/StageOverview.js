@@ -56,20 +56,6 @@ const StageOverview = ({stage}) => {
     const handleEdit = (stageToUpdate) => {
         setInputValue(stageToUpdate.stage_name);
         toggleEditActive();
-        // const updatedStage = {...stageToUpdate, edit_active: !stageToUpdate.edit_active, options_menu_open: false};
-
-        // return dispatch(setCurrentProject({
-        //     ...currentProject,
-        //     stages: [...currentProject.stages.map(stage => {
-        //         if (stage.edit_active && stage._id !== stageToUpdate._id) {
-        //             return {...stage};
-        //         }
-        //         else if (!stage.edit_active && stage._id !== stageToUpdate._id) {
-        //             return {...stage};
-        //         }
-        //         else return stageToUpdate;
-        //     })]
-        // }));
     }
 
     const handleOption = (stage, opt) => {
