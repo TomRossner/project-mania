@@ -1,0 +1,22 @@
+@import './variables';
+
+.contact{
+    padding: 0.5rem 1rem;
+    background-color: $light_grey2;
+    border-radius: 10px;
+    transition: background-color 0.1s;
+    cursor: default;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:hover{
+        background-color: $light_grey;
+    }
+
+    .name-and-last-message{
+        p{
+            color: $grey;
+        }
+    }
+}

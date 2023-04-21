@@ -64,7 +64,7 @@ const NavBar = () => {
               </> : null}
             </div>
             <li><IconContainer icon={<HiUserGroup className='icon'/>}/><Link className='link' to="/users">Browse users</Link></li>
-            <li><IconContainer icon={<BsChatLeftText className='icon small'/>}/><Link className='link'>Messages</Link></li>
+            <li><IconContainer icon={<BsChatLeftText className='icon small'/>}/><Link className='link' to={`/chat/${user?._id}`}>Messages</Link></li>
             <li><IconContainer icon={<IoSettingsOutline className="icon"/>}/><Link className='link'>Settings</Link></li>
         </ul>
         <ul id='left-nav-bottom-ul'>

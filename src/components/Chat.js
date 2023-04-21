@@ -1,49 +1,49 @@
-import React, { useState, useRef } from 'react';
-import {IoMdSend} from "react-icons/io";
-import { useParams } from 'react-router-dom';
-import ChatMessage from './ChatMessage';
-import {generateId} from "../utils/IdGenerator"
+import React, { useEffect, useState } from 'react';
+import ChatInputField from './ChatInputField';
+import IconContainer from './common/IconContainer';
+import { BiMessageAdd } from 'react-icons/bi';
+import SearchBar from './common/SearchBar';
+import Contact from './Contact';
+import { getMembers } from '../httpRequests/http.members';
+import useAuth from '../hooks/useAuth';
 
 const Chat = () => {
-  const {task_id} = useParams();
-  const [inputValue, setInputValue] = useState("");
-  const inputRef = useRef();
-  const [messages, setMessages] = useState([]);
+  const [contacts, setContacts] = useState([]);
+  const {user} = useAuth();
 
-  const handleInputChange = (e) => setInputValue(e.target.value);
-
-  const resetInputValue = () => setInputValue("");
-
-  const handleMessageSubmit = (e) => {
-    e.preventDefault();
-    if (!inputValue) return;
-    console.log("Handling message");
-    const newMessage = {text: inputValue, date_sent: new Date().toDateString(), task: task_id, _id: generateId()};
-    setMessages([...messages, newMessage]);
-    resetInputValue();
+  const loadContacts = async () => {
+    const contacts = await getMembers();
+    setContacts(contacts.filter(c => c._id !== user._id));
   }
 
+  const loadChat = async (id) => {
+    // Load chat
+  }
+
+  useEffect(() => {
+    loadContacts();
+  }, []);
+
   return (
-    <div className='chat-container'>
-        <div className='chat-messages-container'>
-          <div className='chat-messages'>
-            {messages?.map(message => <ChatMessage key={message._id} message={message}/>)}
-          </div>
+    <div className='main-chat-container'>
+      <div className='left'>
+
+        <div className='main-chat-title'>
+          <h1>Messages</h1>
+          <IconContainer icon={<BiMessageAdd className='icon'/>}/>
         </div>
-        <form className='chat-input-container' onSubmit={handleMessageSubmit}>
-          <input
-            type="text"
-            name="chat_input"
-            id="chat_input"
-            onChange={handleInputChange}
-            value={inputValue}
-            placeholder="Type a message..."
-            ref={inputRef}
-          />
-          <button type='submit' className='icon-span' onClick={handleMessageSubmit}>
-            <IoMdSend className='icon'/>
-          </button>
-        </form>
+
+        <SearchBar placeholderText='Search'/>
+
+        <div className='chat-contacts'>
+          {contacts?.map(contact => <Contact contact={contact}/>)}
+        </div>
+
+      </div>
+
+      <div className='right'></div>
+      
+        {/* <ChatInputField/> */}
     </div>
   )
 }

@@ -47,6 +47,8 @@ import "./styles/progress-bar.styles.scss";
 import "./styles/profile.styles.scss";
 import "./styles/user-header.styles.scss";
 import "./styles/clock.styles.scss";
+import "./styles/chat.styles.scss";
+import "./styles/contact.styles.scss";
 
 
 // Lazy-loading components
@@ -61,6 +63,7 @@ const ActivitySection = lazy(() => import("./components/ActivitySection"));
 const TopNav = lazy(() => import("./components/TopNav")); 
 const Users = lazy(() => import("./components/Users")); 
 const UserCards = lazy(() => import("./components/UserCards"));
+const Chat = lazy(() => import("./components/Chat"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -218,6 +221,7 @@ const App = () => {
               <Route path="/sign-in" element={<Login/>}/>
               <Route path="/sign-up" element={<Register/>}/>
               <Route path="/users" element={<PrivateRoute element={<Users setUserCardsActive={setUserCardsActive}/>}/>}/>
+              <Route path="/chat/:id" element={<PrivateRoute element={<Chat/>}/>}/>
             </Routes>
           </div>
           {!userCardsActive && currentProject && <ActivitySection/>}

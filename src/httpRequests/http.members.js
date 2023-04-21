@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // Set Axios base URL
-// axios.defaults.baseURL = 'http://localhost:5000/projectmania';
-axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
+axios.defaults.baseURL = 'http://localhost:5000/projectmania';
+// axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
 
 // Get all members
 export const getMembers = async () => {
