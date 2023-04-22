@@ -36,7 +36,7 @@ const Chat = () => {
         <SearchBar placeholderText='Search'/>
 
         <div className='chat-contacts'>
-          {contacts?.map(contact => <Contact contact={contact}/>)}
+          {contacts?.map(contact => <Contact key={contact._id} contact={contact}/>)}
         </div>
 
       </div>

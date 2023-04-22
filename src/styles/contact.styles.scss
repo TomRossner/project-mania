@@ -1,7 +1,7 @@
 @import './variables';
 
 .contact{
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
     background-color: $light_grey2;
     border-radius: 10px;
     transition: background-color 0.1s;
@@ -14,9 +14,48 @@
         background-color: $light_grey;
     }
 
-    .name-and-last-message{
-        p{
+    .contact-content{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+
+        h3{
+            flex: 1;
+        }
+
+        .last-time-message-sent{
+            width: 32%;
+            font-size: 0.85rem;
+            text-align: right;
             color: $grey;
+
+
+            &.unseen{
+                color: $green;
+            }
+        }
+
+        .last-message{
+            color: $grey;
+            width: 70%;
+            display: block;
+        }
+
+        .unseen-messages-count-container{
+            padding: 0.2rem;
+            border-radius: 50%;
+            width: auto;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-color: $green;
+
+            .unseen-messages-count{
+                color: white;
+                font-size: 0.8rem;
+            }
         }
     }
 }
