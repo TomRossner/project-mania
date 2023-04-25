@@ -4,13 +4,14 @@ import { FiCheck } from "react-icons/fi";
 import { boardProperties } from "../../utils/defaultProperties";
 import Input from '../common/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCreatePopupOpen, setError, setErrorPopupOpen } from '../../store/globalStates/globalStates.actions';
+import { setCreatePopupOpen } from '../../store/globalStates/globalStates.actions';
 import CancelButton from '../common/CancelButton';
 import IconContainer from '../common/IconContainer';
 import useAuth from '../../hooks/useAuth';
 import { selectMembers } from '../../store/members/members.selector';
 import { fetchMembersAsync } from '../../store/members/members.actions';
 import useProject from '../../hooks/useProject';
+import { ERROR_MESSAGES } from '../../utils/errors';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
@@ -22,14 +23,14 @@ const BoardForm = () => {
   const {user} = useAuth();
   const dispatch = useDispatch();
   const [team, setTeam] =  useState([]);
+  const {showError} = useProject();
   //FIX TEAM
 
   const handleAddMember = (e) => {
     const user = members.find(member => member._id === e.target.value);
     if (user) return setTeam([...team, user]);
     else {
-      dispatch(setError("Failed adding user"));
-      dispatch(setErrorPopupOpen(true));
+      showError(ERROR_MESSAGES.ADD_MEMBER_FAILED);
     }
   }
 

@@ -26,6 +26,12 @@
 
     &:hover{
         color: $dark;
+
+        .icon-span{
+            .icon{
+                color: $dark;
+            }
+        }
     }
 }
 
@@ -50,6 +56,14 @@ nav{
 
             .icon{
                 scale: 1.2;
+            }
+
+            &:hover{
+                .icon-span{
+                    .icon{
+                        color: $dark;
+                    }
+                }
             }
         }
 

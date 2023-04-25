@@ -15,7 +15,13 @@ const UserHeader = ({readOnly, setHeader}) => {
 
   return (
     <div className='user-header-container'>
-        <textarea className='user-header' ref={textRef} readOnly={readOnly} onChange={handleHeaderChange} defaultValue={userInfo.header}/>
+        <textarea
+          className='user-header'
+          ref={textRef}
+          readOnly={readOnly}
+          onChange={handleHeaderChange}
+          defaultValue={userInfo.header}
+        />
     </div>
   )
 }

@@ -2,30 +2,33 @@ import React from 'react';
 import ProfilePicture from './common/ProfilePicture';
 import Space from './common/Space';
 import useAuth from '../hooks/useAuth';
-import { getChat, createChat } from '../httpRequests/http.members';
+import useChat from '../hooks/useChat';
+import { useDispatch } from 'react-redux';
+import { setCurrentContact } from '../store/chat/chat.actions';
+import BlankProfilePicture from './common/BlankProfilePicture';
 
 const Contact = ({contact}) => {
-    const {base64_img_data, image_url, first_name, last_name, _id} = contact;
+    const {_id, base64_img_data, img_url, first_name, last_name} = contact;
+    const {loadChat, createNewChat} = useChat();
     const {user} = useAuth();
+    const dispatch = useDispatch();
 
-    const loadChat = async (userId, contactId) => {
-      const chat = await getChat({userId, contactId});
-      console.log(chat);
-    }
-
-    const createNewChat = async (userId, contactId) => {
-      const newChat = await createChat({userId, contactId});
-      console.log(newChat);
+    const handleContactClick = async () => {
+      loadChat({userId: user?._id, contactId: _id});
+      dispatch(setCurrentContact(contact));
     }
 
   return (
     <div
       className='contact'
-      // onClick={() => loadChat(user?._id, contact._id)}
-      onDoubleClick={() => createNewChat(user?._id, contact._id)}
+      onClick={handleContactClick}
+      // onDoubleClick={() => createNewChat(user?._id, contact._id)}
     >
         <div className='contact-image'>
-            <ProfilePicture src={base64_img_data || image_url}/>
+          {base64_img_data || img_url
+            ? <ProfilePicture src={base64_img_data || img_url}/>
+            : <BlankProfilePicture/>
+          }
         </div>
 
         <div className='contact-content'>

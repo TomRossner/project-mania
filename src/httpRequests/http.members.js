@@ -12,7 +12,13 @@ export const getMembers = async () => {
 
 // Get user by email
 export const getUserByEmail = async (email) => {
-    const {data} = await axios.post(`/members`, {email});
+    const {data} = await axios.post(`/members/get/email/${email}`);
+    return data;
+}
+
+// Get user by ID
+export const getUserById = async (id) => {
+    const {data} = await axios.post(`/members/get/id/${id}`);
     return data;
 }
 
@@ -26,7 +32,6 @@ export const sendMessage = async (message, targetUser) => {
 // Get chat
 export const getChat = async (ids) => {
     const {data} = await axios.post('/chats/get', ids);
-    console.log(data);
     return data;
 }
 

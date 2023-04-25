@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useProject from '../../hooks/useProject';
-import { setError, setErrorPopupOpen } from '../../store/globalStates/globalStates.actions';
 import Input from '../common/Input';
 import { setCurrentProject } from '../../store/project/project.actions';
+import { ERROR_MESSAGES } from '../../utils/errors';
 
 const AdminForm = () => {
     const [inputValues, setInputValues] = useState({
@@ -11,7 +11,7 @@ const AdminForm = () => {
         confirm_pass: ""
     });
     const {pass, confirm_pass} = inputValues;
-    const {currentProject, closeAdminForm} = useProject();
+    const {currentProject, closeAdminForm, showError} = useProject();
     const dispatch = useDispatch();
 
     const handleInputChange = (e) => {
@@ -27,8 +27,7 @@ const AdminForm = () => {
         e.preventDefault();
 
         if (confirm_pass !== pass) {
-            dispatch(setError("Pass codes do not match, please try again"));
-            dispatch(setErrorPopupOpen(true));
+            showError(ERROR_MESSAGES.ADMIN_CODES_DO_NOT_MATCH);
             return;
         } else {
             dispatch(setCurrentProject({...currentProject, admin_pass: pass}));

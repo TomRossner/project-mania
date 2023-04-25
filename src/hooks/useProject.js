@@ -37,6 +37,7 @@ import {
     activity_moveTask,
     activity_removeMember
 } from "../utils/activities";
+import { ERROR_MESSAGES } from "../utils/errors";
 
 const useProject = () => {
     const dispatch = useDispatch();
@@ -84,12 +85,13 @@ const useProject = () => {
 
     // Add task
     const addTask = (values, stageToUpdate) => {
-        if (!values || values.type !== 'task') {
-            dispatch(setError("Invalid values. Could not create task"));
-            dispatch(setErrorPopupOpen(true));
+        if (values.type !== 'task') {
+            showError(ERROR_MESSAGES.INVALID_TYPE_TASK);
             return;
         }
+
         if (createPopupOpen) closeCreatePopup();
+
         const newTask = {
             ...values,
             current_stage: {
@@ -236,9 +238,8 @@ const useProject = () => {
 
     // Add stage
     const addStage = (values, project) => {
-        if (!values || values.type !== 'stage') {
-            dispatch(setError("Invalid values. Could not create stage"));
-            dispatch(setErrorPopupOpen(true));
+        if (values.type !== 'stage') {
+            showError(ERROR_MESSAGES.INVALID_TYPE_STAGE);
             return;
         }
         
@@ -340,8 +341,7 @@ const useProject = () => {
     // Add new project
     const addBoard = async (values) => {
         if (values.type !== 'board') {
-            dispatch(setError("Invalid values. Could not create board"));
-            dispatch(setErrorPopupOpen(true));
+            showError(ERROR_MESSAGES.INVALID_TYPE_BOARD);
             return;
         }
 
@@ -377,8 +377,7 @@ const useProject = () => {
             dispatch(setAdminPassFormOpen(true));
         } catch ({response}) {
             if (response.data.error && response.status === 400) {
-                dispatch(setError(response.data.error));
-                dispatch(setErrorPopupOpen(true));
+                showError(response.data.error);
             }
         }
     }
@@ -393,11 +392,11 @@ const useProject = () => {
     //             ||
     //             (response.data.error && response.status === 404)
     //         ) {
-    //             dispatch(setError(response.data.error));
-    //             dispatch(setErrorPopupOpen(true));
+    //             showError(response.data.error);
+    //  
     //         } else {
-    //             dispatch(setError("Failed updating project"));
-    //             dispatch(setErrorPopupOpen(true));
+    //             showError(ERROR_MESSAGES.UPDATE_PROJECT_FAILED);
+    //  
     //         }
     //     }
     // }
@@ -416,11 +415,9 @@ const useProject = () => {
                     ||
                     (response.data.error && response.status === 404)
                 ) {
-                    dispatch(setError(response.data.error));
-                    dispatch(setErrorPopupOpen(true));
+                    showError(response.data.error);
                 } else {
-                    dispatch(setError("Failed updating project"));
-                    dispatch(setErrorPopupOpen(true));
+                    showError(ERROR_MESSAGES.UPDATE_PROJECT_FAILED);
                 }
             } finally {
                 isUpdatingProject = false;
@@ -598,8 +595,12 @@ const useProject = () => {
                 return;
             }
         }
-
     }
+
+    const showError = (errorType) => {
+        dispatch(setError(errorType));
+        dispatch(setErrorPopupOpen(true));
+    } 
     
     return {
         currentProject,
@@ -658,7 +659,8 @@ const useProject = () => {
         checkIfAdmin,
         updateCurrentProjectInBoardsArray,
         update,
-        refreshTasks
+        refreshTasks,
+        showError
     }
 }
 

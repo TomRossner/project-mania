@@ -78,19 +78,21 @@ const NavBar = () => {
                 </>
                 :
                 <>
-                  <Link className="link flex-align" to="/profile"><IconContainer icon={<MdPerson className="icon large"/>}/>My Profile</Link>
+                  <Link className="link flex-align" to="/profile"><IconContainer icon={<MdPerson className="icon large"/>}/>My profile</Link>
                   <Link className="link flex-align" to="/logout"><IconContainer icon={<MdLogout className="icon"/>}/>Logout</Link>
                 </>
               }
               <Space/>
             </div>
           </div>
-          <div className='profile'>
+          {user && isAuthenticated && (
+            <div className='profile'>
               {profileImage
               ? <div className='profile-img-container'><img src={profileImage} alt="profile"/></div>
               : <BlankProfilePicture/>}
               <span>{userName}</span>
-          </div>
+            </div>
+          )}
         </ul>
     </nav>
   )

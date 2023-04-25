@@ -1,0 +1,30 @@
+@import './variables';
+
+.conversation-container{
+    width: 100%;
+    height: 100%;
+    border-radius: 0 20px 20px 0;
+    padding: 0.5rem;
+    color: black;
+    border-bottom: 1px solid $light_grey;
+    display: flex;
+    flex-direction: column;
+
+    .line{
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .conversation{
+        width: 90%;
+        margin: 0 auto;
+        border-radius: 15px;
+        height: 100%;
+        background-color: white;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        justify-content: center;
+    }
+}

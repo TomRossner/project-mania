@@ -30,7 +30,7 @@ const useAuth = () => {
     // Logout handler
     const handleLogout = async () => {
         await updateUserInfo({...userInfo, online: false});
-
+        // socket.emit('disconnect', userInfo);
         dispatch(logout());
         LS_logout();
     }
@@ -44,8 +44,14 @@ const useAuth = () => {
 
     // Load profile image
     const loadProfileImage = () => {
-        if (userInfo.base64_img_data || userInfo.img_url) return setProfileImage(Buffer.from(userInfo.base64_img_data));
-        if (!userInfo.base64_img_data && userInfo.img_url) return setProfileImage(userInfo.img_url.toString());
+        if (userInfo.base64_img_data.length > 0) {
+            return setProfileImage(Buffer.from(userInfo.base64_img_data));
+        }
+
+        if (!userInfo.base64_img_data && userInfo.img_url && userInfo.img_url.length > 0) {
+            return setProfileImage(userInfo.img_url.toString());
+        }
+        
         else setProfileImage("");
     }
 

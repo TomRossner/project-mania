@@ -1,21 +1,22 @@
 import React, { useEffect } from 'react';
-import {VscTriangleLeft} from "react-icons/vsc";
-import IconContainer from "../components/common/IconContainer";
+import useAuth from '../hooks/useAuth';
 
-const ChatMessage = ({message}) => {
-    const {date_sent, text} = message;
+const ChatMessage = ({msg, currentContact}) => {
+    const {sent_at, text, from, to} = msg;
+    // const {userInfo} = useAuth();
 
     useEffect(() => {
-        if (!message) return;
-        console.log(message);
-    }, [message])
+        if (!msg) return;
+        console.log(msg.text);
+    }, [msg])
     
   return (
-    <div className='message-container'>
-        <IconContainer icon={<VscTriangleLeft className='icon blue'/>}/>
+    <>
+      <div className={from === currentContact._id ? 'message-container rightside' : 'message-container'}>
         <p className='message'>{text}</p>
-        <span>Sent {date_sent}</span>
-    </div>
+        <span>Sent {sent_at}</span>
+      </div>
+    </>
   )
 }
 

@@ -4,12 +4,13 @@ import { useDispatch} from "react-redux";
 import { fetchBoardsAsync, setBoards } from "./store/boards/boards.actions";
 import { setCurrentProject } from "./store/project/project.actions";
 import { setUserInfo, fetchUserInfoAsync } from "./store/userInfo/userInfo.actions";
-import { setError, setErrorPopupOpen, setElement } from "./store/globalStates/globalStates.actions";
+import { setElement } from "./store/globalStates/globalStates.actions";
 import {socket} from "./utils/socket";
 
 // Custom Hooks
 import useAuth from "./hooks/useAuth";
 import useProject from "./hooks/useProject";
+import useChat from "./hooks/useChat";
 
 //Components
 import PrivateRoute from "./components/common/PrivateRoute";
@@ -49,6 +50,9 @@ import "./styles/user-header.styles.scss";
 import "./styles/clock.styles.scss";
 import "./styles/chat.styles.scss";
 import "./styles/contact.styles.scss";
+import "./styles/conversation.styles.scss";
+import "./styles/chat-input-field.styles.scss";
+import "./styles/chat-message.styles.scss";
 
 
 // Lazy-loading components
@@ -72,7 +76,7 @@ const App = () => {
     isAuthenticated,
     userInfo,
     emittedConnection,
-    error,
+    error: authError,
     loadProfileImage,
     setEmittedConnection
   } = useAuth();
@@ -87,10 +91,13 @@ const App = () => {
     updateCurrentProjectInBoardsArray,
     checkIfAdmin,
     createPopupOpen,
+    showError
   } = useProject();
   const navigate = useNavigate();
 
   const [userCardsActive, setUserCardsActive] = useState(false);
+
+  const {error: chatError} = useChat();
 
 
 
@@ -154,7 +161,9 @@ const App = () => {
 
 
   useEffect(() => {
-      if (!user || !isAuthenticated) dispatch(setUserInfo(null));
+      if (!user || !isAuthenticated) {
+        dispatch(setUserInfo(null));
+      }
   }, [user, isAuthenticated]);
 
 
@@ -163,27 +172,34 @@ const App = () => {
       if ((user && isAuthenticated && !userInfo)
       || (user && isAuthenticated && user.email !== userInfo?.email)) {
           dispatch(fetchUserInfoAsync(user._id || user.user_id));
-          // runFetchUserInfo();
+      }
+
+      if ((!user || !isAuthenticated) && userInfo) {
+        dispatch(setUserInfo(null));
       }
   }, [user, isAuthenticated, userInfo]);
 
+
+
   useEffect(() => {
-      if (!userInfo) return;
+      if (!userInfo) return setEmittedConnection(false);
+
       if (userInfo && !emittedConnection) {
           const userName = `${userInfo?.first_name} ${userInfo?.last_name}`;
-          socket.emit('connection', {userName});
+          socket.emit('connection', {userName, userId: user._id});
           setEmittedConnection(true);
       }
   }, [userInfo]);
 
+
+  
   // Handle login error
   useEffect(() => {
-      if (error && !user) {
-          const {response: {data: {error: errorMessage}}} = error;
-          dispatch(setError(errorMessage));
-          dispatch(setErrorPopupOpen(true));
+      if ((authError || chatError) && !user) {
+          const {response: {data: {error: errorMessage}}} = authError || chatError;
+          showError(errorMessage);
       }
-  }, [error]);
+  }, [authError, chatError]);
 
 
 
@@ -209,7 +225,7 @@ const App = () => {
           <NavBar/>
           <div className="main-content">
             {notificationTabOpen ? <NotificationTab/> : null}
-            <TopNav fn={handleCreateBoard} fn2={handleToggleNotificationTab}/>
+            <TopNav handleCreateBoard={handleCreateBoard} handleToggleNotificationTab={handleToggleNotificationTab}/>
             <Routes>
               <Route path="/" element={<PrivateRoute element={<ProjectManagement/>}/>}/>
               <Route path="/projects" element={<PrivateRoute element={<Projects/>}/>}/>

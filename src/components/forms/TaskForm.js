@@ -6,14 +6,25 @@ import Input from "../common/Input";
 import IconContainer from "../common/IconContainer";
 import { priorities } from '../../utils/labels';
 import { useDispatch } from 'react-redux';
-import { setError, setTaskPriority, setErrorPopupOpen } from '../../store/globalStates/globalStates.actions';
+import { setTaskPriority } from '../../store/globalStates/globalStates.actions';
 import CancelButton from '../common/CancelButton';
 import LabelContainer from '../common/LabelContainer';
 import useProject from '../../hooks/useProject';
+import { ERROR_MESSAGES } from '../../utils/errors';
 
 const TaskForm = () => {
     const [readOnly, setReadOnly] = useState(true);
-    const {element, stage: selectedStage, taskPriority, currentProject, closeCreatePopup, addTask, handleSelectStage, handleSetPriority} = useProject();
+    const {
+      element,
+      stage: selectedStage,
+      taskPriority,
+      currentProject,
+      closeCreatePopup,
+      addTask,
+      handleSelectStage,
+      handleSetPriority,
+      showError
+    } = useProject();
     const [inputValues, setInputValues] = useState({...defaultTaskProperties, type: element});
     const {title, description} = inputValues;
     const FormTitleRef = useRef(null);
@@ -21,10 +32,12 @@ const TaskForm = () => {
 
     const handleFormSubmit = (e) => {
       e.preventDefault();
+
       closeCreatePopup();
+      
       if (!selectedStage) {
-        dispatch(setError("Couldn't create task. Please choose in which stage you would like to add your task to."));
-        return dispatch(setErrorPopupOpen(true));
+        showError(ERROR_MESSAGES.CHOOSE_STAGE_TO_ADD_TASK);
+        return;
       } else {
         addTask(inputValues, selectedStage);
       }

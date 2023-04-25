@@ -1,28 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import ChatInputField from './ChatInputField';
 import IconContainer from './common/IconContainer';
 import { BiMessageAdd } from 'react-icons/bi';
 import SearchBar from './common/SearchBar';
 import Contact from './Contact';
-import { getMembers } from '../httpRequests/http.members';
+import useChat from '../hooks/useChat';
+import Conversation from './Conversation';
 import useAuth from '../hooks/useAuth';
 
 const Chat = () => {
-  const [contacts, setContacts] = useState([]);
+  const {contacts, loadContacts} = useChat();
   const {user} = useAuth();
 
-  const loadContacts = async () => {
-    const contacts = await getMembers();
-    setContacts(contacts.filter(c => c._id !== user._id));
-  }
-
-  const loadChat = async (id) => {
-    // Load chat
-  }
-
   useEffect(() => {
+    if (!user) return;
+
     loadContacts();
-  }, []);
+}, []);
 
   return (
     <div className='main-chat-container'>
@@ -36,14 +30,16 @@ const Chat = () => {
         <SearchBar placeholderText='Search'/>
 
         <div className='chat-contacts'>
-          {contacts?.map(contact => <Contact key={contact._id} contact={contact}/>)}
+          {contacts?.map(c => <Contact key={c._id} contact={c}/>)}
         </div>
 
       </div>
 
-      <div className='right'></div>
+      <div className='right'>
+        <Conversation/>
+        <ChatInputField/>
+      </div>
       
-        {/* <ChatInputField/> */}
     </div>
   )
 }

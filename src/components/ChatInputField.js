@@ -1,13 +1,17 @@
 import React, { useRef, useState } from 'react';
 import { IoMdSend } from 'react-icons/io';
-import { generateId } from '../utils/IdGenerator';
 import useAuth from '../hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { selectCurrentContact } from '../store/chat/chat.selectors';
+import useChat from '../hooks/useChat';
+import { socket } from '../utils/socket';
 
 const ChatInputField = () => {
     const [inputValue, setInputValue] = useState("");
     const {user} = useAuth()
     const inputRef = useRef();
-    const [messages, setMessages] = useState([]);
+    const currentContact = useSelector(selectCurrentContact);
+    const {currentChat, handleSendMessage} = useChat();
   
     const handleInputChange = (e) => setInputValue(e.target.value);
   
@@ -23,31 +27,32 @@ const ChatInputField = () => {
         const newMessage = {
             text: inputValue,
             sent_at: new Date().toDateString(),
-            _id: generateId(),
-            from: user._id
+            from: user._id,
+            to: currentContact._id
         };
 
-        setMessages([...messages, newMessage]);
+        // socket.emit('message', {...newMessage, chatId: currentChat._id, target_socket_id: currentContact.socket_id});
+        handleSendMessage(newMessage);
 
         resetInputValue();
     }
 
   return (
-    <form className='chat-input-container' onSubmit={handleMessageSubmit}>
+    <form id='chat-input-container' onSubmit={handleMessageSubmit}>
         <input
-        type="text"
-        name="chat_input"
-        id="chat_input"
-        onChange={handleInputChange}
-        value={inputValue}
-        placeholder="Type a message..."
-        ref={inputRef}
+            type="text"
+            name="chat_input"
+            id="chat_input"
+            onChange={handleInputChange}
+            value={inputValue}
+            placeholder="Type a message..."
+            ref={inputRef}
         />
         <button type='submit' className='icon-span' onClick={handleMessageSubmit}>
-            <IoMdSend className='icon'/>
+            <IoMdSend className='icon large'/>
         </button>
     </form>
   )
 }
 
-export default ChatInputField
+export default ChatInputField;

@@ -6,6 +6,7 @@ import useAuth from '../hooks/useAuth';
 import useProject from '../hooks/useProject';
 import { BsCircleFill } from 'react-icons/bs';
 import { getUserByEmail } from '../httpRequests/http.members';
+import { generateKey } from '../utils/keyGenerator';
 
 const ProjectAdmins = () => {
     const {userInfo, user, userName} = useAuth();
@@ -69,7 +70,7 @@ const ProjectAdmins = () => {
             {admins.length ? admins.map(admin => {
                 if (admin.email === user?.email) {
                     return (
-                        <div className="admin" key={admin.email}>
+                        <div className="admin" key={generateKey()}>
                             {admin.img_url || admin.base64_img_data
                             ? <>
                                 <ProfilePicture src={checkProfileURL(userInfo)}/>
@@ -80,7 +81,7 @@ const ProjectAdmins = () => {
                         </div>
                     )
                 } else return (
-                    <div className="admin" key={admin.email}>
+                    <div className="admin" key={generateKey()}>
                         {admin.img_url || admin.base64_img_data
                         ? <>
                             <ProfilePicture src={checkProfileURL(admin)}/>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import IconContainer from './common/IconContainer';
 import { CgMenuGridO } from 'react-icons/cg';
 import ProjectMembers from './ProjectMembers';
-import { projectMenuOptions } from "../utils/projectMenuOptions";
+import { projectMenuOptions, projectMenuOptions_admin } from "../utils/projectMenuOptions";
 import { useDispatch } from 'react-redux';
 import { setProjectMenuOpen, setTasks } from '../store/globalStates/globalStates.actions';
 import { setCurrentProject } from '../store/project/project.actions';
@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import useProject from '../hooks/useProject';
 import {FiCheck} from "react-icons/fi";
 import Space from "./common/Space";
+import useAuth from '../hooks/useAuth';
 
 const ProjectInfoBar = () => {
     const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const ProjectInfoBar = () => {
     const [inputValue, setInputValue] = useState("");
     const titleRef = useRef();
     const [editActive, setEditActive] = useState(false);
+    const {userInfo} = useAuth();
 
     const toggleEditActive = () => setEditActive(!editActive);
 
@@ -115,9 +117,16 @@ const ProjectInfoBar = () => {
         </div>
         <Space/>
         <ProjectMembers/>
-        <IconContainer additionalClass='menu' onClick={handleMenuClick} icon={<CgMenuGridO className='icon'/>}/>
+        <IconContainer
+            additionalClass='menu'
+            onClick={handleMenuClick}
+            icon={<CgMenuGridO
+            className='icon'/>}
+        />
         <div className={projectMenuTabOpen ? "options-menu open" : "options-menu"}>
-            {projectMenuOptions.map(opt => <p key={opt} onClick={() => handleProjectMenuOptions(opt)}>{opt}</p>)}
+            {userInfo.admin === true
+            ? projectMenuOptions_admin.map(opt => <p key={opt} onClick={() => handleProjectMenuOptions(opt)}>{opt}</p>)
+            : projectMenuOptions.map(opt => <p key={opt} onClick={() => handleProjectMenuOptions(opt)}>{opt}</p>)}
         </div>
     </div>
     </>

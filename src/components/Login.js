@@ -6,10 +6,11 @@ import {BsShieldCheck} from "react-icons/bs";
 import {FcGoogle} from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/auth/auth.actions";
-import { setError, setErrorPopupOpen } from "../store/globalStates/globalStates.actions";
 import useAuth from "../hooks/useAuth";
 import { selectAuth } from "../store/auth/auth.selector";
 import ButtonSpinner from "./common/ButtonSpinner";
+import { ERROR_MESSAGES } from "../utils/errors";
+import useProject from "../hooks/useProject";
 
 const defaultLoginFormValues = {
     email: "",
@@ -23,13 +24,13 @@ const Login = () => {
     const dispatch = useDispatch();
     const {login, googleSignIn, user, isAuthenticated} = useAuth();
     const {isLoading} = useSelector(selectAuth);
+    const {showError} = useProject();
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
         if (!email || !password) {
-            dispatch(setError("Please provide an email and a password"));
-            dispatch(setErrorPopupOpen(true));
+            showError(ERROR_MESSAGES.MISSING_EMAIL_OR_PASSWORD);
             return;
         }
         

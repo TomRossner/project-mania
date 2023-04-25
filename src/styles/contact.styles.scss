@@ -21,11 +21,12 @@
 
         h3{
             flex: 1;
+            font-size: 1rem;
         }
 
         .last-time-message-sent{
             width: 32%;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             text-align: right;
             color: $grey;
 
@@ -42,10 +43,9 @@
         }
 
         .unseen-messages-count-container{
-            padding: 0.2rem;
+            padding: 0.1rem 0.2rem;
             border-radius: 50%;
-            width: auto;
-            height: auto;
+            aspect-ratio: 1 / 1;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -54,7 +54,7 @@
 
             .unseen-messages-count{
                 color: white;
-                font-size: 0.8rem;
+                font-size: 0.6rem;
             }
         }
     }

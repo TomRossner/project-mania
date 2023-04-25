@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import BackButton from './common/BackButton';
 import { registerUser } from '../httpRequests/http.auth';
 import Input from './common/Input';
-import { useDispatch } from 'react-redux';
-import { setError, setErrorPopupOpen } from '../store/globalStates/globalStates.actions';
 import {FcGoogle} from "react-icons/fc";
 import useAuth from '../hooks/useAuth';
+import { PATTERN_TYPES, checkPattern } from '../utils/regex';
+import { ERROR_MESSAGES } from '../utils/errors';
+import useProject from '../hooks/useProject';
 
 const defaultRegistrationFormValues = {
     first_name: "",
@@ -20,25 +21,70 @@ const Register = () => {
     const [formValues, setFormValues] = useState(defaultRegistrationFormValues);
     const {first_name, last_name, email, password, confirm_password} = formValues;
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const {googleSignUp} = useAuth();
+    const {showError} = useProject();
+
+    const trimValues = (values) => {
+        const trimmedValues = Object.values(values).map(val => val.trim());
+        
+        const entries = Object.entries(values).map(([key, value], index) => {
+            return [key, trimmedValues[index]];
+        });
+
+        const trimmedFormValues = Object.fromEntries(entries);
+
+        return trimmedFormValues;
+    }
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        if (formValues.confirm_password !== formValues.password) {
-            dispatch(setError("Passwords don't match"));
-            dispatch(setErrorPopupOpen(true));
+
+        // Check if one of the field is empty
+        const someValueIsEmpty = Object.values(formValues).some(value => !value);
+
+        if (someValueIsEmpty) {
+            showError(ERROR_MESSAGES.FORM_FIELD_EMPTY);
+            return;
+        }
+
+        // Check password against confirmed_password
+        if (confirm_password !== password) {
+            showError(ERROR_MESSAGES.PASSWORDS_DO_NOT_MATCH);
+            return;
+        }
+
+
+        // Validate inputs
+
+        // Check password
+        if (!checkPattern(PATTERN_TYPES.PASSWORD, password)) {
+            showError(ERROR_MESSAGES.INVALID_PASSWORD_FORMAT);
             return;
         }
         
+        // Check email
+        if (!checkPattern(PATTERN_TYPES.EMAIL, email)) {
+            showError(ERROR_MESSAGES.INVALID_EMAIL_FORMAT);
+            return;
+        }
+
+        // Check first_name and last_name
+        if (!checkPattern(PATTERN_TYPES.NAME, first_name.trim()) || !checkPattern(PATTERN_TYPES.NAME, last_name.trim())) {
+            showError(ERROR_MESSAGES.INVALID_NAME_FORMAT);
+            return;
+        }
+
+        // Trim values
+        const values = trimValues(formValues);
+
+        // Proceed to registration
         try {
-            await registerUser(formValues);
+            await registerUser(values);
             resetFormValues();
             navigate('/sign-in');
         } catch ({response}) {
             if (response.data.error && response.status === 400) {
-                dispatch(setError(response.data.error));
-                dispatch(setErrorPopupOpen(true));
+                showError(response.data.error);
             }
         }
     }
@@ -52,15 +98,14 @@ const Register = () => {
     const handleGoogleSignUp = async () => {
         try {
             await googleSignUp();
+            navigate('/sign-in');
         } catch ({response}) {
             if (response.data.error && response.status === 400) {
                 if (response.data.error === 'User already registered') {
-                    dispatch(setError(`${response.data.error}. You may log in using your Google account.`));
-                    dispatch(setErrorPopupOpen(true));
+                    showError(`${response.data.error}. You may log in using your Google account.`);
                     return;
                 } else {
-                    dispatch(setError(response.data.error));
-                    dispatch(setErrorPopupOpen(true));
+                    showError(response.data.error);
                 }
             }
         }
