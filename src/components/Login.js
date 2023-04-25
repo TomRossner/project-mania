@@ -90,7 +90,7 @@ const Login = () => {
                     </button>
                     <p>OR</p>
                     <button type="button" className="btn form white" onClick={handleGoogleSignIn}>
-                        <FcGoogle className="icon"/>Sign in with Google
+                        <FcGoogle className="icon"/>Continue with Google
                     </button>
                 </div>
             </div>
