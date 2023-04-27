@@ -2,12 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FiCheck } from 'react-icons/fi';
 import { BsThreeDotsVertical, BsPlus } from 'react-icons/bs';
 import TaskOverview from './TaskOverview';
-import { stageOptions } from '../utils/stageOptionsMenu';
+import { stageOptions, stageOptions_admin } from '../utils/stageOptionsMenu';
 import ProgressBar from './common/ProgressBar';
 import OptionsMenu from './common/OptionsMenu';
 import IconContainer from './common/IconContainer';
 import useProject from '../hooks/useProject';
 import { useDrop } from 'react-dnd';
+import useAuth from '../hooks/useAuth';
 
 const StageOverview = ({stage}) => {
     const {stage_name, stage_tasks, edit_active} = stage;
@@ -31,6 +32,7 @@ const StageOverview = ({stage}) => {
     const titleRef = useRef();
     const [editActive, setEditActive] = useState(edit_active);
     const [optionsMenuOpen, setOptionsMenuOpen] = useState(false);
+    const {userInfo} = useAuth();
 
     const toggleEditActive = () => {
         setEditActive(!editActive);
@@ -92,7 +94,12 @@ const StageOverview = ({stage}) => {
   return (
     <div className='stage-container'>
         <div className='stage-title-container'>
-            <OptionsMenu options={stageOptions} boolean={optionsMenuOpen} fn={handleOption} fn_arg={stage}/>
+            <OptionsMenu
+                options={userInfo?.admin === true ? stageOptions_admin : stageOptions}
+                boolean={optionsMenuOpen}
+                fn={handleOption}
+                fn_arg={stage}
+            />
             <span className='total-tasks'>{stage.stage_tasks.length}</span>
             <div className='input-container'>
                 <input

@@ -1,6 +1,10 @@
 export const stageOptions = [
     "Add task",
     "Edit",
-    "Delete stage",
-    "Clear tasks",
 ];
+
+export const stageOptions_admin = [
+    ...stageOptions,
+    "Clear tasks",
+    "Delete stage",
+]

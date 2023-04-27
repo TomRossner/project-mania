@@ -7,7 +7,13 @@ import StageForm from './forms/StageForm';
 import TaskForm from './forms/TaskForm';
 
 const Create = () => {
-    const {createPopupOpen, element: selectedElement, currentProject, closeCreatePopup, handleElementClick} = useProject();
+    const {
+        createPopupOpen,
+        element: selectedElement,
+        currentProject,
+        closeCreatePopup,
+        handleElementClick
+    } = useProject();
 
   return (
     <>

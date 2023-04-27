@@ -42,6 +42,16 @@ export async function updateUser(user) {
     return await axios.put('/auth/update', user);
 }
 
+// Check password
+export const checkPassword = async (id, pw) => {
+    return await axios.post('/auth/check-pw', {id, pw});
+}
+
+// Update password
+export const updateUserPW = async (id, newPW) => {
+    return await axios.post("/auth/update-pw", {id, newPW});
+}
+
 // Update user's profile image
 export async function updateProfilePicture(values) {
     return await axios.post('/auth/update-profile-picture', values);

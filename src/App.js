@@ -186,7 +186,7 @@ const App = () => {
 
       if (userInfo && !emittedConnection) {
           const userName = `${userInfo?.first_name} ${userInfo?.last_name}`;
-          socket.emit('connection', {userName, userId: user._id});
+          socket.emit('connection', {userName, userId: userInfo._id});
           setEmittedConnection(true);
       }
   }, [userInfo]);
