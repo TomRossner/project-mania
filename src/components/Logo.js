@@ -11,7 +11,7 @@ const Logo = () => {
   return (
     <div className='logo-container' onClick={handleLogoClick}>
         <IconContainer icon={<AiFillProject className='icon logo'/>}/>
-        <p>ProjectMania</p>
+        <p>Project Mania</p>
     </div>
   )
 }

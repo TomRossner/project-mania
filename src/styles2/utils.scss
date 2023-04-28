@@ -1,0 +1,199 @@
+@import "./variables";
+
+// Utility styles
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+*.dark{
+    color: $light;
+    background-color: $dark;
+}
+
+body{
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#root{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &> .spinner-container{
+        align-self: center;
+        justify-self: center;
+    }
+}
+
+@keyframes fadeIn {
+    0%{
+        scale: 0.5;
+        opacity: 0;
+    }
+    100%{
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+.main{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+
+    &.dark{
+        background-color: $dark;
+    }
+
+    .sections-container{
+        display: flex;
+        width: 100%;
+        height: 95vh;
+        padding-inline: 0.5rem;
+    }
+
+    .main-content{
+        flex: 1;
+        background-color: $light_grey2;
+        border-radius: 20px;
+        padding: 0.5rem 1.5rem;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow-x: hidden;
+    }
+}
+
+.flex1{
+    flex: 1;
+}
+
+.buttons-container{
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $light_grey;
+    border-radius: 5px;
+    padding: 0.5em;
+    font-size: 1em;
+    gap: 0.5em;
+    background-color: white;
+    width: fit-content;
+    position: relative;
+    transition: background-color 0.1s;
+    cursor: pointer;
+
+    &:hover{
+        background-color: $light;
+    }
+
+    .blue{
+        color: $light;
+        background-color: $blue;
+
+        &:hover{
+            background-color: $blue_hover;
+        }
+    }
+
+    .white{
+        color: $blue;
+        background-color: white;
+        border: 1px solid $light_grey;
+
+        &:hover{
+            background-color: $light;
+        }
+    }
+
+    &:active{
+        outline: 3px solid $light_blue;
+        outline-offset: 2px;
+    }
+
+    &.form{
+        color: $light;
+        background-color: $blue;
+
+        &:hover{
+            background-color: $blue_hover;
+        }
+    }
+
+    &.cancel{
+        color: $light;
+        background-color: $grey;
+
+        &:hover{
+            background-color: $grey_hover;
+            color: white;
+        }
+    }
+}
+
+.link{
+    text-decoration: none;
+    color: $grey;
+    transition: color 0.1s;
+
+    &:hover{
+        color: $dark;
+    }
+}
+
+hr.line{
+    border: 1px solid $light_grey;
+    margin: 0 auto 2rem auto;
+}
+
+.background-blur{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 100;
+
+    /* From https://css.glass */
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    &.active{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.flex-align{
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.space-between{
+    justify-content: space-between;
+}

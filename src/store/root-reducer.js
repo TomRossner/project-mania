@@ -6,6 +6,7 @@ import { membersReducer } from "./members/members.reducer";
 import { projectReducer } from "./project/project.reducer";
 import { userInfoReducer } from "./userInfo/userInfo.reducer";
 import { chatReducer } from './chat/chat.reducer';
+import { themeReducer } from "./theme/theme.reducer";
 
 export const rootReducer = combineReducers({
     auth: authReducer,
@@ -14,5 +15,6 @@ export const rootReducer = combineReducers({
     boards: boardsReducer,
     members: membersReducer,
     globalStates: globalStatesReducer,
-    chat: chatReducer
+    chat: chatReducer,
+    theme: themeReducer,
 })

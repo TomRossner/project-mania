@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Line = () => {
+const Line = ({width}) => {
   return (
-    <hr className='line'/>
+    <hr className={`line ${width ? width : null}`}/>
   )
 }
 

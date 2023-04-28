@@ -1,0 +1,30 @@
+@import './variables';
+
+.logo-container{
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+    p{
+        font-size: 1.5rem;
+        font-weight: 900;
+    }
+    
+    .icon.logo{
+        font-size: 2.2rem;
+        color: $blue;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .logo-container{
+        p{
+            font-size: 1.1rem;
+        }
+
+        .icon.logo{
+            font-size: 1.8rem;
+        }
+    }
+}

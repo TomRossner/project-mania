@@ -22,10 +22,14 @@ const NavBar = () => {
   const {user, isAuthenticated, userInfo, profileImage, loadProfileImage} = useAuth();
   const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
   const [userName, setUserName] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleToggleProjectsDropdown = () => {
     return setProjectsDropdownOpen(!projectsDropdownOpen);
-  }  
+  }
+
+  const toggleIsOpen = () => setIsOpen(!isOpen);
 
   const handleClick = (board) => {
     dispatch(setCurrentProject(board));
@@ -46,8 +50,31 @@ const NavBar = () => {
 
   }, [userInfo]);
 
+  // Handle Screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+  
+    window.addEventListener('resize', handleResize);
+  
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
-    <nav>
+    <>
+    {isMobile ? (
+      <nav className={isOpen ? 'mobile open' : 'mobile'}>
+        
+      </nav>
+    ) : (
+      <nav>
         <Logo/>
         <ul className='flex1'>
             <div className='li-expand'>
@@ -64,7 +91,7 @@ const NavBar = () => {
               </> : null}
             </div>
             <li><IconContainer icon={<HiUserGroup className='icon'/>}/><Link className='link' to="/users">Browse users</Link></li>
-            <li><IconContainer icon={<BsChatLeftText className='icon small'/>}/><Link className='link' to={`/chat/${user?._id}`}>Messages</Link></li>
+            <li><IconContainer icon={<BsChatLeftText className='icon small'/>}/><Link className='link' to={`/chat/${user?._id}`}>Chat</Link></li>
             <li><IconContainer icon={<IoSettingsOutline className="icon"/>}/><Link className='link'>Settings</Link></li>
         </ul>
         <ul id='left-nav-bottom-ul'>
@@ -94,7 +121,11 @@ const NavBar = () => {
             </div>
           )}
         </ul>
-    </nav>
+      </nav>
+    )
+  }
+    </>
+    
   )
 }
 
