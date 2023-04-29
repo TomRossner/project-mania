@@ -1,10 +1,7 @@
 import React,  { useEffect, useRef } from 'react';
 import useAuth from '../hooks/useAuth';
-import IconContainer from './common/IconContainer';
-import { RiEditLine } from 'react-icons/ri';
-import { FiCheck } from 'react-icons/fi';
 
-const UserHeader = ({readOnly, setHeader, toggleReadOnly, handleSaveHeader, header}) => {
+const UserHeader = ({readOnly, setHeader}) => {
     const textRef = useRef();
     const {userInfo} = useAuth()
 

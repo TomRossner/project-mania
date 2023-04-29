@@ -48,7 +48,7 @@ const useAuth = () => {
             return setProfileImage(Buffer.from(userInfo.base64_img_data));
         }
 
-        if (userInfo.img_url && userInfo.img_url.length > 0) {
+        if (!userInfo.base64_img_data && userInfo.img_url && userInfo.img_url.length > 0) {
             return setProfileImage(userInfo.img_url.toString());
         }
         

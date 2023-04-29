@@ -12,7 +12,7 @@ const ChatMessage = ({msg, currentContact}) => {
     
   return (
     <>
-      <div className={from === currentContact._id ? 'message-container' : 'message-container rightside'}>
+      <div className={from === currentContact._id ? 'message-container rightside' : 'message-container'}>
         <p className='message'>{text}</p>
         <span>Sent {sent_at}</span>
       </div>

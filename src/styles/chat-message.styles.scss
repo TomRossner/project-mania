@@ -18,7 +18,6 @@
     }
 
     &.rightside{
-        align-self: flex-end;
-        background-color: $light_green;
+        justify-self: right;
     }
 }

@@ -10,18 +10,11 @@ import ThreeDotsMenu from "./common/ThreeDotsMenu";
 import useProject from '../hooks/useProject';
 import { useDrag } from 'react-dnd';
 import OptionsMenu from './common/OptionsMenu';
-import { task_options, task_options_admin } from '../utils/taskMenuOptions';
-import useAuth from '../hooks/useAuth';
+import { task_options } from '../utils/taskMenuOptions';
 
 const TaskOverview = ({task}) => {
     const {title, due_date, files, _id, priority, current_stage, subtitle} = task;
-    const {
-        currentProject,
-        handleMarkAsDone,
-        handleMarkAsNotDone,
-        handleTaskOptions
-    } = useProject();
-    const {userInfo} = useAuth();
+    const { currentProject, handleMarkAsDone, handleMarkAsNotDone, handleTaskOptions} = useProject();
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -70,41 +63,9 @@ const TaskOverview = ({task}) => {
             </LabelContainer>
             <div className='quick-actions'>
                 <ThreeDotsMenu fn={toggleTaskOptions}/>
-                
-                <OptionsMenu
-                    options={userInfo?.admin === true ? task_options_admin : task_options}
-                    boolean={menuOpen}
-                    fn={handleTaskOptions}
-                    toggleTaskOptions={toggleTaskOptions}
-                    fn_arg={task}
-                />
-
-                {!task.isDone &&
-                    <button
-                        className='btn white green'
-                        title='Mark as done'
-                        onClick={() => handleMarkAsDone(task)}
-                    >
-                        <IconContainer
-                            additionalClass="small green"
-                            icon={<FiCheck className='icon'/>}
-                        />
-                    </button>
-                }
-
-                {task.isDone &&
-                    <button
-                        className='btn white green'
-                        title='Mark as not done'
-                        onClick={() => handleMarkAsNotDone(task)}
-                    >
-                        <IconContainer
-                            additionalClass="small green"
-                            icon={<MdDoneAll className='icon green'/>}
-                        />
-                    </button>
-                }
-
+                <OptionsMenu options={task_options} boolean={menuOpen} fn={handleTaskOptions} toggleTaskOptions={toggleTaskOptions} fn_arg={task}/>
+                {!task.isDone && <button className='btn white green' title='Mark as done' onClick={() => handleMarkAsDone(task)}><IconContainer additionalClass="small green" icon={<FiCheck className='icon'/>}/></button>}
+                {task.isDone && <button className='btn white green' title='Mark as not done' onClick={() => handleMarkAsNotDone(task)}><IconContainer additionalClass="small green" icon={<MdDoneAll className='icon green'/>}/></button>}
                 {/* <button className='btn white red' title='Delete task' onClick={handleDeleteTask}><IconContainer additionalClass="small" icon={<VscTrash className='icon'/>}/></button> */}
                 {files.length ? <span className='icon-span'><ImAttachment className='icon info'/>{`x${files.length - 1}`}</span> : null}
             </div>
