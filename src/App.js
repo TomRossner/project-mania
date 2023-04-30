@@ -53,6 +53,7 @@ import "./styles/contact.styles.scss";
 import "./styles/conversation.styles.scss";
 import "./styles/chat-input-field.styles.scss";
 import "./styles/chat-message.styles.scss";
+import "./styles/emojis.styles.scss";
 
 
 // Lazy-loading components
@@ -67,7 +68,7 @@ const ActivitySection = lazy(() => import("./components/ActivitySection"));
 const TopNav = lazy(() => import("./components/TopNav")); 
 const Users = lazy(() => import("./components/Users")); 
 const UserCards = lazy(() => import("./components/UserCards"));
-const Chat = lazy(() => import("./components/Chat"));
+const Chat = lazy(() => import("./components/Chats"));
 
 const App = () => {
   const dispatch = useDispatch();

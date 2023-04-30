@@ -12,24 +12,27 @@ export const currentMonth = () => new Date().toLocaleString('default', { month: 
 
 export const currentMonthNumber = () => new Date().getMonth();
 
+// Current minutes
 export const currentMinutes = () => {
     return Number(new Date().getMinutes()) < 10
     ? `0${new Date().getMinutes()}`
     : new Date().getSeconds();
 }
 
+// Current seconds
 export const currentSeconds = () => {
     return Number(new Date().getSeconds()) < 10
     ? `0${new Date().getSeconds()}`
     : new Date().getSeconds();
 }
 
-
+// Format to AM/PM time
 export const format_AM_PM = (time) => {
     const formattedTime = new Date(time).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
     return formattedTime;
 }
 
+// Format date
 export const format_date = (time) => {
     const date = new Date(time).getDate();
     const year = new Date(time).getFullYear();
@@ -56,6 +59,7 @@ export const format_date = (time) => {
     }
 }
 
+// Set date ending
 export const setDateEnding = date => {
     switch(date) {
         case 1 || 21 || 31:
@@ -67,4 +71,9 @@ export const setDateEnding = date => {
         default:
             return "th";
     }
+}
+
+// Message time format (AM/PM time)
+export const messageTime = date => {
+    return new Date(date).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
 }

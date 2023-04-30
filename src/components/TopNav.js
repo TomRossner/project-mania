@@ -20,7 +20,7 @@ const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
     <div className="top-nav">
         <SearchBar/>
         <Space/>
-        <Clock/>
+        {/* <Clock/> */}
         <button className="btn blue" onClick={handleCreateBoard}><IconContainer icon={<BsPlus className='icon'/>}/>Create New Board</button>
         <button className="btn white" onClick={handleToggleNotificationTab}>
           <IconContainer icon={<BsBell className='icon large'/>}/>
