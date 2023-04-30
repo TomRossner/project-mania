@@ -5,6 +5,9 @@
     width: fit-content;
     padding: 0.5rem 0.7rem;
     border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 1em;
 
     .message{
         font-size: 1rem;
@@ -15,6 +18,7 @@
     span{
         font-size: 0.8rem;
         color: $grey;
+        text-align: right;
     }
 
     &.rightside{

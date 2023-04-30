@@ -1,20 +1,14 @@
-import React, { useEffect } from 'react';
-import useAuth from '../hooks/useAuth';
+import React from 'react';
+import { messageTime } from '../utils/timeFormats';
 
 const ChatMessage = ({msg, currentContact}) => {
-    const {sent_at, text, from, to} = msg;
-    // const {userInfo} = useAuth();
-
-    useEffect(() => {
-        if (!msg) return;
-        console.log(msg.text);
-    }, [msg])
+    const {sent_at, text, from} = msg;
     
   return (
     <>
       <div className={from === currentContact._id ? 'message-container rightside' : 'message-container'}>
         <p className='message'>{text}</p>
-        <span>Sent {sent_at}</span>
+        <span>{messageTime(sent_at)}</span>
       </div>
     </>
   )

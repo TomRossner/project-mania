@@ -39,7 +39,10 @@
         .last-message{
             color: $grey;
             width: 70%;
-            display: block;
+            display: flex;
+            align-items: center;
+            // gap: 0.5em;
+
         }
 
         .unseen-messages-count-container{

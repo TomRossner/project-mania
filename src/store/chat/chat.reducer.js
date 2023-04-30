@@ -4,7 +4,9 @@ const INITIAL_STATE = {
     currentChat: null,
     isLoading: false,
     error: null,
-    currentContact: null
+    currentContact: null,
+    messages: [],
+    chats: []
 }
 
 export const chatReducer = (state = INITIAL_STATE, action) => {
@@ -13,6 +15,8 @@ export const chatReducer = (state = INITIAL_STATE, action) => {
     switch(type) {
         case CHAT_ACTION_TYPES.SET_CHAT:
             return {...state, currentChat: payload};
+        case CHAT_ACTION_TYPES.SET_CHATS:
+            return {...state, chats: payload};
         case CHAT_ACTION_TYPES.FETCH_CHAT_START:
             return {...state, isLoading: true};
         case CHAT_ACTION_TYPES.FETCH_CHAT_SUCCESS:
@@ -21,6 +25,8 @@ export const chatReducer = (state = INITIAL_STATE, action) => {
             return {...state, isLoading: false, error: payload};
         case CHAT_ACTION_TYPES.SET_CURRENT_CONTACT:
             return {...state, currentContact: payload};
+        case CHAT_ACTION_TYPES.SET_MESSAGES:
+            return {...state, messages: payload};
         default:
             return state;
     }

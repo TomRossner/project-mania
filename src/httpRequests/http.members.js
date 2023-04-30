@@ -21,23 +21,3 @@ export const getUserById = async (id) => {
     const {data} = await axios.post(`/members/get/id/${id}`);
     return data;
 }
-
-// Send message
-export const sendMessage = async (message, targetUser) => {
-    const {data} = await axios.post('/members/send-message', {message, to: targetUser});
-    console.log(data);
-    return data;
-}
-
-// Get chat
-export const getChat = async (ids) => {
-    const {data} = await axios.post('/chats/get', ids);
-    return data;
-}
-
-// Create new chat
-export const createChat = async (ids) => {
-    const {data} = await axios.post('/chats/create', ids);
-    console.log(data);
-    return data;
-}

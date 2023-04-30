@@ -24,42 +24,36 @@ import NotificationTab from "./components/NotificationTab";
 import AdminForm from "./components/forms/AdminForm";
 import MoveTaskPopup from "./components/MoveTaskPopup";
 
-// // Styles
-// import "./styles/general.styles.scss";
-// import "./styles/navbar.styles.scss";
-// import "./styles/search-bar.styles.scss";
-// import "./styles/top-nav.styles.scss";
-// import "./styles/project-info-bar.styles.scss";
-// import "./styles/project-members.styles.scss";
-// import "./styles/project-stages.styles.scss";
-// import "./styles/create-form.styles.scss";
-// import "./styles/form.styles.scss";
-// import "./styles/label.styles.scss";
-// import "./styles/task-overview.styles.scss";
-// import "./styles/input-container.styles.scss";
-// import "./styles/right-nav.styles.scss";
-// import "./styles/auth.styles.scss";
-// import "./styles/back-button.styles.scss";
-// import "./styles/spinner.styles.scss";
-// import "./styles/users.styles.scss";
-// import "./styles/notifications.styles.scss";
-// import "./styles/activity.styles.scss";
-// import "./styles/progress-bar.styles.scss";
-// import "./styles/profile.styles.scss";
-// import "./styles/user-header.styles.scss";
-// import "./styles/clock.styles.scss";
-// import "./styles/chat.styles.scss";
-// import "./styles/contact.styles.scss";
-// import "./styles/conversation.styles.scss";
-// import "./styles/chat-input-field.styles.scss";
-// import "./styles/chat-message.styles.scss";
-// import "./styles/logo.styles.scss";
+// Styles
+import "./styles/general.styles.scss";
+import "./styles/navbar.styles.scss";
+import "./styles/search-bar.styles.scss";
+import "./styles/top-nav.styles.scss";
+import "./styles/project-info-bar.styles.scss";
+import "./styles/project-members.styles.scss";
+import "./styles/project-stages.styles.scss";
+import "./styles/create-form.styles.scss";
+import "./styles/form.styles.scss";
+import "./styles/label.styles.scss";
+import "./styles/task-overview.styles.scss";
+import "./styles/input-container.styles.scss";
+import "./styles/right-nav.styles.scss";
+import "./styles/auth.styles.scss";
+import "./styles/back-button.styles.scss";
+import "./styles/spinner.styles.scss";
+import "./styles/users.styles.scss";
+import "./styles/notifications.styles.scss";
+import "./styles/activity.styles.scss";
+import "./styles/progress-bar.styles.scss";
+import "./styles/profile.styles.scss";
+import "./styles/user-header.styles.scss";
+import "./styles/clock.styles.scss";
+import "./styles/chat.styles.scss";
+import "./styles/contact.styles.scss";
+import "./styles/conversation.styles.scss";
+import "./styles/chat-input-field.styles.scss";
+import "./styles/chat-message.styles.scss";
 
-// New styles
-import "./styles2/logo.scss";
-import "./styles2/utils.scss";
-import "./styles2/navbar.scss";
-import "./styles2/dashboard.scss";
 
 // Lazy-loading components
 const ProjectManagement = lazy(() => import("./components/ProjectManagement")); 
@@ -73,7 +67,7 @@ const ActivitySection = lazy(() => import("./components/ActivitySection"));
 const TopNav = lazy(() => import("./components/TopNav")); 
 const Users = lazy(() => import("./components/Users")); 
 const UserCards = lazy(() => import("./components/UserCards"));
-const Chat = lazy(() => import("./components/Chat"));
+const Chat = lazy(() => import("./components/Chats"));
 
 const App = () => {
   const dispatch = useDispatch();
