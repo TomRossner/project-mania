@@ -2,15 +2,28 @@ export const currentYear = () => new Date().getFullYear();
 
 export const currentHour = () => new Date().getHours();
 
-export const AM_PM_Time = () => new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-
-export const dayOfWeek = () => new Date().toLocaleString("en", { weekday: "long" });
-
 export const currentDate = () => new Date().getDate();
 
-export const currentMonth = () => new Date().toLocaleString('default', { month: 'long' });
-
 export const currentMonthNumber = () => new Date().getMonth();
+    
+export const dayOfWeek = () => new Date().toLocaleString(
+    "en",
+    {weekday: "long"}
+);
+
+export const currentMonth = () => new Date().toLocaleString(
+    'default',
+    {month: 'long'}
+);
+
+export const AM_PM_currentTime = () => new Date().toLocaleString(
+    'en-US',
+    {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+    }
+);
 
 // Current minutes
 export const currentMinutes = () => {
@@ -28,7 +41,15 @@ export const currentSeconds = () => {
 
 // Format to AM/PM time
 export const format_AM_PM = (time) => {
-    const formattedTime = new Date(time).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    const formattedTime = new Date(time).toLocaleString(
+        'en-US',
+        {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        }
+    );
+
     return formattedTime;
 }
 
@@ -55,6 +76,7 @@ export const format_date = (time) => {
             year === currentYear()) return '3 days ago';
     else {
         month = new Date(time).toLocaleString('default', { month: 'long' });
+        
         return `${month} ${date}${setDateEnding(date)}`;
     }
 }
@@ -74,6 +96,32 @@ export const setDateEnding = date => {
 }
 
 // Message time format (AM/PM time)
-export const messageTime = date => {
-    return new Date(date).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+export const AM_PM = date => {
+    return new Date(date).toLocaleString(
+        'en-US',
+        {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        }
+    );
+}
+
+// Last seen format
+export const lastSeenTime = (time) => {
+    const date = new Date(time).getDate();
+    const year = new Date(time).getFullYear();
+    let month = new Date(time).getMonth();
+
+    if (date === currentDate() &&
+        month === currentMonthNumber() &&
+        year === currentYear()) return `today at ${AM_PM(time)}`;
+    else if (date === currentDate() - 1 &&
+            (date === currentDate() - 1) !== 0 && // Checks that we're not on the first day of the month
+            month === currentMonthNumber() &&
+            year === currentYear()) return `yesterday at ${AM_PM(time)}`;
+    else {
+        month = new Date(time).toLocaleString('default', { month: 'long' });
+        return `${month} ${date}${setDateEnding(date)} at ${AM_PM(time)}`;
+    }
 }

@@ -47,6 +47,23 @@ export async function updateProfilePicture(values) {
     return await axios.post('/auth/update-profile-picture', values);
 }
 
+// Check password
+export const checkPassword = async (id, pw) => {
+    return await axios.post('/auth/check-pw', {id, pw});
+}
+
+// Update password
+export const updateUserPW = async (id, newPW) => {
+    return await axios.post("/auth/update-pw", {id, newPW});
+}
+
+
+
+
+
+
+// JWT
+
 // Get JWT from LocalStorage
 export function getJWT() {
     return localStorage.getItem(token);

@@ -1,11 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { IoMdSend } from 'react-icons/io';
-import useAuth from '../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import { useSelector } from 'react-redux';
-import { selectCurrentContact } from '../store/chat/chat.selectors';
-import useChat from '../hooks/useChat';
-import { handleTyping, notifyIsNotTyping, notifyIsTyping, socket } from '../utils/socket';
-import Emojis from './Emojis';
+import { selectCurrentContact } from '../../store/chat/chat.selectors';
+import useChat from '../../hooks/useChat';
+import { notifyIsNotTyping, notifyIsTyping } from '../../utils/socket';
 
 const ChatInputField = () => {
     const [inputValue, setInputValue] = useState("");
@@ -33,8 +32,6 @@ const ChatInputField = () => {
             to: currentContact._id,
         };
 
-        console.log(newMessage.sent_at)
-
         // Send message
         handleSendMessage(currentChat._id, newMessage);
 
@@ -45,7 +42,7 @@ const ChatInputField = () => {
     useEffect(() => {
         if (!inputValue.length) {
            setIsTyping(false);
-           notifyIsNotTyping(currentContact?._id, currentContact?.socket_id);
+           notifyIsNotTyping(currentChat?._id, currentContact?.socket_id);
            return;
         }
 
@@ -59,7 +56,7 @@ const ChatInputField = () => {
     useEffect(() => {
         if (!isTyping) return;
 
-        notifyIsTyping(currentContact?._id, currentContact?.socket_id);
+        notifyIsTyping(currentChat?._id, currentContact?.socket_id);
         
     }, [isTyping]);
 

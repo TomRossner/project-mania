@@ -112,6 +112,18 @@ body{
             color: $green;
         }
 
+        &.blue{
+            color: $blue;
+        }
+
+        &.xl{
+            scale: 1.4;
+        }
+
+        &.star{
+            color: $gold;
+        }
+
         &.online-status{
             &.green{
                 color: $green;
@@ -446,4 +458,18 @@ hr.line{
             width: 75px;
         }
     }
+}
+
+.title-with-icon{
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+
+    .icon{
+        font-size: 1.1rem;
+    }
+}
+
+.bg-light{
+    background-color: $light;
 }

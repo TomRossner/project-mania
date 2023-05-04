@@ -9,7 +9,7 @@ import CancelButton from '../common/CancelButton';
 import IconContainer from '../common/IconContainer';
 import useAuth from '../../hooks/useAuth';
 import { selectMembers } from '../../store/members/members.selector';
-import { fetchMembersAsync } from '../../store/members/members.actions';
+import { fetchMembersAsync, setMembers } from '../../store/members/members.actions';
 import useProject from '../../hooks/useProject';
 import { ERROR_MESSAGES } from '../../utils/errors';
 
@@ -20,7 +20,7 @@ const BoardForm = () => {
   const [inputValues, setInputValues] = useState({...boardProperties, type: element});
   const {title, subtitle, due_date} = inputValues;
   const members = useSelector(selectMembers);
-  const {user} = useAuth();
+  const {user, userInfo} = useAuth();
   const dispatch = useDispatch();
   const [team, setTeam] =  useState([]);
   const {showError} = useProject();
@@ -65,7 +65,18 @@ const BoardForm = () => {
   useEffect(() => {
     // Fetch all members
     dispatch(fetchMembersAsync());
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if (!members.length) return;
+
+    const isInMembers = members.some(member => member._id === userInfo?._id);
+    console.log(isInMembers)
+    
+    if (isInMembers) {
+      dispatch(setMembers([...members.filter(member => member._id !== userInfo?._id)]));
+    }
+  }, [members]);
 
   return (
     <form onSubmit={handleFormSubmit}>
@@ -98,17 +109,13 @@ const BoardForm = () => {
               <label htmlFor='members'>Members</label>
               <select onChange={handleAddMember}>
                 <option value="">Choose members</option>
-                {members?.map(member => {
-                  if (member._id === user._id) {
+                {members.filter(member => member._id !== userInfo?._id)
+                  .map(m => {
                     return (
-                    <option key={member._id} value={member._id}>
-                      {member.first_name} {member.last_name} (You)
-                    </option>);
-                  }
-                  else return (
-                    <option key={member._id} value={member._id}>
-                      {member.first_name} {member.last_name}
-                    </option>)
+                      <option key={m._id} value={m._id}>
+                        {m.first_name} {m.last_name}
+                      </option>
+                    )
                 })}
               </select>
             </div>

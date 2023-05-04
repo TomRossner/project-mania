@@ -17,11 +17,11 @@ export const membersReducer = (state = INITIAL_STATE, action) => {
             return {...state, members: payload, isLoading: false};
         case MEMBERS_ACTION_TYPES.FETCH_MEMBERS_FAILED:
             return {...state, error: payload, isLoading: false};
-        case MEMBERS_ACTION_TYPES.FECTH_OTHER_USER_START:
+        case MEMBERS_ACTION_TYPES.FETCH_OTHER_USER_START:
             return {...state, isLoading: true};
-        case MEMBERS_ACTION_TYPES.FECTH_OTHER_USER_SUCCESS:
+        case MEMBERS_ACTION_TYPES.FETCH_OTHER_USER_SUCCESS:
             return {...state, isLoading: false, otherUser: payload};
-        case MEMBERS_ACTION_TYPES.FECTH_OTHER_USER_FAILED:
+        case MEMBERS_ACTION_TYPES.FETCH_OTHER_USER_FAILED:
             return {...state, error: payload, isLoading: false};
         case MEMBERS_ACTION_TYPES.SET_OTHER_USER:
             return {...state, otherUser: payload};

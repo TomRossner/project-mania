@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
-import {BsSearch} from "react-icons/bs";
-import IconContainer from './IconContainer';
+import React from 'react';
 
-const SearchBar = ({placeholderText = "Search for anything", fn}) => {
-    const [searchValue, setSearchValue] = useState("");
-
-    const handleSearchChange = (e) => {
-        setSearchValue(e.target.value);
-    }
+const SearchBar = ({placeholderText = "Search", fn, refValue, value, icon, type, styles}) => {
 
   return (
-    <div className='search-bar-container'>
-      <input type="text" placeholder={placeholderText} value={searchValue} onChange={fn || handleSearchChange}/>
-      <IconContainer icon={<BsSearch className='icon'/>}/>
+    <div className={styles ? `search-bar-container ${styles}` : 'search-bar-container'} ref={refValue}>
+      <input
+        type={type}
+        placeholder={placeholderText}
+        value={value}
+        onChange={fn}
+      />
+      {icon? icon : null}
     </div>
   )
 }

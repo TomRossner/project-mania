@@ -29,13 +29,13 @@ export const fetchMembersAsync = () => async (dispatch) => {
 
 
 export const fetchOtherUserStart = () => {
-    return createAction(MEMBERS_ACTION_TYPES.FETCH_MEMBERS_START);
+    return createAction(MEMBERS_ACTION_TYPES.FETCH_OTHER_USER_START);
 }
 export const fetchOtherUserSuccess = (user) => {
-    return createAction(MEMBERS_ACTION_TYPES.FETCH_MEMBERS_SUCCESS, user);
+    return createAction(MEMBERS_ACTION_TYPES.FETCH_OTHER_USER_SUCCESS, user);
 }
 export const fetchOtherUserFailed = (error) => {
-    return createAction(MEMBERS_ACTION_TYPES.FETCH_MEMBERS_FAILED, error);
+    return createAction(MEMBERS_ACTION_TYPES.FETCH_OTHER_USER_FAILED, error);
 }
 export const setOtherUser = (user) => {
     return createAction(MEMBERS_ACTION_TYPES.SET_OTHER_USER, user);

@@ -1,11 +1,26 @@
 export const CHAT_ACTION_TYPES = {
+    // Chats
     SET_CHAT: 'chat/SET_CHAT',
     SET_CHATS: 'chat/SET_CHATS',
-    // ADD_CHAT: 'chat/ADD_CHAT',
-    // DELETE_CHAT: 'chat/DELETE_CHAT',
-    SET_MESSAGES: 'chat/SET_MESSAGES',
+
+    // Contacts
+    SET_CONTACTS: 'chat/SET_CONTACTS',
     SET_CURRENT_CONTACT: 'chat/SET_CURRENT_CONTACT',
+
+    // Fetch chats
     FETCH_CHAT_START: 'chat/FETCH_CHAT_START',
     FETCH_CHAT_SUCCESS: 'chat/FETCH_CHAT_SUCCESS',
     FETCH_CHAT_FAILED: 'chat/FETCH_CHAT_FAILED',
+
+    // Fetch contacts
+    FETCH_CONTACTS_START: 'chat/FETCH_CONTACTS_START',
+    FETCH_CONTACTS_SUCCESS: 'chat/FETCH_CONTACTS_SUCCESS',
+    FETCH_CONTACTS_FAILED: 'chat/FETCH_CONTACTS_FAILED',
+
+    // Messages
+    SET_MESSAGES: 'chat/SET_MESSAGES',
+
+    // Favorites
+    SET_FAVORITES: 'chat/SET_FAVORITES',
+    SET_FAVORITES_CHATS: 'chat/SET_FAVORITES_CHATS',
 }

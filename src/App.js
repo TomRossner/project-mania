@@ -5,7 +5,8 @@ import { fetchBoardsAsync, setBoards } from "./store/boards/boards.actions";
 import { setCurrentProject } from "./store/project/project.actions";
 import { setUserInfo, fetchUserInfoAsync } from "./store/userInfo/userInfo.actions";
 import { setElement } from "./store/globalStates/globalStates.actions";
-import {socket} from "./utils/socket";
+import {API_URL, emitIsOffline, emitIsOnline, socket} from "./utils/socket";
+import { setChat, setCurrentContact } from "./store/chat/chat.actions";
 
 // Custom Hooks
 import useAuth from "./hooks/useAuth";
@@ -53,7 +54,9 @@ import "./styles/contact.styles.scss";
 import "./styles/conversation.styles.scss";
 import "./styles/chat-input-field.styles.scss";
 import "./styles/chat-message.styles.scss";
-
+import "./styles/logo.styles.scss";
+import "./styles/chat-favorites.styles.scss";
+import useSocketEvents from "./hooks/useSocketEvents";
 
 // Lazy-loading components
 const ProjectManagement = lazy(() => import("./components/ProjectManagement")); 
@@ -67,10 +70,11 @@ const ActivitySection = lazy(() => import("./components/ActivitySection"));
 const TopNav = lazy(() => import("./components/TopNav")); 
 const Users = lazy(() => import("./components/Users")); 
 const UserCards = lazy(() => import("./components/UserCards"));
-const Chat = lazy(() => import("./components/Chats"));
+const Chat = lazy(() => import("./components/chat/ChatApp"));
 
 const App = () => {
   const dispatch = useDispatch();
+
   const {
     user,
     isAuthenticated,
@@ -80,6 +84,7 @@ const App = () => {
     loadProfileImage,
     setEmittedConnection
   } = useAuth();
+
   const {
     notificationTabOpen,
     handleCreateBoard,
@@ -93,15 +98,44 @@ const App = () => {
     createPopupOpen,
     showError
   } = useProject();
-  const navigate = useNavigate();
 
   const [userCardsActive, setUserCardsActive] = useState(false);
+  
+  const {
+    error: chatError,
+    currentContact,
+    getContactInfo,
+    currentChat
+  } = useChat();
 
-  const {error: chatError} = useChat();
+  // Handle user has connected
+  const handleIsOnline = async (data) => {
 
+    if (data.userId === currentContact?._id && currentContact?.online === false) {
+        const contact = await getContactInfo(data.userId);
+        dispatch(setCurrentContact(contact));
+        return;
+    } else return;
+  }
 
+  // Handle user went offline
+  const handleIsOffline = async (data) => {
 
-
+    if (data.userId === currentContact?._id && currentContact?.online === true) {
+        const contact = await getContactInfo(data.userId);
+        dispatch(setCurrentContact(contact));
+        return;
+    } else return;
+  }
+  
+  // Listen to online/offline socket events
+  useSocketEvents({
+    socketUrl: API_URL,
+    events: {
+      online: handleIsOnline,
+      offline: handleIsOffline,
+    },
+  });
 
   /**********************************
       PROJECT RELATED SIDE EFFECTS
@@ -110,7 +144,7 @@ const App = () => {
 
 
   useEffect(() => {
-      if (!currentProject) return navigate('/projects');
+      if (!currentProject) return;
       
       // Update project;
       update(currentProject);
@@ -163,6 +197,7 @@ const App = () => {
   useEffect(() => {
       if (!user || !isAuthenticated) {
         dispatch(setUserInfo(null));
+        if (currentChat) dispatch(setChat(null));
       }
   }, [user, isAuthenticated]);
 
@@ -175,6 +210,7 @@ const App = () => {
       }
 
       if ((!user || !isAuthenticated) && userInfo) {
+        // emitIsOffline(userInfo._id, `${userInfo?.first_name} ${userInfo?.last_name}`);
         dispatch(setUserInfo(null));
       }
   }, [user, isAuthenticated, userInfo]);
@@ -183,11 +219,16 @@ const App = () => {
 
   useEffect(() => {
       if (!userInfo) return setEmittedConnection(false);
-
+      
       if (userInfo && !emittedConnection) {
           const userName = `${userInfo?.first_name} ${userInfo?.last_name}`;
-          socket.emit('connection', {userName, userId: user._id});
+          socket.emit('connection', {userName, userId: user?._id});
           setEmittedConnection(true);
+          emitIsOnline(
+            userInfo?._id,
+            `${userInfo?.first_name} ${userInfo?.last_name}`
+          );
+          console.log("Emitting connection")
       }
   }, [userInfo]);
 

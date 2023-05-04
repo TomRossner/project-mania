@@ -1,3 +1,5 @@
+
+// Priority labels
 export const priorities = [
     {
         name: "Low",
@@ -16,6 +18,8 @@ export const priorities = [
     }
 ]
 
+
+// Labels - NOT IN USE CURRENTLY
 export const labels = [
     {
         name: "New",

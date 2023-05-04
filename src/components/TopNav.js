@@ -9,7 +9,7 @@ import useAuth from '../hooks/useAuth';
 
 const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
   const [notifications, setNotifications] = useState([]);
-  const {userInfo} = useAuth();
+  const {userInfo, isAuthenticated} = useAuth();
 
   useEffect(() => {
     if (!userInfo) return;
@@ -18,13 +18,18 @@ const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
 
   return (
     <div className="top-nav">
-        <SearchBar/>
+        {/* <SearchBar/> */}
+        {userInfo && isAuthenticated
+          ? <h1>👋 Welcome back, {userInfo.first_name}</h1>
+          : null
+        }
+        
         <Space/>
         {/* <Clock/> */}
         <button className="btn blue" onClick={handleCreateBoard}><IconContainer icon={<BsPlus className='icon'/>}/>Create New Board</button>
         <button className="btn white" onClick={handleToggleNotificationTab}>
           <IconContainer icon={<BsBell className='icon large'/>}/>
-          {notifications.length ? <IconContainer additionalClass={"absolute"} icon={<BsFillCircleFill className='icon'/>}/> : null}
+          {notifications?.length ? <IconContainer additionalClass={"absolute"} icon={<BsFillCircleFill className='icon'/>}/> : null}
         </button>
     </div>
   )

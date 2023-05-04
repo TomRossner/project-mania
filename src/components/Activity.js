@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import BlankProfilePicture from './common/BlankProfilePicture';
 import useProject from '../hooks/useProject';
 import { format_AM_PM, format_date } from '../utils/timeFormats';
 import { generateKey } from '../utils/keyGenerator';
+import IconContainer from './common/IconContainer';
+import { MdHistory } from 'react-icons/md';
 
 const Activity = () => {
   const {currentProject} = useProject();
+  const bottomRef = useRef(null);
+
+  // Scroll to last activity
+  const scrollToBottom = () => {
+    bottomRef.current?.scrollIntoView();
+}
+
+  // Scroll to last activity
+  useEffect(() => {
+    if (!currentProject?.activity?.length) return;
+      scrollToBottom();
+  }, [currentProject]);
 
   return (
     <div className="activity-container">
-        <h3>Recent Activity</h3>
+        <div className='title-with-icon'>
+          <IconContainer icon={<MdHistory className='icon xl blue'/>}/>  
+          <h3>Recent Activity</h3>
+        </div>
         <div className='timeline'>
             <div className='dashed-line'></div>
             <div className='activities'>
@@ -26,6 +43,7 @@ const Activity = () => {
                   </div>
                 )
               })}
+              <div ref={bottomRef}></div>
             </div>
         </div>
     </div>

@@ -2,9 +2,11 @@
 
 .conversation-container{
     width: 100%;
-    height: 100%;
+    height: 92%;
+    margin: 0 auto;
     border-radius: 0 20px 20px 0;
-    padding: 0.5rem;
+    padding: 1em;
+    gap: 0.3rem;
     color: black;
     border-bottom: 1px solid $light_grey;
     display: flex;
@@ -15,8 +17,22 @@
         margin-bottom: 1rem;
     }
 
+    .profile{
+        margin: 0 0 0.5rem 0;
+        
+        p{
+            font-size: 0.9rem;
+            color: $grey;
+            font-weight: 400;
+
+            &.green{
+                color: $green;
+            }
+        }
+    }
+
     .conversation{
-        width: 90%;
+        width: 98%;
         margin: 0 auto;
         border-radius: 15px;
         height: 70vh;
@@ -28,10 +44,14 @@
         overflow: scroll;
         align-items: flex-start;
 
-        .typing{
-            color: $grey;
-            font-style: italic;
-            font-weight: 500;
+        &::-webkit-scrollbar {
+            display: none;
         }
     }
+}
+
+.typing{
+    color: $grey;
+    font-style: italic;
+    font-weight: 500;
 }

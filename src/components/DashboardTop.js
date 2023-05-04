@@ -12,6 +12,10 @@ import useProject from '../hooks/useProject';
 import {FiCheck} from "react-icons/fi";
 import Space from "./common/Space";
 import useAuth from '../hooks/useAuth';
+import SearchBar from './common/SearchBar';
+import { BsSearch } from 'react-icons/bs';
+import PriorityLabel from './common/PriorityLabel';
+import LabelsContainer from './common/LabelContainer';
 
 const ProjectInfoBar = () => {
     const dispatch = useDispatch();
@@ -24,7 +28,7 @@ const ProjectInfoBar = () => {
         handleDeleteProject,
         tasks
     } = useProject();
-    const [inputValue, setInputValue] = useState("");
+    const [projectNameInputValue, setProjectNameInputValue] = useState("");
     const titleRef = useRef();
     const [editActive, setEditActive] = useState(false);
     const {userInfo} = useAuth();
@@ -56,7 +60,7 @@ const ProjectInfoBar = () => {
         navigate("/users");
     }
 
-    const handleInputChange = (e) => setInputValue(e.target.value);
+    const handleInputChange = (e) => setProjectNameInputValue(e.target.value);
 
     const validateProjectName = (input) => {
         setEditActive(false);
@@ -77,10 +81,47 @@ const ProjectInfoBar = () => {
         }
     }
 
+    const [searchFieldValue, setSearchFieldValue] = useState("");
+    const [isSearching, setIsSearching] = useState(false);
+    const searchFieldRef = useRef(null);
+    const [searchResults, setSearchResults] = useState([]);
+
+    const handleSearchResults = (searchValue) => {
+        const someMatchingTaskTitle = tasks.some(task => task.title.toLowerCase()
+            .includes(searchValue.toLowerCase()));
+
+        if (someMatchingTaskTitle){
+            setSearchResults([...tasks.filter(task => task.title.toLowerCase()
+                .includes(searchValue.toLowerCase())
+            )]);
+        } else return setSearchResults([]);
+    }
+
+    const handleSearchFieldChange = (e) => {
+        setSearchFieldValue(e.target.value);
+    }
+
+    useEffect(() => {
+        if (searchFieldValue.length && searchFieldRef.current) {
+            setIsSearching(true);
+            return;
+        } else setIsSearching(false);
+
+    }, [searchFieldValue]);
+
+    useEffect(() => {
+        if ((!searchFieldValue.length && searchResults.length) || !searchFieldValue.length) {
+            setSearchResults([]);
+            return;
+        }
+        
+        handleSearchResults(searchFieldValue);
+    }, [searchFieldValue])
+
     useEffect(() => {
         if (!currentProject) return;
 
-        setInputValue(currentProject.title);
+        setProjectNameInputValue(currentProject.title);
 
         if (editActive) {
             titleRef.current.select();
@@ -101,14 +142,14 @@ const ProjectInfoBar = () => {
                         ref={titleRef}
                         readOnly={!editActive}
                         onChange={handleInputChange}
-                        value={inputValue}
+                        value={projectNameInputValue}
                         className={editActive ? "title-input active" : "title-input"}
                     />
                     {editActive
                     ?   <IconContainer
                             additionalClass="green"
                             id="check"
-                            onClick={() => validateProjectName(inputValue)}
+                            onClick={() => validateProjectName(projectNameInputValue)}
                             icon={<FiCheck className='icon check' title='Save'/>}
                         />
                     : null}
@@ -116,6 +157,34 @@ const ProjectInfoBar = () => {
             </div>
         </div>
         <Space/>
+        <SearchBar
+            placeholderText='Search tasks'
+            icon={<IconContainer icon={<BsSearch className='icon'/>}/>}
+            type="text"
+            fn={handleSearchFieldChange}
+            refValue={searchFieldRef}
+            value={searchFieldValue}
+            styles={'bg-white'}
+        />
+        {isSearching && searchResults.length
+            ? (
+                <div className='search-results'>
+                    {searchResults?.map(res => {
+                        return (
+                            <div key={res._id} className='search-result'>
+                                <div>
+                                    <p>{res.current_stage.name}</p>
+                                    <h3>{res.title}</h3>
+                                </div>
+                                <Space/>
+                                <LabelsContainer priority={res.priority} additionalClass={'no-hover'}/>
+                            </div>
+                        )
+                    })}
+                </div> 
+            )
+            : null
+        }
         <ProjectMembers/>
         <IconContainer
             additionalClass='menu'

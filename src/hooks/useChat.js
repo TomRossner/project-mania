@@ -1,30 +1,36 @@
 import { useEffect, useState } from 'react';
 import useAuth from './useAuth';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectChat, selectChats, selectCurrentChat, selectCurrentContact, selectMessages } from '../store/chat/chat.selectors';
+import { selectChat, selectChats, selectContacts, selectCurrentChat, selectCurrentContact, selectFavorites, selectFavoritesChats, selectMessages } from '../store/chat/chat.selectors';
 import { getMembers, getUserById } from '../httpRequests/http.members';
-import { fetchChatAsync, setChat, setMessages } from '../store/chat/chat.actions';
-import { sendMessage, socket } from '../utils/socket';
-import { getChat, createChat } from '../httpRequests/http.chat';
+import { fetchChatAsync, fetchContactsAsync, setChat, setCurrentContact, setFavoritesChats, setMessages } from '../store/chat/chat.actions';
+import { emitCreateChat, sendMessage, socket } from '../utils/socket';
+import { getChat, createChat, getUserChats, addToFavorites, removeFromFavorites } from '../httpRequests/http.chat';
 import { setChats } from '../store/chat/chat.actions';
+import { setContacts } from '../store/chat/chat.actions';
 
 const useChat = () => {
     const {user, userInfo} = useAuth();
     const currentChat = useSelector(selectCurrentChat);
     const currentContact = useSelector(selectCurrentContact);
-    const [contacts, setContacts] = useState([]);
+    const contacts = useSelector(selectContacts);
     const dispatch = useDispatch();
     const messages = useSelector(selectMessages);
     const {error} = useSelector(selectChat);
     const chats = useSelector(selectChats);
+    const favorites = useSelector(selectFavorites);
+    const favoritesChats = useSelector(selectFavoritesChats);
 
 
-    // Socket callbacks
+
+    // Socket event handlers
+
+    // Handle new message event
     const handleReceiveMessage = (message) => {
         dispatch(setMessages([...messages, message]));
     }
 
-    // Socket emitters
+    // Handle send message event
     const handleSendMessage = (chatId, message) => {
 
         const newMessage = {
@@ -39,26 +45,22 @@ const useChat = () => {
         dispatch(setMessages([...messages, newMessage]));
     }
 
+    // Handle create chat event
+    const handleAddChat = (data) => {
+        dispatch(setChats([...chats, data.newChat]));
+    }
+
+
 
     // Socket handlers
-    socket.on('new-message', handleReceiveMessage);
+    socket.on('newMessage', handleReceiveMessage);
+    socket.on('createChat', handleAddChat);
+
+
 
     // Load contacts
     const loadContacts = async () => {
-        const contacts = await getMembers();
-        setContacts(contacts.filter(c => c._id !== user?._id));
-    }
-
-    // Load chat
-    const loadChat = (userId, contactId) => {
-        dispatch(fetchChatAsync(userId, contactId));
-    }
-
-    // Create chat
-    const createNewChat = async (userId, contactId) => {
-        const newChat = await createChat({userId, contactId});
-        dispatch(setChat(newChat));
-        dispatch(setChats([...chats, newChat]));
+        dispatch(fetchContactsAsync());
     }
 
     // Get contact details
@@ -67,27 +69,29 @@ const useChat = () => {
         return contactInfo;
     }
 
-    // Fetch chats
-    const fetchChats = async () => {
-        const updatedChats = [];
+    // Create chat
+    const createNewChat = async (userId, contact) => {
+        const newChat = await createChat({userId, contactId: contact._id});
 
-        for (let i = 0; i < contacts.length; i++) {
-            const chat = await getChat(userInfo?._id, contacts[i]._id);
+        dispatch(setChat(newChat));
+        dispatch(setChats([...chats, newChat]));
 
-            if (!chat) i++;
-
-            updatedChats.push(chat);
-            i++;
-        }
-
-        dispatch(setChats([...updatedChats.filter(chat => chat)]));
+        emitCreateChat(userInfo._id, contact.socket_id, newChat);
     }
 
     // Fetch chats
-    useEffect(() => {
-        if (!contacts.length) return;
-        fetchChats();
-    }, [contacts]);
+    const fetchUserChats = async () => {
+
+        // Get all user's chats
+        const allChats = await getUserChats(userInfo?._id);
+        
+        const regularChats = allChats.filter(chat => !chat.users.some(uid => favorites.includes(uid)));
+        const favoritesChats = allChats.filter(chat => chat.users.some(uid => favorites.includes(uid)));
+
+        dispatch(setChats(regularChats));
+        dispatch(setFavoritesChats(favoritesChats));
+    }
+
 
   return {
     currentChat,
@@ -96,12 +100,13 @@ const useChat = () => {
     error,
     currentContact,
     chats,
-    loadChat,
+    favorites,
     createNewChat,
     setMessages,
-    getContactInfo,
     loadContacts,
-    handleSendMessage
+    getContactInfo,
+    handleSendMessage,
+    fetchUserChats
   }
 }
 

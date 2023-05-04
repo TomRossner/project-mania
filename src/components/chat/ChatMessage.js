@@ -1,14 +1,14 @@
 import React from 'react';
-import { messageTime } from '../utils/timeFormats';
+import { AM_PM } from '../../utils/timeFormats';
 
 const ChatMessage = ({msg, currentContact}) => {
     const {sent_at, text, from} = msg;
     
   return (
     <>
-      <div className={from === currentContact._id ? 'message-container rightside' : 'message-container'}>
+      <div className={from !== currentContact._id ? 'message-container right-side' : 'message-container'}>
         <p className='message'>{text}</p>
-        <span>{messageTime(sent_at)}</span>
+        <span>{AM_PM(sent_at)}</span>
       </div>
     </>
   )

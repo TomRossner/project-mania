@@ -1,0 +1,24 @@
+@import "./variables";
+
+.favorites-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    background-color: white;
+    
+    .favorites{
+        border-radius: 10px;
+        background-color: white;
+        width: 100%;
+        min-height: 10vh;
+        max-height: 35vh;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3em;
+
+        .contact{
+            animation: fadeIn forwards 0.15s;
+        }
+    }
+}

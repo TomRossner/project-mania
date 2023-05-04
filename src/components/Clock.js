@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {AM_PM_Time, dayOfWeek, currentMonth, currentDate, setDateEnding} from "../utils/timeFormats";
+import {AM_PM_currentTime, dayOfWeek, currentMonth, currentDate, setDateEnding} from "../utils/timeFormats";
 
 const Clock = () => {
-    const dateString = () => `${dayOfWeek()}, ${currentMonth()} ${currentDate()}${setDateEnding(currentDate())} - ${AM_PM_Time()}`;
+    const dateString = () => `${dayOfWeek()}, ${currentMonth()} ${currentDate()}${setDateEnding(currentDate())} - ${AM_PM_currentTime()}`;
 
     const [clock, setClock] = useState(dateString());
 

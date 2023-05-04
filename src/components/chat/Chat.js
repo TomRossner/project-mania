@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import ProfilePicture from './common/ProfilePicture';
-import Space from './common/Space';
-import useAuth from '../hooks/useAuth';
-import useChat from '../hooks/useChat';
+import ProfilePicture from '../common/ProfilePicture';
+import Space from '../common/Space';
+import useAuth from '../../hooks/useAuth';
+import useChat from '../../hooks/useChat';
 import { useDispatch } from 'react-redux';
-import { setCurrentContact } from '../store/chat/chat.actions';
-import BlankProfilePicture from './common/BlankProfilePicture';
-import IconContainer from './common/IconContainer';
+import { setCurrentContact } from '../../store/chat/chat.actions';
+import BlankProfilePicture from '../common/BlankProfilePicture';
+import IconContainer from '../common/IconContainer';
 import {MdDoneAll} from "react-icons/md";
-import { messageTime } from '../utils/timeFormats';
+import { AM_PM } from '../../utils/timeFormats';
+import { fetchChatAsync } from '../../store/chat/chat.actions';
 
-const Chat = ({contactId, messages}) => {
-    const {loadChat, getContactInfo} = useChat();
+const Chat = ({contactId, messages, isTyping}) => {
+    const {getContactInfo} = useChat();
     const {userInfo} = useAuth();
     const dispatch = useDispatch();
     const [lastMessage, setLastMessage] = useState(null);
     const [unseenMessages, setUnseenMessages] = useState(0);
     const [contact, setContact] = useState(null);
+
+    // Load chat
+    const loadChat = (userId, contactId) => {
+      dispatch(fetchChatAsync(userId, contactId));
+    }
 
     // Handle chat click
     const handleChatClick = async (contactId) => {
@@ -24,22 +30,22 @@ const Chat = ({contactId, messages}) => {
       dispatch(setCurrentContact(contact));
     }
 
-    // Load contact
-    const loadContact = async (contactId) => {
-      const contact = await getContactInfo(contactId);
-      setContact(contact);
-    }
-
     // Set last message and unseen messages
     useEffect(() => {
-      if (!messages.length) return;
+      if (!messages?.length) return;
       setLastMessage(messages[messages.length - 1]);
       setUnseenMessages(messages.filter(msg => msg.seen === false && msg.from !== userInfo?._id).length);
     }, [messages]);
 
+    // Refresh contact
+    const refreshContact = async (contactId) => {
+        const contact = await getContactInfo(contactId);
+        setContact(contact);
+    }
+
     // Load contact
     useEffect(() => {
-      loadContact(contactId);
+      refreshContact(contactId);
     }, []);
 
   return (
@@ -56,17 +62,23 @@ const Chat = ({contactId, messages}) => {
 
         <div className='contact-content'>
           <h3 className='contact-name'>{contact?.first_name} {contact?.last_name}</h3>
-          <span className='last-time-message-sent'>{messageTime(lastMessage?.sent_at)}</span>
+          <span className='last-time-message-sent'>{lastMessage?.sent_at ? AM_PM(lastMessage?.sent_at) : null}</span>
           <p className='last-message'>
-            {lastMessage?.from === userInfo?._id
-              ? <>
-                  {lastMessage?.seen === true
-                    ? <><IconContainer icon={<MdDoneAll className='icon green'/>}/>{lastMessage?.text}</>
-                    : <><IconContainer icon={<MdDoneAll className='icon'/>}/>{lastMessage?.text}</>
+            {isTyping
+              ? <span className='typing green'>typing...</span>
+              : <>
+                  {lastMessage?.from === userInfo?._id
+                    ? <>
+                        {lastMessage?.seen === true
+                          ? <><IconContainer icon={<MdDoneAll className='icon green'/>}/>{lastMessage?.text}</>
+                          : <><IconContainer icon={<MdDoneAll className='icon'/>}/>{lastMessage?.text}</>
+                        }
+                      </>
+                    : lastMessage?.text
                   }
                 </>
-              : lastMessage?.text
             }
+            
           </p>
           <Space/>
           {lastMessage?.seen === false && unseenMessages

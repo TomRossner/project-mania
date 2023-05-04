@@ -1,7 +1,7 @@
 import React from 'react';
 import Line from './common/Line';
 import Spinner from './common/Spinner';
-import ProjectInfoBar from './ProjectInfoBar';
+import DashboardTop from './DashboardTop';
 import ProjectStagesContainer from './ProjectStagesContainer';
 import useProject from '../hooks/useProject';
 
@@ -12,11 +12,11 @@ const ProjectOverview = () => {
     <>
         {currentProject
         ? <div className="project-overview">
-              <ProjectInfoBar/>
+              <DashboardTop/>
               <Line/>
               <ProjectStagesContainer/>
           </div>
-        : <Spinner/>}
+        : <Spinner/>} {/* Replace spinner */}
     </>
   )
 }
