@@ -5,13 +5,14 @@ import { fetchBoardsAsync, setBoards } from "./store/boards/boards.actions";
 import { setCurrentProject } from "./store/project/project.actions";
 import { setUserInfo, fetchUserInfoAsync } from "./store/userInfo/userInfo.actions";
 import { setElement } from "./store/globalStates/globalStates.actions";
-import {API_URL, emitIsOffline, emitIsOnline, socket} from "./utils/socket";
+import { emitIsOnline, socket } from "./utils/socket";
 import { setChat, setCurrentContact } from "./store/chat/chat.actions";
 
 // Custom Hooks
 import useAuth from "./hooks/useAuth";
 import useProject from "./hooks/useProject";
 import useChat from "./hooks/useChat";
+import useSocketEvents from "./hooks/useSocketEvents";
 
 //Components
 import PrivateRoute from "./components/common/PrivateRoute";
@@ -24,6 +25,7 @@ import ErrorPopup from "./components/ErrorPopup";
 import NotificationTab from "./components/NotificationTab";
 import AdminForm from "./components/forms/AdminForm";
 import MoveTaskPopup from "./components/MoveTaskPopup";
+import Home from "./components/Home";
 
 // Styles
 import "./styles/general.styles.scss";
@@ -56,7 +58,6 @@ import "./styles/chat-input-field.styles.scss";
 import "./styles/chat-message.styles.scss";
 import "./styles/logo.styles.scss";
 import "./styles/chat-favorites.styles.scss";
-import useSocketEvents from "./hooks/useSocketEvents";
 
 // Lazy-loading components
 const ProjectManagement = lazy(() => import("./components/ProjectManagement")); 
@@ -127,10 +128,9 @@ const App = () => {
         return;
     } else return;
   }
-  
+
   // Listen to online/offline socket events
   useSocketEvents({
-    socketUrl: API_URL,
     events: {
       online: handleIsOnline,
       offline: handleIsOffline,
@@ -268,7 +268,7 @@ const App = () => {
             {notificationTabOpen ? <NotificationTab/> : null}
             <TopNav handleCreateBoard={handleCreateBoard} handleToggleNotificationTab={handleToggleNotificationTab}/>
             <Routes>
-              <Route path="/" element={<PrivateRoute element={<ProjectManagement/>}/>}/>
+              <Route path="/" element={<PrivateRoute element={<Home/>}/>}/>
               <Route path="/projects" element={<PrivateRoute element={<Projects/>}/>}/>
               <Route path="/projects/:id" element={<PrivateRoute element={<ProjectOverview/>}/>}/>
               <Route path="/projects/:id/notifications" element={<PrivateRoute element={<Notifications/>}/>}/>
