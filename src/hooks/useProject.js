@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { selectBoards } from "../store/boards/boards.selector";
+import { selectBoards, selectIsLoading } from "../store/boards/boards.selector";
 import { selectActivity, selectCurrentProject, selectProjectMembers } from "../store/project/project.selector";
 import { updateProject, deleteProject } from "../httpRequests/http.project";
 import { useNavigate } from "react-router-dom";
@@ -47,6 +47,7 @@ const useProject = () => {
     const projectMembers = useSelector(selectProjectMembers);
     const members = useSelector(selectMembers);
     const activity = useSelector(selectActivity);
+    const isLoading = useSelector(selectIsLoading);
     const {user, userInfo, setUserInfo} = useAuth();
     const {
         element,
@@ -621,6 +622,7 @@ const useProject = () => {
         activity,
         taskToMove,
         moveTaskPopupOpen,
+        isLoading,
         handleCreateBoard,
         handleCreate, // handleCreate and handleCreateBoard are similar
         handleToggleNotificationTab,

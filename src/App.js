@@ -26,6 +26,7 @@ import NotificationTab from "./components/NotificationTab";
 import AdminForm from "./components/forms/AdminForm";
 import MoveTaskPopup from "./components/MoveTaskPopup";
 import Home from "./components/Home";
+import About from "./components/About";
 
 // Styles
 import "./styles/general.styles.scss";
@@ -58,9 +59,12 @@ import "./styles/chat-input-field.styles.scss";
 import "./styles/chat-message.styles.scss";
 import "./styles/logo.styles.scss";
 import "./styles/chat-favorites.styles.scss";
+import "./styles/home.styles.scss";
+import "./styles/about.styles.scss";
+import "./styles/projects.styles.scss";
 
 // Lazy-loading components
-const ProjectManagement = lazy(() => import("./components/ProjectManagement")); 
+// const ProjectManagement = lazy(() => import("./components/ProjectManagement")); 
 const Profile = lazy(() => import("./components/Profile")); 
 const Login = lazy(() => import("./components/Login")); 
 const Register = lazy(() => import("./components/Register")); 
@@ -266,9 +270,18 @@ const App = () => {
           <NavBar/>
           <div className="main-content">
             {notificationTabOpen ? <NotificationTab/> : null}
-            <TopNav handleCreateBoard={handleCreateBoard} handleToggleNotificationTab={handleToggleNotificationTab}/>
+
+            {user && isAuthenticated
+              ? (<TopNav
+                    handleCreateBoard={handleCreateBoard}
+                    handleToggleNotificationTab={handleToggleNotificationTab}
+                  />
+              ) : null
+            }
+
             <Routes>
-              <Route path="/" element={<PrivateRoute element={<Home/>}/>}/>
+              <Route path="/" element={<Home/>}/>
+              <Route path="/about" element={<About/>}/>
               <Route path="/projects" element={<PrivateRoute element={<Projects/>}/>}/>
               <Route path="/projects/:id" element={<PrivateRoute element={<ProjectOverview/>}/>}/>
               <Route path="/projects/:id/notifications" element={<PrivateRoute element={<Notifications/>}/>}/>
@@ -280,9 +293,9 @@ const App = () => {
               <Route path="/users" element={<PrivateRoute element={<Users setUserCardsActive={setUserCardsActive}/>}/>}/>
               <Route path="/chat/:id" element={<PrivateRoute element={<Chat/>}/>}/>
             </Routes>
+
           </div>
-          {!userCardsActive && currentProject && <ActivitySection/>}
-          {userCardsActive && <UserCards/>}
+          {currentProject && <ActivitySection/>}
         </div>
       </div>
     </Suspense>

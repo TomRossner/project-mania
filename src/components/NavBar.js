@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import IconContainer from './common/IconContainer';
 import {BsChatLeftText, BsChevronDown} from "react-icons/bs";
 import {IoSettingsOutline} from "react-icons/io5";
-import {AiOutlineProject} from "react-icons/ai";
+import {AiOutlineInfoCircle, AiOutlineProject} from "react-icons/ai";
 import { setCurrentProject } from '../store/project/project.actions';
 import useAuth from '../hooks/useAuth';
 import {MdLogout, MdLogin, MdPerson} from "react-icons/md";
@@ -14,6 +14,8 @@ import {HiUserGroup} from "react-icons/hi";
 import useProject from '../hooks/useProject';
 import Space from "./common/Space";
 import BlankProfilePicture from './common/BlankProfilePicture';
+import { RxHome } from 'react-icons/rx';
+import NavLink from './NavLink';
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -77,6 +79,11 @@ const NavBar = () => {
       <nav>
         <Logo/>
         <ul className='flex1'>
+            {/* <li><IconContainer icon={<RxHome className='icon'/>}/><Link className='link' to='/'>Home</Link></li> */}
+            {/* <li><IconContainer icon={<HiUserGroup className='icon'/>}/><Link className='link' to="/users">Browse users</Link></li>
+            <li><IconContainer icon={<BsChatLeftText className='icon small'/>}/><Link className='link' to={`/chat/${user?._id}`}>Chat</Link></li>
+            <li><IconContainer icon={<IoSettingsOutline className="icon"/>}/><Link className='link'>Settings</Link></li> */}
+            <NavLink path={'/'} icon={<RxHome className='icon'/>} text={'Home'}/>
             <div className='li-expand'>
               <li onClick={handleToggleProjectsDropdown}>
                 <IconContainer icon={<AiOutlineProject className='icon'/>}/>
@@ -90,9 +97,10 @@ const NavBar = () => {
               </div>
               </> : null}
             </div>
-            <li><IconContainer icon={<HiUserGroup className='icon'/>}/><Link className='link' to="/users">Browse users</Link></li>
-            <li><IconContainer icon={<BsChatLeftText className='icon small'/>}/><Link className='link' to={`/chat/${user?._id}`}>Chat</Link></li>
-            <li><IconContainer icon={<IoSettingsOutline className="icon"/>}/><Link className='link'>Settings</Link></li>
+            <NavLink path={'/users'} icon={<HiUserGroup className='icon'/>} text={'Browse users'}/>
+            <NavLink path={`/chat/${user?._id}`} icon={<BsChatLeftText className='icon'/>} text={'Chat'}/>
+            <NavLink path={'/about'} icon={<AiOutlineInfoCircle className='icon'/>} text={'About'}/>
+            <NavLink path={'/settings'} icon={<IoSettingsOutline className='icon'/>} text={'Settings'}/>
         </ul>
         <ul id='left-nav-bottom-ul'>
           <div className='li-expand'>

@@ -60,7 +60,7 @@
                         font-weight: 600;
                         font-style: italic;
                     }
-            }
+                }
     
     
     
@@ -95,6 +95,37 @@
                     }
                 }
             }
+        }
+    }
+}
+
+@media screen and (min-width: 1024px)  and (max-width: 1440px) {
+    .activity-section{
+        .activity-container{
+            .timeline{
+    
+                .activities{
+                    .profile-img-container{
+                        width: 3vw;
+                        height: 2.6vw;
+                        border-radius: 50%;
+                        
+                        img{
+                            width: 3vw;
+                            height: 2.6vw;
+                            border-radius: 50%;
+                        }
+                    }
+        
+                    .activity{
+                        .activity-text{
+                            font-size: 0.8rem;
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+            
         }
     }
 }

@@ -1,0 +1,30 @@
+@import "./variables";
+
+.container.home{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 98%;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 20px;
+    background-color: white;
+
+    h1{
+        font-weight: 800;
+        font-size: 3rem;
+    }
+
+    p{
+        width: 50%;
+    }
+
+    .buttons-container{
+        width: fit-content;
+        
+        .btn{
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+    }
+}

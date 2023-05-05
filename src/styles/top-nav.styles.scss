@@ -5,9 +5,23 @@
     align-items: center;
     gap: 1rem;
     margin-bottom: 0.5rem;
+    width: 100%;
+    margin: 0 auto 1rem auto;
+    background-color: white;
+    padding: 0.5rem 2rem;
+    border-radius: 22px;
 
     h1{
-        padding: 0.5em 1em;
         font-weight: 800;
+        flex: 1;
+    }
+}
+
+@media screen and (min-width: 1024px)  and (max-width: 1440px) {
+    .top-nav{
+
+        .flex1{
+            flex: 0;
+        }
     }
 }

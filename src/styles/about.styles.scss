@@ -1,0 +1,71 @@
+@import "./variables";
+
+.container.home{
+    h3{
+        font-size: 2.2rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        margin: 2rem 0;
+    }
+    
+    h4{
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-decoration: underline;
+    }
+    
+    .home-features{
+        display: flex;
+        width: 90%;
+        margin: 0 auto;
+        justify-content: space-between;
+        
+        .feature{
+            display: flex;
+            gap: 1rem;
+            flex-direction: column;
+            border: 1px solid $light_grey;
+            border-radius: 15px;
+            width: 40%;
+            padding: 1em;
+            background-color: $light;
+            box-shadow: 0 0 20px $light_grey2;
+    
+            h5{
+                font-weight: 800;
+                text-transform: uppercase;
+                font-size: 1.5rem;
+                text-align: center;
+            }
+        
+            ul{
+                display: flex;
+                flex-direction: column;
+                gap: 1em;
+                padding: 2rem;
+                
+                p, li{
+                    width: 90%;
+                    text-align: left;
+                }
+            }
+    
+        }
+    }
+}
+
+@media screen and (min-width: 1024px)  and (max-width: 1440px) {
+    .container.home{
+        p{
+            width: 90%;
+        }
+        .home-features{
+            flex-direction: column;
+            gap: 2rem;
+            .feature{
+                width: 90%;
+                margin: 0 auto;
+            }
+        }
+    }
+}

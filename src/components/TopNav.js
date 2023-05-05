@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import SearchBar from './common/SearchBar';
 import IconContainer from './common/IconContainer';
 import { BsPlus, BsBell } from 'react-icons/bs';
 import Space from './common/Space';
 import {BsFillCircleFill} from "react-icons/bs";
-import Clock from './Clock';
 import useAuth from '../hooks/useAuth';
 
 const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
@@ -18,14 +16,12 @@ const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
 
   return (
     <div className="top-nav">
-        {/* <SearchBar/> */}
         {userInfo && isAuthenticated
           ? <h1>👋 Welcome back, {userInfo.first_name}</h1>
           : null
         }
         
         <Space/>
-        {/* <Clock/> */}
         <button className="btn blue" onClick={handleCreateBoard}><IconContainer icon={<BsPlus className='icon'/>}/>Create New Board</button>
         <button className="btn white" onClick={handleToggleNotificationTab}>
           <IconContainer icon={<BsBell className='icon large'/>}/>
