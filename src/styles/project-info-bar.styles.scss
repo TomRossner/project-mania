@@ -103,3 +103,29 @@
         }
     }
 }
+
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+    .current-board-info-bar{
+        gap: 1rem;
+        .project-title-container{
+            width: 25vw;
+
+            .project-title{
+                flex: 1;
+
+                .input-container{
+                    width: 20vw;
+
+                    input{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .flex1{
+            flex: none;
+            display: none;
+        }
+    }
+}

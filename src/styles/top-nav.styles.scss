@@ -17,11 +17,16 @@
     }
 }
 
-@media screen and (min-width: 1024px)  and (max-width: 1440px) {
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
     .top-nav{
 
         .flex1{
             flex: 0;
+            display: none;
+        }
+
+        h1{
+            font-size: 1.8rem;
         }
     }
 }

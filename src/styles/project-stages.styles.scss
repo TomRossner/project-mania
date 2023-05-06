@@ -141,3 +141,39 @@
         }
     }
 }
+
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+    .current-board-stages-container{
+        .stage-container{
+            min-width: 45%;
+
+            .stage-title-container{
+                .input-container{
+                    width: 50%;
+
+                    input{
+                        font-size: 1.1rem;
+                    }
+                }
+            }
+        }
+    } 
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .current-board-stages-container{
+        .stage-container{
+            min-width: 70%;
+
+            .stage-title-container{
+                .input-container{
+                    width: 50%;
+
+                    input{
+                        font-size: 1.1rem;
+                    }
+                }
+            }
+        }
+    } 
+}

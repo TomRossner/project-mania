@@ -31,7 +31,7 @@ const Profile = () => {
   const headerRef = useRef();
   const [inputTypePassword, setInputTypePassword] = useState(true);
   const [userData, setUserData] = useState({
-    email: userInfo.email,
+    email: userInfo?.email,
     newPassword: '',
     currentPassword: ''
   });
@@ -125,7 +125,7 @@ const Profile = () => {
           </div>
           <h1>{userName}</h1>
           <div className='header-container'>
-            {userInfo.header
+            {userInfo?.header
             ? <>
                 {headerModal
                 ? <HeaderModal closeHeaderModal={closeHeaderModal}/>
@@ -165,22 +165,22 @@ const Profile = () => {
               name='currentPassword'
               text='Current password'
               onChange={handleInputChange}
-              value={userData.currentPassword}
+              value={userData?.currentPassword}
             />
             <Input
               type='password'
               name='newPassword'
               text='New password'
               onChange={handleInputChange}
-              value={userData.newPassword}
+              value={userData?.newPassword}
             />
             <button
               type='button'
               className='btn blue'
-              onClick={() => handleSaveNewPassword(userData.currentPassword, userData.newPassword)}
+              onClick={() => handleSaveNewPassword(userData?.currentPassword, userData?.newPassword)}
             >Save</button>
 
-            <p>Member since <span>{new Date(userInfo.created_at).toLocaleDateString()}</span></p>
+            <p>Member since <span>{new Date(userInfo?.created_at).toLocaleDateString()}</span></p>
         </>
         : <Spinner/>}
       </div>

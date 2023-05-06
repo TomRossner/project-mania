@@ -114,7 +114,7 @@ nav{
     }
 }
 
-@media screen and (max-width: 1440px) {
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
     .link{
         font-size: 1rem;
     }
@@ -123,6 +123,9 @@ nav{
         width: 18%;
 
         ul{
+            &.flex-1{
+                flex: none;
+            }
             &#left-nav-bottom-ul{
                 height: 28%;
             }

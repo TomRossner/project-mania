@@ -17,7 +17,7 @@
     }
 }
 
-@media screen and (max-width: 1440px) {
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
     .logo-container{
         p{
             font-size: 1.1rem;
