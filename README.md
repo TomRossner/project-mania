@@ -1,6 +1,6 @@
 # Project-Mania
 
-This project is a project management tool inspired by Trello.
+This project is a project management tool. Its main goal is to help you be organized and keep track of your tasks.
 
 ## Features:
 
