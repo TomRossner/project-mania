@@ -35,7 +35,7 @@ const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
 
   return (
     <div className="top-nav">
-      <MenuIcon/>
+        {isMobile && <MenuIcon/>}
         {userInfo && isAuthenticated
           ? <h1>👋 Welcome back, {userInfo.first_name}</h1>
           : null
