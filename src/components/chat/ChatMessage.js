@@ -6,7 +6,7 @@ const ChatMessage = ({msg, currentContact}) => {
     
   return (
     <>
-      <div className={from !== currentContact._id ? 'message-container right-side' : 'message-container'}>
+      <div className={from !== currentContact?._id ? 'message-container right-side' : 'message-container'}>
         <p className='message'>{text}</p>
         <span>{AM_PM(sent_at)}</span>
       </div>

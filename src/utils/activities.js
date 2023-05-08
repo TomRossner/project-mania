@@ -129,7 +129,7 @@ export const activity_addMember = (user, member, project) => {
 
     return createActivity(
         userDetails(user),
-        getActivityText(member.first_name, 'ADD_MEMBER', project.title, null),
+        getActivityText(member.first_name, 'ADD_MEMBER_TO_PROJECT', project.title, null),
         date
     );
 }

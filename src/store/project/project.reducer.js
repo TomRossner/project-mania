@@ -6,7 +6,8 @@ const INITIAL_STATE = {
     currentProject: null,
     activity: [],
     isUpdating: false,
-    error: null
+    error: null,
+    currentTask: null
 }
 
 export const projectReducer = (state = INITIAL_STATE, action) => {
@@ -29,6 +30,8 @@ export const projectReducer = (state = INITIAL_STATE, action) => {
             return {...state, isUpdating: false};
         case PROJECT_ACTION_TYPES.UPDATE_CURRENT_PROJECT_FAILED:
             return {...state, isUpdating: false, error: payload};
+        case PROJECT_ACTION_TYPES.SET_CURRENT_TASK:
+            return {...state, currentTask: payload};
         default:
             return state;
     }

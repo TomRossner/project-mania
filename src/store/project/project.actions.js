@@ -25,3 +25,6 @@ export const updateCurrentProjectSuccess = () => {
 export const updateCurrentProjectFailed = (error) => {
     return createAction(PROJECT_ACTION_TYPES.UPDATE_CURRENT_PROJECT_FAILED, error);
 }
+export const setCurrentTask = (task) => {
+    return createAction(PROJECT_ACTION_TYPES.SET_CURRENT_TASK, task);
+}

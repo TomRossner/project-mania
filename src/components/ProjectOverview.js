@@ -1,6 +1,5 @@
 import React from 'react';
 import Line from './common/Line';
-import Spinner from './common/Spinner';
 import DashboardTop from './DashboardTop';
 import ProjectStagesContainer from './ProjectStagesContainer';
 import useProject from '../hooks/useProject';

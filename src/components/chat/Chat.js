@@ -4,7 +4,7 @@ import Space from '../common/Space';
 import useAuth from '../../hooks/useAuth';
 import useChat from '../../hooks/useChat';
 import { useDispatch } from 'react-redux';
-import { setCurrentContact } from '../../store/chat/chat.actions';
+import { setChatSideBarOpen, setCurrentContact, setMessages } from '../../store/chat/chat.actions';
 import BlankProfilePicture from '../common/BlankProfilePicture';
 import IconContainer from '../common/IconContainer';
 import {MdDoneAll} from "react-icons/md";
@@ -12,7 +12,7 @@ import { AM_PM } from '../../utils/timeFormats';
 import { fetchChatAsync } from '../../store/chat/chat.actions';
 
 const Chat = ({contactId, messages, isTyping}) => {
-    const {getContactInfo} = useChat();
+    const {getContactInfo, currentChat} = useChat();
     const {userInfo} = useAuth();
     const dispatch = useDispatch();
     const [lastMessage, setLastMessage] = useState(null);
@@ -28,6 +28,7 @@ const Chat = ({contactId, messages, isTyping}) => {
     const handleChatClick = async (contactId) => {
       loadChat(userInfo?._id, contactId);
       dispatch(setCurrentContact(contact));
+      dispatch(setChatSideBarOpen(false));
     }
 
     // Set last message and unseen messages

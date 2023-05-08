@@ -8,6 +8,7 @@ import { selectFavorites, selectFavoritesChats } from '../../store/chat/chat.sel
 import Chat from './Chat';
 import useSocketEvents from '../../hooks/useSocketEvents';
 import Spinner from '../common/Spinner';
+import useChat from '../../hooks/useChat';
 
 const ChatFavorites = () => {
   const favorites = useSelector(selectFavorites);
@@ -15,6 +16,7 @@ const ChatFavorites = () => {
   const dispatch = useDispatch();
   const [typingStates, setTypingStates] = useState({});
   const favoritesChats = useSelector(selectFavoritesChats);
+  const {sortChats} = useChat();
 
   // Listen to socket events
   useSocketEvents({
@@ -54,7 +56,7 @@ const ChatFavorites = () => {
           <div className='favorites'>
             {favoritesChats?.length
               ? <>
-                {favoritesChats?.map(favChat => {
+                {sortChats(favoritesChats).map(favChat => {
                   return (
                     <Chat
                         key={favChat?._id}

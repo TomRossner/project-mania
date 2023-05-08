@@ -1,11 +1,11 @@
-import { Suspense, lazy, useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Suspense, lazy, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
 import { useDispatch} from "react-redux";
 import { fetchBoardsAsync, setBoards } from "./store/boards/boards.actions";
 import { setCurrentProject } from "./store/project/project.actions";
 import { setUserInfo, fetchUserInfoAsync } from "./store/userInfo/userInfo.actions";
 import { setElement } from "./store/globalStates/globalStates.actions";
-import { emitIsOnline, socket } from "./utils/socket";
+import { emitDisconnection, emitOnline } from "./utils/socket";
 import { setChat, setCurrentContact } from "./store/chat/chat.actions";
 
 // Custom Hooks
@@ -27,6 +27,9 @@ import AdminForm from "./components/forms/AdminForm";
 import MoveTaskPopup from "./components/MoveTaskPopup";
 import Home from "./components/Home";
 import About from "./components/About";
+import ChangePriorityPopup from "./components/ChangePriorityPopup";
+import Footer from "./components/Footer";
+import PageNotFound from "./components/PageNotFound";
 
 // Styles
 import "./styles/general.styles.scss";
@@ -62,9 +65,12 @@ import "./styles/chat-favorites.styles.scss";
 import "./styles/home.styles.scss";
 import "./styles/about.styles.scss";
 import "./styles/projects.styles.scss";
+import "./styles/user-tab.styles.scss";
+import "./styles/footer.styles.scss";
+import "./styles/not-found.styles.scss";
+import AdminModal from "./components/AdminModal";
 
 // Lazy-loading components
-// const ProjectManagement = lazy(() => import("./components/ProjectManagement")); 
 const Profile = lazy(() => import("./components/Profile")); 
 const Login = lazy(() => import("./components/Login")); 
 const Register = lazy(() => import("./components/Register")); 
@@ -74,7 +80,6 @@ const Logout = lazy(() => import("./components/Logout"));
 const ActivitySection = lazy(() => import("./components/ActivitySection")); 
 const TopNav = lazy(() => import("./components/TopNav")); 
 const Users = lazy(() => import("./components/Users")); 
-const UserCards = lazy(() => import("./components/UserCards"));
 const Chat = lazy(() => import("./components/chat/ChatApp"));
 
 const App = () => {
@@ -101,10 +106,10 @@ const App = () => {
     updateCurrentProjectInBoardsArray,
     checkIfAdmin,
     createPopupOpen,
-    showError
+    showError,
+    changePriorityPopupOpen,
+    adminModalOpen
   } = useProject();
-
-  const [userCardsActive, setUserCardsActive] = useState(false);
   
   const {
     error: chatError,
@@ -125,6 +130,7 @@ const App = () => {
 
   // Handle user went offline
   const handleIsOffline = async (data) => {
+    console.log('Handling offline')
 
     if (data.userId === currentContact?._id && currentContact?.online === true) {
         const contact = await getContactInfo(data.userId);
@@ -180,6 +186,7 @@ const App = () => {
     if (!isAuthenticated) {
       dispatch(setCurrentProject(null));
       dispatch(setBoards([]));
+      // socket.emit('clientDisconnect', { socketId: socket.id });
     }
   }, [user, isAuthenticated]);
 
@@ -205,8 +212,6 @@ const App = () => {
       }
   }, [user, isAuthenticated]);
 
-
-
   useEffect(() => {
       if ((user && isAuthenticated && !userInfo)
       || (user && isAuthenticated && user.email !== userInfo?.email)) {
@@ -214,7 +219,6 @@ const App = () => {
       }
 
       if ((!user || !isAuthenticated) && userInfo) {
-        // emitIsOffline(userInfo._id, `${userInfo?.first_name} ${userInfo?.last_name}`);
         dispatch(setUserInfo(null));
       }
   }, [user, isAuthenticated, userInfo]);
@@ -226,13 +230,10 @@ const App = () => {
       
       if (userInfo && !emittedConnection) {
           const userName = `${userInfo?.first_name} ${userInfo?.last_name}`;
-          socket.emit('connection', {userName, userId: user?._id});
+
+          emitOnline(userName, userInfo?._id);
+
           setEmittedConnection(true);
-          emitIsOnline(
-            userInfo?._id,
-            `${userInfo?.first_name} ${userInfo?.last_name}`
-          );
-          console.log("Emitting connection")
       }
   }, [userInfo]);
 
@@ -258,14 +259,33 @@ const App = () => {
 
 
 
+  // Emitting disconnection to update online status when the user closes browser/reloads page
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+
+      // Emit disconnection
+      emitDisconnection();
+    };
+
+    // Before-Unload listener
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
 
   return (
     <Suspense fallback={<Spinner/>}>
       <div className='main'>
         <Create/>
         <ErrorPopup/>
+        {changePriorityPopupOpen && <ChangePriorityPopup/>}
         {moveTaskPopupOpen && <MoveTaskPopup/>}
         {adminFormOpen && <AdminForm/>}
+        {adminModalOpen && <AdminModal/>}
         <div className="sections-container">
           <NavBar/>
           <div className="main-content">
@@ -290,13 +310,15 @@ const App = () => {
               <Route path="/logout" element={<PrivateRoute element={<Logout/>}/>}/>
               <Route path="/sign-in" element={<Login/>}/>
               <Route path="/sign-up" element={<Register/>}/>
-              <Route path="/users" element={<PrivateRoute element={<Users setUserCardsActive={setUserCardsActive}/>}/>}/>
+              <Route path="/users" element={<PrivateRoute element={<Users/>}/>}/>
               <Route path="/chat/:id" element={<PrivateRoute element={<Chat/>}/>}/>
+              <Route path="*" element={<PageNotFound/>} />
             </Routes>
 
           </div>
           {currentProject && <ActivitySection/>}
         </div>
+        <Footer/>
       </div>
     </Suspense>
   )

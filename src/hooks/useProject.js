@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { selectBoards, selectIsLoading } from "../store/boards/boards.selector";
-import { selectActivity, selectCurrentProject, selectProjectMembers } from "../store/project/project.selector";
+import { selectActivity, selectCurrentProject, selectCurrentTask, selectProjectMembers } from "../store/project/project.selector";
 import { updateProject, deleteProject } from "../httpRequests/http.project";
 import { useNavigate } from "react-router-dom";
 import { setBoards } from "../store/boards/boards.actions";
@@ -9,7 +9,7 @@ import {getUserInfo} from "../httpRequests/http.auth";
 import { selectMembers } from "../store/members/members.selector";
 import useAuth from "./useAuth";
 import { generateId } from "../utils/IdGenerator";
-import { setCurrentProject, setProjectMembers } from "../store/project/project.actions";
+import { setCurrentProject, setCurrentTask, setProjectMembers } from "../store/project/project.actions";
 import {selectGlobalStates} from "../store/globalStates/globalStates.selector";
 import {
     setTasks,
@@ -24,7 +24,11 @@ import {
     setTaskPriority,
     setAdminPassFormOpen,
     setTaskToMove,
-    setMoveTaskPopupOpen
+    setMoveTaskPopupOpen,
+    setChangePriorityPopupOpen,
+    setNavOpen,
+    setActivitySectionOpen,
+    setAdminModalOpen
 } from "../store/globalStates/globalStates.actions";
 import {
     activity_addMember,
@@ -48,6 +52,7 @@ const useProject = () => {
     const members = useSelector(selectMembers);
     const activity = useSelector(selectActivity);
     const isLoading = useSelector(selectIsLoading);
+    const currentTask = useSelector(selectCurrentTask);
     const {user, userInfo, setUserInfo} = useAuth();
     const {
         element,
@@ -64,7 +69,9 @@ const useProject = () => {
         adminFormOpen,
         notifications,
         taskToMove,
-        moveTaskPopupOpen
+        moveTaskPopupOpen,
+        changePriorityPopupOpen,
+        adminModalOpen
     } = useSelector(selectGlobalStates);
 
 
@@ -200,10 +207,21 @@ const useProject = () => {
                 return handleDeleteTask(task);
             case "Move task":
                 return handleMoveTask(task);
+            case "Change priority":
+                return handleChangePriority(task);
             default:
                 return console.log("Unhandled option");
         }
     }
+
+    const handleChangePriority = (task) => {
+        console.log(task);
+        // Open popup
+        dispatch(setChangePriorityPopupOpen(true));
+
+        // Set current task
+        dispatch(setCurrentTask(task));
+    } 
 
     // Close move task popup
     const closeMoveTaskPopup = () => dispatch(setMoveTaskPopupOpen(false));
@@ -470,13 +488,14 @@ const useProject = () => {
     // Remove member from project
     const handleRemoveMemberFromProject = (id) => {
         const memberToRemove = projectMembers.find(member => member._id === id);
-
+        
         if (!memberToRemove) throw new Error("Member not found");
 
         dispatch(setProjectMembers(projectMembers.filter(member => member._id !== memberToRemove._id)));
 
         dispatch(setCurrentProject({
             ...currentProject,
+            members: [...currentProject.members.filter(member => member._id !== id)],
             activity: [...currentProject.activity, activity_removeMember(userInfo, memberToRemove, currentProject)]
         }));
     }
@@ -546,7 +565,13 @@ const useProject = () => {
 
 
 
+    const closeMenu = () => {
+        dispatch(setNavOpen(false));
+    }
 
+    const closeRecentActivity = () => {
+        dispatch(setActivitySectionOpen(false));
+    }
 
     const handleCreate = (type) => {
         closeStageOptionMenus();
@@ -583,6 +608,14 @@ const useProject = () => {
     }
     
     const closeAdminForm = () => dispatch(setAdminPassFormOpen(false));
+
+    const handleOpenAdminModal = () => {
+        dispatch(setAdminModalOpen(true));
+    }
+
+    const closeAdminModal = () => {
+        dispatch(setAdminModalOpen(false));
+    }
 
     const checkIfAdmin = () => {
         // Set admin property to true if the user's email is in admins list
@@ -623,6 +656,10 @@ const useProject = () => {
         taskToMove,
         moveTaskPopupOpen,
         isLoading,
+        currentTask,
+        adminModalOpen,
+        changePriorityPopupOpen,
+        handleChangePriority,
         handleCreateBoard,
         handleCreate, // handleCreate and handleCreateBoard are similar
         handleToggleNotificationTab,
@@ -662,7 +699,11 @@ const useProject = () => {
         updateCurrentProjectInBoardsArray,
         update,
         refreshTasks,
-        showError
+        showError,
+        closeMenu,
+        closeRecentActivity,
+        handleOpenAdminModal,
+        closeAdminModal
     }
 }
 

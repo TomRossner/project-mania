@@ -1,27 +1,28 @@
-import React, { Suspense, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ChatInputField from './ChatInputField';
 import IconContainer from '../common/IconContainer';
-import { BiMessageAdd } from 'react-icons/bi';
 import useChat from '../../hooks/useChat';
 import Conversation from './Conversation';
 import useAuth from '../../hooks/useAuth';
-import { BsChatLeftTextFill, BsSearch} from 'react-icons/bs';
+import { BsChevronRight, BsSearch} from 'react-icons/bs';
 import BlankProfilePicture from '../common/BlankProfilePicture';
 import ProfilePicture from '../common/ProfilePicture';
 import { getChat } from '../../httpRequests/http.chat';
 import { useDispatch, useSelector } from 'react-redux';
-import { setContacts, setCurrentContact } from '../../store/chat/chat.actions';
-import Chat from './Chat';
-import { selectChats } from '../../store/chat/chat.selectors';
+import { fetchChatAsync, setChatSideBarOpen, setContacts, setCurrentContact } from '../../store/chat/chat.actions';
 import { setCurrentProject } from '../../store/project/project.actions';
-import Spinner from '../common/Spinner';
 import ChatFavorites from './ChatFavorites';
 import SearchBar from '../common/SearchBar';
 import ChatContacts from './ChatContacts';
 import useProject from '../../hooks/useProject';
+import { useNavigate } from 'react-router-dom';
+import useMobile from '../../hooks/useMobile';
+import {GrChatOption} from "react-icons/gr";
+import {HiOutlineChatBubbleLeftRight} from "react-icons/hi2";
+import { selectChatSideBarOpen } from '../../store/chat/chat.selectors';
 
 const ChatApp = () => {
-  const {loadContacts, contacts, createNewChat, getContactInfo} = useChat();
+  const {loadContacts, contacts, createNewChat, getContactInfo, currentChat} = useChat();
   const {userInfo} = useAuth();
   const [searchValue, setSearchValue] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -29,6 +30,9 @@ const ChatApp = () => {
   const [searchResults, setSearchResults] = useState([]);
   const dispatch = useDispatch();
   const {currentProject} = useProject();
+  const navigate = useNavigate();
+  const {isMobile} = useMobile();
+  const chatSideBarOpen = useSelector(selectChatSideBarOpen);
 
   // Update search value
   const handleSearchChange = (e) => {
@@ -74,6 +78,16 @@ const ChatApp = () => {
     }
   }
 
+  // Refresh current chat
+  const refreshCurrentChat = () => {
+    dispatch(fetchChatAsync(currentChat.users[0], currentChat.users[1]));
+  }
+
+  // Toggle chat side bar
+  const toggleChatSideBar = () => {
+    dispatch(setChatSideBarOpen(!chatSideBarOpen));
+  }
+
   // Set isSearching
   useEffect(() => {
     if (inputRef.current && searchValue.length) {
@@ -87,7 +101,7 @@ const ChatApp = () => {
     checkContactNames(searchValue);
   }, [searchValue]);
 
-  // Load contacts
+  // Set currentProject to null
   useEffect(() => {
     if (currentProject) dispatch(setCurrentProject(null));
   }, []);
@@ -106,16 +120,29 @@ const ChatApp = () => {
 
   useEffect(() => {
     if (!userInfo) return;
+
+    // Load contacts
     loadContacts();
+
+    // Refresh current chat
+    if (currentChat) {
+      refreshCurrentChat();
+    }
+  }, []);
+
+  // Redirect to homepage
+  useEffect(() => {
+    if (!userInfo) navigate('/');
   }, []);
 
   return (
     <div className='main-chat-container'>
-      <div className='left'>
+      <div className={chatSideBarOpen && isMobile ? 'left open' : 'left'}>
+        <IconContainer icon={<BsChevronRight className='icon'/>} additionalClass={isMobile ? 'mobile' : 'not-mobile'} onClick={toggleChatSideBar}/>
 
         <div className='main-chat-title'>
+          <IconContainer icon={<HiOutlineChatBubbleLeftRight className='icon'/>}/>
           <h1>Chat</h1>
-          {/* <IconContainer icon={<BiMessageAdd className='icon'/>}/> */}
         </div>
 
         <SearchBar

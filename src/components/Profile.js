@@ -14,6 +14,9 @@ import useProject from '../hooks/useProject';
 import { PATTERN_TYPES, checkPattern } from '../utils/regex';
 import { ERROR_MESSAGES } from '../utils/errors';
 import Input from './common/Input';
+import BackButton from './common/BackButton';
+import { Link } from 'react-router-dom';
+import Space from './common/Space';
 
 const Profile = () => {
   const {
@@ -36,6 +39,7 @@ const Profile = () => {
     currentPassword: ''
   });
   const {showError} = useProject();
+  const [passwordFormOpen, setPasswordFormOpen] = useState(false);
 
   const toggleReadOnly = () => setReadOnly(!readOnly);
 
@@ -98,6 +102,10 @@ const Profile = () => {
     setReadOnly(false);
   }
 
+  const handleTogglePasswordForm = () => {
+    setPasswordFormOpen(!passwordFormOpen);
+  }
+
   // Refresh profile image
   useEffect(() => {
     if (!userInfo) return;
@@ -108,6 +116,7 @@ const Profile = () => {
 
   return (
     <>
+    <BackButton/>
       <div className='profile-container'>
         {userInfo ?
         <>
@@ -126,61 +135,72 @@ const Profile = () => {
           <h1>{userName}</h1>
           <div className='header-container'>
             {userInfo?.header
-            ? <>
+              ? <>
+                  <UserHeader
+                    readOnly={readOnly}
+                    setReadOnly={setReadOnly}
+                    header={header}
+                    setHeader={setHeader}
+                    handleSaveHeader={handleSaveHeader}
+                    toggleReadOnly={toggleReadOnly}
+                  />
+                </>
+              : <>
                 {headerModal
                 ? <HeaderModal closeHeaderModal={closeHeaderModal}/>
                 : <>
-                    <UserHeader readOnly={readOnly} setReadOnly={setReadOnly} header={header} setHeader={setHeader}/>
-                    {readOnly && <IconContainer icon={<RiEditLine className='icon'/>} onClick={toggleReadOnly} title="Edit header"/>}
-                    {!readOnly && <IconContainer icon={<FiCheck className='icon green'/>} onClick={() => handleSaveHeader(header.trim())} title="Save changes"/>}
                     <UserHeader
                       readOnly={readOnly}
                       setReadOnly={setReadOnly}
                       header={header}
                       setHeader={setHeader}
-                      handleSaveHeader={handleSaveHeader}
                       toggleReadOnly={toggleReadOnly}
+                      handleSaveHeader={handleSaveHeader}
                     />
-                  </>
-                }
-              </>
-            : <>
-                {headerModal
-                ? <HeaderModal closeHeaderModal={closeHeaderModal}/>
-                : <>
-                    <UserHeader readOnly={readOnly} setReadOnly={setReadOnly} header={header} setHeader={setHeader}/>
-                    {readOnly && <IconContainer icon={<RiEditLine className='icon'/>} onClick={toggleReadOnly} title="Edit header"/>}
-                    {!readOnly && <IconContainer icon={<FiCheck className='icon green'/>} onClick={() => handleSaveHeader(header.trim())} title="Save changes"/>}
                   </>
                 }
               </>
               }
           </div>
           <h4>Email address</h4>
-          <p>{userInfo?.email}</p>
+          <span id='email'>{userInfo?.email}</span>
+          <div className="form-container">
 
-            <h3>Change password</h3>
-            <Input
-              type={inputTypePassword ? 'password' : 'text'}
-              name='currentPassword'
-              text='Current password'
-              onChange={handleInputChange}
-              value={userData?.currentPassword}
-            />
-            <Input
-              type='password'
-              name='newPassword'
-              text='New password'
-              onChange={handleInputChange}
-              value={userData?.newPassword}
-            />
-            <button
-              type='button'
-              className='btn blue'
-              onClick={() => handleSaveNewPassword(userData?.currentPassword, userData?.newPassword)}
-            >Save</button>
+              <button type='button' className='btn link' onClick={handleTogglePasswordForm}>Change password</button>
 
-            <p>Member since <span>{new Date(userInfo?.created_at).toLocaleDateString()}</span></p>
+              <form className={passwordFormOpen ? 'open' : ''} onSubmit={() => handleSaveNewPassword(userData?.currentPassword, userData?.newPassword)}>
+
+                  <div className="form-inputs-container">
+
+                    <Input
+                      type={inputTypePassword ? 'password' : 'text'}
+                      name='currentPassword'
+                      text='Current password'
+                      placeholderText='Current password'
+                      onChange={handleInputChange}
+                      value={userData?.currentPassword}
+                    />
+
+                    <Input
+                      type='password'
+                      name='newPassword'
+                      text='New password'
+                      placeholderText='New password'
+                      onChange={handleInputChange}
+                      value={userData?.newPassword}
+                    />
+                    
+                    <div className="buttons-container">
+                        <button type="button" className={"btn form"}>
+                            Save changes
+                        </button>
+                    </div>
+                    
+                  </div>
+              </form>
+          </div>
+          <Space/>
+          <p>Member since <span>{new Date(userInfo?.created_at).toLocaleDateString()}</span></p>
         </>
         : <Spinner/>}
       </div>

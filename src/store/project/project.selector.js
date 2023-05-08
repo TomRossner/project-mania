@@ -9,3 +9,5 @@ export const selectBoards = (state) => state.project.boards;
 export const selectActivity = (state) => state.project.activity;
 
 export const selectIsUpdating = (state) => state.project.isUpdating;
+
+export const selectCurrentTask = (state) => state.project.currentTask;

@@ -9,6 +9,16 @@ export const socket = io(API_URL, {
     allowEIO3: true
 });
 
+// Emit connection
+export const emitOnline = (userName, userId) => {
+    socket.emit('connection', {userName, userId});
+}
+
+// Emit disconnection
+export const emitDisconnection = () => {
+    socket.emit('disconnecting');
+}
+
 // Notify contact is typing
 export const notifyIsTyping = (chatId, targetSocketId) => {
     socket.emit('typing', {chatId, targetSocketId});
@@ -29,15 +39,15 @@ export const updateIsSeen = (messageId, targetSocketId) => {
     socket.emit('seen', {messageId, targetSocketId});
 }
 
-// Emit online
-export const emitIsOnline = (userId, userName) => {
-    socket.emit('online', {userId, userName});
-}
+// // Emit online
+// export const emitIsOnline = (userId, userName) => {
+//     socket.emit('online', {userId, userName});
+// }
 
 // Emit offline
-export const emitIsOffline = (userId, userName) => {
-    socket.emit('offline', {userId, userName});
-}
+// export const emitIsOffline = (userId, userName) => {
+//     socket.emit('offline', {userId, userName});
+// }
 
 // Emit created chat
 export const emitCreateChat = (userId, targetSocketId, newChat) => {

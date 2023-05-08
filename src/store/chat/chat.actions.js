@@ -62,6 +62,10 @@ export const setFavoritesChats = (favoritesChats) => {
     return createAction(CHAT_ACTION_TYPES.SET_FAVORITES_CHATS, favoritesChats);
 }
 
+export const setChatSideBarOpen = (bool) => {
+    return createAction(CHAT_ACTION_TYPES.SET_CHAT_SIDE_BAR_OPEN, bool);
+}
+
 
 export const fetchChatAsync = (userId, contactId) => async (dispatch) => {
     dispatch(fetchChatStart());

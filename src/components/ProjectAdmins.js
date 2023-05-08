@@ -7,12 +7,36 @@ import useProject from '../hooks/useProject';
 import { BsCircleFill } from 'react-icons/bs';
 import { getUserByEmail } from '../httpRequests/http.members';
 import { generateKey } from '../utils/keyGenerator';
+import { socket } from '../utils/socket';
+import { useDispatch } from 'react-redux';
+import { setCurrentProject } from '../store/project/project.actions';
 
 const ProjectAdmins = () => {
     const {userInfo, user, userName} = useAuth();
-    const {currentProject} = useProject();
+    const {currentProject, handleOpenAdminModal} = useProject();
     const [adminEmails, setAdminEmails] = useState([]);
     const [admins, setAdmins] = useState([]);
+    const dispatch = useDispatch();
+
+    socket.on('online', (data) => {
+        if (admins.some(adm => adm._id === data.userId)) {
+            setAdmins([...admins.map(adm => {
+                if (adm._id === data.userId) {
+                    return {...adm, online: true};
+                } else return adm;
+            })])
+        }
+    })
+    
+    socket.on('offline', (data) => {
+        if (admins.some(adm => adm._id === data.userId)) {
+            setAdmins([...admins.map(adm => {
+                if (adm._id === data.userId) {
+                    return {...adm, online: false};
+                } else return adm;
+            })])
+        }
+    })
 
     const onlineStatusIcon = (user) => {
         return <BsCircleFill className={user.online ? 'icon online-status green' : 'icon online-status grey'}/>
@@ -63,18 +87,39 @@ const ProjectAdmins = () => {
 
     }, [currentProject]);
 
+    useEffect(() => {
+        if (currentProject?.members.length === 1 && currentProject?.members[0].admin === false) {
+            dispatch(setCurrentProject({
+                ...currentProject,
+                admins: [...currentProject.admins, currentProject.members[0].email]
+            }))
+        }
+    }, [currentProject]);
+
+    useEffect(() => {
+        const handleUnload = () => {
+          socket.emit('unload', { userId: userInfo?._id });
+        };
+      
+        window.addEventListener('beforeunload', handleUnload);
+      
+        return () => {
+          window.removeEventListener('beforeunload', handleUnload);
+        };
+      }, [userInfo?._id]);
+
   return (
     <div className="current-project-admins">
         <span>BOARD ADMINS</span>
         <div className="admins">
-            {admins.length ? admins.map(admin => {
+            {admins?.length ? admins?.map(admin => {
                 if (admin.email === user?.email) {
                     return (
                         <div className="admin" key={generateKey()}>
                             {admin.img_url || admin.base64_img_data
                             ? <>
                                 <ProfilePicture src={checkProfileURL(userInfo)}/>
-                                <IconContainer title={userInfo.online ? 'Online' : 'Offline'} icon={onlineStatusIcon(userInfo)}/>
+                                <IconContainer title={userInfo?.online ? 'Online' : 'Offline'} icon={onlineStatusIcon(userInfo)}/>
                               </>
                             : <BlankProfilePicture/>}
                             <span>{userName} (You)</span>
@@ -96,6 +141,7 @@ const ProjectAdmins = () => {
                 )
             }) : null}
         </div>
+        <button className='btn link' onClick={handleOpenAdminModal}>I'm an admin</button>
     </div>
   )
 }

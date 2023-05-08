@@ -42,8 +42,13 @@ export const labels = [
         id: "label_time"
     },
     {
-        name: "Due Today",
+        name: "Due today",
         color_class: "orange",
         id: "label_due_today"
+    },
+    {
+        name: "Completed",
+        color_class: "green",
+        id: "label_completed"
     },
 ]

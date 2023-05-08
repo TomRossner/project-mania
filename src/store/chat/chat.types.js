@@ -23,4 +23,7 @@ export const CHAT_ACTION_TYPES = {
     // Favorites
     SET_FAVORITES: 'chat/SET_FAVORITES',
     SET_FAVORITES_CHATS: 'chat/SET_FAVORITES_CHATS',
+
+    // Chat side bar
+    SET_CHAT_SIDE_BAR_OPEN: 'chat/SET_CHAT_SIDE_BAR_OPEN',
 }

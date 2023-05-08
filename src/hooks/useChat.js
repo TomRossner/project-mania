@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
 import useAuth from './useAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectChat, selectChats, selectContacts, selectCurrentChat, selectCurrentContact, selectFavorites, selectFavoritesChats, selectMessages } from '../store/chat/chat.selectors';
-import { getMembers, getUserById } from '../httpRequests/http.members';
-import { fetchChatAsync, fetchContactsAsync, setChat, setCurrentContact, setFavoritesChats, setMessages } from '../store/chat/chat.actions';
+import { getUserById } from '../httpRequests/http.members';
+import { fetchContactsAsync, setChat, setFavoritesChats, setMessages } from '../store/chat/chat.actions';
 import { emitCreateChat, sendMessage, socket } from '../utils/socket';
-import { getChat, createChat, getUserChats, addToFavorites, removeFromFavorites } from '../httpRequests/http.chat';
+import {  createChat, getUserChats } from '../httpRequests/http.chat';
 import { setChats } from '../store/chat/chat.actions';
-import { setContacts } from '../store/chat/chat.actions';
 
 const useChat = () => {
-    const {user, userInfo} = useAuth();
+    const {userInfo} = useAuth();
     const currentChat = useSelector(selectCurrentChat);
     const currentContact = useSelector(selectCurrentContact);
     const contacts = useSelector(selectContacts);
@@ -19,9 +17,6 @@ const useChat = () => {
     const {error} = useSelector(selectChat);
     const chats = useSelector(selectChats);
     const favorites = useSelector(selectFavorites);
-    const favoritesChats = useSelector(selectFavoritesChats);
-
-
 
     // Socket event handlers
 
@@ -92,6 +87,22 @@ const useChat = () => {
         dispatch(setFavoritesChats(favoritesChats));
     }
 
+    const sortChats = (chats) => {
+        // Filter empty chats
+        const chatsToFilter = chats.filter(chat => chat.messages.length > 0);
+
+        // Sort 
+        const sortedChats = chatsToFilter.sort((chatA, chatB) => {
+            const chatA_latestMessage = chatA.messages[chatA.messages.length - 1];
+            const chatB_latestMessage = chatB.messages[chatB.messages.length - 1];
+
+            return new Date(chatA_latestMessage.sent_at) - new Date(chatB_latestMessage.sent_at);
+        });
+
+        // Return sorted chats in reversed order
+        return sortedChats.reverse();
+    }
+
 
   return {
     currentChat,
@@ -106,7 +117,8 @@ const useChat = () => {
     loadContacts,
     getContactInfo,
     handleSendMessage,
-    fetchUserChats
+    fetchUserChats,
+    sortChats
   }
 }
 

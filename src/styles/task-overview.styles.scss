@@ -18,6 +18,10 @@
         border: 1px solid $blue_hover;
     }
 
+    // &.completed{
+    //     background-color: rgb(216, 248, 216);
+    // }
+
     &.drag{
         display: none;
         cursor: grabbing;
@@ -96,4 +100,9 @@
             }
         }
     }
+}
+
+#current-priority{
+    gap: 1em;
+    font-weight: 600;
 }

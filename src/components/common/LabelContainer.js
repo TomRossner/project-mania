@@ -1,9 +1,8 @@
 import React from 'react';
 import PriorityLabel from "./PriorityLabel";
 
-const LabelsContainer = ({priority, additionalClass, fn, content}) => {
+const LabelContainer = ({priority, additionalClass, fn, content}) => {
   return (
-
     <>
       {content
         ?
@@ -19,4 +18,4 @@ const LabelsContainer = ({priority, additionalClass, fn, content}) => {
   )
 }
 
-export default LabelsContainer;
+export default LabelContainer;

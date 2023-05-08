@@ -13,3 +13,5 @@ export const selectContacts = (state) => state.chat.contacts;
 export const selectFavorites = (state) => state.chat.favorites;
 
 export const selectFavoritesChats = (state) => state.chat.favoritesChats;
+
+export const selectChatSideBarOpen = (state) => state.chat.chatSideBarOpen;

@@ -7,4 +7,5 @@ export const PROJECT_ACTION_TYPES = {
     SET_BOARDS: 'project/SET_BOARDS',
     ADD_ACTIVITY: 'project/ADD_ACTIVITY',
     SET_ACTIVITY: 'project/SET_ACTIVITY',
+    SET_CURRENT_TASK: 'project/SET_CURRENT_TASK',
 }

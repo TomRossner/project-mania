@@ -14,7 +14,7 @@ const ChatContacts = () => {
     const chats = useSelector(selectChats);
     const contacts = useSelector(selectContacts);
     const [typingStates, setTypingStates] = useState({});
-    const {fetchUserChats} = useChat();
+    const {fetchUserChats, sortChats} = useChat();
     const favorites = useSelector(selectFavorites);
 
     // Listen to socket events
@@ -34,12 +34,9 @@ const ChatContacts = () => {
         if (!contacts.length) return;
         
         // Fetching user chats
-        fetchUserChats();
+        if (userInfo) fetchUserChats();
 
     }, [contacts, favorites]);
-
-
-    // .sort((chatA, chatB) => Number(chatA.messages[chatA.messages.length - 1].sent_at) - Number(chatB.messages[chatB.messages.length - 1].sent_at))
 
   return (
       <div className='chat-contacts'>
@@ -50,16 +47,19 @@ const ChatContacts = () => {
             </div>
 
             <Suspense fallback={<Spinner/>}>
-                {chats?.map(chat => {
-                    return (
-                        <Chat
-                            key={chat._id}
-                            contactId={chat.users?.find(uid => uid !== userInfo?._id)}
-                            messages={chat.messages}
-                            isTyping={typingStates[chat._id]}
-                        />
-                    )
-                })}
+                {chats?.length
+                    ? sortChats(chats).map(chat => {
+                        return (
+                            <Chat
+                                key={chat._id}
+                                contactId={chat.users?.find(uid => uid !== userInfo?._id)}
+                                messages={chat.messages}
+                                isTyping={typingStates[chat._id]}
+                            />
+                        )
+                    })
+                    : null
+                }
             </Suspense>
 
         </div>

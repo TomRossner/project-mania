@@ -1,34 +1,32 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectChat, selectFavorites } from '../../store/chat/chat.selectors';
-import Spinner from '../common/Spinner';
+import { selectFavorites } from '../../store/chat/chat.selectors';
 import useChat from '../../hooks/useChat';
 import Line from '../common/Line';
 import ChatMessage from './ChatMessage';
 import { generateKey } from '../../utils/keyGenerator';
-import { API_URL, notifyIsNotTyping, notifyIsTyping, socket } from '../../utils/socket';
 import ProfilePicture from '../common/ProfilePicture';
 import BlankProfilePicture from '../common/BlankProfilePicture';
-import { setCurrentContact, setFavorites } from '../../store/chat/chat.actions';
+import { setChat, setFavorites } from '../../store/chat/chat.actions';
 import useSocketEvents from '../../hooks/useSocketEvents';
 import Space from '../common/Space';
 import IconContainer from '../common/IconContainer';
-import { RiUserStarLine } from 'react-icons/ri';
 import { AiOutlineUser } from 'react-icons/ai';
 import { BsStarFill } from 'react-icons/bs';
 import { lastSeenTime } from '../../utils/timeFormats';
 import { updateUser } from '../../httpRequests/http.auth';
 import useAuth from '../../hooks/useAuth';
-import { setUserInfo } from '../../store/userInfo/userInfo.actions';
+import useMobile from '../../hooks/useMobile';
 
 const Conversation = () => {
-    const {currentContact, messages, currentChat, setMessages, getContactInfo} = useChat();
+    const {currentContact, messages, currentChat, setMessages} = useChat();
     const [contactName, setContactName] = useState('');
     const dispatch = useDispatch();
     const messagesBottomRef = useRef(null);
     const [isTyping, setIsTyping] = useState(false);
     const {userInfo} = useAuth();
     const favorites = useSelector(selectFavorites);
+    const {isMobile} = useMobile();
 
     useSocketEvents({
         events: {
@@ -49,14 +47,9 @@ const Conversation = () => {
         dispatch(setMessages([...currentChat?.messages]));
     }, [currentChat]);
 
-    // useEffect(() => {
-    //     if (!currentContact) return;
-    //     console.log(currentContact);
-    // }, [currentContact]);
-
     // Scroll to last message
     const scrollToBottom = () => {
-        messagesBottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        messagesBottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
 
     // Scroll to last message
@@ -67,7 +60,6 @@ const Conversation = () => {
     const handleAddToFavorites = async (contactId) => {
         if (favorites.some(favId => favId === contactId)) {
             // Remove from favorites
-            console.log(`Removing ${contactId} from favorites`);
 
             await updateUser({
                 ...userInfo,
@@ -78,7 +70,6 @@ const Conversation = () => {
 
         } else {
             // Add to favorites
-            console.log(`Adding ${contactId} to favorites`);
 
             await updateUser({
                 ...userInfo,
@@ -89,10 +80,17 @@ const Conversation = () => {
         }
     }
 
-    // useEffect(() => {
-    //     if (!userInfo) return;
-    //     console.log(userInfo?.favorites);
-    // }, [userInfo]);
+    useEffect(() => {
+        if (currentChat?.messages?.some(msg => msg.seen === false)) {
+            dispatch(setChat({
+                ...currentChat,
+                messages: [...currentChat?.messages?.map(msg => {
+                    if (msg.seen === false) {
+                        return {...msg, seen: true};
+                    } else return msg;
+            })]}));
+        }
+    }, []);
 
   return (
     <div className='conversation-container'>
@@ -113,9 +111,9 @@ const Conversation = () => {
                 <button className='btn' title='Add to favorites' onClick={() => handleAddToFavorites(currentContact?._id)}>
                     <IconContainer icon={<BsStarFill className={favorites.includes(currentContact?._id) ? 'icon star' : 'icon'}/>}/>
                 </button>
-                <button className='btn white'>
+                <button className='btn white' title='View profile'>
                     <IconContainer icon={<AiOutlineUser className='icon xl'/>}/>
-                    View profile
+                    {isMobile ? '' : 'View profile'}
                 </button>
             </div>
         }
@@ -125,9 +123,10 @@ const Conversation = () => {
             {messages?.length ? messages?.map(msg => {
                 return <ChatMessage key={generateKey()} msg={msg} currentContact={currentContact}/>
             }) : null}
-            <div className='messages-bottom' ref={messagesBottomRef}>
+            <div>
                 {isTyping ? <p className='typing'>{currentContact?.first_name} is typing...</p> : null}
             </div>
+            <div className='messages-bottom' ref={messagesBottomRef}></div>
         </div>
     </div>
   )

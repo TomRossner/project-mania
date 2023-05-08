@@ -43,3 +43,18 @@ export const setMoveTaskPopupOpen= (bool) => {
 export const setTaskToMove= (task) => {
     return createAction(GLOBAL_STATES_ACTION_TYPES.SET_TASK_TO_MOVE, task);
 }
+export const setChangePriorityPopupOpen = (bool) => {
+    return createAction(GLOBAL_STATES_ACTION_TYPES.SET_CHANGE_PRIORITY_POPUP_OPEN, bool);
+}
+export const setNavOpen = (bool) => {
+    return createAction(GLOBAL_STATES_ACTION_TYPES.SET_NAV_OPEN, bool);
+}
+export const setActivitySectionOpen = (bool) => {
+    return createAction(GLOBAL_STATES_ACTION_TYPES.SET_ACTIVITY_SECTION_OPEN, bool);
+}
+export const setIsMobile = (bool) => {
+    return createAction(GLOBAL_STATES_ACTION_TYPES.SET_IS_MOBILE, bool);
+}
+export const setAdminModalOpen = (bool) => {
+    return createAction(GLOBAL_STATES_ACTION_TYPES.SET_ADMIN_MODAL_OPEN, bool);
+}

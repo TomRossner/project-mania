@@ -1,0 +1,33 @@
+@import "./variables";
+
+footer{
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 0.5rem;
+    justify-content: center;
+
+    p{
+        color: $grey;
+    }
+
+    .icon-span{
+        padding: 0;
+
+        &.black{
+            .icon{
+                color: $dark;
+            }
+        }
+
+        &.blue{
+            &:hover{
+                .icon{
+                    color: $blue_hover;
+                }
+            }
+        }
+    }
+}

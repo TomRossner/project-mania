@@ -11,3 +11,11 @@ export const selectTaskPriority = (state) => state.globalStates.taskPriority;
 export const selectNotifications = (state) => state.globalStates.notifications;
 
 export const selectTaskToMove = (state) => state.globalStates.taskToMove;
+
+export const selectNavOpen = (state) => state.globalStates.navOpen;
+
+export const selectActivitySectionOpen = (state) => state.globalStates.activitySectionOpen;
+
+export const selectIsMobile = (state) => state.globalStates.isMobile;
+
+export const selectAdminModalOpen = (state) => state.globalStates.adminModalOpen;

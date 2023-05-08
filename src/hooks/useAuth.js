@@ -10,6 +10,7 @@ import { getUser, updateUser } from '../httpRequests/http.auth';
 import axios from 'axios';
 import { setUserInfo } from '../store/userInfo/userInfo.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';
+import { socket } from '../utils/socket';
 
 const useAuth = () => {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -22,7 +23,13 @@ const useAuth = () => {
     const [userName, setUserName] = useState("");
 
     // Refresh user
-    const refreshUser = () => dispatch(setUser(getUser()));
+    const refreshUser = () => {
+        dispatch(setUser(getUser()));
+
+        if (!socket.connected) {
+            socket.connect();
+        }
+    }
 
     // Login
     const login = (credentials) => dispatch(fetchUserAsync(credentials));
@@ -31,6 +38,7 @@ const useAuth = () => {
     const handleLogout = async () => {
         const date = new Date().toISOString();
         await updateUserInfo({...userInfo, online: false, last_seen: date});
+        socket.emit('offline', {userName, userId: userInfo?._id});
         dispatch(logout());
         LS_logout();
     }

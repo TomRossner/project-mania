@@ -14,7 +14,12 @@ const INITIAL_STATE = {
     adminFormOpen: false,
     notifications: [],
     moveTaskPopupOpen: false,
-    taskToMove: null
+    taskToMove: null,
+    changePriorityPopupOpen: false,
+    navOpen: false,
+    activitySectionOpen: false,
+    isMobile: false,
+    adminModalOpen: false
 }
 
 export const globalStatesReducer = (state = INITIAL_STATE, action) => {
@@ -47,6 +52,16 @@ export const globalStatesReducer = (state = INITIAL_STATE, action) => {
             return {...state, moveTaskPopupOpen: payload};
         case GLOBAL_STATES_ACTION_TYPES.SET_TASK_TO_MOVE:
             return {...state, taskToMove: payload};
+        case GLOBAL_STATES_ACTION_TYPES.SET_CHANGE_PRIORITY_POPUP_OPEN:
+            return {...state, changePriorityPopupOpen: payload};
+        case GLOBAL_STATES_ACTION_TYPES.SET_NAV_OPEN:
+            return {...state, navOpen: payload};
+        case GLOBAL_STATES_ACTION_TYPES.SET_ACTIVITY_SECTION_OPEN:
+            return {...state, activitySectionOpen: payload};
+        case GLOBAL_STATES_ACTION_TYPES.SET_IS_MOBILE:
+            return {...state, isMobile: payload};
+        case GLOBAL_STATES_ACTION_TYPES.SET_ADMIN_MODAL_OPEN:
+            return {...state, adminModalOpen: payload};
         default:
             return state;
     }

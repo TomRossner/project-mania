@@ -104,7 +104,7 @@
     }
 }
 
-@media screen and (min-width: 1024px) and (max-width: 1440px) {
+@media screen and (min-width: 250px) and (max-width: 1440px) {
     .current-board-info-bar{
         gap: 1rem;
         .project-title-container{
@@ -122,10 +122,132 @@
                 }
             }
         }
+    }
+}
+
+@media screen and (min-width: 250px) and (max-width: 1024px) {
+    .current-board-info-bar{
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+        .search-results{
+            width: 60%;
+            left: 0;
+            
+            .search-result{
+                justify-content: space-between;
+                gap: 1em;
+
+                &>div{
+                    h3{
+                        word-break: keep-all;
+                    }
+                }
+            }
+        }
+        
+        .project-title-container{
+            width: 85vw;
+
+            .project-title{
+                flex: 1;
+
+                .input-container{
+                    width: 100%;
+
+                    input{
+                        width: 100%;
+                    }
+                }
+            }
+
+            .flex1{
+                flex: none;
+                display: none;
+            }
+        }
+
+        .icon-span.menu{
+            justify-self: flex-end;
+        }
 
         .flex1{
             flex: none;
             display: none;
+        }
+    }
+}
+
+@media screen and (min-width: 951px) and (max-width: 1023px) {
+    .current-board-info-bar{
+
+        .options-menu{
+            top: 70%;
+            right: 7rem;
+        }
+
+        .search-results{
+            width: 45%;
+        }
+    }
+}
+
+@media screen and (min-width: 451px) and (max-width: 950px) {
+    .current-board-info-bar{
+        .search-results{
+            width: 65%;
+        }
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 950px) {
+    .options-menu{
+        top: 70%;
+        right: 5rem;
+    }
+}
+
+@media screen and (min-width: 700px) and (max-width: 768px) {
+    .current-board-info-bar{
+        .options-menu{
+            top: 70%;
+            right: 4rem;
+        }
+    }
+}
+@media screen and (min-width: 451px) and (max-width: 700px) {
+    .current-board-info-bar{
+        .options-menu{
+            top: 70%;
+            right: 3rem;
+        }
+    }
+}
+
+@media screen and (min-width: 250px) and (max-width: 450px) {
+    .current-board-info-bar{
+
+        .options-menu{
+            top: 80%;
+            right: 2.5rem;
+        }
+
+        .search-results{
+            width: 95%;
+            left: 0.5rem;
+            top: 65%;
+            
+            .search-result{
+                justify-content: space-between;
+                gap: 1em;
+    
+                &>div{
+                    h3{
+                        word-break: keep-all;
+                    }
+                }
+            }
         }
     }
 }

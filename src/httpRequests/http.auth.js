@@ -57,6 +57,13 @@ export const updateUserPW = async (id, newPW) => {
     return await axios.post("/auth/update-pw", {id, newPW});
 }
 
+// Check admin pass code
+export const checkAdminPass = async (input, projectId) => {
+    const {data} = await axios.post('/auth/admin', {input, projectId});
+    console.log(data);
+    return data;
+}
+
 
 
 

@@ -1,7 +1,7 @@
 @import "./variables";
 
 .profile-container{
-    width: 40%;
+    width: 60%;
     height: 80vh;
     margin: 0 auto;
     padding: 1rem;
@@ -23,14 +23,17 @@
         .profile-img-container{
             width: 110px;
             height: 110px;
+            flex-basis: 110px;
     
             img{
                 width: 110px;
+                object-fit: scale-down;
             }
 
             &.blank{
                 #blank-profile{
                     width: 150px;
+                    flex-basis: 150px;
                 }
             }
         }
@@ -67,20 +70,33 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        position: relative;
-        // height: 15%;
         border-radius: 10px;
         overflow: hidden;
 
-        .icon-span{
-            position: absolute;
-            border-radius: 8px;
-            border: 1px solid $grey;
-            background-color: $light;
-            bottom: 0.5rem;
-            right: 0.5rem;
-            padding: 0.25rem;
+        .user-header-container{
+            width: 70%;
+            display: flex;
+            justify-content: center;
+            position: relative;
+
+            .user-header{
+                width: 100%;
+                padding: 0;
+                text-align: center;
+            }
+
+            .icon-span{
+                position: absolute;
+                border-radius: 8px;
+                border: 1px solid $grey;
+                background-color: $light;
+                right: 0.5rem;
+                bottom: 0.5rem;
+                padding: 0.25rem;
+            }
         }
+
+
 
         &:hover{
             .icon-span{
@@ -100,6 +116,7 @@
             justify-content: center;
             align-items: center;
             gap: 1rem;
+            height: 10vh;
             padding: 0.5rem 1rem;
             border: 1px solid $grey;
             border-radius: 10px;
@@ -108,6 +125,35 @@
                 font-size: 1.2rem;
                 font-weight: 600;
                 color: $blue;
+                margin: 0;
+            }
+        }
+    }
+
+    .form-container{
+        margin-top: 0;
+        border: none;
+        box-shadow: unset;
+        width: 75%;
+
+        .btn.link{
+            margin: 0 auto;
+            font-weight: 400;
+            font-size: 1rem;
+            cursor: pointer;
+
+            &:hover{
+                color: $blue_hover;
+            }
+        }
+
+        form{
+            height: 0;
+            overflow: hidden;
+            transition: height 0.2s;
+
+            &.open{
+                height: 20vh;
             }
         }
     }
@@ -123,33 +169,17 @@
             width: 100px;
         }
     }
+
+    #email{
+        margin-bottom: 2rem;
+    }
+
+    p{
+        margin-bottom: 4rem;
+        color: $grey;
+        font-style: italic;
+    }
 }
-
-
-// .profile{
-//     display: flex;
-//     align-items: center;
-//     gap: 1.5rem;
-//     font-size: 1.2rem;
-//     font-weight: 700;
-
-//     .profile-img-container{
-//         width: 50px;
-//         height: 50px;
-
-//         img{
-//             width: 50px;
-//         }
-
-//         &.blank{
-//             #blank-profile{
-//                 width: 70px;
-//             }
-//         }
-//     }
-
-// }
-
 
 .profile{
     display: flex;
@@ -175,8 +205,73 @@
 
 }
 
-@media screen and (min-width: 1024px) and (max-width: 140px) {
+@media screen and (min-width: 551px) and (max-width: 768px) {
     .profile-container{
-        flex-direction: row;
+        margin-top: 1rem;
+        width: 100%;
+
+        .header-container{
+            width: 50%;
+            display: flex;
+            justify-content: center;
+
+            .user-header-container{
+                width: 100%;
+                display: flex;
+                justify-content: center;
+
+                .user-header{
+                    width: 100%;
+                    padding: 0;
+                    text-align: center;
+                }
+            }
+        }
+
+        .form-container{
+            width: 80%;
+
+            form{
+                width: 70%;
+                padding: 1rem;
+                margin: 0 auto;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 250px) and (max-width: 550px) {
+    .profile-container{
+        margin-top: 1rem;
+        width: 100%;
+
+        .header-container{
+            width: 70%;
+            display: flex;
+            justify-content: center;
+
+            .user-header-container{
+                width: 100%;
+                display: flex;
+                justify-content: center;
+
+                .user-header{
+                    width: 100%;
+                    padding: 0;
+                    text-align: center;
+                }
+            }
+
+        }
+
+        .form-container{
+            width: 90%;
+
+            form{
+                width: 90%;
+                padding: 1rem;
+                margin: 0 auto;
+            }
+        }
     }
 }

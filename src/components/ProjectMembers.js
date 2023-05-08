@@ -7,17 +7,22 @@ import { fetchMembersAsync } from '../store/members/members.actions';
 import {selectMembers} from "../store/members/members.selector";
 import useProject from '../hooks/useProject';
 import { setProjectMembers } from '../store/project/project.actions';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectMembers = () => {
     const NUMBER_OF_MEMBERS_TO_DISPLAY = 4;
     const [membersPopUpTabOpen, setMembersPopUpTabOpen] = useState(false);
-    const {user} = useAuth();
+    const {userInfo} = useAuth();
     const {projectMembers, handleAddMember, currentProject} = useProject();
-    const members = useSelector(selectMembers);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const toggleMembersPopUpTab = () => {
         return setMembersPopUpTabOpen(!membersPopUpTabOpen);
+    }
+
+    const handleNavigate = () => {
+        navigate('/users');
     }
 
     useEffect(() => {
@@ -52,8 +57,8 @@ const ProjectMembers = () => {
             </div>
             :
             <div className='team'>
-                {projectMembers.map(member => {
-                    if (member._id === user._id) {
+                {projectMembers?.map(member => {
+                    if (member._id === userInfo?._id) {
                         return (
                             <span key={member._id} className="icon-span">
                                 <BsCircleFill className='icon'/>
@@ -71,8 +76,8 @@ const ProjectMembers = () => {
                 })}
             </div>
             }
-        <span className='icon-span add' onClick={toggleMembersPopUpTab}><RxPlus className='icon'/>
-            {membersPopUpTabOpen
+        <span className='icon-span add' onClick={handleNavigate}><RxPlus className='icon'/>
+            {/* {membersPopUpTabOpen
                 ?   <div className='options-menu open'>
                         {members?.map((member, index) => {
                             if (member._id === user._id) return '';
@@ -90,7 +95,7 @@ const ProjectMembers = () => {
                             )
                         })}
                     </div>
-                : null}
+                : null} */}
         </span>
         </div>
     </div>

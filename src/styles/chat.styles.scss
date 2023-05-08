@@ -23,7 +23,7 @@
             align-items: center;
             justify-content: left;
             width: 30%;
-            gap: 4rem;
+            gap: 1rem;
             padding: 0.5em;
             
             h1{
@@ -32,16 +32,11 @@
     
             .icon-span{
                 padding: 0.3rem;
+                margin-bottom: 0.4em;
     
                 .icon{
-                    font-size: 1.4rem;
-                    transition: color 0.2s;
-                }
-    
-                &:hover{
-                    .icon{
-                        color: $blue;
-                    }
+                    font-size: 2rem;
+                    color: $blue;
                 }
             }
         }
@@ -115,5 +110,171 @@
         border-right: 1px solid $light_grey;
         border-radius: 0 20px 20px 0;
         position: relative;
+    }
+}
+
+@media screen and (min-width: 851px) and (max-width: 1024px) {
+    .main-chat-container{
+        position: relative;
+
+        .left{
+            width: 40%;
+            position: absolute;
+            z-index: 10;
+            top: 0;
+            height: 100%;
+            border-right: 3px solid $grey;
+            transform: translateX(-96%);
+            transition: transform 0.2s;
+
+            &.open{
+                transform: translateX(0);
+
+                >.icon-span{
+                    transform: rotate(180deg);
+                }
+            }
+
+            >.icon-span{
+                position: absolute;
+                right: -1.5rem;
+                top: 8.5rem;
+                z-index: 10;
+                background-color: $light;
+                border: 2px solid $grey;
+                padding: 0.2rem;
+                border-radius: 8px;
+                transition: border-color 0.1s;
+
+                &:active, &:hover{
+                    border-color: $dark;
+
+                    .icon{
+                        color: $dark;
+                    }
+                }
+
+                .icon{
+                    font-size: 1.5rem;
+
+                }
+            }
+        }
+
+        .right{
+            width: 90%;
+        }
+    }
+}
+
+@media screen and (min-width: 551px) and (max-width: 850px) {
+    .main-chat-container{
+        position: relative;
+
+        .left{
+            width: 55%;
+            position: absolute;
+            z-index: 10;
+            top: 0;
+            height: 100%;
+            border-right: 3px solid $grey;
+            transform: translateX(-96%);
+            transition: transform 0.2s;
+
+            &.open{
+                transform: translateX(0);
+
+                >.icon-span{
+                    transform: rotate(180deg);
+                }
+            }
+
+            >.icon-span{
+                position: absolute;
+                right: -1.5rem;
+                top: 8.5rem;
+                z-index: 10;
+                background-color: $light;
+                border: 2px solid $grey;
+                padding: 0.2rem;
+                border-radius: 8px;
+                transition: border-color 0.1s;
+
+                &:active, &:hover{
+                    border-color: $dark;
+
+                    .icon{
+                        color: $dark;
+                    }
+                }
+
+                .icon{
+                    font-size: 1.5rem;
+
+                }
+            }
+        }
+
+        .right{
+            width: 90%;
+        }
+    }
+}
+
+@media screen and (min-width: 250px) and (max-width: 550px) {
+    .main-chat-container{
+        position: relative;
+
+        .left{
+            width: 94%;
+            position: absolute;
+            z-index: 10;
+            top: 0;
+            left: 0;
+            height: 100%;
+            border-right: 3px solid $grey;
+            transform: translateX(-97%);
+            transition: transform 0.2s;
+            border-left: none;
+            border-bottom: none;
+            border-top: none;
+
+            &.open{
+                transform: translateX(0);
+
+                >.icon-span{
+                    transform: rotate(180deg);
+                }
+            }
+
+            >.icon-span{
+                position: absolute;
+                right: -1.5rem;
+                top: 8.5rem;
+                z-index: 20;
+                background-color: $light;
+                border: 2px solid $grey;
+                padding: 0.2rem;
+                border-radius: 8px;
+                transition: border-color 0.1s;
+
+                &:active, &:hover{
+                    border-color: $dark;
+
+                    .icon{
+                        color: $dark;
+                    }
+                }
+
+                .icon{
+                    font-size: 1.5rem;
+
+                }
+            }
+        }
+
+        .right{
+            width: 90%;
+        }
     }
 }

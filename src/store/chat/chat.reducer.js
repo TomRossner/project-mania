@@ -9,7 +9,8 @@ const INITIAL_STATE = {
     chats: [],
     contacts: [],
     favorites: [],
-    favoritesChats: []
+    favoritesChats: [],
+    chatSideBarOpen: false,
 }
 
 export const chatReducer = (state = INITIAL_STATE, action) => {
@@ -53,6 +54,10 @@ export const chatReducer = (state = INITIAL_STATE, action) => {
             return {...state, favorites: payload};
         case CHAT_ACTION_TYPES.SET_FAVORITES_CHATS:
             return {...state, favoritesChats: payload};
+        
+        // Chat side bar
+        case CHAT_ACTION_TYPES.SET_CHAT_SIDE_BAR_OPEN:
+            return {...state, chatSideBarOpen: payload};
         
         // Default
         default:

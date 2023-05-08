@@ -31,6 +31,7 @@ const About = () => {
                 <li>Project members can be added to your project either in the project creation form or from the dashboard navigation bar after the dashboard is created</li>
                 <li>Users can be project admins by filling in the admin passcode</li>
                 <li>The user who created the dashboard is automatically added to the project members and is automatically a project admin</li>
+                <li>Admins have more privileges than regular members</li>
                 <li>Users can look for other users, see their profile and chat with them</li>
                 <li>Chats allow users to chat between them</li>
                 <li>Users can search for other users in the chat section and start conversations with them</li>

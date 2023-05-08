@@ -114,13 +114,29 @@ nav{
     }
 }
 
-@media screen and (min-width: 1024px) and (max-width: 1440px) {
+@media screen and (min-width: 250px) and (max-width: 1440px) {
     .link{
         font-size: 1rem;
     }
 
-    nav{
-        width: 18%;
+    nav.mobile{
+        width: 35%;
+        position: fixed;
+        z-index: 20;
+        background-color: white;
+        height: 100%;
+        padding: 1rem;
+        top: 0;
+        left: 0;
+        border-right: 1px solid $grey;
+        transform: translateX(-100%);
+        pointer-events: none;
+        transition: transform 0.2s;
+        
+        &.open{
+            pointer-events: all;
+            transform: translateX(0);
+        }
 
         ul{
             &.flex-1{
@@ -128,7 +144,25 @@ nav{
             }
             &#left-nav-bottom-ul{
                 height: 28%;
+
+                .link{
+                    font-size: 1.2rem;
+                }
+                
+            }
+
+            li{
+                font-size: 1.2rem;
+                 .link{
+                    font-size: 1.2rem;
+                 }
             }
         }
+    }
+}
+
+@media screen and (min-width: 250px) and (max-width: 767px) {
+    nav.mobile{
+        width: 100%;
     }
 }
