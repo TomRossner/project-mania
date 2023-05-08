@@ -17,7 +17,6 @@ import ChatContacts from './ChatContacts';
 import useProject from '../../hooks/useProject';
 import { useNavigate } from 'react-router-dom';
 import useMobile from '../../hooks/useMobile';
-import {GrChatOption} from "react-icons/gr";
 import {HiOutlineChatBubbleLeftRight} from "react-icons/hi2";
 import { selectChatSideBarOpen } from '../../store/chat/chat.selectors';
 
@@ -138,7 +137,7 @@ const ChatApp = () => {
   return (
     <div className='main-chat-container'>
       <div className={chatSideBarOpen && isMobile ? 'left open' : 'left'}>
-        <IconContainer icon={<BsChevronRight className='icon'/>} additionalClass={isMobile ? 'mobile' : 'not-mobile'} onClick={toggleChatSideBar}/>
+        {isMobile && <IconContainer icon={<BsChevronRight className='icon'/>} additionalClass={isMobile ? 'mobile' : 'not-mobile'} onClick={toggleChatSideBar}/>}
 
         <div className='main-chat-title'>
           <IconContainer icon={<HiOutlineChatBubbleLeftRight className='icon'/>}/>

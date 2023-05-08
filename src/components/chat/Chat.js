@@ -82,13 +82,13 @@ const Chat = ({contactId, messages, isTyping}) => {
             
           </p>
           <Space/>
-          {lastMessage?.seen === false && unseenMessages
+          {/* {lastMessage?.seen === false && unseenMessages
             ? 
               <div className='unseen-messages-count-container'>
                 <span className='unseen-messages-count'>{unseenMessages}</span>
               </div>
             : null
-          }
+          } */}
         </div>
     </div>
   )

@@ -495,7 +495,7 @@ const useProject = () => {
 
         dispatch(setCurrentProject({
             ...currentProject,
-            members: [...currentProject.members.filter(member => member._id !== id)],
+            members: [...currentProject.members.filter(member => member._id !== memberToRemove._id)],
             activity: [...currentProject.activity, activity_removeMember(userInfo, memberToRemove, currentProject)]
         }));
     }

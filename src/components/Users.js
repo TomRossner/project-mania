@@ -31,6 +31,7 @@ const Users = () => {
   const chats = useSelector(selectChats);
   const {createNewChat, fetchUserChats} = useChat();
 
+  // Check search input
   const checkSearchInput = (input) => {
     if (members.some(member => member.first_name.toLowerCase().includes(input.toLowerCase()) ||
       member.last_name.toLowerCase().includes(input.toLowerCase()))
@@ -41,6 +42,7 @@ const Users = () => {
     }
   }
 
+  // Handle input change
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   }
@@ -49,6 +51,7 @@ const Users = () => {
     // Open user profile
   }
 
+  // Handle start chat
   const handleStartChat = (contactId) => {
     
     // Get contact and set to currentContact
