@@ -10,8 +10,8 @@ This project is a project management tool inspired by Trello.
 - Add/Edit/Delete stages
 - Create/Edit/Delete tasks in any stage you'd like
 - Add/Remove members to/from your project
-- Main chat + per task chat
-- Project summary
+- Chat with others!
+- Move tasks between stages
 - And more!
 
 ### This project is built with
