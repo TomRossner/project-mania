@@ -20,30 +20,43 @@ const BoardForm = () => {
   const [inputValues, setInputValues] = useState({...boardProperties, type: element});
   const {title, subtitle, due_date} = inputValues;
   const members = useSelector(selectMembers);
-  const {user, userInfo} = useAuth();
+  const {userInfo} = useAuth();
   const dispatch = useDispatch();
   const [team, setTeam] =  useState([]);
   const {showError} = useProject();
-  //FIX TEAM
 
+  // Handle add member to team
   const handleAddMember = (e) => {
     const user = members.find(member => member._id === e.target.value);
-    if (user) return setTeam([...team, user]);
+    
+    // Check if user is already in team
+    const isAlreadyInTeam = team.some(member => member._id === user._id);
+
+    if (isAlreadyInTeam) {
+      return;
+    }
+    
+    // If not in team, add member
+    if (!isAlreadyInTeam) return setTeam([...team, user]);
+
     else {
       showError(ERROR_MESSAGES.ADD_MEMBER_FAILED);
     }
   }
 
+  // Handle submit form
   const handleFormSubmit = (e) => {
     e.preventDefault();
     addBoard({...inputValues, members: team});
     dispatch(setCreatePopupOpen(false));
   }
 
+  // Handle input change
   const handleInputChange = (e) => {
     return setInputValues({...inputValues, [e.target.name]: e.target.value});
   }
 
+  // Validate title
   const validate = () => {
     if (!inputValues.title || inputValues.title.length < 2) {
       setInputValues({...inputValues, title: boardProperties.title});
@@ -51,10 +64,12 @@ const BoardForm = () => {
     return setReadOnly(true);
   }
   
+  // Handle edit title
   const handleEditFormTitle = () => {
     return setReadOnly(!readOnly);
   }
 
+  // Focus on input when readOnly is false
   useEffect(() => {
     if (!readOnly) {
       FormTitleRef.current.select();
@@ -62,16 +77,16 @@ const BoardForm = () => {
     }
   }, [readOnly]);
 
+  // Fetch all members
   useEffect(() => {
-    // Fetch all members
     dispatch(fetchMembersAsync());
   }, []);
 
+  // Check if current user is in members array
   useEffect(() => {
     if (!members.length) return;
 
     const isInMembers = members.some(member => member._id === userInfo?._id);
-    console.log(isInMembers)
     
     if (isInMembers) {
       dispatch(setMembers([...members.filter(member => member._id !== userInfo?._id)]));
