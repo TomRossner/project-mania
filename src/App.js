@@ -120,7 +120,6 @@ const App = () => {
 
   // Handle user has connected
   const handleIsOnline = async (data) => {
-
     if (data.userId === currentContact?._id && currentContact?.online === false) {
         const contact = await getContactInfo(data.userId);
         dispatch(setCurrentContact(contact));
@@ -130,8 +129,6 @@ const App = () => {
 
   // Handle user went offline
   const handleIsOffline = async (data) => {
-    console.log('Handling offline')
-
     if (data.userId === currentContact?._id && currentContact?.online === true) {
         const contact = await getContactInfo(data.userId);
         dispatch(setCurrentContact(contact));
