@@ -1,6 +1,6 @@
 # Project-Mania
 
-This project is a project management tool inspired by Trello.
+This project is a project management tool. Its main goal is to help you be organized and keep track of your tasks.
 
 ## Features:
 
@@ -10,8 +10,8 @@ This project is a project management tool inspired by Trello.
 - Add/Edit/Delete stages
 - Create/Edit/Delete tasks in any stage you'd like
 - Add/Remove members to/from your project
-- Main chat + per task chat
-- Project summary
+- Chat with others!
+- Move tasks between stages
 - And more!
 
 ### This project is built with
