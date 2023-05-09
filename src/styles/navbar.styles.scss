@@ -83,11 +83,18 @@ nav{
         }
 
         &#left-nav-bottom-ul{
-            height: 20%;
+            height: 25%;
             display: flex;
+            justify-content: flex-end;
             flex-direction: column;
-            justify-content: space-between;
             padding: 0.5rem 0 1.5rem 0;
+
+            .open{
+                min-height: unset;
+                max-height: unset;
+                overflow: unset;
+                height: auto;
+            }
         }
     }
 
