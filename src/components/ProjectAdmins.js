@@ -88,15 +88,6 @@ const ProjectAdmins = () => {
     }, [currentProject]);
 
     useEffect(() => {
-        if (currentProject?.members.length === 1 && currentProject?.members[0].admin === false) {
-            dispatch(setCurrentProject({
-                ...currentProject,
-                admins: [...currentProject.admins, currentProject.members[0].email]
-            }))
-        }
-    }, [currentProject]);
-
-    useEffect(() => {
         const handleUnload = () => {
           socket.emit('unload', { userId: userInfo?._id });
         };

@@ -381,7 +381,9 @@ const useProject = () => {
                         last_name,
                         online,
                         admin,
-                        image: base64_img_data || img_url ? base64_img_data || img_url : "" , _id: user._id
+                        img_url: img_url ? img_url : "" ,
+                        base64_img_data: base64_img_data ? base64_img_data : "",
+                        _id: user._id
                     }
                 ],
                 admins: [email],
@@ -393,7 +395,6 @@ const useProject = () => {
                 {...newProject, due_date: new Date(newProject.due_date).toDateString()}
             ]));
 
-            dispatch(setAdminPassFormOpen(true));
         } catch ({response}) {
             if (response.data.error && response.status === 400) {
                 showError(response.data.error);

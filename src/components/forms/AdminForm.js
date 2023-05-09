@@ -4,6 +4,7 @@ import useProject from '../../hooks/useProject';
 import Input from '../common/Input';
 import { setCurrentProject } from '../../store/project/project.actions';
 import { ERROR_MESSAGES } from '../../utils/errors';
+import { updateAdminPass } from '../../httpRequests/http.project';
 
 const AdminForm = () => {
     const [inputValues, setInputValues] = useState({
@@ -23,14 +24,18 @@ const AdminForm = () => {
         // Add notification to set admin pass code somewhere
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        closeAdminForm();
+
+        if (!pass.length || !pass) return;
 
         if (confirm_pass !== pass) {
             showError(ERROR_MESSAGES.ADMIN_CODES_DO_NOT_MATCH);
             return;
         } else {
-            dispatch(setCurrentProject({...currentProject, admin_pass: pass}));
+            await updateAdminPass(pass, currentProject._id);
         }
     }
 

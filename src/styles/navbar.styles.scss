@@ -75,8 +75,10 @@ nav{
             }
 
             &.open{
-                height: auto;
+                min-height: 15vh;
+                max-height: 30vh;
                 padding: 0.5rem;
+                overflow: auto;
             }
         }
 

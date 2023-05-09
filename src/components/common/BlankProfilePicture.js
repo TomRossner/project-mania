@@ -1,9 +1,9 @@
 import React from 'react';
 import BlankProfile from "../../assets/blank-profile-picture.png";
 
-const BlankProfilePicture = ({size}) => {
+const BlankProfilePicture = ({size, title}) => {
   return (
-    <div className='profile-img-container blank'>
+    <div className='profile-img-container blank' title={title ? title : null}>
         <img
           id='blank-profile'
           src={BlankProfile}

@@ -25,6 +25,8 @@ const BoardForm = () => {
   const [team, setTeam] =  useState([]);
   const {showError} = useProject();
 
+  // FIX ADMIN PASS STUFF ASAP
+
   // Handle add member to team
   const handleAddMember = (e) => {
     const user = members.find(member => member._id === e.target.value);

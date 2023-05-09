@@ -69,7 +69,7 @@ const NavBar = () => {
                 <li onClick={handleToggleProjectsDropdown}>
                   <IconContainer icon={<AiOutlineProject className='icon'/>}/>
                     <Link className='link flex1'>Projects</Link>
-                  <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>} onClick={closeMenu}/>
+                  <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
                 </li>
                 {user && isAuthenticated && boards.length ?
                 <>

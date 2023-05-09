@@ -36,3 +36,8 @@ export const deleteTask = async (ids) => {
 export const deleteProject = async (id) => {
     return await axios.delete(`projects/delete/${id}`);
 }
+
+// Update admin pass code
+export const updateAdminPass = async (admin_pass, projectId) => {
+    return await axios.put('/projects/update-admin-pass', {admin_pass, projectId});
+}

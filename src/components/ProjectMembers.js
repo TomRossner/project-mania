@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BsCircleFill } from "react-icons/bs";
 import { RxPlus } from "react-icons/rx";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import useAuth from '../hooks/useAuth';
 import { fetchMembersAsync } from '../store/members/members.actions';
-import {selectMembers} from "../store/members/members.selector";
 import useProject from '../hooks/useProject';
 import { setProjectMembers } from '../store/project/project.actions';
 import { useNavigate } from 'react-router-dom';
+import ProfilePicture from './common/ProfilePicture';
+import { generateKey } from '../utils/keyGenerator';
+import BlankProfilePicture from './common/BlankProfilePicture';
 
 const ProjectMembers = () => {
     const NUMBER_OF_MEMBERS_TO_DISPLAY = 4;
-    const [membersPopUpTabOpen, setMembersPopUpTabOpen] = useState(false);
     const {userInfo} = useAuth();
     const {projectMembers, handleAddMember, currentProject} = useProject();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const toggleMembersPopUpTab = () => {
-        return setMembersPopUpTabOpen(!membersPopUpTabOpen);
-    }
 
     const handleNavigate = () => {
         navigate('/users');
@@ -47,12 +45,17 @@ const ProjectMembers = () => {
             <div className='team'>
                 {projectMembers.filter((_, index) => index < NUMBER_OF_MEMBERS_TO_DISPLAY)
                 .map(member =>
-                    <span key={member._id} className='icon-span' onClick={() => handleAddMember(member)}>
-                        <BsCircleFill className='icon'/>
-                        <span className='name-overlay' title={`${member.first_name} ${member.last_name}`}>
-                            {member.first_name.substring(0, 1).toUpperCase()}{member.last_name.substring(0, 1).toUpperCase()}
-                        </span>
-                    </span>)}
+                    <>
+                        {member.base64_img_data || member.img_url
+                            ?   <ProfilePicture
+                                    key={generateKey()}
+                                    src={member.base64_img_data || member.img_url}
+                                    title={`${member.first_name} ${member.last_name}`}
+                                />
+                            :   <BlankProfilePicture title={`${member.first_name} ${member.last_name}`}/>
+                        }
+                    </>
+                )}
                 <span>+ {projectMembers.filter((_, index) => index > 3).length}</span>
             </div>
             :
@@ -60,43 +63,33 @@ const ProjectMembers = () => {
                 {projectMembers?.map(member => {
                     if (member._id === userInfo?._id) {
                         return (
-                            <span key={member._id} className="icon-span">
-                                <BsCircleFill className='icon'/>
-                                <span className='name-overlay small' title="You">YOU</span>
-                            </span>
+                            <>
+                                {member.base64_img_data || member.img_url
+                                    ?   <ProfilePicture
+                                            key={generateKey()}
+                                            src={userInfo?.base64_img_data || userInfo?.img_url}
+                                            title={`${userInfo?.first_name} ${userInfo?.last_name}`}
+                                        />
+                                    :   <BlankProfilePicture title={`${userInfo?.first_name} ${userInfo?.last_name}`}/>
+                                }
+                            </>
                         )
                     } else return (
-                        <span key={member._id} className='icon-span'>
-                            <BsCircleFill className='icon'/>
-                            <span className='name-overlay' title={`${member.first_name} ${member.last_name}`}>
-                                {member.first_name.substring(0, 1).toUpperCase()}{member.last_name.substring(0, 1).toUpperCase()}
-                            </span>
-                        </span>
+                        <>
+                            {member.base64_img_data || member.img_url
+                                ?   <ProfilePicture
+                                        key={generateKey()}
+                                        src={member.base64_img_data || member.img_url}
+                                        title={`${member.first_name} ${member.last_name}`}
+                                    />
+                                :   <BlankProfilePicture title={`${member.first_name} ${member.last_name}`}/>
+                            }
+                        </>
                     )
                 })}
             </div>
             }
-        <span className='icon-span add' onClick={handleNavigate}><RxPlus className='icon'/>
-            {/* {membersPopUpTabOpen
-                ?   <div className='options-menu open'>
-                        {members?.map((member, index) => {
-                            if (member._id === user._id) return '';
-
-                            if (projectMembers.find(project_member => project_member._id === member._id)) {
-                                return (
-                                    <p key={index} className="member-already-in-project" title={`${member.first_name} is already added`}>
-                                        {member.first_name} {member.last_name}
-                                    </p>
-                                )
-                            } else return (
-                                <p key={index} onClick={() => handleAddMember(member)}>
-                                    {member.first_name} {member.last_name}
-                                </p>
-                            )
-                        })}
-                    </div>
-                : null} */}
-        </span>
+        <span className='icon-span add' onClick={handleNavigate}><RxPlus className='icon'/></span>
         </div>
     </div>
     </>
