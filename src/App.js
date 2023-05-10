@@ -30,6 +30,7 @@ import About from "./components/About";
 import ChangePriorityPopup from "./components/ChangePriorityPopup";
 import Footer from "./components/Footer";
 import PageNotFound from "./components/PageNotFound";
+import AdminModal from "./components/AdminModal";
 
 // Styles
 import "./styles/general.styles.scss";
@@ -68,7 +69,6 @@ import "./styles/projects.styles.scss";
 import "./styles/user-tab.styles.scss";
 import "./styles/footer.styles.scss";
 import "./styles/not-found.styles.scss";
-import AdminModal from "./components/AdminModal";
 
 // Lazy-loading components
 const Profile = lazy(() => import("./components/Profile")); 
@@ -272,6 +272,7 @@ const App = () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
+
 
 
   return (

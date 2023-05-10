@@ -1,41 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import IconContainer from './common/IconContainer';
 import { BsPlus, BsBell } from 'react-icons/bs';
 import Space from './common/Space';
-import {BsFillCircleFill} from "react-icons/bs";
+// import {BsFillCircleFill} from "react-icons/bs";
 import useAuth from '../hooks/useAuth';
 import MenuIcon from './MenuIcon';
+import useMobile from '../hooks/useMobile';
 
 const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
-  const [notifications, setNotifications] = useState([]);
+  // const [notifications, setNotifications] = useState([]);
   const {userInfo, isAuthenticated} = useAuth();
-  const [isMobile, setIsMobile] = useState(false);
+  const {isMobile} = useMobile();
 
-  useEffect(() => {
-    if (!userInfo) return;
-    setNotifications(userInfo.notifications);
-  }, [userInfo]);
-
-  // Handle Screen size
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 1441) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-      }
-    };
-  
-    window.addEventListener('resize', handleResize);
-  
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  // useEffect(() => {
+  //   if (!userInfo) return;
+  //   setNotifications(userInfo.notifications);
+  // }, [userInfo]);
 
   return (
     <div className="top-nav">
-        {isMobile && <MenuIcon/>}
+        {isMobile ? <MenuIcon/> : null}
         {userInfo && isAuthenticated
           ? <h1>👋 Welcome back, {userInfo.first_name}</h1>
           : null

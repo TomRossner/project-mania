@@ -1,14 +1,14 @@
-import useAuth from './useAuth';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectChat, selectChats, selectContacts, selectCurrentChat, selectCurrentContact, selectFavorites, selectFavoritesChats, selectMessages } from '../store/chat/chat.selectors';
+import { selectChat, selectChats, selectContacts, selectCurrentChat, selectCurrentContact, selectFavorites, selectMessages } from '../store/chat/chat.selectors';
 import { getUserById } from '../httpRequests/http.members';
 import { fetchContactsAsync, setChat, setFavoritesChats, setMessages } from '../store/chat/chat.actions';
 import { emitCreateChat, sendMessage, socket } from '../utils/socket';
 import {  createChat, getUserChats } from '../httpRequests/http.chat';
 import { setChats } from '../store/chat/chat.actions';
+import { selectUserInfo } from '../store/userInfo/userInfo.selector';
 
 const useChat = () => {
-    const {userInfo} = useAuth();
+    const userInfo = useSelector(selectUserInfo);
     const currentChat = useSelector(selectCurrentChat);
     const currentContact = useSelector(selectCurrentContact);
     const contacts = useSelector(selectContacts);

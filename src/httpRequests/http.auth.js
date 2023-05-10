@@ -44,7 +44,7 @@ export async function updateUser(user) {
 
 // Update user's profile image
 export async function updateProfilePicture(values) {
-    return await axios.post('/auth/update-profile-picture', values);
+    return await axios.put('/auth/update-profile-picture', values);
 }
 
 // Check password
@@ -54,13 +54,12 @@ export const checkPassword = async (id, pw) => {
 
 // Update password
 export const updateUserPW = async (id, newPW) => {
-    return await axios.post("/auth/update-pw", {id, newPW});
+    return await axios.put("/auth/update-pw", {id, newPW});
 }
 
 // Check admin pass code
 export const checkAdminPass = async (input, projectId) => {
     const {data} = await axios.post('/auth/admin', {input, projectId});
-    console.log(data);
     return data;
 }
 
@@ -87,7 +86,7 @@ export function setCommonHeader(headerName, value) {
 }
 
 // Get decoded user JWT stored in LocalStorage
-export function getUser() {
+export function LS_getUser() {
     try {
         return jwtDecode(getJWT());
     } catch {

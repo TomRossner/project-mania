@@ -11,3 +11,5 @@ export const selectActivity = (state) => state.project.activity;
 export const selectIsUpdating = (state) => state.project.isUpdating;
 
 export const selectCurrentTask = (state) => state.project.currentTask;
+
+export const selectProjectAdmins = (state) => state.project.projectAdmins;

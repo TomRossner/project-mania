@@ -125,3 +125,31 @@ export const lastSeenTime = (time) => {
         return `${month} ${date}${setDateEnding(date)} at ${AM_PM(time)}`;
     }
 }
+
+// Task due date format
+export const dueDateFormat = (time) => {
+    const date = new Date(time).getDate();
+    const year = new Date(time).getFullYear();
+    let month = new Date(time).getMonth();
+
+    if (date === currentDate() &&
+        month === currentMonthNumber() &&
+        year === currentYear()) return 'Due Today';
+    else if (date === currentDate() - 1 &&
+            (date === currentDate() - 1) !== 0 && // Checks that we're not on the first day of the month
+            month === currentMonthNumber() &&
+            year === currentYear()) return 'Due Yesterday';
+    else if (date === currentDate() - 2 &&
+            (date === currentDate() - 2) !== 0 && // Checks that we're not on the first day of the month
+            month === currentMonthNumber() &&
+            year === currentYear()) return 'Due 2 days ago';
+    else if (date === currentDate() - 3 &&
+            (date === currentDate() - 3) !== 0 && // Checks that we're not on the first day of the month
+            month === currentMonthNumber() &&
+            year === currentYear()) return 'Due 3 days ago';
+    else {
+        month = new Date(time).toLocaleString('default', { month: 'long' });
+        
+        return `Due ${month} ${date}${setDateEnding(date)}`;
+    }
+}

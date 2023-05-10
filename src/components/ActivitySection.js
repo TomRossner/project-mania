@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import Activity from './Activity';
 import useProject from '../hooks/useProject';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActivity } from '../store/project/project.actions';
-import ProjectAdmins from './ProjectAdmins';
 import { selectActivitySectionOpen } from '../store/globalStates/globalStates.selector';
 import IconContainer from './common/IconContainer';
 import { setActivitySectionOpen } from '../store/globalStates/globalStates.actions';
 import { BsChevronLeft } from 'react-icons/bs';
 import useMobile from '../hooks/useMobile';
+import Spinner from './common/Spinner';
+
+// const Activity = lazy(() => import("./Activity"));
+const ProjectAdmins = lazy(() => import("./ProjectAdmins"));
 
 const ActivitySection = () => {
     const {currentProject} = useProject();
@@ -25,7 +28,7 @@ const ActivitySection = () => {
       // Set activity
       dispatch(setActivity(currentProject.activity));
 
-    }, [currentProject])
+    }, [currentProject]);
 
   return (
     <>
@@ -41,7 +44,9 @@ const ActivitySection = () => {
                       <h3>{currentProject?.title}</h3>
                       <p>{currentProject?.subtitle}</p>
                     </div>
-                    <ProjectAdmins/>
+                    <Suspense fallback={<div><Spinner/><h3>Loading admins...</h3></div>}>
+                      <ProjectAdmins/>
+                    </Suspense>
                 </div>
 
                 <div className='activity-section'>

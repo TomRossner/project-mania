@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import useProject from '../../hooks/useProject';
 import Input from '../common/Input';
-import { setCurrentProject } from '../../store/project/project.actions';
 import { ERROR_MESSAGES } from '../../utils/errors';
 import { updateAdminPass } from '../../httpRequests/http.project';
 
@@ -13,7 +11,6 @@ const AdminForm = () => {
     });
     const {pass, confirm_pass} = inputValues;
     const {currentProject, closeAdminForm, showError} = useProject();
-    const dispatch = useDispatch();
 
     const handleInputChange = (e) => {
         return setInputValues({...inputValues, [e.target.name]: e.target.value});

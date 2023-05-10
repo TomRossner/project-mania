@@ -14,4 +14,7 @@ export const ERROR_MESSAGES = {
     ADD_MEMBER_FAILED: "Failed adding member",
     CHOOSE_STAGE_TO_ADD_TASK: "Couldn't create task. Please choose in which stage you would like to add your task to",
     MISSING_EMAIL_OR_PASSWORD: "Please provide an email and a password",
+    UPDATE_USER_INFO_FAILED: "Failed updating user",
+    GOOGLE_LOGIN_FAILED: "Login failed",
+    GOOGLE_SIGNUP_FAILED: "Sign-up failed",
 }

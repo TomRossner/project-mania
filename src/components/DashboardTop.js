@@ -25,12 +25,12 @@ const ProjectInfoBar = () => {
         handleAddStage,
         handleMenuClick,
         handleDeleteProject,
-        tasks
+        tasks,
+        isAdmin
     } = useProject();
     const [projectNameInputValue, setProjectNameInputValue] = useState("");
     const titleRef = useRef();
     const [editActive, setEditActive] = useState(false);
-    const {userInfo} = useAuth();
 
     const toggleEditActive = () => setEditActive(!editActive);
 
@@ -192,7 +192,7 @@ const ProjectInfoBar = () => {
             className='icon'/>}
         />
         <div className={projectMenuTabOpen ? "options-menu open" : "options-menu"}>
-            {userInfo.admin === true
+            {isAdmin
             ? projectMenuOptions_admin.map(opt => <p key={opt} onClick={() => handleProjectMenuOptions(opt)}>{opt}</p>)
             : projectMenuOptions.map(opt => <p key={opt} onClick={() => handleProjectMenuOptions(opt)}>{opt}</p>)}
         </div>

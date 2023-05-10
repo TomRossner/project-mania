@@ -6,11 +6,13 @@ import { selectAuth, selectIsAuthenticated, selectUser } from '../store/auth/aut
 import { saveJWT } from '../httpRequests/http.auth';
 import { provider, auth } from '../firebase/config';
 import { signInWithPopup } from 'firebase/auth';
-import { getUser, updateUser } from '../httpRequests/http.auth';
+import { LS_getUser, updateUser } from '../httpRequests/http.auth';
 import axios from 'axios';
 import { setUserInfo } from '../store/userInfo/userInfo.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';
 import { socket } from '../utils/socket';
+import { ERROR_MESSAGES } from '../utils/errors';
+import { setError, setErrorPopupOpen } from '../store/globalStates/globalStates.actions';
 
 const useAuth = () => {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -24,7 +26,7 @@ const useAuth = () => {
 
     // Refresh user
     const refreshUser = () => {
-        dispatch(setUser(getUser()));
+        dispatch(setUser(LS_getUser()));
 
         if (!socket.connected) {
             socket.connect();
@@ -45,9 +47,14 @@ const useAuth = () => {
 
     // Update user info
     const updateUserInfo = async (user) => {
-        const {data: updatedUserInfo} = await updateUser(user);
+        try {
+            const {data: updatedUserInfo} = await updateUser(user);
 
-        return dispatch(setUserInfo(updatedUserInfo));
+            return dispatch(setUserInfo(updatedUserInfo));
+        } catch (error) {
+            dispatch(setError(ERROR_MESSAGES.UPDATE_USER_INFO_FAILED));
+            dispatch(setErrorPopupOpen(true));
+        }
     }
 
     // Load profile image
@@ -70,25 +77,35 @@ const useAuth = () => {
 
     // Google sign-in 
     const google_signInUser = async () => {
-        const {user} = await signInWithPopup(auth, provider);
-        const {accessToken} = user;
-        const {data} = await axios.post("/auth/sign-in/google", {googleToken: accessToken});
-        const {token} = data;
+        try {
+            const {user} = await signInWithPopup(auth, provider);
+            const {accessToken} = user;
+            const {data} = await axios.post("/auth/sign-in/google", {googleToken: accessToken});
+            const {token} = data;
 
-        saveJWT(token);
-        setTokenHeader();
-        refreshUser();
+            saveJWT(token);
+            setTokenHeader();
+            refreshUser();
 
-        return getUser();
+            return LS_getUser();
+        } catch (error) {
+            dispatch(setError(ERROR_MESSAGES.GOOGLE_LOGIN_FAILED));
+            dispatch(setErrorPopupOpen(true));
+        }
     }
     
     // Google sign-up
     const google_signUpUser = async () => {
-        const {user} = await signInWithPopup(auth, provider);
+        try {
+            const {user} = await signInWithPopup(auth, provider);
 
-        const {accessToken, email, displayName, uid, photoURL} = user;
-        
-        return await axios.post("/auth/sign-up/google", {accessToken, email, displayName, uid, imgUrl: photoURL});
+            const {accessToken, email, displayName, uid, photoURL} = user;
+            
+            return await axios.post("/auth/sign-up/google", {accessToken, email, displayName, uid, imgUrl: photoURL});
+        } catch (error) {
+            dispatch(setError(ERROR_MESSAGES.GOOGLE_SIGNUP_FAILED));
+            dispatch(setErrorPopupOpen(true));
+        }
     }
 
     // Refresh user, in this case try getting the JWT from LocalStorage to connect the user

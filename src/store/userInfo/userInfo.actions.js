@@ -19,6 +19,9 @@ export const fetchUserInfoSuccess = (user_info) => {
 export const fetchUserInfoFailed = (error) => {
     return createAction(USER_INFO_ACTION_TYPES.FETCH_USER_INFO_FAILED, error);
 }
+export const setIsAdmin = (bool) => {
+    return createAction(USER_INFO_ACTION_TYPES.SET_IS_ADMIN, bool);
+}
 
 // export const fetchUserInfoAsync = (id) => async (dispatch) => {
 //     dispatch(fetchUserInfoStart());

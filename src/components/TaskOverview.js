@@ -11,7 +11,7 @@ import useProject from '../hooks/useProject';
 import { useDrag } from 'react-dnd';
 import OptionsMenu from './common/OptionsMenu';
 import { task_options } from '../utils/taskMenuOptions';
-import { format_date } from '../utils/timeFormats';
+import { dueDateFormat } from '../utils/timeFormats';
 
 const TaskOverview = ({task}) => {
     const {
@@ -79,7 +79,7 @@ const TaskOverview = ({task}) => {
                 additionalClass={`${new Date(due_date).toDateString() === new Date().toDateString() ? `${dueTodayLabel.color_class}-bg border` : `${timeLabel.color_class}-bg`} no-hover`}
                 content={<div className={`label-content ${new Date(due_date).toDateString() === new Date().toDateString() ? `${dueTodayLabel.color_class}` : timeLabel.color_class}`}
             >
-                {(new Date(due_date).toDateString()) === new Date().toDateString() ? dueTodayLabel.name : `${format_date(new Date(due_date))}`}</div>}>
+                {(new Date(due_date).toDateString()) === new Date().toDateString() ? dueTodayLabel.name : `${dueDateFormat(new Date(due_date))}`}</div>}>
             </LabelContainer>
             <div className='quick-actions'>
                 <ThreeDotsMenu fn={toggleTaskOptions}/>

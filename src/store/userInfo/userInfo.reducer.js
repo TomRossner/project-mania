@@ -3,7 +3,8 @@ import { USER_INFO_ACTION_TYPES } from "./userInfo.types";
 const INITIAL_STATE = {
     userInfo: null,
     isLoading: false,
-    error: null
+    error: null,
+    isAdmin: false,
 }
 
 export const userInfoReducer = (state = INITIAL_STATE, action) => {
@@ -18,6 +19,8 @@ export const userInfoReducer = (state = INITIAL_STATE, action) => {
             return {...state, isLoading: false, userInfo: payload};
         case USER_INFO_ACTION_TYPES.FETCH_USER_INFO_FAILED:
             return {...state, error: payload, isLoading: false};
+        case USER_INFO_ACTION_TYPES.SET_IS_ADMIN:
+            return {...state, isAdmin: false};
         default:
             return state;
     }

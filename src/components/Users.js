@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMembers } from '../store/members/members.selector';
 import BackButton from './common/BackButton';
 import SearchBar from './common/SearchBar';
 import { fetchMembersAsync } from '../store/members/members.actions';
@@ -18,14 +17,20 @@ import { useNavigate } from 'react-router-dom';
 import { selectChats } from '../store/chat/chat.selectors';
 import useChat from '../hooks/useChat';
 import { AiOutlineMinus } from 'react-icons/ai';
+import useMembers from '../hooks/useMembers';
 
 const Users = () => {
-  const members = useSelector(selectMembers);
+  const {members} = useMembers();
   const {user, userInfo} = useAuth();
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const {currentProject, handleAddMember, handleRemoveMemberFromProject} = useProject();
+  const {
+    currentProject,
+    handleAddMember,
+    handleRemoveMemberFromProject,
+    isAdmin
+  } = useProject();
   const {isMobile} = useMobile();
   const navigate = useNavigate();
   const chats = useSelector(selectChats);
@@ -47,7 +52,7 @@ const Users = () => {
     setInputValue(e.target.value);
   }
 
-  const handleViewProfile = (userId) => {
+  const handleViewProfile = (userId) => {/////////////////////////////////////////////////////////////////////////// TODO
     // Open user profile
   }
 
@@ -69,6 +74,7 @@ const Users = () => {
     navigate(`/chat/${userInfo?._id}`);
   }
 
+  // Check search input
   useEffect(() => {
     if (!inputValue.length) setSearchResults([]);
     checkSearchInput(inputValue);
@@ -92,9 +98,9 @@ const Users = () => {
           </div>
 
             <div className='results-container'>
-              <p>{members.filter(member => member._id !== user?._id).length} {members.filter(member => member._id !== user?._id).length === 1 ? "user found": "users found"}</p>
+              <p>{members?.filter(member => member._id !== user?._id).length} {members?.filter(member => member._id !== user?._id).length === 1 ? "user found": "users found"}</p>
               <Line/>
-              {searchResults.length
+              {searchResults.length || members.length
                 ? <>
                     {searchResults?.filter(member => member._id !== user?._id).map(member => {
                       return (
@@ -113,14 +119,14 @@ const Users = () => {
                             </button>
 
                             {currentProject?.members?.some(m => m._id === member._id)
-                              && userInfo?.admin
+                              && isAdmin
                               &&  <button className='btn white' title={`Remove ${member.first_name} from project`} onClick={() => handleRemoveMemberFromProject(member._id)}>
                                     <IconContainer icon={<AiOutlineMinus className='icon'/>}/>{isMobile ? '' : ' Remove from project'}
                                   </button>
                             }
 
                             {!currentProject?.members?.some(m => m._id === member._id)
-                              && userInfo?.admin
+                              && isAdmin
                               &&  <button className='btn white' title={`Add ${member.first_name} to project`} onClick={() => handleAddMember(member)}>
                                     <IconContainer icon={<BsPlus className='icon xl'/>}/>{isMobile? '' : ' Add to project'}
                                   </button>

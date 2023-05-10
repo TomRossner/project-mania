@@ -43,6 +43,10 @@
             padding-inline: 0.5rem;
             position: relative;
 
+            .input-container{
+                width: 50%;
+            }
+
             .total-tasks{
                 width: auto;
                 padding: 0.25rem 0.5rem;

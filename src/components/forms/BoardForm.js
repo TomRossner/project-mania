@@ -3,29 +3,32 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { FiCheck } from "react-icons/fi";
 import { boardProperties } from "../../utils/defaultProperties";
 import Input from '../common/Input';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setCreatePopupOpen } from '../../store/globalStates/globalStates.actions';
 import CancelButton from '../common/CancelButton';
 import IconContainer from '../common/IconContainer';
 import useAuth from '../../hooks/useAuth';
-import { selectMembers } from '../../store/members/members.selector';
-import { fetchMembersAsync, setMembers } from '../../store/members/members.actions';
+import { setMembers } from '../../store/members/members.actions';
 import useProject from '../../hooks/useProject';
 import { ERROR_MESSAGES } from '../../utils/errors';
+import useMembers from '../../hooks/useMembers';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
   const FormTitleRef = useRef(null);
-  const {element, closeCreatePopup, handleRemoveMemberFromProject, addBoard} = useProject();
+  const {
+    element,
+    closeCreatePopup,
+    handleRemoveMemberFromProject,
+    addBoard,
+    showError
+  } = useProject();
   const [inputValues, setInputValues] = useState({...boardProperties, type: element});
   const {title, subtitle, due_date} = inputValues;
-  const members = useSelector(selectMembers);
+  const {members} = useMembers();
   const {userInfo} = useAuth();
   const dispatch = useDispatch();
   const [team, setTeam] =  useState([]);
-  const {showError} = useProject();
-
-  // FIX ADMIN PASS STUFF ASAP
 
   // Handle add member to team
   const handleAddMember = (e) => {
@@ -78,11 +81,6 @@ const BoardForm = () => {
       FormTitleRef.current.focus();
     }
   }, [readOnly]);
-
-  // Fetch all members
-  useEffect(() => {
-    dispatch(fetchMembersAsync());
-  }, []);
 
   // Check if current user is in members array
   useEffect(() => {

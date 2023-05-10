@@ -28,3 +28,6 @@ export const updateCurrentProjectFailed = (error) => {
 export const setCurrentTask = (task) => {
     return createAction(PROJECT_ACTION_TYPES.SET_CURRENT_TASK, task);
 }
+export const setProjectAdmins = (admins) => {
+    return createAction(PROJECT_ACTION_TYPES.SET_PROJECT_ADMINS, admins);
+}

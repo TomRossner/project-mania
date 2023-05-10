@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
-import { BsCircleFill } from "react-icons/bs";
 import { RxPlus } from "react-icons/rx";
 import { useDispatch } from 'react-redux';
 import useAuth from '../hooks/useAuth';
-import { fetchMembersAsync } from '../store/members/members.actions';
 import useProject from '../hooks/useProject';
 import { setProjectMembers } from '../store/project/project.actions';
 import { useNavigate } from 'react-router-dom';
@@ -14,18 +12,13 @@ import BlankProfilePicture from './common/BlankProfilePicture';
 const ProjectMembers = () => {
     const NUMBER_OF_MEMBERS_TO_DISPLAY = 4;
     const {userInfo} = useAuth();
-    const {projectMembers, handleAddMember, currentProject} = useProject();
+    const {projectMembers, currentProject} = useProject();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
 
     const handleNavigate = () => {
         navigate('/users');
     }
-
-    useEffect(() => {
-        dispatch(fetchMembersAsync());
-    }, []);
 
     useEffect(() => {
         if (!currentProject) return;
@@ -45,16 +38,16 @@ const ProjectMembers = () => {
             <div className='team'>
                 {projectMembers.filter((_, index) => index < NUMBER_OF_MEMBERS_TO_DISPLAY)
                 .map(member =>
-                    <>
+                    <span key={generateKey()}>
                         {member.base64_img_data || member.img_url
                             ?   <ProfilePicture
                                     key={generateKey()}
                                     src={member.base64_img_data || member.img_url}
                                     title={`${member.first_name} ${member.last_name}`}
                                 />
-                            :   <BlankProfilePicture title={`${member.first_name} ${member.last_name}`}/>
+                            :   <BlankProfilePicture key={generateKey()} title={`${member.first_name} ${member.last_name}`}/>
                         }
-                    </>
+                    </span>
                 )}
                 <span>+ {projectMembers.filter((_, index) => index > 3).length}</span>
             </div>
@@ -63,28 +56,28 @@ const ProjectMembers = () => {
                 {projectMembers?.map(member => {
                     if (member._id === userInfo?._id) {
                         return (
-                            <>
+                            <span key={generateKey()}>
                                 {member.base64_img_data || member.img_url
                                     ?   <ProfilePicture
                                             key={generateKey()}
                                             src={userInfo?.base64_img_data || userInfo?.img_url}
                                             title={`${userInfo?.first_name} ${userInfo?.last_name}`}
                                         />
-                                    :   <BlankProfilePicture title={`${userInfo?.first_name} ${userInfo?.last_name}`}/>
+                                    :   <BlankProfilePicture key={generateKey()} title={`${userInfo?.first_name} ${userInfo?.last_name}`}/>
                                 }
-                            </>
+                            </span>
                         )
                     } else return (
-                        <>
+                        <span key={generateKey()}>
                             {member.base64_img_data || member.img_url
                                 ?   <ProfilePicture
                                         key={generateKey()}
                                         src={member.base64_img_data || member.img_url}
                                         title={`${member.first_name} ${member.last_name}`}
                                     />
-                                :   <BlankProfilePicture title={`${member.first_name} ${member.last_name}`}/>
+                                :   <BlankProfilePicture key={generateKey()} title={`${member.first_name} ${member.last_name}`}/>
                             }
-                        </>
+                        </span>
                     )
                 })}
             </div>

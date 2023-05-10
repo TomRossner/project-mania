@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { selectBoards, selectIsLoading } from "../store/boards/boards.selector";
-import { selectActivity, selectCurrentProject, selectCurrentTask, selectProjectMembers } from "../store/project/project.selector";
+import { selectActivity, selectCurrentProject, selectCurrentTask, selectProjectAdmins, selectProjectMembers } from "../store/project/project.selector";
 import { updateProject, deleteProject } from "../httpRequests/http.project";
 import { useNavigate } from "react-router-dom";
 import { setBoards } from "../store/boards/boards.actions";
 import {deleteTask, addProject} from "../httpRequests/http.project";
 import {getUserInfo} from "../httpRequests/http.auth";
 import { selectMembers } from "../store/members/members.selector";
-import useAuth from "./useAuth";
 import { generateId } from "../utils/IdGenerator";
 import { setCurrentProject, setCurrentTask, setProjectMembers } from "../store/project/project.actions";
 import {selectGlobalStates} from "../store/globalStates/globalStates.selector";
@@ -42,6 +41,9 @@ import {
     activity_removeMember
 } from "../utils/activities";
 import { ERROR_MESSAGES } from "../utils/errors";
+import { selectUser } from "../store/auth/auth.selector";
+import { selectIsAdmin, selectUserInfo } from "../store/userInfo/userInfo.selector";
+import { setUserInfo } from "../store/userInfo/userInfo.actions";
 
 const useProject = () => {
     const dispatch = useDispatch();
@@ -53,7 +55,10 @@ const useProject = () => {
     const activity = useSelector(selectActivity);
     const isLoading = useSelector(selectIsLoading);
     const currentTask = useSelector(selectCurrentTask);
-    const {user, userInfo, setUserInfo} = useAuth();
+    const user = useSelector(selectUser);
+    const userInfo = useSelector(selectUserInfo);
+    const projectAdmins = useSelector(selectProjectAdmins);
+    const isAdmin = useSelector(selectIsAdmin);
     const {
         element,
         projectMenuOpen,
@@ -497,7 +502,8 @@ const useProject = () => {
         dispatch(setCurrentProject({
             ...currentProject,
             members: [...currentProject.members.filter(member => member._id !== memberToRemove._id)],
-            activity: [...currentProject.activity, activity_removeMember(userInfo, memberToRemove, currentProject)]
+            activity: [...currentProject.activity, activity_removeMember(userInfo, memberToRemove, currentProject)],
+            admins: [...currentProject.admins.filter(adm => adm !== memberToRemove.email)]
         }));
     }
 
@@ -660,6 +666,8 @@ const useProject = () => {
         currentTask,
         adminModalOpen,
         changePriorityPopupOpen,
+        projectAdmins,
+        isAdmin,
         handleChangePriority,
         handleCreateBoard,
         handleCreate, // handleCreate and handleCreateBoard are similar
