@@ -1,0 +1,15 @@
+@import "./variables";
+
+.btn{
+    &.white{
+        &.menu{
+            display: none;
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .btn.white.menu{
+        display: block;
+    }
+}

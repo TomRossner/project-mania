@@ -68,6 +68,7 @@ import "./styles/about.styles.scss";
 import "./styles/projects.styles.scss";
 import "./styles/user-tab.styles.scss";
 import "./styles/footer.styles.scss";
+import "./styles/menu-icon.styles.scss";
 import "./styles/not-found.styles.scss";
 
 // Lazy-loading components
