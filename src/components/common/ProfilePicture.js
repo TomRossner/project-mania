@@ -7,7 +7,7 @@ const ProfilePicture = ({src, size, title}) => {
           src={src}
           alt="profile"
           width={size ? size : null}
-          height={size ? size : null}
+          // height={size ? size : null}
         />
     </div>
   )

@@ -493,7 +493,8 @@ hr.line{
     align-items: center;
     
     img{
-        width: 55px;
+        // width: 55px;
+        width: inherit;
     }
 
     &.blank{

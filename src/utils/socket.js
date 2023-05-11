@@ -15,8 +15,8 @@ export const emitOnline = (userName, userId) => {
 }
 
 // Emit disconnection
-export const emitDisconnection = () => {
-    socket.emit('disconnecting');
+export const emitCloseBrowser = () => {
+    socket.emit('closeBrowser');
 }
 
 // Notify contact is typing

@@ -86,6 +86,10 @@ const Users = () => {
     fetchUserChats();
   }, []);
 
+  useEffect(() => {
+    console.log('isAdmin: ', isAdmin);
+  }, [isAdmin]);
+
   return (
       <>
         <div className='users-container'>
@@ -100,7 +104,7 @@ const Users = () => {
             <div className='results-container'>
               <p>{members?.filter(member => member._id !== user?._id).length} {members?.filter(member => member._id !== user?._id).length === 1 ? "user found": "users found"}</p>
               <Line/>
-              {searchResults.length || members.length
+              {searchResults.length
                 ? <>
                     {searchResults?.filter(member => member._id !== user?._id).map(member => {
                       return (
@@ -136,7 +140,39 @@ const Users = () => {
                       )
                     })}
                   </>
-                : null
+                : members?.filter(m => m._id !== user?._id).map(member => {
+                  return (
+                    <div key={generateKey()} className='search-result'>
+                      <UserTab user={member}/>
+                      <div className='buttons-container'>
+
+                        <button className='btn white' onClick={() => handleStartChat(member._id)} title={`Chat with ${member.first_name}`}>
+                          <IconContainer icon={<BsChatLeftText className='icon'/>}/>
+                          {isMobile ? '' : ' Message'}
+                        </button>
+
+                        <button className='btn white' onClick={() => handleViewProfile(member._id)} title={`View ${member.first_name}'s profile`}>
+                          <IconContainer icon={<IoPersonCircleOutline className='icon xl'/>}/>
+                          {isMobile ? '' : ' View profile'}
+                        </button>
+
+                        {currentProject?.members?.some(m => m._id === member._id)
+                          && isAdmin
+                          &&  <button className='btn white' title={`Remove ${member.first_name} from project`} onClick={() => handleRemoveMemberFromProject(member._id)}>
+                                <IconContainer icon={<AiOutlineMinus className='icon'/>}/>{isMobile ? '' : ' Remove from project'}
+                              </button>
+                        }
+
+                        {!currentProject?.members?.some(m => m._id === member._id)
+                          && isAdmin
+                          &&  <button className='btn white' title={`Add ${member.first_name} to project`} onClick={() => handleAddMember(member)}>
+                                <IconContainer icon={<BsPlus className='icon xl'/>}/>{isMobile? '' : ' Add to project'}
+                              </button>
+                        }
+                      </div>
+                    </div>
+                  )
+                })
               }
               
             </div>

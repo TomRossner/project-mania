@@ -5,7 +5,7 @@ import { fetchBoardsAsync, setBoards } from "./store/boards/boards.actions";
 import { setCurrentProject } from "./store/project/project.actions";
 import { setUserInfo, fetchUserInfoAsync } from "./store/userInfo/userInfo.actions";
 import { setElement } from "./store/globalStates/globalStates.actions";
-import { emitDisconnection, emitOnline } from "./utils/socket";
+import { emitCloseBrowser, emitOnline } from "./utils/socket";
 import { setChat, setCurrentContact } from "./store/chat/chat.actions";
 
 // Custom Hooks
@@ -263,7 +263,7 @@ const App = () => {
       e.preventDefault();
 
       // Emit disconnection
-      emitDisconnection();
+      emitCloseBrowser();
     };
 
     // Before-Unload listener
