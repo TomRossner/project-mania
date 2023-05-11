@@ -9,7 +9,7 @@ import useMobile from '../hooks/useMobile';
 
 const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
   // const [notifications, setNotifications] = useState([]);
-  const {userInfo, isAuthenticated} = useAuth();
+  const {userInfo, isAuthenticated, user} = useAuth();
   const {isMobile} = useMobile();
 
   // useEffect(() => {
@@ -17,22 +17,29 @@ const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
   //   setNotifications(userInfo.notifications);
   // }, [userInfo]);
 
+  // TOP NAV DOESN'T LOAD ON MOBILE -- FIX ASAP
+
   return (
     <div className="top-nav">
         {isMobile ? <MenuIcon/> : null}
-        {userInfo && isAuthenticated
-          ? <h1>👋 Welcome back, {userInfo.first_name}</h1>
-          : null
+        {user && isAuthenticated
+          ? <h1>👋 Welcome back, {userInfo?.first_name}</h1>
+          : <h1>Welcome to ProjectMania!</h1>
         }
         
         <Space/>
-        <div className='buttons-container'>
-          <button className="btn blue" onClick={handleCreateBoard}><IconContainer icon={<BsPlus className='icon'/>}/>{isMobile ? 'New Board' : 'Create New Board'}</button>
-          {/* <button className="btn white" onClick={handleToggleNotificationTab}>
-            <IconContainer icon={<BsBell className='icon large'/>}/>
-            {notifications?.length ? <IconContainer additionalClass={"absolute"} icon={<BsFillCircleFill className='icon'/>}/> : null}
-          </button> */}
-        </div>
+        {user && isAuthenticated
+          ? <>
+              <div className='buttons-container'>
+                <button className="btn blue" onClick={handleCreateBoard}><IconContainer icon={<BsPlus className='icon'/>}/>{isMobile ? 'New Board' : 'Create New Board'}</button>
+                {/* <button className="btn white" onClick={handleToggleNotificationTab}>
+                  <IconContainer icon={<BsBell className='icon large'/>}/>
+                  {notifications?.length ? <IconContainer additionalClass={"absolute"} icon={<BsFillCircleFill className='icon'/>}/> : null}
+                </button> */}
+              </div>
+            </>
+          : null
+        }
     </div>
   )
 }

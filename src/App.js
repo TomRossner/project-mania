@@ -289,13 +289,7 @@ const App = () => {
           <div className="main-content">
             {notificationTabOpen ? <NotificationTab/> : null}
 
-            {user && isAuthenticated
-              ? (<TopNav
-                    handleCreateBoard={handleCreateBoard}
-                    handleToggleNotificationTab={handleToggleNotificationTab}
-                  />
-              ) : null
-            }
+            <TopNav handleCreateBoard={handleCreateBoard} handleToggleNotificationTab={handleToggleNotificationTab}/>
 
             <Routes>
               <Route path="/" element={<Home/>}/>
