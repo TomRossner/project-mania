@@ -12,16 +12,22 @@
     border-radius: 22px;
 
     .buttons-container{
-        width: fit-content;
+        flex: 1;
+        justify-content: flex-end;
+
+        .btn{
+            width: 14vw;
+            // justify-content: space-between;
+        }
     }
 
     h1{
         font-weight: 800;
-        flex: 1;
+        // flex: 1;
     }
 }
 
-@media screen and (min-width: 250px) and (max-width: 1440px) {
+@media screen and (min-width: 250px) and (max-width: 1280px) {
     .top-nav{
         padding-inline: 0.6rem;
         justify-content: space-between;
@@ -29,17 +35,21 @@
         .buttons-container{
             flex: 0;
             justify-content: flex-end;
+
+            .btn{
+                width: 18vw;
+            }
         }
         
         .flex1{
-            flex: 0;
-            // display: none;
+            display: none;
         }
 
         h1{
             font-size: 1.8rem;
             text-align: left;
-            width: 50%;
+            width: 80%;
+            flex: 1;
         }
     }
 }
@@ -50,13 +60,22 @@
 
         h1{
             flex: 1;
-            font-size: 1rem;
+            font-size: 4.4vw;
             text-align: center;
+            flex: 1;
         }
 
         .buttons-container{
-            flex: 1;
+            flex: 0;
             justify-content: flex-end;
+
+            .btn{
+                width: fit-content;
+
+                span.btn-text{
+                    display: none;
+                }
+            }
         }
 
         .btn{

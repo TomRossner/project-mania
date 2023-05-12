@@ -53,12 +53,11 @@ const NavBar = () => {
     loadProfileImage();
 
   }, [userInfo]);
-
   
 
   return (
     <>
-      <nav className={navOpen ? 'mobile open' : 'mobile'}>
+      <nav className={isMobile ? navOpen ? 'mobile open' : 'mobile' : null}>
         <Logo/>
         <IconContainer additionalClass={'cross'} icon={<RxCross1 className='icon xl'/>} onClick={closeMenu}/>
         <ul className='flex1'>
@@ -70,11 +69,12 @@ const NavBar = () => {
                 <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
               </li>
               {user && isAuthenticated && boards.length ?
-              <>
-              <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
-                {boards?.map(project => <p key={project._id} onClick={() => handleClick(project)}>{project.title}</p>)}
-              </div>
-              </> : null}
+                <>
+                  <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
+                    {boards?.map(project => <p key={project._id} onClick={() => handleClick(project)}>{project.title}</p>)}
+                  </div>
+                </>
+                : null}
             </div>
             <NavLink path={'/users'} icon={<HiUserGroup className='icon'/>} text={'Browse users'} onClick={closeMenu}/>
             <NavLink path={`/chat/${user?._id}`} icon={<BsChatLeftText className='icon'/>} text={'Chat'} onClick={closeMenu}/>

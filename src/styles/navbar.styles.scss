@@ -27,6 +27,12 @@ nav{
     gap: 1.5rem;
     user-select: none;
 
+    .icon-span{
+        &.cross{
+            display: none;
+        }
+    }
+
     ul{
         list-style: none;
         display: flex;
@@ -128,46 +134,51 @@ nav{
         font-size: 1rem;
     }
 
-    nav.mobile{
-        width: 35%;
-        position: fixed;
-        z-index: 20;
-        background-color: white;
-        height: 100%;
-        padding: 1rem;
-        top: 0;
-        left: 0;
-        border-right: 1px solid $grey;
-        transform: translateX(-100%);
-        pointer-events: none;
-        transition: transform 0.2s;
-        
-        &.open{
-            pointer-events: all;
-            transform: translateX(0);
-        }
+    nav{
+        width: 20%;
 
-        ul{
-            &.flex-1{
-                flex: none;
+        &.mobile{
+            width: 40%;
+            position: fixed;
+            z-index: 20;
+            background-color: white;
+            height: 100%;
+            padding: 1rem;
+            top: 0;
+            left: 0;
+            border-right: 1px solid $grey;
+            transform: translateX(-100%);
+            pointer-events: none;
+            transition: transform 0.2s;
+            
+            &.open{
+                pointer-events: all;
+                transform: translateX(0);
             }
-            &#left-nav-bottom-ul{
-                height: 28%;
-
-                .link{
-                    font-size: 1.2rem;
+    
+            ul{
+                &.flex-1{
+                    flex: none;
                 }
-                
-            }
-
-            li{
-                font-size: 1.2rem;
-                 .link{
+                &#left-nav-bottom-ul{
+                    height: 28%;
+    
+                    .link{
+                        font-size: 1.2rem;
+                    }
+                    
+                }
+    
+                li{
                     font-size: 1.2rem;
-                 }
+                     .link{
+                        font-size: 1.2rem;
+                     }
+                }
             }
         }
     }
+    
 }
 
 @media screen and (min-width: 250px) and (max-width: 767px) {

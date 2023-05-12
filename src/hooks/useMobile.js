@@ -10,19 +10,19 @@ const useMobile = () => {
    // Handle Screen size
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth < 1441) {
+            if (window.innerWidth < 1280) {
                 dispatch(setIsMobile(true));
             } else {
                 dispatch(setIsMobile(false));
             }
         };
     
-        window.addEventListener('resize', handleResize);
         window.addEventListener('load', handleResize);
+        window.addEventListener('resize', handleResize);
     
         return () => {
-            window.removeEventListener('resize', handleResize);
             window.removeEventListener('load', handleResize);
+            window.removeEventListener('resize', handleResize);
         };
     }, []);
 

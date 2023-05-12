@@ -17,8 +17,6 @@ const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
   //   setNotifications(userInfo.notifications);
   // }, [userInfo]);
 
-  // TOP NAV DOESN'T LOAD ON MOBILE -- FIX ASAP
-
   return (
     <div className="top-nav">
         {isMobile ? <MenuIcon/> : null}
@@ -31,7 +29,10 @@ const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
         {user && isAuthenticated
           ? <>
               <div className='buttons-container'>
-                <button className="btn blue" onClick={handleCreateBoard}><IconContainer icon={<BsPlus className='icon'/>}/>{isMobile ? 'New Board' : 'Create New Board'}</button>
+                <button className="btn blue" onClick={handleCreateBoard}>
+                  <IconContainer icon={<BsPlus className='icon'/>}/>
+                  <span className='btn-text'>{isMobile ? 'New Board' : 'Create New Board'}</span>
+                </button>
                 {/* <button className="btn white" onClick={handleToggleNotificationTab}>
                   <IconContainer icon={<BsBell className='icon large'/>}/>
                   {notifications?.length ? <IconContainer additionalClass={"absolute"} icon={<BsFillCircleFill className='icon'/>}/> : null}
