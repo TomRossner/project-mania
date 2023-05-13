@@ -124,7 +124,7 @@
         .icon-span.toggle-collapse{
             position: absolute;
             left: -1.7rem;
-            top: 7rem;
+            top: 12rem;
             padding: 0.2rem;
             background-color: white;
             border: 2px solid $grey;
@@ -137,6 +137,7 @@
 
             &.rotate{
                 transform: rotate(180deg);
+                // display: none;
             }
 
             &:hover{

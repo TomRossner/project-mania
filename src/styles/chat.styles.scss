@@ -240,7 +240,7 @@
         position: relative;
 
         .left{
-            width: 94%;
+            width: 98%;
             position: absolute;
             z-index: 10;
             top: 0;
@@ -258,31 +258,32 @@
 
                 >.icon-span{
                     transform: rotate(180deg);
+                    right: -0.5rem;
+                    border-radius: 0 8px 8px 0;
                 }
             }
 
             >.icon-span{
                 position: absolute;
-                right: -1.5rem;
-                top: 8.5rem;
+                right: -1.8rem;
+                top: 4.2rem;
                 z-index: 20;
                 background-color: $light;
                 border: 2px solid $grey;
                 padding: 0.2rem;
-                border-radius: 8px;
+                border-radius: 0 8px 8px 0;
                 transition: border-color 0.1s;
 
                 &:active, &:hover{
-                    border-color: $dark;
+                    border-color: $grey;
 
                     .icon{
-                        color: $dark;
+                        color: $grey;
                     }
                 }
 
                 .icon{
                     font-size: 1.5rem;
-
                 }
             }
         }

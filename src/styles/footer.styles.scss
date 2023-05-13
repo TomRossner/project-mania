@@ -31,3 +31,13 @@ footer{
         }
     }
 }
+
+@media screen and (min-width: 200px) and (max-width: 1280px) {
+    footer{
+        gap: 0.4rem;
+
+        p{
+            font-size: 0.75rem;
+        }
+    }
+}

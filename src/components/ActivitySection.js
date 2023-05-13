@@ -9,6 +9,7 @@ import { setActivitySectionOpen } from '../store/globalStates/globalStates.actio
 import { BsChevronLeft } from 'react-icons/bs';
 import useMobile from '../hooks/useMobile';
 import Spinner from './common/Spinner';
+import { RxCross1 } from 'react-icons/rx';
 
 // const Activity = lazy(() => import("./Activity"));
 const ProjectAdmins = lazy(() => import("./ProjectAdmins"));
@@ -33,6 +34,7 @@ const ActivitySection = () => {
     <>
       {currentProject && (
         <nav id="activity-section" className={activitySectionOpen ? 'open' : ''}>
+          {/* <IconContainer additionalClass={'cross'} icon={<RxCross1 className='icon xl'/>} onClick={handleToggleActivitySection}/> */}
           <IconContainer additionalClass={activitySectionOpen ? 'toggle-collapse rotate' : 'toggle-collapse'} icon={<BsChevronLeft className='icon'/>} onClick={handleToggleActivitySection}/>
           <div className="right-nav-content">
 
