@@ -6,9 +6,9 @@ const useSocketEvents = ({events}) => {
     useEffect(() => {
         socket.connect();
         
-        // return () => {
-        //     socket.disconnect();
-        // };
+        return () => {
+            socket.disconnect();
+        };
 
     }, []);
     
@@ -16,6 +16,12 @@ const useSocketEvents = ({events}) => {
         Object.entries(events).forEach(([event, handler]) => {
             socket.on(event, handler);
         });
+
+        return () => {
+            Object.entries(events).forEach(([event, handler]) => {
+                socket.off(event, handler);
+            });
+        }
     }, [events]);
 }
 

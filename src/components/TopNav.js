@@ -6,11 +6,14 @@ import Space from './common/Space';
 import useAuth from '../hooks/useAuth';
 import MenuIcon from './MenuIcon';
 import useMobile from '../hooks/useMobile';
+import { useSelector } from 'react-redux';
+import { selectIsMobile } from '../store/globalStates/globalStates.selector';
 
 const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
   // const [notifications, setNotifications] = useState([]);
   const {userInfo, isAuthenticated, user} = useAuth();
-  const {isMobile} = useMobile();
+  // const {isMobile} = useMobile();
+  const isMobile = useSelector(selectIsMobile);
 
   // useEffect(() => {
   //   if (!userInfo) return;

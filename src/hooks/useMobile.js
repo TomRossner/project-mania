@@ -7,22 +7,23 @@ const useMobile = () => {
     const isMobile = useSelector(selectIsMobile);
     const dispatch = useDispatch();
 
+    const handleResize = () => {
+        if (window.innerWidth <= 1280) {
+            dispatch(setIsMobile(true));
+        } else {
+            dispatch(setIsMobile(false));
+        }
+    };
+
    // Handle screen size
     useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth <= 1280) {
-                dispatch(setIsMobile(true));
-            } else {
-                dispatch(setIsMobile(false));
-            }
-        };
     
         window.addEventListener('load', handleResize);
-        window.addEventListener('resize', handleResize);
+        // window.addEventListener('resize', handleResize);
     
         return () => {
             window.removeEventListener('load', handleResize);
-            window.removeEventListener('resize', handleResize);
+            // window.removeEventListener('resize', handleResize);
         };
     }, []);
 

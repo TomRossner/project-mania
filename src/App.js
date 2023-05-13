@@ -70,6 +70,8 @@ import "./styles/user-tab.styles.scss";
 import "./styles/footer.styles.scss";
 import "./styles/menu-icon.styles.scss";
 import "./styles/not-found.styles.scss";
+import useMembers from "./hooks/useMembers";
+import { fetchMembersAsync } from "./store/members/members.actions";
 
 // Lazy-loading components
 const Profile = lazy(() => import("./components/Profile")); 
@@ -119,22 +121,36 @@ const App = () => {
     currentChat
   } = useChat();
 
+  const {members} = useMembers();
+
   // Handle user has connected
   const handleIsOnline = async (data) => {
+    console.log("Handle online")
     if (data.userId === currentContact?._id && currentContact?.online === false) {
         const contact = await getContactInfo(data.userId);
         dispatch(setCurrentContact(contact));
-        return;
-    } else return;
+    }
+
+    if (members.some(m => m._id === data.userId)) {
+      dispatch(fetchMembersAsync());
+    }
+    
+    else return;
   }
 
   // Handle user went offline
   const handleIsOffline = async (data) => {
+    console.log('Handle offline')
     if (data.userId === currentContact?._id && currentContact?.online === true) {
         const contact = await getContactInfo(data.userId);
         dispatch(setCurrentContact(contact));
-        return;
-    } else return;
+    }
+    
+    if (members.some(m => m._id === data.userId)) {
+      dispatch(fetchMembersAsync());
+    }
+
+    else return;
   }
 
   // Listen to online/offline socket events
