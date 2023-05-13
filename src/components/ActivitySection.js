@@ -17,7 +17,6 @@ const ActivitySection = () => {
     const {currentProject} = useProject();
     const dispatch = useDispatch();
     const activitySectionOpen = useSelector(selectActivitySectionOpen);
-    const {isMobile} = useMobile();
 
     const handleToggleActivitySection = () => {
       dispatch(setActivitySectionOpen(!activitySectionOpen));
@@ -32,54 +31,28 @@ const ActivitySection = () => {
 
   return (
     <>
-    {isMobile
-      ? <>
-          {currentProject && (
-            <nav id="activity-section-mobile" className={activitySectionOpen ? 'open' : ''}>
-                <IconContainer additionalClass={activitySectionOpen ? 'toggle-collapse rotate' : 'toggle-collapse'} icon={<BsChevronLeft className='icon'/>} onClick={handleToggleActivitySection}/>
-                <div className="right-nav-content">
+      {currentProject && (
+        <nav id="activity-section" className={activitySectionOpen ? 'open' : ''}>
+          <IconContainer additionalClass={activitySectionOpen ? 'toggle-collapse rotate' : 'toggle-collapse'} icon={<BsChevronLeft className='icon'/>} onClick={handleToggleActivitySection}/>
+          <div className="right-nav-content">
 
-                <div className="project-content">
-                    <div className="current-project-info">
-                      <h3>{currentProject?.title}</h3>
-                      <p>{currentProject?.subtitle}</p>
-                    </div>
-                    <Suspense fallback={<div><Spinner/><h3>Loading admins...</h3></div>}>
-                      <ProjectAdmins/>
-                    </Suspense>
-                </div>
-
-                <div className='activity-section'>
-                  <Activity/>
-                </div>
-
-                </div>
-              </nav>
-            )}
-        </>
-      : <>
-          {currentProject && (
-          <nav id="right-nav" className={activitySectionOpen ? 'open' : ''}>
-            <div className="right-nav-content">
-
-            <div className="project-content">
-                <div className="current-project-info">
-                  <h3>{currentProject?.title}</h3>
-                  <p>{currentProject?.subtitle}</p>
-                </div>
+          <div className="project-content">
+              <div className="current-project-info">
+                <h3>{currentProject?.title}</h3>
+                <p>{currentProject?.subtitle}</p>
+              </div>
+              <Suspense fallback={<div><Spinner/><h3>Loading admins...</h3></div>}>
                 <ProjectAdmins/>
-            </div>
+              </Suspense>
+          </div>
 
-            <div className='activity-section'>
-              <Activity/>
-            </div>
+          <div className='activity-section'>
+            <Activity/>
+          </div>
 
-            </div>
-          </nav>
-        )}
-        </>
-    }
-    
+          </div>
+        </nav>
+      )}
     </>
   )
 }

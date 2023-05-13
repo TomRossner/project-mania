@@ -91,9 +91,12 @@
 
 @media screen and (min-width: 851px) and (max-width: 1280px) {
     .container.home{
+        width: 100%;
+
         p{
             width: 90%;
         }
+
         .home-features{
             flex-direction: column;
             gap: 2rem;
@@ -106,18 +109,33 @@
     }
 }
 
-@media screen and (min-width: 250px)  and (max-width: 850px) {
+@media screen and (min-width: 200px)  and (max-width: 850px) {
     .container.home{
+        width: 100%;
+        padding: 1rem;
+
         p{
-            width: 95%;
+            width: 98%;
         }
+
         .home-features{
             flex-direction: column;
             gap: 2rem;
+            margin: 0;
+            width: 100%;
 
             .feature{
                 width: 100%;
                 margin: 0 auto;
+
+                ul{
+                    padding: 1rem;
+
+                    li{
+                        font-size: 3vw;
+                        width: 100%;
+                    }
+                }
             }
         }
     }

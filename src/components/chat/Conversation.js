@@ -100,7 +100,7 @@ const Conversation = () => {
                     ? <ProfilePicture src={currentContact?.base64_img_data || currentContact?.img_url}/>
                     : <BlankProfilePicture/>
                 }
-                <div>
+                <div className='contact-name'>
                     <h3>{contactName}</h3>
                     {currentContact?.online === true
                         ? <p className='green'>online</p>
@@ -113,7 +113,7 @@ const Conversation = () => {
                 </button>
                 <button className='btn white' title='View profile'>
                     <IconContainer icon={<AiOutlineUser className='icon xl'/>}/>
-                    {isMobile ? '' : 'View profile'}
+                    <span className='text'>View profile</span>
                 </button>
             </div>
         }

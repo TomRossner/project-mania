@@ -136,8 +136,8 @@ const ChatApp = () => {
 
   return (
     <div className='main-chat-container'>
-      <div className={chatSideBarOpen && isMobile ? 'left open' : 'left'}>
-        {isMobile && <IconContainer icon={<BsChevronRight className='icon'/>} additionalClass={isMobile ? 'mobile' : 'not-mobile'} onClick={toggleChatSideBar}/>}
+      <div className={chatSideBarOpen ? 'left open' : 'left'}>
+        <IconContainer icon={<BsChevronRight className='icon'/>} additionalClass={isMobile ? 'mobile' : 'not-mobile'} onClick={toggleChatSideBar}/>
 
         <div className='main-chat-title'>
           <IconContainer icon={<HiOutlineChatBubbleLeftRight className='icon'/>}/>

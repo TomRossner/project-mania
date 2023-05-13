@@ -534,15 +534,17 @@ hr.line{
     }
 }
 
-@media screen and (min-width: 250px) and (max-width: 1024px) {
+@media screen and (min-width: 200px) and (max-width: 1024px) {
     .main{
         padding-inline: 1.2rem;
         position: relative;
     }
 }
 
-@media screen and (min-width: 250px) and (max-width: 1024px) {
+@media screen and (min-width: 200px) and (max-width: 1024px) {
     .main{
+        padding: 0.5rem;
+        
         .main-content{
             padding: 0.5rem;
         }
@@ -581,7 +583,7 @@ hr.line{
     }
 }
 
-@media screen and (min-width: 250px) and (max-width: 500px) {
+@media screen and (min-width: 200px) and (max-width: 500px) {
     .background-blur.active{
         .error-popup-container{
             width: 80%;

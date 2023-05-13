@@ -108,8 +108,8 @@
     }
 }
 
-@media screen and (min-width: 250px) and (max-width: 1440px) {
-    #activity-section-mobile{
+@media screen and (min-width: 200px) and (max-width: 1280px) {
+    #activity-section{
         width: 35%;
         position: fixed;
         z-index: 10;
@@ -156,8 +156,8 @@
     }
 }
 
-@media screen and (min-width: 250px) and (max-width: 767px) {
-    #activity-section-mobile{
+@media screen and (min-width: 200px) and (max-width: 767px) {
+    #activity-section{
         width: 95%;
         transform: translateX(97.5%);
     }

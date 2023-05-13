@@ -104,7 +104,7 @@
     }
 }
 
-@media screen and (min-width: 250px) and (max-width: 1440px) {
+@media screen and (min-width: 200px) and (max-width: 1440px) {
     .current-board-info-bar{
         gap: 1rem;
         .project-title-container{
@@ -125,7 +125,7 @@
     }
 }
 
-@media screen and (min-width: 250px) and (max-width: 1024px) {
+@media screen and (min-width: 200px) and (max-width: 1024px) {
     .current-board-info-bar{
         gap: 1rem;
         flex-wrap: wrap;
@@ -225,7 +225,7 @@
     }
 }
 
-@media screen and (min-width: 250px) and (max-width: 450px) {
+@media screen and (min-width: 200px) and (max-width: 450px) {
     .current-board-info-bar{
 
         .options-menu{

@@ -62,222 +62,59 @@ const NavBar = () => {
 
   return (
     <>
-    {isMobile
-      ? <nav className={navOpen ? 'mobile open' : 'mobile'}>
-          <Logo/>
-          <IconContainer additionalClass={'cross'} icon={<RxCross1 className='icon xl'/>} onClick={closeMenu}/>
-          <ul className='flex1'>
-              <NavLink path={'/'} icon={<RxHome className='icon'/>} text={'Home'} onClick={closeMenu}/>
-              <div className='li-expand'>
-                <li onClick={handleToggleProjectsDropdown}>
-                  <IconContainer icon={<AiOutlineProject className='icon'/>}/>
-                    <Link className='link flex1'>Projects</Link>
-                  <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
-                </li>
-                {user && isAuthenticated && boards.length ?
-                  <>
-                    <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
-                      {boards?.map(project => <p key={project._id} onClick={() => handleClick(project)}>{project.title}</p>)}
-                    </div>
-                  </>
-                  : null}
-              </div>
-              <NavLink path={'/users'} icon={<HiUserGroup className='icon'/>} text={'Browse users'} onClick={closeMenu}/>
-              <NavLink path={`/chat/${user?._id}`} icon={<BsChatLeftText className='icon'/>} text={'Chat'} onClick={closeMenu}/>
-              <NavLink path={'/about'} icon={<AiOutlineInfoCircle className='icon'/>} text={'About'} onClick={closeMenu}/>
-              <NavLink path={'/settings'} icon={<IoSettingsOutline className='icon'/>} text={'Settings'} onClick={closeMenu}/>
-          </ul>
-          <ul id='left-nav-bottom-ul'>
+      <nav className={navOpen ? 'navbar open' : 'navbar'}>
+        <Logo/>
+        <IconContainer additionalClass={'cross'} icon={<RxCross1 className='icon xl'/>} onClick={closeMenu}/>
+        <ul className='flex1'>
+            <NavLink path={'/'} icon={<RxHome className='icon'/>} text={'Home'} onClick={closeMenu}/>
             <div className='li-expand'>
-              <div className="dropdown open">
-                {
-                  !user || !isAuthenticated ?
-                  <>
-                    <Link className="link flex-align" to="/sign-in" onClick={closeMenu}><IconContainer icon={<MdLogin className="icon"/>}/>Login</Link>
-                    <Link className="link flex-align" to="/sign-up" onClick={closeMenu}><IconContainer icon={<ImUserPlus className="icon"/>}/>Sign up</Link>
-                  </>
-                  :
-                  <>
-                    <Link className="link flex-align" to="/profile" onClick={closeMenu}><IconContainer icon={<MdPerson className="icon large"/>}/>My profile</Link>
-                    <Link className="link flex-align" to="/logout" onClick={closeMenu}><IconContainer icon={<MdLogout className="icon"/>}/>Logout</Link>
-                  </>
-                }
-                <Space/>
-              </div>
+              <li onClick={handleToggleProjectsDropdown}>
+                <IconContainer icon={<AiOutlineProject className='icon'/>}/>
+                  <Link className='link flex1'>Projects</Link>
+                <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
+              </li>
+              {user && isAuthenticated && boards.length ?
+                <>
+                  <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
+                    {boards?.map(project => <p key={project._id} onClick={() => handleClick(project)}>{project.title}</p>)}
+                  </div>
+                </>
+                : null}
             </div>
-            {user && isAuthenticated && (
-              <div className='profile'>
-                {profileImage
-                ? <ProfilePicture src={profileImage}/>
-                : <BlankProfilePicture/>}
-                <span>{userName}</span>
-              </div>
-            )}
-          </ul>
-        </nav>
-      : <nav>
-          <Logo/>
-          <IconContainer additionalClass={'cross'} icon={<RxCross1 className='icon xl'/>} onClick={closeMenu}/>
-          <ul className='flex1'>
-              <NavLink path={'/'} icon={<RxHome className='icon'/>} text={'Home'} onClick={closeMenu}/>
-              <div className='li-expand'>
-                <li onClick={handleToggleProjectsDropdown}>
-                  <IconContainer icon={<AiOutlineProject className='icon'/>}/>
-                    <Link className='link flex1'>Projects</Link>
-                  <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
-                </li>
-                {user && isAuthenticated && boards.length ?
-                  <>
-                    <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
-                      {boards?.map(project => <p key={project._id} onClick={() => handleClick(project)}>{project.title}</p>)}
-                    </div>
-                  </>
-                  : null}
-              </div>
-              <NavLink path={'/users'} icon={<HiUserGroup className='icon'/>} text={'Browse users'} onClick={closeMenu}/>
-              <NavLink path={`/chat/${user?._id}`} icon={<BsChatLeftText className='icon'/>} text={'Chat'} onClick={closeMenu}/>
-              <NavLink path={'/about'} icon={<AiOutlineInfoCircle className='icon'/>} text={'About'} onClick={closeMenu}/>
-              <NavLink path={'/settings'} icon={<IoSettingsOutline className='icon'/>} text={'Settings'} onClick={closeMenu}/>
-          </ul>
-          <ul id='left-nav-bottom-ul'>
-            <div className='li-expand'>
-              <div className="dropdown open">
-                {
-                  !user || !isAuthenticated ?
-                  <>
-                    <Link className="link flex-align" to="/sign-in" onClick={closeMenu}><IconContainer icon={<MdLogin className="icon"/>}/>Login</Link>
-                    <Link className="link flex-align" to="/sign-up" onClick={closeMenu}><IconContainer icon={<ImUserPlus className="icon"/>}/>Sign up</Link>
-                  </>
-                  :
-                  <>
-                    <Link className="link flex-align" to="/profile" onClick={closeMenu}><IconContainer icon={<MdPerson className="icon large"/>}/>My profile</Link>
-                    <Link className="link flex-align" to="/logout" onClick={closeMenu}><IconContainer icon={<MdLogout className="icon"/>}/>Logout</Link>
-                  </>
-                }
-                <Space/>
-              </div>
+            <NavLink path={'/users'} icon={<HiUserGroup className='icon'/>} text={'Browse users'} onClick={closeMenu}/>
+            <NavLink path={`/chat/${user?._id}`} icon={<BsChatLeftText className='icon'/>} text={'Chat'} onClick={closeMenu}/>
+            <NavLink path={'/about'} icon={<AiOutlineInfoCircle className='icon'/>} text={'About'} onClick={closeMenu}/>
+            <NavLink path={'/settings'} icon={<IoSettingsOutline className='icon'/>} text={'Settings'} onClick={closeMenu}/>
+        </ul>
+        <ul id='left-nav-bottom-ul'>
+          <div className='li-expand'>
+            <div className="dropdown open">
+              {
+                !user || !isAuthenticated ?
+                <>
+                  <Link className="link flex-align" to="/sign-in" onClick={closeMenu}><IconContainer icon={<MdLogin className="icon"/>}/>Login</Link>
+                  <Link className="link flex-align" to="/sign-up" onClick={closeMenu}><IconContainer icon={<ImUserPlus className="icon"/>}/>Sign up</Link>
+                </>
+                :
+                <>
+                  <Link className="link flex-align" to="/profile" onClick={closeMenu}><IconContainer icon={<MdPerson className="icon large"/>}/>My profile</Link>
+                  <Link className="link flex-align" to="/logout" onClick={closeMenu}><IconContainer icon={<MdLogout className="icon"/>}/>Logout</Link>
+                </>
+              }
+              <Space/>
             </div>
-            {user && isAuthenticated && (
-              <div className='profile'>
-                {profileImage
-                ? <ProfilePicture src={profileImage}/>
-                : <BlankProfilePicture/>}
-                <span>{userName}</span>
-              </div>
-            )}
-          </ul>
-        </nav>
-    }
+          </div>
+          {user && isAuthenticated && (
+            <div className='profile'>
+              {profileImage
+              ? <ProfilePicture src={profileImage}/>
+              : <BlankProfilePicture/>}
+              <span>{userName}</span>
+            </div>
+          )}
+        </ul>
+      </nav>
     </>
-  //   <>
-  //   {isMobile ? (
-  //     <>
-  //       <nav className={navOpen ? 'mobile open' : 'mobile'}>
-  //         <Logo/>
-  //         <IconContainer additionalClass={'cross'} icon={<RxCross1 className='icon xl'/>} onClick={closeMenu}/>
-  //         <ul className='flex1'>
-  //             <NavLink path={'/'} icon={<RxHome className='icon'/>} text={'Home'} onClick={closeMenu}/>
-  //             <div className='li-expand'>
-  //               <li onClick={handleToggleProjectsDropdown}>
-  //                 <IconContainer icon={<AiOutlineProject className='icon'/>}/>
-  //                   <Link className='link flex1'>Projects</Link>
-  //                 <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
-  //               </li>
-  //               {user && isAuthenticated && boards.length ?
-  //               <>
-  //               <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
-  //                 {boards?.map(project => <p key={project._id} onClick={() => handleClick(project)}>{project.title}</p>)}
-  //               </div>
-  //               </> : null}
-  //             </div>
-  //             <NavLink path={'/users'} icon={<HiUserGroup className='icon'/>} text={'Browse users'} onClick={closeMenu}/>
-  //             <NavLink path={`/chat/${user?._id}`} icon={<BsChatLeftText className='icon'/>} text={'Chat'} onClick={closeMenu}/>
-  //             <NavLink path={'/about'} icon={<AiOutlineInfoCircle className='icon'/>} text={'About'} onClick={closeMenu}/>
-  //             <NavLink path={'/settings'} icon={<IoSettingsOutline className='icon'/>} text={'Settings'} onClick={closeMenu}/>
-  //         </ul>
-  //         <ul id='left-nav-bottom-ul'>
-  //           <div className='li-expand'>
-  //             <div className="dropdown open">
-  //               {
-  //                 !user || !isAuthenticated ?
-  //                 <>
-  //                   <Link className="link flex-align" to="/sign-in" onClick={closeMenu}><IconContainer icon={<MdLogin className="icon"/>}/>Login</Link>
-  //                   <Link className="link flex-align" to="/sign-up" onClick={closeMenu}><IconContainer icon={<ImUserPlus className="icon"/>}/>Sign up</Link>
-  //                 </>
-  //                 :
-  //                 <>
-  //                   <Link className="link flex-align" to="/profile" onClick={closeMenu}><IconContainer icon={<MdPerson className="icon large"/>}/>My profile</Link>
-  //                   <Link className="link flex-align" to="/logout" onClick={closeMenu}><IconContainer icon={<MdLogout className="icon"/>}/>Logout</Link>
-  //                 </>
-  //               }
-  //               <Space/>
-  //             </div>
-  //           </div>
-  //           {user && isAuthenticated && (
-  //             <div className='profile'>
-  //               {profileImage
-  //               ? <ProfilePicture src={profileImage}/>
-  //               : <BlankProfilePicture/>}
-  //               <span>{userName}</span>
-  //             </div>
-  //           )}
-  //         </ul>
-  //       </nav>
-  //     </>
-  //   ) : (
-  //     <nav>
-  //       <Logo/>
-  //       <ul className='flex1'>
-  //           <NavLink path={'/'} icon={<RxHome className='icon'/>} text={'Home'}/>
-  //           <div className='li-expand'>
-  //             <li onClick={handleToggleProjectsDropdown}>
-  //               <IconContainer icon={<AiOutlineProject className='icon'/>}/>
-  //                 <Link className='link flex1'>Projects</Link>
-  //               <IconContainer icon={<BsChevronDown className={`icon ${!projectsDropdownOpen ? 'reversed' : ''}`}/>}/>
-  //             </li>
-  //             {user && isAuthenticated && boards.length ?
-  //             <>
-  //             <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
-  //               {boards?.map(project => <p key={project._id} onClick={() => handleClick(project)}>{project.title}</p>)}
-  //             </div>
-  //             </> : null}
-  //           </div>
-  //           <NavLink path={'/users'} icon={<HiUserGroup className='icon'/>} text={'Browse users'}/>
-  //           <NavLink path={`/chat/${user?._id}`} icon={<BsChatLeftText className='icon'/>} text={'Chat'}/>
-  //           <NavLink path={'/about'} icon={<AiOutlineInfoCircle className='icon'/>} text={'About'}/>
-  //           <NavLink path={'/settings'} icon={<IoSettingsOutline className='icon'/>} text={'Settings'}/>
-  //       </ul>
-  //       <ul id='left-nav-bottom-ul'>
-  //         <div className='li-expand'>
-  //           <div className="dropdown open">
-  //             {
-  //               !user || !isAuthenticated ?
-  //               <>
-  //                 <Link className="link flex-align" to="/sign-in"><IconContainer icon={<MdLogin className="icon"/>}/>Login</Link>
-  //                 <Link className="link flex-align" to="/sign-up"><IconContainer icon={<ImUserPlus className="icon"/>}/>Sign up</Link>
-  //               </>
-  //               :
-  //               <>
-  //                 <Link className="link flex-align" to="/profile"><IconContainer icon={<MdPerson className="icon large"/>}/>My profile</Link>
-  //                 <Link className="link flex-align" to="/logout"><IconContainer icon={<MdLogout className="icon"/>}/>Logout</Link>
-  //               </>
-  //             }
-  //             <Space/>
-  //           </div>
-  //         </div>
-  //         {user && isAuthenticated && (
-  //           <div className='profile'>
-  //             {profileImage
-  //             ? <ProfilePicture src={profileImage}/>
-  //             : <BlankProfilePicture/>}
-  //             <span>{userName}</span>
-  //           </div>
-  //         )}
-  //       </ul>
-  //     </nav>
-  //   )
-  // }
-  //   </>
   )
 }
 

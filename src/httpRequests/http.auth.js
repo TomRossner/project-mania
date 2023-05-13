@@ -2,8 +2,12 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 
 // Set Axios base URL
-axios.defaults.baseURL = process.env.NOVE_ENV === 'development' ? 'http://localhost:5000/projectmania' : 'http://tomrossner.dev/projectmania';
+process.env.NOVE_ENV === 'development'
+? axios.defaults.baseURL = 'http://localhost:5000/projectmania'
+: axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
 // axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
+console.log(process.env.NODE_ENV)
+console.log(axios.defaults.baseURL)
 
 const token = 'token'; // For LocalStorage
 setTokenHeader(); // Set Token header on load
