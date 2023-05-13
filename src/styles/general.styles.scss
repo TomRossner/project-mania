@@ -528,7 +528,13 @@ hr.line{
     gap: 1rem;
 }
 
-@media screen and (min-width: 250px) and (max-width: 1440px) {
+@media screen and (min-width: 1025px) {
+    .main{
+        padding-inline: 0;
+    }
+}
+
+@media screen and (min-width: 250px) and (max-width: 1024px) {
     .main{
         padding-inline: 1.2rem;
         position: relative;
