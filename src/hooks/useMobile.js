@@ -7,10 +7,10 @@ const useMobile = () => {
     const isMobile = useSelector(selectIsMobile);
     const dispatch = useDispatch();
 
-   // Handle Screen size
+   // Handle screen size
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth < 1280) {
+            if (window.innerWidth <= 1280) {
                 dispatch(setIsMobile(true));
             } else {
                 dispatch(setIsMobile(false));

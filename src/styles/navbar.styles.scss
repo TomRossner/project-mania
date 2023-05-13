@@ -129,13 +129,12 @@ nav{
     }
 }
 
-@media screen and (min-width: 250px) and (max-width: 1440px) {
+@media screen and (min-width: 250px) and (max-width: 1280px) {
     .link{
         font-size: 1rem;
     }
 
     nav{
-        width: 20%;
 
         &.mobile{
             width: 40%;
@@ -154,12 +153,17 @@ nav{
             &.open{
                 pointer-events: all;
                 transform: translateX(0);
+
+                .icon-span.cross{
+                    display: flex;
+                }
             }
     
             ul{
                 &.flex-1{
                     flex: none;
                 }
+
                 &#left-nav-bottom-ul{
                     height: 28%;
     
@@ -171,9 +175,10 @@ nav{
     
                 li{
                     font-size: 1.2rem;
-                     .link{
-                        font-size: 1.2rem;
-                     }
+
+                    .link{
+                    font-size: 1.2rem;
+                    }
                 }
             }
         }

@@ -184,7 +184,7 @@ button{
         border-radius: 8px;
         position: absolute;
         right: 1rem;
-        top: 1rem;
+        top: 1.5rem;
 
         &:hover{
             background-color: $light_grey;
@@ -231,10 +231,15 @@ button{
     &.menu{
         cursor: pointer;
 
+        &:active{
+            scale: unset;
+        }
+
         .icon-span{
-            padding: 0rem;
+            padding: 0.2rem;
+
             .icon{
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
         }
     }
