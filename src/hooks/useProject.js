@@ -43,7 +43,8 @@ import {
 import { ERROR_MESSAGES } from "../utils/errors";
 import { selectUser } from "../store/auth/auth.selector";
 import { selectIsAdmin, selectUserInfo } from "../store/userInfo/userInfo.selector";
-import { setUserInfo } from "../store/userInfo/userInfo.actions";
+import { setIsAdmin, setUserInfo } from "../store/userInfo/userInfo.actions";
+import { useEffect } from "react";
 
 const useProject = () => {
     const dispatch = useDispatch();
@@ -624,24 +625,10 @@ const useProject = () => {
         dispatch(setAdminModalOpen(false));
     }
 
-    const checkIfAdmin = () => {
-        // Set admin property to true if the user's email is in admins list
-        if (currentProject.admins.includes(user.email) && userInfo.admin !== true) {
-            dispatch(setUserInfo({...userInfo, admin: true}));
-            return;
-        } else {
-            // Set admin property to false if true and user is not in admins list
-            if (!currentProject.admins.includes(user.email) && userInfo.admin === true) {
-                dispatch(setUserInfo({...userInfo, admin: false}));
-                return;
-            }
-        }
-    }
-
     const showError = (errorType) => {
         dispatch(setError(errorType));
         dispatch(setErrorPopupOpen(true));
-    } 
+    }
     
     return {
         currentProject,
@@ -704,7 +691,6 @@ const useProject = () => {
         handleTaskOptions,
         moveTask,
         closeMoveTaskPopup,
-        checkIfAdmin,
         updateCurrentProjectInBoardsArray,
         update,
         refreshTasks,

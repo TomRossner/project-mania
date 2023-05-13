@@ -20,7 +20,7 @@ export const userInfoReducer = (state = INITIAL_STATE, action) => {
         case USER_INFO_ACTION_TYPES.FETCH_USER_INFO_FAILED:
             return {...state, error: payload, isLoading: false};
         case USER_INFO_ACTION_TYPES.SET_IS_ADMIN:
-            return {...state, isAdmin: false};
+            return {...state, isAdmin: payload};
         default:
             return state;
     }

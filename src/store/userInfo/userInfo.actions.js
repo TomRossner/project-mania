@@ -23,17 +23,6 @@ export const setIsAdmin = (bool) => {
     return createAction(USER_INFO_ACTION_TYPES.SET_IS_ADMIN, bool);
 }
 
-// export const fetchUserInfoAsync = (id) => async (dispatch) => {
-//     dispatch(fetchUserInfoStart());
-
-//     try {
-//         const {data: userInfo} = await getUserInfo(id);
-//         dispatch(fetchUserInfoSuccess(userInfo));
-//     } catch (error) {
-//         dispatch(fetchUserInfoFailed(error));
-//     }
-// }
-
 let isFetchingUserInfo = false;
 
 export const fetchUserInfoAsync = (id) => async (dispatch) => {
@@ -52,5 +41,3 @@ export const fetchUserInfoAsync = (id) => async (dispatch) => {
     }
   }
 }
-
-// New way @ userInfo.slice.js 

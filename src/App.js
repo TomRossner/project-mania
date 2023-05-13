@@ -150,7 +150,7 @@ const App = () => {
   ***********************************/
 
 
-
+  // Update currentProject and boards array
   useEffect(() => {
       if (!currentProject) return;
       
@@ -164,16 +164,7 @@ const App = () => {
 
 
 
-  useEffect(() => {
-    if (!userInfo || !currentProject) return;
-
-    // Check if user is an admin
-    checkIfAdmin();
-
-  }, [currentProject]);
-
-
-
+  // Fetch user's projects or set currentProject and boards to null/empty array when not authenticated
   useEffect(() => {
     if (user && isAuthenticated) {
       // Fetch user's projects from server/database
@@ -202,7 +193,7 @@ const App = () => {
   *********************************/
 
 
-
+  // Set userInfo and currentChat to null if not authenticated
   useEffect(() => {
       if (!user || !isAuthenticated) {
         dispatch(setUserInfo(null));
@@ -210,19 +201,23 @@ const App = () => {
       }
   }, [user, isAuthenticated]);
 
+
+
+  // Fetch userInfo
   useEffect(() => {
       if ((user && isAuthenticated && !userInfo)
       || (user && isAuthenticated && user.email !== userInfo?.email)) {
-          dispatch(fetchUserInfoAsync(user._id || user.user_id));
+          dispatch(fetchUserInfoAsync(user._id));
       }
 
-      if ((!user || !isAuthenticated) && userInfo) {
-        dispatch(setUserInfo(null));
-      }
+      // if ((!user || !isAuthenticated) && userInfo) {
+      //   dispatch(setUserInfo(null));
+      // }
   }, [user, isAuthenticated, userInfo]);
 
 
 
+  // Emit isOnline when connected
   useEffect(() => {
       if (!userInfo) return setEmittedConnection(false);
       

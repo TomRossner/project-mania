@@ -86,10 +86,6 @@ const Users = () => {
     fetchUserChats();
   }, []);
 
-  useEffect(() => {
-    console.log('isAdmin: ', isAdmin);
-  }, [isAdmin]);
-
   return (
       <>
         <div className='users-container'>
