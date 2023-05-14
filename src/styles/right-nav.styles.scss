@@ -108,7 +108,17 @@
     }
 }
 
-@media screen and (min-width: 200px) and (max-width: 1280px) {
+@media screen and (min-width: 1441px) {
+    #activity-section{
+        width: 17%;
+
+        .icon-span.toggle-collapse{
+            display: none;
+        }
+    }
+}
+
+@media screen and (min-width: 200px) and (max-width: 1440px) {
     #activity-section{
         width: 35%;
         position: fixed;
@@ -121,10 +131,18 @@
         background-color: white;
         transition: transform 0.2s;
 
+        &.open{
+            width: 100%;
+            .icon-span.cross{
+                display: flex;
+                top: 1rem;
+            }
+        }
+
         .icon-span.toggle-collapse{
             position: absolute;
-            left: -1.7rem;
-            top: 12rem;
+            left: -1.8rem;
+            top: 7rem;
             padding: 0.2rem;
             background-color: white;
             border: 2px solid $grey;
@@ -137,7 +155,9 @@
 
             &.rotate{
                 transform: rotate(180deg);
-                // display: none;
+                display: none;
+                left: -0.5rem;
+                z-index: 10;
             }
 
             &:hover{

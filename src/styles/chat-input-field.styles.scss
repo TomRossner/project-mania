@@ -1,16 +1,18 @@
 @import './variables';
 
 #chat-input-container{
+    display: flex;
     width: 100%;
     flex-direction: row;
     gap: 0;
     height: 3rem;
-    padding: 0.5rem;
-    align-items: stretch;
+    padding: 0.5rem 1.5rem;
+    align-items: center;
     justify-content: right;
 
     input{
-        width: 60%;
+        width: 80%;
+        height: 3rem;
         border-radius: 10px 0 0 10px;
         outline: none;
         border: none;
@@ -23,14 +25,16 @@
         width: fit-content;
         background-color: $green;
         border: none;
-        padding-inline: 0.6rem;
+        height: 3rem;
+        padding-inline: 1.2rem;
         border-radius: 0 10px 10px 0;
 
         &.icon-span{
             transition: background-color 0.15s;
+
             .icon{
                 color: white;
-                font-size: 1rem;
+                font-size: 1.2rem;
             }
 
             &:hover{

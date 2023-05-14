@@ -1,10 +1,11 @@
 import axios from "axios";
 
 // Set Axios base URL
-process.env.NOVE_ENV === 'development'
-? axios.defaults.baseURL = 'http://localhost:5000/projectmania'
-: axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
+// process.env.NODE_ENV === 'development'
+// ? axios.defaults.baseURL = 'http://localhost:5000/projectmania'
+// : axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
 // axios.defaults.baseURL = 'http://tomrossner.dev/projectmania';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/projectmania' : 'http://tomrossner.dev/projectmania';
 
 // Get all members
 export const getMembers = async () => {

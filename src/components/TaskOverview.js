@@ -65,9 +65,9 @@ const TaskOverview = ({task}) => {
                     <LabelContainer priority={priority} additionalClass="no-hover"/>
                     {task.isDone ? <LabelContainer content={labels[labels.length - 1].name} additionalClass={`${completedLabel.color_class} green-bg`}/> : null}
                 </div>
-                <button className='btn white light' onClick={() => handleOpenTask(_id)} title="Expand">
+                {/* <button className='btn white light' onClick={() => handleOpenTask(_id)} title="Expand">
                     <IconContainer additionalClass="small" icon={<MdOpenInNew className="icon"/>}/>
-                </button>
+                </button> */}
             </div>
             <div className='listed-task-title-and-subtitle'>
                 <span className='listed-task-title'>{title}</span>

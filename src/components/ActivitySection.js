@@ -34,7 +34,7 @@ const ActivitySection = () => {
     <>
       {currentProject && (
         <nav id="activity-section" className={activitySectionOpen ? 'open' : ''}>
-          {/* <IconContainer additionalClass={'cross'} icon={<RxCross1 className='icon xl'/>} onClick={handleToggleActivitySection}/> */}
+          <IconContainer additionalClass={'cross'} icon={<RxCross1 className='icon xl'/>} onClick={handleToggleActivitySection}/>
           <IconContainer additionalClass={activitySectionOpen ? 'toggle-collapse rotate' : 'toggle-collapse'} icon={<BsChevronLeft className='icon'/>} onClick={handleToggleActivitySection}/>
           <div className="right-nav-content">
 

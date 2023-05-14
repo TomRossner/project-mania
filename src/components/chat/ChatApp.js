@@ -126,7 +126,7 @@ const ChatApp = () => {
     // Refresh current chat
     if (currentChat) {
       refreshCurrentChat();
-    }
+    } else dispatch(setChatSideBarOpen(true));
   }, []);
 
   // Redirect to homepage

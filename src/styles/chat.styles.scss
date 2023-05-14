@@ -110,17 +110,32 @@
         border-right: 1px solid $light_grey;
         border-radius: 0 20px 20px 0;
         position: relative;
+        gap: 0.5rem;
     }
 }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: 1441px) {
+    .main-chat-container{
+        position: relative;
+
+        .left{
+            width: 22%;
+
+            >.icon-span{
+                display: none;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1440px) {
     .main-chat-container{
         position: relative;
 
         .left{
             width: 30%;
 
-            >.icon-span.mobile{
+            >.icon-span{
                 display: none;
             }
         }

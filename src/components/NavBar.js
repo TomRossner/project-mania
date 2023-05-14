@@ -54,10 +54,6 @@ const NavBar = () => {
     loadProfileImage();
 
   }, [userInfo]);
-
-  useEffect(() => {
-    console.log(isMobile)
-  }, [isMobile])
   
 
   return (

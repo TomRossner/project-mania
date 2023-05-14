@@ -10,7 +10,6 @@ const useMembers = () => {
 
     // Fetch all members
     useEffect(() => {
-        console.log("Fetching members");
         dispatch(fetchMembersAsync());
     }, []);
 
