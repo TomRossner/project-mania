@@ -5,6 +5,11 @@
     overflow: hidden;
     display: flex;
     align-items: center;
+    cursor: pointer;
+
+    &:hover{
+        border: 1px solid dashed;
+    }
 
     p{
         font-size: 1.4rem;

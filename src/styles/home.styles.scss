@@ -19,12 +19,36 @@
         width: 50%;
     }
 
+    #hero-img{
+        width: 100%;
+        margin: 0 auto;
+    }
+
     .buttons-container{
         width: fit-content;
         
+        .link{
+            &:hover{
+                .icon-span{
+                    .icon{
+                        color: white;
+                    }
+                }
+            }
+        }
         .btn{
             cursor: pointer;
             font-size: 1.1rem;
+
+            .icon-span{
+                padding: 0.2rem;
+                background-color: unset;
+
+                .icon{
+                    padding: 0;
+                    font-size: 1rem;
+                }
+            }
         }
     }
 }
@@ -33,6 +57,46 @@
     .container.home{
         h1{
             font-size: 3vw;
+        }
+    }
+}
+
+@media screen and (min-width: 451px) and (max-width: 1279px){
+    .container.home{
+        align-items: center;
+
+        p{
+            text-align: center;
+        }
+
+        .buttons-container{
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        #hero-img{
+           width: 97%;
+        }
+    }
+}
+
+@media screen and (min-width: 200px) and (max-width: 450px){
+    .container.home{
+        align-items: center;
+
+        .buttons-container{
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        p{
+            text-align: center;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        #hero-img{
+            width: 90%;
         }
     }
 }
