@@ -465,7 +465,7 @@ hr.line{
 
 .create-to-get-started{
     width: 40%;
-    margin: 10vh auto;
+    margin: 5vh auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -538,6 +538,11 @@ hr.line{
     .main{
         padding-inline: 1.2rem;
         position: relative;
+    }
+
+    .create-to-get-started{
+        width: 90%;
+        max-width: 350px;
     }
 }
 
