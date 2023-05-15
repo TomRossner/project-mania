@@ -1,27 +1,27 @@
 import React from 'react';
-import { BsPersonCircle } from 'react-icons/bs';
-import useAuth from '../hooks/useAuth';
 import IconContainer from './common/IconContainer';
-import LabelsContainer from './common/LabelContainer';
+import ProfilePicture from './common/ProfilePicture';
+import BlankProfilePicture from './common/BlankProfilePicture';
 
-const UserCards = () => {
-    const {user, isAuthenticated} = useAuth();
+const UserProfile = ({user}) => {
+    
   return (
-    <nav>
-        <div className='right-nav-content user-card'>
-            <div className='profile-img-container'>
-                {/* <img src='' alt='profile'></img> */}
-                <IconContainer additionalClass="big" icon={<BsPersonCircle className='icon'/>}/>
-            </div>
-            <LabelsContainer content={isAuthenticated ? "ONLINE" : "OFFLINE"} additionalClass={`${isAuthenticated ? "green-bg green" : "red-bg red"} no-hover`}></LabelsContainer>
-            {/* <h3>{user?.first_name} {user?.last_name}</h3> */}
+    <div className='create-popup-container'>    
+        <div className='user-profile-container'>
+            {user.base64_img_data || user.img_url
+                ? <ProfilePicture src={user.base64_img_data || user.img_url}/>
+                : <BlankProfilePicture/>
+            }
+            <h3>{user.first_name} {user.last_name}</h3>
+
+            {user.header ? <p>{user.header}</p> : null}
+
             <div className='buttons-container'>
-                <button className='btn white'>View profile</button>
-                <button className='btn white'>Message</button>
+                <button className='btn white'>Send message</button>
             </div>
         </div>
-    </nav>
+    </div>
   )
 }
 
-export default UserCards;
+export default UserProfile;

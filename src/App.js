@@ -7,12 +7,14 @@ import { setUserInfo, fetchUserInfoAsync } from "./store/userInfo/userInfo.actio
 import { setElement } from "./store/globalStates/globalStates.actions";
 import { emitCloseBrowser, emitOnline } from "./utils/socket";
 import { setChat, setCurrentContact } from "./store/chat/chat.actions";
+import { fetchMembersAsync } from "./store/members/members.actions";
 
 // Custom Hooks
 import useAuth from "./hooks/useAuth";
 import useProject from "./hooks/useProject";
 import useChat from "./hooks/useChat";
 import useSocketEvents from "./hooks/useSocketEvents";
+import useMembers from "./hooks/useMembers";
 
 //Components
 import PrivateRoute from "./components/common/PrivateRoute";
@@ -70,8 +72,7 @@ import "./styles/user-tab.styles.scss";
 import "./styles/footer.styles.scss";
 import "./styles/menu-icon.styles.scss";
 import "./styles/not-found.styles.scss";
-import useMembers from "./hooks/useMembers";
-import { fetchMembersAsync } from "./store/members/members.actions";
+import "./styles/user-profile.styles.scss";
 
 // Lazy-loading components
 const Profile = lazy(() => import("./components/Profile")); 

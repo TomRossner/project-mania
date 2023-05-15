@@ -16,7 +16,7 @@ const About = () => {
         
         <div className='about-showcase'>
           <h4>Goal</h4>
-          <p>ProjectMania's goal is to keep track of projects, allowing users to create dashboards to easily manage their project by seperating tasks by including them in different lists or stages.<br/><br/> Tasks can be moved and/or dragged to each stage/list, which helps keeping track of what needs to be done and whats already completed, aswell as what's in progress, but take it how you want it, the point of lists is to help you be organized.</p>
+          <p>ProjectMania's goal is to keep track of projects, allowing users to create dashboards to easily manage their project by separating tasks between different stages.<br/><br/> Tasks can be moved and/or dragged to each stage/list, which helps keeping track of what needs to be done and whats already completed, as well as what's in progress, but take it how you want it, the point of lists is to help you be organized.</p>
           <img src={dashboard} alt='Dashboard showcase'/>
           <span>ProjectMania on desktop</span>
         </div>
