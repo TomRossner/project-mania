@@ -2,7 +2,7 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 
 // Set Axios base URL
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/projectmania' : 'http://tomrossner.dev/projectmania';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/projectmania' : 'https://tomrossner.dev/projectmania:5000';
 
 const token = 'token'; // For LocalStorage
 setTokenHeader(); // Set Token header on load
