@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
 // const url = 'http://tomrossner.dev';
-export const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'http://tomrossner.dev';
+export const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://tomrossner.dev';
 
 // Connect socket
 export const socket = io(API_URL, {
