@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Set Axios base URL
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/projectmania' : 'https://tomrossner.dev/projectmania:5000';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000/projectmania' : 'https://tomrossner.dev:5000/projectmania';
 
 // Get task
 export const getTask = async (ids) => {
