@@ -27,7 +27,8 @@ import {
     setChangePriorityPopupOpen,
     setNavOpen,
     setActivitySectionOpen,
-    setAdminModalOpen
+    setAdminModalOpen,
+    setUserProfileOpen
 } from "../store/globalStates/globalStates.actions";
 import {
     activity_addMember,
@@ -43,8 +44,6 @@ import {
 import { ERROR_MESSAGES } from "../utils/errors";
 import { selectUser } from "../store/auth/auth.selector";
 import { selectIsAdmin, selectUserInfo } from "../store/userInfo/userInfo.selector";
-import { setIsAdmin, setUserInfo } from "../store/userInfo/userInfo.actions";
-import { useEffect } from "react";
 
 const useProject = () => {
     const dispatch = useDispatch();
@@ -77,7 +76,8 @@ const useProject = () => {
         taskToMove,
         moveTaskPopupOpen,
         changePriorityPopupOpen,
-        adminModalOpen
+        adminModalOpen,
+        userProfileOpen
     } = useSelector(selectGlobalStates);
 
 
@@ -629,6 +629,10 @@ const useProject = () => {
         dispatch(setError(errorType));
         dispatch(setErrorPopupOpen(true));
     }
+
+    const handleCloseUserProfile = () => {
+        dispatch(setUserProfileOpen(false));
+    }
     
     return {
         currentProject,
@@ -655,6 +659,7 @@ const useProject = () => {
         changePriorityPopupOpen,
         projectAdmins,
         isAdmin,
+        userProfileOpen,
         handleChangePriority,
         handleCreateBoard,
         handleCreate, // handleCreate and handleCreateBoard are similar
@@ -698,7 +703,8 @@ const useProject = () => {
         closeMenu,
         closeRecentActivity,
         handleOpenAdminModal,
-        closeAdminModal
+        closeAdminModal,
+        handleCloseUserProfile
     }
 }
 

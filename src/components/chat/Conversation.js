@@ -16,7 +16,7 @@ import { BsStarFill } from 'react-icons/bs';
 import { lastSeenTime } from '../../utils/timeFormats';
 import { updateUser } from '../../httpRequests/http.auth';
 import useAuth from '../../hooks/useAuth';
-import useMobile from '../../hooks/useMobile';
+import { setTargetUser, setUserProfileOpen } from '../../store/globalStates/globalStates.actions';
 
 const Conversation = () => {
     const {currentContact, messages, currentChat, setMessages} = useChat();
@@ -26,37 +26,24 @@ const Conversation = () => {
     const [isTyping, setIsTyping] = useState(false);
     const {userInfo} = useAuth();
     const favorites = useSelector(selectFavorites);
-    const {isMobile} = useMobile();
 
+    // Listen to socket events
     useSocketEvents({
         events: {
             typing: () => setIsTyping(true),
             notTyping: () => setIsTyping(false)
         }
-    })
+    });
 
-    // Set contact name
-    useEffect(() => {
-        if (!currentContact) return setContactName('');
-        setContactName(`${currentContact.first_name} ${currentContact.last_name}`);
-    }, [currentContact]);
-
-    // Refresh messages
-    useEffect(() => {
-        if (!currentChat) return;
-        dispatch(setMessages([...currentChat?.messages]));
-    }, [currentChat]);
-
-    // Scroll to last message
-    const scrollToBottom = () => {
-        messagesBottomRef.current.scrollIntoView({ behavior: "smooth" });
+    const handleViewProfile = (user) => {
+        // Set targetUser
+        dispatch(setTargetUser(user));
+    
+        // Open user profile
+        dispatch(setUserProfileOpen(true));
     }
 
-    // Scroll to last message
-    useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
-
+    // Handle add to favorites
     const handleAddToFavorites = async (contactId) => {
         if (favorites.some(favId => favId === contactId)) {
             // Remove from favorites
@@ -80,6 +67,28 @@ const Conversation = () => {
         }
     }
 
+    // Set contact name
+    useEffect(() => {
+        if (!currentContact) return setContactName('');
+        setContactName(`${currentContact.first_name} ${currentContact.last_name}`);
+    }, [currentContact]);
+
+    // Refresh messages
+    useEffect(() => {
+        if (!currentChat) return;
+        dispatch(setMessages([...currentChat?.messages]));
+    }, [currentChat]);
+
+    // Scroll to last message
+    useEffect(() => {
+        const scrollToBottom = () => {
+            messagesBottomRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+
+        scrollToBottom();
+    }, [messages]);
+
+    // Update message's seen property
     useEffect(() => {
         if (currentChat?.messages?.some(msg => msg.seen === false)) {
             dispatch(setChat({
@@ -111,7 +120,7 @@ const Conversation = () => {
                 <button className='btn' title='Add to favorites' onClick={() => handleAddToFavorites(currentContact?._id)}>
                     <IconContainer icon={<BsStarFill className={favorites.includes(currentContact?._id) ? 'icon star' : 'icon'}/>}/>
                 </button>
-                <button className='btn white' title='View profile'>
+                <button className='btn white' title='View profile' onClick={() => handleViewProfile(currentContact)}>
                     <IconContainer icon={<AiOutlineUser className='icon xl'/>}/>
                     <span className='text'>View profile</span>
                 </button>

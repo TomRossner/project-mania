@@ -6,6 +6,7 @@ import { emitCreateChat, sendMessage, socket } from '../utils/socket';
 import {  createChat, getUserChats } from '../httpRequests/http.chat';
 import { setChats } from '../store/chat/chat.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';
+import useSocketEvents from './useSocketEvents';
 
 const useChat = () => {
     const userInfo = useSelector(selectUserInfo);
@@ -42,14 +43,22 @@ const useChat = () => {
 
     // Handle create chat event
     const handleAddChat = (data) => {
+        console.log('handling new chat')
         dispatch(setChats([...chats, data.newChat]));
     }
 
 
 
     // Socket handlers
-    socket.on('newMessage', handleReceiveMessage);
-    socket.on('createChat', handleAddChat);
+    // socket.on('newMessage', handleReceiveMessage);
+    // socket.on('createChat', handleAddChat);
+
+    useSocketEvents({
+        events: {
+            newMessage: handleReceiveMessage,
+            createChat: handleAddChat
+        }
+    })
 
 
 

@@ -18,6 +18,8 @@ import { selectChats } from '../store/chat/chat.selectors';
 import useChat from '../hooks/useChat';
 import { AiOutlineMinus } from 'react-icons/ai';
 import useMembers from '../hooks/useMembers';
+import useSocketEvents from '../hooks/useSocketEvents';
+import { setTargetUser, setUserProfileOpen } from '../store/globalStates/globalStates.actions';
 
 const Users = () => {
   const {members} = useMembers();
@@ -52,8 +54,12 @@ const Users = () => {
     setInputValue(e.target.value);
   }
 
-  const handleViewProfile = (userId) => {/////////////////////////////////////////////////////////////////////////// TODO
+  const handleViewProfile = (user) => {
+    // Set targetUser
+    dispatch(setTargetUser(user));
+
     // Open user profile
+    dispatch(setUserProfileOpen(true));
   }
 
   // Handle start chat
@@ -113,7 +119,7 @@ const Users = () => {
                               {isMobile ? '' : ' Message'}
                             </button>
 
-                            <button className='btn white' onClick={() => handleViewProfile(member._id)} title={`View ${member.first_name}'s profile`}>
+                            <button className='btn white' onClick={() => handleViewProfile(member)} title={`View ${member.first_name}'s profile`}>
                               <IconContainer icon={<IoPersonCircleOutline className='icon xl'/>}/>
                               {isMobile ? '' : ' View profile'}
                             </button>
@@ -147,7 +153,7 @@ const Users = () => {
                           {isMobile ? '' : ' Message'}
                         </button>
 
-                        <button className='btn white' onClick={() => handleViewProfile(member._id)} title={`View ${member.first_name}'s profile`}>
+                        <button className='btn white' onClick={() => handleViewProfile(member)} title={`View ${member.first_name}'s profile`}>
                           <IconContainer icon={<IoPersonCircleOutline className='icon xl'/>}/>
                           {isMobile ? '' : ' View profile'}
                         </button>

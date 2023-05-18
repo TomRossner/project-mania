@@ -58,3 +58,9 @@ export const setIsMobile = (bool) => {
 export const setAdminModalOpen = (bool) => {
     return createAction(GLOBAL_STATES_ACTION_TYPES.SET_ADMIN_MODAL_OPEN, bool);
 }
+export const setUserProfileOpen = (bool) => {
+    return createAction(GLOBAL_STATES_ACTION_TYPES.SET_USER_PROFILE_OPEN, bool);
+}
+export const setTargetUser = (user) => {
+    return createAction(GLOBAL_STATES_ACTION_TYPES.SET_TARGET_USER, user);
+}

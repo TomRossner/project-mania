@@ -5,7 +5,7 @@ import { fetchBoardsAsync, setBoards } from "./store/boards/boards.actions";
 import { setCurrentProject } from "./store/project/project.actions";
 import { setUserInfo, fetchUserInfoAsync } from "./store/userInfo/userInfo.actions";
 import { setElement } from "./store/globalStates/globalStates.actions";
-import { emitCloseBrowser, emitOnline } from "./utils/socket";
+import { emitCloseBrowser, emitOnline, socket } from "./utils/socket";
 import { setChat, setCurrentContact } from "./store/chat/chat.actions";
 import { fetchMembersAsync } from "./store/members/members.actions";
 
@@ -73,6 +73,7 @@ import "./styles/footer.styles.scss";
 import "./styles/menu-icon.styles.scss";
 import "./styles/not-found.styles.scss";
 import "./styles/user-profile.styles.scss";
+import UserProfile from "./components/UserProfile";
 
 // Lazy-loading components
 const Profile = lazy(() => import("./components/Profile")); 
@@ -108,12 +109,16 @@ const App = () => {
     currentProject,
     update,
     updateCurrentProjectInBoardsArray,
-    checkIfAdmin,
     createPopupOpen,
     showError,
     changePriorityPopupOpen,
-    adminModalOpen
+    adminModalOpen,
+    userProfileOpen
   } = useProject();
+
+  useEffect(() => {
+    console.log(userProfileOpen)
+  },[userProfileOpen])
   
   const {
     error: chatError,
@@ -122,17 +127,13 @@ const App = () => {
     currentChat
   } = useChat();
 
-  const {members} = useMembers();
+  // const {members} = useMembers();
 
   // Handle user has connected
   const handleIsOnline = async (data) => {
     if (data.userId === currentContact?._id && currentContact?.online === false) {
         const contact = await getContactInfo(data.userId);
         dispatch(setCurrentContact(contact));
-    }
-
-    if (members.some(m => m._id === data.userId)) {
-      dispatch(fetchMembersAsync());
     }
     
     else return;
@@ -143,10 +144,6 @@ const App = () => {
     if (data.userId === currentContact?._id && currentContact?.online === true) {
         const contact = await getContactInfo(data.userId);
         dispatch(setCurrentContact(contact));
-    }
-    
-    if (members.some(m => m._id === data.userId)) {
-      dispatch(fetchMembersAsync());
     }
 
     else return;
@@ -267,25 +264,6 @@ const App = () => {
 
 
 
-  // Emitting disconnection to update online status when the user closes browser/reloads page
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      e.preventDefault();
-
-      // Emit disconnection
-      emitCloseBrowser();
-    };
-
-    // Before-Unload listener
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
-
-
   return (
     <Suspense fallback={<Spinner/>}>
       <div className='main'>
@@ -295,6 +273,7 @@ const App = () => {
         {moveTaskPopupOpen && <MoveTaskPopup/>}
         {adminFormOpen && <AdminForm/>}
         {adminModalOpen && <AdminModal/>}
+        {userProfileOpen && <UserProfile/>}
         <div className="sections-container">
           <NavBar/>
           <div className="main-content">

@@ -15,11 +15,6 @@ export const emitOnline = (userName, userId) => {
     socket.emit('connection', {userName, userId});
 }
 
-// Emit disconnection
-export const emitCloseBrowser = () => {
-    socket.emit('closeBrowser');
-}
-
 // Notify contact is typing
 export const notifyIsTyping = (chatId, targetSocketId) => {
     socket.emit('typing', {chatId, targetSocketId});
@@ -39,16 +34,6 @@ export const sendMessage = (message) => {
 export const updateIsSeen = (messageId, targetSocketId) => {
     socket.emit('seen', {messageId, targetSocketId});
 }
-
-// // Emit online
-// export const emitIsOnline = (userId, userName) => {
-//     socket.emit('online', {userId, userName});
-// }
-
-// Emit offline
-// export const emitIsOffline = (userId, userName) => {
-//     socket.emit('offline', {userId, userName});
-// }
 
 // Emit created chat
 export const emitCreateChat = (userId, targetSocketId, newChat) => {

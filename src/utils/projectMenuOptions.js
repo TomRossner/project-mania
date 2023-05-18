@@ -1,5 +1,5 @@
 export const projectMenuOptions = [
-    "View project summary",
+    // "View project summary",
     "Add stage",
 ]
 

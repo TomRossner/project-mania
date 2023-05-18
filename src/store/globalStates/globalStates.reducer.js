@@ -19,7 +19,9 @@ const INITIAL_STATE = {
     navOpen: false,
     activitySectionOpen: false,
     isMobile: false,
-    adminModalOpen: false
+    adminModalOpen: false,
+    userProfileOpen: false,
+    targetUser: null
 }
 
 export const globalStatesReducer = (state = INITIAL_STATE, action) => {
@@ -62,6 +64,10 @@ export const globalStatesReducer = (state = INITIAL_STATE, action) => {
             return {...state, isMobile: payload};
         case GLOBAL_STATES_ACTION_TYPES.SET_ADMIN_MODAL_OPEN:
             return {...state, adminModalOpen: payload};
+        case GLOBAL_STATES_ACTION_TYPES.SET_USER_PROFILE_OPEN:
+            return {...state, userProfileOpen: payload};
+        case GLOBAL_STATES_ACTION_TYPES.SET_TARGET_USER:
+            return {...state, targetUser: payload};
         default:
             return state;
     }

@@ -80,7 +80,7 @@ const NavBar = () => {
             <NavLink path={'/users'} icon={<HiUserGroup className='icon'/>} text={'Browse users'} onClick={closeMenu}/>
             <NavLink path={`/chat/${user?._id}`} icon={<BsChatLeftText className='icon'/>} text={'Chat'} onClick={closeMenu}/>
             <NavLink path={'/about'} icon={<AiOutlineInfoCircle className='icon'/>} text={'About'} onClick={closeMenu}/>
-            <NavLink path={'/settings'} icon={<IoSettingsOutline className='icon'/>} text={'Settings'} onClick={closeMenu}/>
+            {/* <NavLink path={'/settings'} icon={<IoSettingsOutline className='icon'/>} text={'Settings'} onClick={closeMenu}/> */}
         </ul>
         <ul id='left-nav-bottom-ul'>
           <div className='li-expand'>

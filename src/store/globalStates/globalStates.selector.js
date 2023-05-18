@@ -19,3 +19,7 @@ export const selectActivitySectionOpen = (state) => state.globalStates.activityS
 export const selectIsMobile = (state) => state.globalStates.isMobile;
 
 export const selectAdminModalOpen = (state) => state.globalStates.adminModalOpen;
+
+export const selectUserProfileOpen = (state) => state.globalStates.userProfileOpen;
+
+export const selectTargetUser = (state) => state.globalStates.targetUser;
