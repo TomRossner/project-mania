@@ -7,7 +7,7 @@ const BackButton = () => {
   const handleClick = () => navigate(-1);
   
   return (
-    <button className='back-button link' onClick={handleClick}><BiChevronLeft className='icon'/>Back</button>
+    <button type='button' className='back-button link' onClick={handleClick}><BiChevronLeft className='icon'/>Back</button>
   )
 }
 

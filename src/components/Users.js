@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BackButton from './common/BackButton';
 import SearchBar from './common/SearchBar';
-import { fetchMembersAsync } from '../store/members/members.actions';
+import { fetchMembersAsync, setMembers } from '../store/members/members.actions';
 import Line from './common/Line';
 import useAuth from '../hooks/useAuth';
 import UserTab from './UserTab';
@@ -20,6 +20,7 @@ import { AiOutlineMinus } from 'react-icons/ai';
 import useMembers from '../hooks/useMembers';
 import useSocketEvents from '../hooks/useSocketEvents';
 import { setTargetUser, setUserProfileOpen } from '../store/globalStates/globalStates.actions';
+import { socket } from '../utils/socket';
 
 const Users = () => {
   const {members} = useMembers();
@@ -92,6 +93,67 @@ const Users = () => {
     fetchUserChats();
   }, []);
 
+
+  // Handle searchResults on Online event
+  const handleOnline = (data) => {
+    if (searchResults.length && searchResults.some(res => res._id === data.userId)) {
+      setSearchResults([...searchResults.map(searchRes => {
+        if (searchRes._id === data.userId) {
+          return {...searchRes, online: true};
+        } else return searchRes;
+      })])
+    }
+  }
+
+  // Handle searchResults on Offline event
+  const handleOffline = (data) => {
+    if (searchResults.length && searchResults.some(res => res._id === data.userId)) {
+      setSearchResults([...searchResults.map(searchRes => {
+        if (searchRes._id === data.userId) {
+          return {...searchRes, online: false};
+        } else return searchRes;
+      })])
+    }
+  }
+ 
+  // Listen to socket events
+  useSocketEvents({
+    events: {
+      online: handleOnline,
+      offline: handleOffline
+    }
+  });
+
+  const userAdditionalContent = (member) => <>
+    <div className='buttons-container'>
+
+      <button className='btn white' onClick={() => handleStartChat(member._id)} title={`Chat with ${member.first_name}`}>
+        <IconContainer icon={<BsChatLeftText className='icon'/>}/>
+        {isMobile ? '' : ' Message'}
+      </button>
+
+      <button className='btn white' onClick={() => handleViewProfile(member)} title={`View ${member.first_name}'s profile`}>
+        <IconContainer icon={<IoPersonCircleOutline className='icon xl'/>}/>
+        {isMobile ? '' : ' View profile'}
+      </button>
+
+      {currentProject?.members?.some(m => m._id === member._id)
+        && isAdmin
+        &&  <button className='btn white' title={`Remove ${member.first_name} from project`} onClick={() => handleRemoveMemberFromProject(member._id)}>
+              <IconContainer icon={<AiOutlineMinus className='icon'/>}/>{isMobile ? '' : ' Remove from project'}
+            </button>
+      }
+
+      {!currentProject?.members?.some(m => m._id === member._id)
+        && isAdmin
+        &&  <button className='btn white' title={`Add ${member.first_name} to project`} onClick={() => handleAddMember(member)}>
+              <IconContainer icon={<BsPlus className='icon xl'/>}/>{isMobile? '' : ' Add to project'}
+            </button>
+      }
+
+      </div>
+  </>
+
   return (
       <>
         <div className='users-container'>
@@ -100,82 +162,66 @@ const Users = () => {
 
           <div className='title'>
             <h1>Users</h1>
-            <SearchBar value={inputValue} fn={handleInputChange} placeholderText={"Search users"} icon={<IconContainer icon={<BsSearch className='icon'/>}/>}/>
+            <SearchBar
+              value={inputValue}
+              fn={handleInputChange}
+              placeholderText={"Search users"}
+              icon={<IconContainer icon={<BsSearch className='icon'/>}/>}
+            />
           </div>
 
             <div className='results-container'>
               <p>{members?.filter(member => member._id !== user?._id).length} {members?.filter(member => member._id !== user?._id).length === 1 ? "user found": "users found"}</p>
               <Line/>
-              {searchResults.length
-                ? <>
-                    {searchResults?.filter(member => member._id !== user?._id).map(member => {
-                      return (
-                        <div key={generateKey()} className='search-result'>
-                          <UserTab user={member}/>
-                          <div className='buttons-container'>
-
-                            <button className='btn white' onClick={() => handleStartChat(member._id)} title={`Chat with ${member.first_name}`}>
-                              <IconContainer icon={<BsChatLeftText className='icon'/>}/>
-                              {isMobile ? '' : ' Message'}
-                            </button>
-
-                            <button className='btn white' onClick={() => handleViewProfile(member)} title={`View ${member.first_name}'s profile`}>
-                              <IconContainer icon={<IoPersonCircleOutline className='icon xl'/>}/>
-                              {isMobile ? '' : ' View profile'}
-                            </button>
-
-                            {currentProject?.members?.some(m => m._id === member._id)
-                              && isAdmin
-                              &&  <button className='btn white' title={`Remove ${member.first_name} from project`} onClick={() => handleRemoveMemberFromProject(member._id)}>
-                                    <IconContainer icon={<AiOutlineMinus className='icon'/>}/>{isMobile ? '' : ' Remove from project'}
-                                  </button>
-                            }
-
-                            {!currentProject?.members?.some(m => m._id === member._id)
-                              && isAdmin
-                              &&  <button className='btn white' title={`Add ${member.first_name} to project`} onClick={() => handleAddMember(member)}>
-                                    <IconContainer icon={<BsPlus className='icon xl'/>}/>{isMobile? '' : ' Add to project'}
-                                  </button>
-                            }
+              <h3>Results</h3>
+              <div className='grid-container'>
+                {searchResults.length
+                  ? <>
+                      {searchResults?.filter(member => member._id !== user?._id).map(member => {
+                        return (
+                          <>
+                          <div key={generateKey()} className='search-result'>
+                            <UserTab user={member} onClick={() => handleViewProfile(member)} additionalContent={userAdditionalContent(member)}/>
                           </div>
-                        </div>
-                      )
-                    })}
-                  </>
-                : members?.filter(m => m._id !== user?._id).map(member => {
-                  return (
-                    <div key={generateKey()} className='search-result'>
-                      <UserTab user={member}/>
-                      <div className='buttons-container'>
+                          </>
+                        )
+                      })}
+                    </>
+                  : members?.filter(m => m._id !== user?._id).map(member => {
+                    return (
+                      <div key={generateKey()} className='search-result'>
+                        <UserTab user={member} additionalContent={userAdditionalContent(member)}/>
+                        {/* <div className='buttons-container'>
 
-                        <button className='btn white' onClick={() => handleStartChat(member._id)} title={`Chat with ${member.first_name}`}>
-                          <IconContainer icon={<BsChatLeftText className='icon'/>}/>
-                          {isMobile ? '' : ' Message'}
-                        </button>
+                          <button className='btn white' onClick={() => handleStartChat(member._id)} title={`Chat with ${member.first_name}`}>
+                            <IconContainer icon={<BsChatLeftText className='icon'/>}/>
+                            {isMobile ? '' : ' Message'}
+                          </button>
 
-                        <button className='btn white' onClick={() => handleViewProfile(member)} title={`View ${member.first_name}'s profile`}>
-                          <IconContainer icon={<IoPersonCircleOutline className='icon xl'/>}/>
-                          {isMobile ? '' : ' View profile'}
-                        </button>
+                          <button className='btn white' onClick={() => handleViewProfile(member)} title={`View ${member.first_name}'s profile`}>
+                            <IconContainer icon={<IoPersonCircleOutline className='icon xl'/>}/>
+                            {isMobile ? '' : ' View profile'}
+                          </button>
 
-                        {currentProject?.members?.some(m => m._id === member._id)
-                          && isAdmin
-                          &&  <button className='btn white' title={`Remove ${member.first_name} from project`} onClick={() => handleRemoveMemberFromProject(member._id)}>
-                                <IconContainer icon={<AiOutlineMinus className='icon'/>}/>{isMobile ? '' : ' Remove from project'}
-                              </button>
-                        }
+                          {currentProject?.members?.some(m => m._id === member._id)
+                            && isAdmin
+                            &&  <button className='btn white' title={`Remove ${member.first_name} from project`} onClick={() => handleRemoveMemberFromProject(member._id)}>
+                                  <IconContainer icon={<AiOutlineMinus className='icon'/>}/>{isMobile ? '' : ' Remove from project'}
+                                </button>
+                          }
 
-                        {!currentProject?.members?.some(m => m._id === member._id)
-                          && isAdmin
-                          &&  <button className='btn white' title={`Add ${member.first_name} to project`} onClick={() => handleAddMember(member)}>
-                                <IconContainer icon={<BsPlus className='icon xl'/>}/>{isMobile? '' : ' Add to project'}
-                              </button>
-                        }
+                          {!currentProject?.members?.some(m => m._id === member._id)
+                            && isAdmin
+                            &&  <button className='btn white' title={`Add ${member.first_name} to project`} onClick={() => handleAddMember(member)}>
+                                  <IconContainer icon={<BsPlus className='icon xl'/>}/>{isMobile? '' : ' Add to project'}
+                                </button>
+                          }
+                        </div> */}
                       </div>
-                    </div>
-                  )
-                })
-              }
+                    )
+                  })
+                }
+              </div>
               
             </div>
 

@@ -5,12 +5,10 @@ import Space from './common/Space';
 // import {BsFillCircleFill} from "react-icons/bs";
 import useAuth from '../hooks/useAuth';
 import MenuIcon from './MenuIcon';
-import useMobile from '../hooks/useMobile';
 
 const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
   // const [notifications, setNotifications] = useState([]);
   const {userInfo, isAuthenticated, user} = useAuth();
-  const {isMobile} = useMobile();
 
   // useEffect(() => {
   //   if (!userInfo) return;
@@ -31,7 +29,7 @@ const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
             <div className='buttons-container'>
               <button className="btn blue" onClick={handleCreateBoard}>
                 <IconContainer icon={<BsPlus className='icon'/>}/>
-                <span className='btn-text'>{isMobile ? 'New Board' : 'Create New Board'}</span>
+                <span className='btn-text'>New project</span>
               </button>
               {/* <button className="btn white" onClick={handleToggleNotificationTab}>
                 <IconContainer icon={<BsBell className='icon large'/>}/>

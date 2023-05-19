@@ -17,8 +17,8 @@ import BlankProfilePicture from './common/BlankProfilePicture';
 import { RxCross1, RxHome } from 'react-icons/rx';
 import NavLink from './NavLink';
 import { selectNavOpen } from '../store/globalStates/globalStates.selector';
-import useMobile from '../hooks/useMobile';
 import ProfilePicture from './common/ProfilePicture';
+import Line from './common/Line';
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -27,8 +27,6 @@ const NavBar = () => {
   const {user, isAuthenticated, userInfo, profileImage, loadProfileImage} = useAuth();
   const [projectsDropdownOpen, setProjectsDropdownOpen] = useState(false);
   const [userName, setUserName] = useState("");
-  // const {isMobile} = useMobile();
-  const {isMobile} = useMobile();
   const navOpen = useSelector(selectNavOpen);
 
   const handleToggleProjectsDropdown = () => {
@@ -39,6 +37,12 @@ const NavBar = () => {
     closeMenu();
     dispatch(setCurrentProject(board));
     navigate(`/projects/${board._id}`);
+  }
+
+  // Navigate to projects
+  const handleNavigateToProjects = () => {
+    closeMenu();
+    navigate('/projects');
   }
 
   useEffect(() => {
@@ -73,6 +77,10 @@ const NavBar = () => {
                 <>
                   <div className={`${projectsDropdownOpen ? "dropdown open" : "dropdown"}`}>
                     {boards?.map(project => <p key={project._id} onClick={() => handleClick(project)}>{project.title}</p>)}
+
+                    <Space/>
+
+                    <button className='btn link text-blue no-scale' onClick={handleNavigateToProjects}>See all</button>
                   </div>
                 </>
                 : null}
@@ -80,7 +88,6 @@ const NavBar = () => {
             <NavLink path={'/users'} icon={<HiUserGroup className='icon'/>} text={'Browse users'} onClick={closeMenu}/>
             <NavLink path={`/chat/${user?._id}`} icon={<BsChatLeftText className='icon'/>} text={'Chat'} onClick={closeMenu}/>
             <NavLink path={'/about'} icon={<AiOutlineInfoCircle className='icon'/>} text={'About'} onClick={closeMenu}/>
-            {/* <NavLink path={'/settings'} icon={<IoSettingsOutline className='icon'/>} text={'Settings'} onClick={closeMenu}/> */}
         </ul>
         <ul id='left-nav-bottom-ul'>
           <div className='li-expand'>
@@ -94,6 +101,8 @@ const NavBar = () => {
                 :
                 <>
                   <Link className="link flex-align" to="/profile" onClick={closeMenu}><IconContainer icon={<MdPerson className="icon large"/>}/>My profile</Link>
+                  <button className='btn link flex-align no-scale' onClick={closeMenu}><IconContainer icon={<IoSettingsOutline className='icon'/>}/>Settings</button>
+                  <Line/>
                   <Link className="link flex-align" to="/logout" onClick={closeMenu}><IconContainer icon={<MdLogout className="icon"/>}/>Logout</Link>
                 </>
               }

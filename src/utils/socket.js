@@ -16,13 +16,13 @@ export const emitOnline = (userName, userId) => {
 }
 
 // Notify contact is typing
-export const notifyIsTyping = (chatId, targetSocketId) => {
-    socket.emit('typing', {chatId, targetSocketId});
+export const notifyIsTyping = (chatId, targetSocketId, userId) => {
+    socket.emit('typing', {chatId, targetSocketId, userId});
 }
 
 // Notify contact is not typing
-export const notifyIsNotTyping = (chatId, targetSocketId) => {
-    socket.emit('notTyping', {chatId, targetSocketId});
+export const notifyIsNotTyping = (chatId, targetSocketId, userId) => {
+    socket.emit('notTyping', {chatId, targetSocketId, userId});
 }
 
 // Send message

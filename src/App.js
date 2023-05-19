@@ -115,47 +115,11 @@ const App = () => {
     adminModalOpen,
     userProfileOpen
   } = useProject();
-
-  useEffect(() => {
-    console.log(userProfileOpen)
-  },[userProfileOpen])
   
   const {
     error: chatError,
-    currentContact,
-    getContactInfo,
     currentChat
   } = useChat();
-
-  // const {members} = useMembers();
-
-  // Handle user has connected
-  const handleIsOnline = async (data) => {
-    if (data.userId === currentContact?._id && currentContact?.online === false) {
-        const contact = await getContactInfo(data.userId);
-        dispatch(setCurrentContact(contact));
-    }
-    
-    else return;
-  }
-
-  // Handle user went offline
-  const handleIsOffline = async (data) => {
-    if (data.userId === currentContact?._id && currentContact?.online === true) {
-        const contact = await getContactInfo(data.userId);
-        dispatch(setCurrentContact(contact));
-    }
-
-    else return;
-  }
-
-  // Listen to online/offline socket events
-  useSocketEvents({
-    events: {
-      online: handleIsOnline,
-      offline: handleIsOffline,
-    },
-  });
 
   /**********************************
       PROJECT RELATED SIDE EFFECTS

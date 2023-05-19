@@ -38,12 +38,17 @@
         .current-project-admins{
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.7rem;
 
             span{
                 color: $grey;
                 font-size: 0.8rem;
                 font-weight: 300;
+            }
+
+            .btn{
+                width: fit-content;
+                align-self: flex-end;
             }
 
             .admins{
@@ -67,7 +72,7 @@
                                 font-size: 0.8rem;
                                 position: absolute;
                                 top: 1rem;
-                                right: 0.3rem;
+                                right: 0.5rem;
                             }
                         }
                     }

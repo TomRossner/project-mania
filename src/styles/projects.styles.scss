@@ -25,25 +25,91 @@
         align-items: flex-start;
 
         .project{
-            border: 1px solid $light_grey2;
+            border: 1px solid $light_grey;
             border-radius: 10px;
-            background-color: $blue;
+            background-color: $light;
             padding: 1rem 1.5rem;
-            width: fit-content;
+            width: 20vw;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             gap: 0.5rem;
-            cursor: default;
+            cursor: pointer;
             transition: background-color 0.1s;
+
+            >div{
+                width: 100%;
+
+                h4{
+                    flex: 1;
+                }
+            }
+
+            .team{
+                gap: 0.3em;
+                .profile-img-container{
+                    width: 30px;
+                    height: 30px;
+                    border: 2px solid white;
+                    box-shadow: 0 0 7px $light_grey;
+
+                    &.blank{
+                        width: 30px;
+                        height: 30px;
+
+                        #blank-profile{
+                            width: 50px;
+                        }
+                    }
+                }
+            }
 
             p{
                 font-weight: 600;
-                color: $light;
+                color: $dark;
+                font-size: 1rem;
+
+                span{
+                    font-weight: 600;
+                    color: $grey;
+                }
+            }
+
+            #project-progress{
+                background-color: white;
+                width: 100%;
+                padding: 0.5em;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                p{
+                    font-weight: 300;
+                    span{
+                        color: $dark;
+                        font-style: normal;
+                        font-weight: 600;
+                    }
+                }
+
+                >div {
+                    p{
+                        background-color: $light_grey;
+                        padding: 0.05em 0.3em;
+                        border-radius: 5px;
+                        text-align: center;
+                    }
+                }
+
+                span{
+                    font-style: italic;
+                    color: $grey;
+                }
             }
 
             &:hover{
-                background-color: $blue_hover;
+                background-color: $light_bg;
             }
 
         }

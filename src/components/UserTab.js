@@ -4,7 +4,7 @@ import BlankProfilePicture from './common/BlankProfilePicture';
 import { BsCircleFill } from 'react-icons/bs';
 import IconContainer from './common/IconContainer';
 
-const UserTab = ({user}) => {
+const UserTab = ({user, onClick, additionalContent}) => {
     const onlineStatusIcon = (user) => {
         return <BsCircleFill className={user.online ? 'icon online-status green' : 'icon online-status grey'}/>
     }
@@ -14,7 +14,7 @@ const UserTab = ({user}) => {
     }
     
   return (
-    <div className='user-tab'>
+    <div className='user-tab' onClick={onClick}>
         {user.base64_img_data || user.img_url
             ? <ProfilePicture src={checkProfileURL(user)}/>
             : <BlankProfilePicture/>
@@ -27,6 +27,7 @@ const UserTab = ({user}) => {
             {user.header ? <p>{user.header}</p> : null}
         </div>
 
+        <div id='userTabAdditionalContent'>{additionalContent ? additionalContent : null}</div>
     </div>
   )
 }

@@ -27,11 +27,25 @@ const Conversation = () => {
     const {userInfo} = useAuth();
     const favorites = useSelector(selectFavorites);
 
+    // Handle isTyping
+    const handleIsTyping = (data) => {
+        if (data.userId === currentContact._id) {
+            setIsTyping(true);
+        }
+    }
+
+    // Handle isNotTyping
+    const handleIsNotTyping = (data) => {
+        if (data.userId === currentContact._id) {
+            setIsTyping(false);
+        }
+    }
+
     // Listen to socket events
     useSocketEvents({
         events: {
-            typing: () => setIsTyping(true),
-            notTyping: () => setIsTyping(false)
+            typing: handleIsTyping,
+            notTyping: handleIsNotTyping
         }
     });
 
@@ -77,6 +91,11 @@ const Conversation = () => {
     useEffect(() => {
         if (!currentChat) return;
         dispatch(setMessages([...currentChat?.messages]));
+
+        // Set isTyping to false if isTyping is active and the user switches chats
+        if (currentChat && isTyping) {
+            setIsTyping(false);
+        }
     }, [currentChat]);
 
     // Scroll to last message

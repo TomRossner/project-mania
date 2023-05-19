@@ -40,9 +40,9 @@ const ChatInputField = () => {
 
     // Set isTyping
     useEffect(() => {
-        if (!inputValue.length) {
+        if (!inputValue) {
            setIsTyping(false);
-           notifyIsNotTyping(currentChat?._id, currentContact?.socket_id);
+           notifyIsNotTyping(currentChat?._id, currentContact?.socket_id, user._id);
            return;
         }
 
@@ -56,13 +56,12 @@ const ChatInputField = () => {
     useEffect(() => {
         if (!isTyping) return;
 
-        notifyIsTyping(currentChat?._id, currentContact?.socket_id);
+        notifyIsTyping(currentChat?._id, currentContact?.socket_id, user._id);
         
     }, [isTyping]);
 
   return (
     <form id='chat-input-container' onSubmit={handleMessageSubmit}>
-        {/* <Emojis setInputValue={setInputValue} inputValue={inputValue}/> */}
         <input
             type="text"
             name="chat_input"

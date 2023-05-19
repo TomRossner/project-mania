@@ -11,7 +11,7 @@
     border: 1px solid $light_grey;
     background-color: white;
     padding: 0.5em;
-    width: 25vw;
+    width: 100%;
     cursor: pointer;
 
     &:hover{
@@ -19,12 +19,16 @@
     }
 
     .user-tab-content{
+        flex: 1;
+        
         h4{
             font-size: 1.1rem;
+            text-align: left;
         }
-
+        
         p{
             font-size: 0.95rem;
+            text-align: left;
         }
     }
 
@@ -54,6 +58,25 @@
 
             &.online-status{
                 font-size: 0.8rem;
+            }
+        }
+    }
+
+    #userTabAdditionalContent{
+        .buttons-container{
+            width: fit-content;
+
+            .btn{
+                padding: 0.05em 0.5em;
+                cursor: pointer;
+
+                .icon-span{
+                    position: unset;
+
+                    .icon{
+                        font-size: 1rem;
+                    }
+                }
             }
         }
     }

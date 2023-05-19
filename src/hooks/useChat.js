@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { selectChat, selectChats, selectContacts, selectCurrentChat, selectCurrentContact, selectFavorites, selectMessages } from '../store/chat/chat.selectors';
 import { getUserById } from '../httpRequests/http.members';
-import { fetchContactsAsync, setChat, setFavoritesChats, setMessages } from '../store/chat/chat.actions';
-import { emitCreateChat, sendMessage, socket } from '../utils/socket';
+import { fetchContactsAsync, setChat, setCurrentContact, setFavoritesChats, setMessages } from '../store/chat/chat.actions';
+import { emitCreateChat, sendMessage } from '../utils/socket';
 import {  createChat, getUserChats } from '../httpRequests/http.chat';
 import { setChats } from '../store/chat/chat.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';
 import useSocketEvents from './useSocketEvents';
+import { fetchMembersAsync } from '../store/members/members.actions';
 
 const useChat = () => {
     const userInfo = useSelector(selectUserInfo);
@@ -22,8 +23,10 @@ const useChat = () => {
     // Socket event handlers
 
     // Handle new message event
-    const handleReceiveMessage = (message) => {
-        dispatch(setMessages([...messages, message]));
+    const handleReceiveMessage = (data) => {
+        if (data.chatId === currentChat._id) {
+            dispatch(setMessages([...messages, data]));
+        }
     }
 
     // Handle send message event
@@ -43,20 +46,31 @@ const useChat = () => {
 
     // Handle create chat event
     const handleAddChat = (data) => {
-        console.log('handling new chat')
         dispatch(setChats([...chats, data.newChat]));
     }
 
+    // Handle user has connected
+    const handleIsOnline = async (data) => {
+        if (currentContact && data.userId === currentContact?._id) {
+            const contact = await getContactInfo(data.userId);
+            dispatch(setCurrentContact(contact));
+        }
+    }
 
-
-    // Socket handlers
-    // socket.on('newMessage', handleReceiveMessage);
-    // socket.on('createChat', handleAddChat);
+    // Handle user went offline
+    const handleIsOffline = async (data) => {
+        if (currentContact && data.userId === currentContact?._id) {
+            const contact = await getContactInfo(data.userId);
+            dispatch(setCurrentContact(contact));
+        }
+    }
 
     useSocketEvents({
         events: {
             newMessage: handleReceiveMessage,
-            createChat: handleAddChat
+            createChat: handleAddChat,
+            online: handleIsOnline,
+            offline: handleIsOffline
         }
     })
 
