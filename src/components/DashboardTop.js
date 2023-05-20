@@ -14,7 +14,7 @@ import Space from "./common/Space";
 import useAuth from '../hooks/useAuth';
 import SearchBar from './common/SearchBar';
 import { BsSearch } from 'react-icons/bs';
-import LabelsContainer from './common/LabelContainer';
+import LabelsContainer from './common/LabelsContainer';
 
 const ProjectInfoBar = () => {
     const dispatch = useDispatch();

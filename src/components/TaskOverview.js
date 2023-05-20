@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ImAttachment } from "react-icons/im";
 import { useNavigate } from 'react-router-dom';
-import LabelContainer from "./common/LabelContainer";
+import LabelContainer from "./common/LabelsContainer";
 import { labels } from '../utils/labels';
 import IconContainer from './common/IconContainer';
 import { FiCheck } from 'react-icons/fi';

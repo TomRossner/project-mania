@@ -8,7 +8,7 @@ import { priorities } from '../../utils/labels';
 import { useDispatch } from 'react-redux';
 import { setTaskPriority } from '../../store/globalStates/globalStates.actions';
 import CancelButton from '../common/CancelButton';
-import LabelContainer from '../common/LabelContainer';
+import LabelContainer from '../common/LabelsContainer';
 import useProject from '../../hooks/useProject';
 import { ERROR_MESSAGES } from '../../utils/errors';
 

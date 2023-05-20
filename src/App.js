@@ -19,7 +19,7 @@ import useMembers from "./hooks/useMembers";
 //Components
 import PrivateRoute from "./components/common/PrivateRoute";
 import Spinner from "./components/common/Spinner";
-import Projects from "./components/Projects"; 
+import Projects from "./components/ProjectsList"; 
 import ProjectOverview from "./components/ProjectOverview"; 
 import Notifications from "./components/Notifications";
 import Create from "./components/Create"; 

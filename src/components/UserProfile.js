@@ -8,7 +8,7 @@ import useProject from '../hooks/useProject';
 import Space from './common/Space';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectBoards } from '../store/boards/boards.selector';
-import LabelContainer from './common/LabelContainer';
+import LabelContainer from './common/LabelsContainer';
 import { fetchChatAsync, setChatSideBarOpen, setCurrentContact } from '../store/chat/chat.actions';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';

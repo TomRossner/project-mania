@@ -23,6 +23,7 @@
         gap: 1rem;
         flex-wrap: wrap;
         align-items: flex-start;
+        overflow-y: auto;
 
         .project{
             border: 1px solid $light_grey;
@@ -37,11 +38,21 @@
             cursor: pointer;
             transition: background-color 0.1s;
 
+            h3{
+                color: $dark;
+            }
+
             >div{
                 width: 100%;
 
                 h4{
                     flex: 1;
+                }
+            }
+
+            .label-container{
+                p{
+                    text-transform: capitalize;
                 }
             }
 
@@ -112,6 +123,106 @@
                 background-color: $light_bg;
             }
 
+        }
+    }
+
+    #no-projects{
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+        justify-content: center;
+        height: 40vh;
+
+        p{
+            font-size: 2rem;
+            font-weight: 600;
+            color: $grey;
+            opacity: 0.5;
+            text-align: center;
+        }
+    }
+}
+
+@media screen and (min-width: 1281px) {
+    .projects-list-container{
+        .projects-list{
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            .project{
+                width: 32%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1280px) {
+    .projects-list-container{
+        .projects-list{
+            flex-wrap: wrap;
+
+            .project{
+                width: 48%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 551px) and (max-width: 768px) {
+    .projects-list-container{
+        .projects-list{
+            flex-wrap: wrap;
+
+            .project{
+                width: 48%;
+
+                .flex-align.space-between.gap1.flex1{
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 451px) and (max-width: 550px) {
+    .projects-list-container{
+        .projects-list{
+            flex-wrap: wrap;
+
+            .project{
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 401px) and (max-width: 450px) {
+    .projects-list-container{
+        .projects-list{
+            flex-wrap: wrap;
+
+            .project{
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 200px) and (max-width: 400px) {
+    .projects-list-container{
+        .projects-list{
+            flex-wrap: wrap;
+
+            .project{
+                width: 100%;
+
+                .flex-align.space-between.gap1.flex1{
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+            }
         }
     }
 }

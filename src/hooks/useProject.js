@@ -246,7 +246,35 @@ const useProject = () => {
         return dispatch(setTasks(projectTasks.flatMap(arr => arr)));
     }
 
+    // Total tasks
+    const totalTasks = (board) => {
+        const totalTasks = board.stages.reduce((totalCount, stage) => {
+        return totalCount + stage.stage_tasks.length;
+        }, 0);
+    
+        return totalTasks;
+    };
 
+    // Total completed tasks
+    const totalCompletedTasks = (board) => {
+        const completedTasks = board.stages.reduce((stageCount, stage) => {
+        return stageCount + (stage.tasks_done || 0);
+        }, 0);
+    
+        return completedTasks;
+    };
+
+    // Calculate completed tasks percentage of a project
+    const percentage = (board) => {
+        const tasks = totalTasks(board);
+        const completedTasks = totalCompletedTasks(board);
+
+        if (!tasks && !completedTasks) return 0;
+
+        const percentage = (completedTasks / tasks) * 100;
+
+        return percentage.toFixed();
+    }
 
 
     
@@ -704,7 +732,10 @@ const useProject = () => {
         closeRecentActivity,
         handleOpenAdminModal,
         closeAdminModal,
-        handleCloseUserProfile
+        handleCloseUserProfile,
+        totalTasks,
+        totalCompletedTasks,
+        percentage,
     }
 }
 

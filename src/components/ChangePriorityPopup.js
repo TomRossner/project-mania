@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setChangePriorityPopupOpen } from '../store/globalStates/globalStates.actions';
 import { selectCurrentTask } from '../store/project/project.selector';
 import { setCurrentProject } from '../store/project/project.actions';
-import LabelContainer from './common/LabelContainer';
+import LabelContainer from './common/LabelsContainer';
 
 const ChangePriorityPopup = () => {
     const currentTask = useSelector(selectCurrentTask);
