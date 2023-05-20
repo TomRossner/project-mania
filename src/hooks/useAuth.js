@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { LS_logout, setTokenHeader } from '../httpRequests/http.auth';
+import { LS_logout, setTokenHeader, LS_getUser, updateUser, saveJWT } from '../services/api/http.auth';
 import { fetchUserAsync, logout, setUser } from '../store/auth/auth.actions';
 import { selectAuth, selectIsAuthenticated, selectUser } from '../store/auth/auth.selector';
-import { saveJWT } from '../httpRequests/http.auth';
-import { provider, auth } from '../firebase/config';
+import { provider, auth } from '../services/firebase/config';
 import { signInWithPopup } from 'firebase/auth';
-import { LS_getUser, updateUser } from '../httpRequests/http.auth';
 import axios from 'axios';
 import { setUserInfo } from '../store/userInfo/userInfo.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';

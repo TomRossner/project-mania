@@ -1,7 +1,7 @@
 import { CHAT_ACTION_TYPES } from "./chat.types";
 import { createAction } from "../utils";
-import { getChat } from "../../httpRequests/http.chat";
-import { getMembers } from "../../httpRequests/http.members";
+import { getChat } from "../../services/api/http.chat";
+import { getMembers } from "../../services/api/http.members";
 
 export const setChat = (chat) => {
     return createAction(CHAT_ACTION_TYPES.SET_CHAT, chat);

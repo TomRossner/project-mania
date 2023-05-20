@@ -1,6 +1,6 @@
 import { createAction } from "../utils";
 import { USER_INFO_ACTION_TYPES } from "./userInfo.types";
-import { getUserInfo } from "../../httpRequests/http.auth";
+import { getUserInfo } from "../../services/api/http.auth";
 
 // Old way of creating actions with Redux
 

@@ -1,4 +1,4 @@
-import { getMembers, getUserByEmail } from "../../httpRequests/http.members";
+import { getMembers, getUserByEmail } from "../../services/api/http.members";
 import { createAction } from "../utils";
 import { MEMBERS_ACTION_TYPES } from "./members.types";
 

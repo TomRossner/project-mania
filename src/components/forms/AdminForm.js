@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import useProject from '../../hooks/useProject';
 import Input from '../common/Input';
 import { ERROR_MESSAGES } from '../../utils/errors';
-import { updateAdminPass } from '../../httpRequests/http.project';
+import { updateAdminPass } from '../../services/api/http.project';
 
 const AdminForm = () => {
     const [inputValues, setInputValues] = useState({

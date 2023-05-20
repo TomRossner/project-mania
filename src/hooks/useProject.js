@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { selectBoards, selectIsLoading } from "../store/boards/boards.selector";
 import { selectActivity, selectCurrentProject, selectCurrentTask, selectProjectAdmins, selectProjectMembers } from "../store/project/project.selector";
-import { updateProject, deleteProject } from "../httpRequests/http.project";
+import { updateProject, deleteProject } from "../services/api/http.project";
 import { useNavigate } from "react-router-dom";
 import { setBoards } from "../store/boards/boards.actions";
-import {deleteTask, addProject} from "../httpRequests/http.project";
-import {getUserInfo} from "../httpRequests/http.auth";
+import {deleteTask, addProject} from "../services/api/http.project";
+import {getUserInfo} from "../services/api/http.auth";
 import { selectMembers } from "../store/members/members.selector";
 import { generateId } from "../utils/IdGenerator";
 import { setCurrentProject, setCurrentTask, setProjectMembers } from "../store/project/project.actions";

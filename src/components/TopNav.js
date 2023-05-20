@@ -4,7 +4,7 @@ import { BsPlus } from 'react-icons/bs';
 import Space from './common/Space';
 // import {BsFillCircleFill} from "react-icons/bs";
 import useAuth from '../hooks/useAuth';
-import MenuIcon from './MenuIcon';
+import MenuIcon from './common/MenuIcon';
 
 const TopNav = ({handleCreateBoard, handleToggleNotificationTab}) => {
   // const [notifications, setNotifications] = useState([]);

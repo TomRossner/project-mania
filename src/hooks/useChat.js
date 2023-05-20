@@ -1,13 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectChat, selectChats, selectContacts, selectCurrentChat, selectCurrentContact, selectFavorites, selectMessages } from '../store/chat/chat.selectors';
-import { getUserById } from '../httpRequests/http.members';
+import {
+    selectChat,
+    selectChats,
+    selectContacts,
+    selectCurrentChat,
+    selectCurrentContact,
+    selectFavorites,
+    selectMessages
+} from '../store/chat/chat.selectors';
+import { getUserById } from '../services/api/http.members';
 import { fetchContactsAsync, setChat, setCurrentContact, setFavoritesChats, setMessages } from '../store/chat/chat.actions';
 import { emitCreateChat, sendMessage } from '../utils/socket';
-import {  createChat, getUserChats } from '../httpRequests/http.chat';
+import { createChat, getUserChats } from '../services/api/http.chat';
 import { setChats } from '../store/chat/chat.actions';
 import { selectUserInfo } from '../store/userInfo/userInfo.selector';
 import useSocketEvents from './useSocketEvents';
-import { fetchMembersAsync } from '../store/members/members.actions';
 
 const useChat = () => {
     const userInfo = useSelector(selectUserInfo);
@@ -65,6 +72,7 @@ const useChat = () => {
         }
     }
 
+    // Listen to socket events
     useSocketEvents({
         events: {
             newMessage: handleReceiveMessage,
@@ -110,6 +118,7 @@ const useChat = () => {
         dispatch(setFavoritesChats(favoritesChats));
     }
 
+    // Sort chats by latest message
     const sortChats = (chats) => {
         // Filter empty chats
         const chatsToFilter = chats.filter(chat => chat.messages.length > 0);

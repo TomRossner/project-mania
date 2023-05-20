@@ -5,34 +5,32 @@ import { fetchBoardsAsync, setBoards } from "./store/boards/boards.actions";
 import { setCurrentProject } from "./store/project/project.actions";
 import { setUserInfo, fetchUserInfoAsync } from "./store/userInfo/userInfo.actions";
 import { setElement } from "./store/globalStates/globalStates.actions";
-import { emitCloseBrowser, emitOnline, socket } from "./utils/socket";
-import { setChat, setCurrentContact } from "./store/chat/chat.actions";
-import { fetchMembersAsync } from "./store/members/members.actions";
+import { emitOnline } from "./utils/socket";
+import { setChat} from "./store/chat/chat.actions";
 
 // Custom Hooks
 import useAuth from "./hooks/useAuth";
 import useProject from "./hooks/useProject";
 import useChat from "./hooks/useChat";
-import useSocketEvents from "./hooks/useSocketEvents";
-import useMembers from "./hooks/useMembers";
 
 //Components
 import PrivateRoute from "./components/common/PrivateRoute";
 import Spinner from "./components/common/Spinner";
-import Projects from "./components/ProjectsList"; 
-import ProjectOverview from "./components/ProjectOverview"; 
+import Projects from "./components/pages/projects/ProjectsList"; 
+import ProjectOverview from "./components/dashboard/ProjectOverview"; 
 import Notifications from "./components/Notifications";
 import Create from "./components/Create"; 
 import ErrorPopup from "./components/ErrorPopup"; 
 import NotificationTab from "./components/NotificationTab";
 import AdminForm from "./components/forms/AdminForm";
 import MoveTaskPopup from "./components/MoveTaskPopup";
-import Home from "./components/Home";
-import About from "./components/About";
+import Home from "./components/pages/Home";
+import About from "./components/pages/About";
 import ChangePriorityPopup from "./components/ChangePriorityPopup";
-import Footer from "./components/Footer";
-import PageNotFound from "./components/PageNotFound";
+import Footer from "./components/common/Footer";
+import PageNotFound from "./components/pages/PageNotFound";
 import AdminModal from "./components/AdminModal";
+import UserProfile from "./components/common/UserProfile";
 
 // Styles
 import "./styles/general.styles.scss";
@@ -73,19 +71,18 @@ import "./styles/footer.styles.scss";
 import "./styles/menu-icon.styles.scss";
 import "./styles/not-found.styles.scss";
 import "./styles/user-profile.styles.scss";
-import UserProfile from "./components/UserProfile";
 
 // Lazy-loading components
-const Profile = lazy(() => import("./components/Profile")); 
-const Login = lazy(() => import("./components/Login")); 
-const Register = lazy(() => import("./components/Register")); 
+const Profile = lazy(() => import("./components/pages/profile/Profile")); 
+const Users = lazy(() => import("./components/pages/users/Users"));
+const Login = lazy(() => import("./components/pages/auth/Login")); 
+const Register = lazy(() => import("./components/pages/auth/Register")); 
+const Logout = lazy(() => import("./components/pages/auth/Logout")); 
+
+const TopNav = lazy(() => import("./components/TopNav"));
 const NavBar = lazy(() => import("./components/NavBar")); 
-const Task = lazy(() => import("./components/Task")); 
-const Logout = lazy(() => import("./components/Logout")); 
-const ActivitySection = lazy(() => import("./components/ActivitySection")); 
-const TopNav = lazy(() => import("./components/TopNav")); 
-const Users = lazy(() => import("./components/Users")); 
-const Chat = lazy(() => import("./components/chat/ChatApp"));
+const ActivitySection = lazy(() => import("./components/dashboard/ActivitySection")); 
+const Chat = lazy(() => import("./components/pages/chat/ChatApp"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -185,10 +182,6 @@ const App = () => {
       || (user && isAuthenticated && user.email !== userInfo?.email)) {
           dispatch(fetchUserInfoAsync(user._id));
       }
-
-      // if ((!user || !isAuthenticated) && userInfo) {
-      //   dispatch(setUserInfo(null));
-      // }
   }, [user, isAuthenticated, userInfo]);
 
 
@@ -251,7 +244,6 @@ const App = () => {
               <Route path="/projects" element={<PrivateRoute element={<Projects/>}/>}/>
               <Route path="/projects/:id" element={<PrivateRoute element={<ProjectOverview/>}/>}/>
               <Route path="/projects/:id/notifications" element={<PrivateRoute element={<Notifications/>}/>}/>
-              <Route path="/projects/:id/:stage_id/:task_id" element={<PrivateRoute element={<Task/>}/>}/>
               <Route path="/profile" element={<PrivateRoute element={<Profile/>}/>}/>
               <Route path="/logout" element={<PrivateRoute element={<Logout/>}/>}/>
               <Route path="/sign-in" element={<Login/>}/>

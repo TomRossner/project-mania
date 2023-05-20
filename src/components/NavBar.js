@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Logo from './Logo';
+import Logo from './common/Logo';
 import { useDispatch, useSelector } from 'react-redux';
 import IconContainer from './common/IconContainer';
 import {BsChatLeftText, BsChevronDown} from "react-icons/bs";
@@ -15,7 +15,7 @@ import useProject from '../hooks/useProject';
 import Space from "./common/Space";
 import BlankProfilePicture from './common/BlankProfilePicture';
 import { RxCross1, RxHome } from 'react-icons/rx';
-import NavLink from './NavLink';
+import NavLink from './common/NavLink';
 import { selectNavOpen } from '../store/globalStates/globalStates.selector';
 import ProfilePicture from './common/ProfilePicture';
 import Line from './common/Line';

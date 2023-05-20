@@ -1,4 +1,4 @@
-import { getProjects } from "../../httpRequests/http.project";
+import { getProjects } from "../../services/api/http.project";
 import { createAction } from "../utils"
 import { BOARDS_ACTION_TYPES } from "./boards.types"
 

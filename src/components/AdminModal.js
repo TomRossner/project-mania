@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Input from './common/Input';
 import useProject from '../hooks/useProject';
-import { checkAdminPass } from '../httpRequests/http.auth';
+import { checkAdminPass } from '../services/api/http.auth';
 import { useDispatch } from 'react-redux';
 import { setCurrentProject } from '../store/project/project.actions';
 import useAuth from '../hooks/useAuth';
