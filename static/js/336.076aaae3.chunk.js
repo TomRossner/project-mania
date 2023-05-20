@@ -1,1 +1,0 @@
-(self.webpackChunkproject_mania=self.webpackChunkproject_mania||[]).push([[336],{5336:function(){}}]);
