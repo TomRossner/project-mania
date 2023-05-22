@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import BackButton from '../../common/BackButton';
 import SearchBar from '../../common/SearchBar';
 import { fetchMembersAsync } from '../../../store/members/members.actions';
@@ -8,13 +8,9 @@ import useAuth from '../../../hooks/useAuth';
 import UserTab from './UserTab';
 import { generateKey } from '../../../utils/keyGenerator';
 import useProject from '../../../hooks/useProject';
-import {BsChatLeftText, BsPlus, BsSearch} from "react-icons/bs";
+import { BsPlus, BsSearch} from "react-icons/bs";
 import IconContainer from '../../common/IconContainer';
 import { IoPersonCircleOutline } from 'react-icons/io5';
-import useMobile from '../../../hooks/useMobile';
-import { fetchChatAsync, setCurrentContact } from '../../../store/chat/chat.actions';
-import { useNavigate } from 'react-router-dom';
-import { selectChats } from '../../../store/chat/chat.selectors';
 import useChat from '../../../hooks/useChat';
 import { AiOutlineMinus } from 'react-icons/ai';
 import useMembers from '../../../hooks/useMembers';
@@ -33,10 +29,7 @@ const Users = () => {
     handleRemoveMemberFromProject,
     isAdmin
   } = useProject();
-  const {isMobile} = useMobile();
-  const navigate = useNavigate();
-  const chats = useSelector(selectChats);
-  const {createNewChat, fetchUserChats} = useChat();
+  const {fetchUserChats} = useChat();
 
   // Check search input
   const checkSearchInput = (input) => {
@@ -61,24 +54,6 @@ const Users = () => {
 
     // Open user profile
     dispatch(setUserProfileOpen(true));
-  }
-
-  // Handle start chat
-  const handleStartChat = (contactId) => {
-    
-    // Get contact and set to currentContact
-    const contact = members.find(m => m._id === contactId);
-    dispatch(setCurrentContact(contact));
-
-    // Check if chat exists
-    const chatExists = chats?.some(chat => chat.users.some(uid => uid === contactId));
-
-    // If not, create new chat
-    if (!chatExists) return createNewChat(userInfo?._id, contact);
-
-    // Start chat
-    dispatch(fetchChatAsync(userInfo?._id, contactId));
-    navigate(`/chat/${userInfo?._id}`);
   }
 
   // Check search input
