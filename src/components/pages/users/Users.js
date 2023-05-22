@@ -185,11 +185,11 @@ const Users = () => {
                       })}
                     </>
                   : members?.filter(m => m._id !== user?._id).map(member => {
-                    return (
-                      <div key={generateKey()} className='search-result'>
-                        <UserTab user={member} additionalContent={userAdditionalContent(member)}/>
-                      </div>
-                    )
+                      return (
+                        <div key={generateKey()} className='search-result'>
+                          <UserTab user={member} additionalContent={userAdditionalContent(member)}/>
+                        </div>
+                      )
                   })
                 }
               </div>

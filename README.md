@@ -4,14 +4,16 @@ This project is a project management tool. Its main goal is to help you be organ
 
 ## Features:
 
-- Sign-in/Sign up/Google sign-in/signup
-- Create projects/boards and add optional description, members, and due dates
-- Each board defaults with 3 stages
+- Sign-in/sign-up or Google sign-in/sign-up
+- Create projects, add members, lists and tasks
+- Each board defaults with 3 stages to help organize your tasks
 - Add/Edit/Delete stages
 - Create/Edit/Delete tasks in any stage you'd like
 - Add/Remove members to/from your project
-- Chat with others!
 - Move tasks between stages
+- Chat with others!
+- Live online status updates
+- Mobile friendly
 - And more!
 
 ### This project is built with

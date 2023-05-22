@@ -32,7 +32,8 @@
         }
         
         .grid-container{
-            height: 90%;
+            max-height: 50vh;
+            padding-bottom: 2.5rem;
             overflow-y: auto;
             display: flex;
             flex-wrap: wrap;
@@ -44,6 +45,7 @@
                 align-items: center;
                 justify-content: space-between;
                 padding: 0.5em;
+                height: fit-content;
             }
         }
 
@@ -154,6 +156,9 @@
 
 @media screen and (min-width: 601px) and (max-width: 768px) {
     .users-container{
+        .search-bar-container{
+            max-width: 70%;
+        }
         .results-container{
             padding: 0;
 
@@ -180,6 +185,9 @@
 
 @media screen and (min-width: 351px) and (max-width: 600px) {
     .users-container{
+        .search-bar-container{
+            max-width: 70%;
+        }
         .results-container{
             padding: 0;
 
@@ -206,6 +214,9 @@
 
 @media screen and (min-width: 200px) and (max-width: 350px) {
     .users-container{
+        .search-bar-container{
+            max-width: 70%;
+        }
         .results-container{
             padding: 0;
 
