@@ -148,7 +148,7 @@
     .projects-list-container{
         .projects-list{
             flex-wrap: wrap;
-            justify-content: space-between;
+            gap: 1rem;
 
             .project{
                 width: 32%;
