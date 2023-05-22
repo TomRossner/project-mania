@@ -14,7 +14,7 @@ import { setIsAdmin } from '../../store/userInfo/userInfo.actions';
 import useSocketEvents from '../../hooks/useSocketEvents';
 
 const ProjectAdmins = () => {
-    const {userInfo, user, userName} = useAuth();
+    const {userInfo, userName} = useAuth();
     const {
         currentProject,
         handleOpenAdminModal,
@@ -59,7 +59,7 @@ const ProjectAdmins = () => {
 
     // Set online status
     const onlineStatusIcon = (user) => {
-        return <BsCircleFill className={user.online ? 'icon online-status green' : 'icon online-status grey'}/>
+        return <BsCircleFill className={user.online === true ? 'icon online-status green' : 'icon online-status grey'}/>
     }
 
     // Check profile image
@@ -145,13 +145,19 @@ const ProjectAdmins = () => {
 
   return (
     <div className="current-project-admins">
-        <span>PROJECT ADMINS</span>
+        <div className='flex-align space-between'>
+            <span>PROJECT ADMINS</span>
+            {!isAdmin
+                ? <button className='btn link text-blue no-scale' onClick={handleOpenAdminModal}>Get admin access</button>
+                : <button className='btn link text-blue no-scale' onClick={() => handleRemoveAdminAccess(userInfo?.email)}>Remove admin access</button>
+            }
+        </div>
         <div className="admins">
             {loading
                 ?   <div id='admins-spinner'><Spinner width={'30px'}/><h3>Loading...</h3></div>
                 :   <>
                         {admins?.map(admin => {
-                            if (admin.email === user?.email) {
+                            if (admin.email === userInfo?.email) {
                                 return (
                                     <div className="admin" key={generateKey()}>
                                         {admin.img_url || admin.base64_img_data
@@ -186,10 +192,6 @@ const ProjectAdmins = () => {
                     </>
             }
         </div>
-        {!isAdmin
-            ? <button className='btn white no-scale' onClick={handleOpenAdminModal}>Get admin access</button>
-            : <button className='btn white no-scale' onClick={() => handleRemoveAdminAccess(userInfo?.email)}>Remove admin access</button>
-        }
     </div>
   )
 }

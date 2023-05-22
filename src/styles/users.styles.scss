@@ -22,30 +22,30 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        padding-inline: 0.5rem;
+
+        h3{
+            span{
+                color: $grey;
+                font-style: italic;
+                font-weight: 400;
+            }
+        }
         
         .grid-container{
             height: 90%;
             overflow-y: auto;
             display: flex;
-            
-            .grid{
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                height: 100vh;
-                width: 100%;
-                overflow-y: auto;
-    
-                .search-result{
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    padding: 0.5em;
-                }
+            flex-wrap: wrap;
+            width: 100%;
+        
+            .search-result{
+                width: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.5em;
             }
         }
-        
 
         p{
             font-size: 1.2rem;
@@ -78,21 +78,153 @@
     }
 }
 
-@media screen and (min-width: 200px) and (max-width: 850px) {
+@media screen and (min-width: 1025px) and (max-width: 1440px) {
     .users-container{
         .results-container{
+            padding: 0;
 
             .grid-container{
-                .grid{
-                    grid-template-columns: 1fr;
+                
+                .search-result{
+                    width: 50%;
+                    margin: 0;
+
+                    .btn-text{
+                        display: block;
+                    }
+                    
+                    .user-tab{
+                        flex: 1;
+                    }
                 }
             }
 
-            .search-result{
-                .user-tab{
-                    flex: 1;
+        }
+    }
+}
+@media screen and (min-width: 851px) and (max-width: 1024px) {
+    .users-container{
+        .results-container{
+            padding: 0;
+
+            .grid-container{
+                
+                .search-result{
+                    width: 50%;
+                    margin: 0;
+
+                    .btn-text{
+                        display: none;
+                    }
+                    
+                    .user-tab{
+                        flex: 1;
+                    }
                 }
             }
+
+        }
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 850px) {
+    .users-container{
+        .results-container{
+            padding: 0;
+
+            .grid-container{
+                
+                .search-result{
+                    width: 50%;
+                    margin: 0;
+
+                    .btn-text{
+                        display: none;
+                    }
+                    
+                    .user-tab{
+                        flex: 1;
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+@media screen and (min-width: 601px) and (max-width: 768px) {
+    .users-container{
+        .results-container{
+            padding: 0;
+
+            .grid-container{
+                
+                .search-result{
+                    width: 50%;
+                    margin: 0 auto;
+
+                    .btn-text{
+                        display: none;
+                    }
+                    
+                    .user-tab{
+                        flex: 1;
+                        gap: 0.5rem;
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+@media screen and (min-width: 351px) and (max-width: 600px) {
+    .users-container{
+        .results-container{
+            padding: 0;
+
+            .grid-container{
+                
+                .search-result{
+                    width: 100%;
+                    margin: 0 auto;
+
+                    .btn-text{
+                        display: none;
+                    }
+                    
+                    .user-tab{
+                        flex: 1;
+                        gap: 0.5rem;
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+@media screen and (min-width: 200px) and (max-width: 350px) {
+    .users-container{
+        .results-container{
+            padding: 0;
+
+            .grid-container{
+                
+                .search-result{
+                    width: 100%;
+                    margin: 0 auto;
+
+                    .btn-text, button{
+                        display: none;
+                    }
+                    
+                    .user-tab{
+                        flex: 1;
+                    }
+                }
+            }
+
         }
     }
 }

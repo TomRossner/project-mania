@@ -101,7 +101,7 @@ const NavBar = () => {
                 :
                 <>
                   <Link className="link flex-align" to="/profile" onClick={closeMenu}><IconContainer icon={<MdPerson className="icon large"/>}/>My profile</Link>
-                  <button className='btn link flex-align no-scale' onClick={closeMenu}><IconContainer icon={<IoSettingsOutline className='icon'/>}/>Settings</button>
+                  {/* <button className='btn link flex-align no-scale' onClick={closeMenu}><IconContainer icon={<IoSettingsOutline className='icon'/>}/>Settings</button> */}
                   <Line/>
                   <Link className="link flex-align" to="/logout" onClick={closeMenu}><IconContainer icon={<MdLogout className="icon"/>}/>Logout</Link>
                 </>

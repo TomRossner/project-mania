@@ -178,9 +178,15 @@ const App = () => {
 
   // Fetch userInfo
   useEffect(() => {
+    
       if ((user && isAuthenticated && !userInfo)
       || (user && isAuthenticated && user.email !== userInfo?.email)) {
           dispatch(fetchUserInfoAsync(user._id));
+      }
+
+      // Set online property to true if false
+      if ((user || isAuthenticated) && userInfo?.online === false) {
+        dispatch(setUserInfo({...userInfo, online: true}));
       }
   }, [user, isAuthenticated, userInfo]);
 

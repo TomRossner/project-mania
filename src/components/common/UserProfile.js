@@ -12,6 +12,7 @@ import LabelContainer from './LabelsContainer';
 import { fetchChatAsync, setChatSideBarOpen, setCurrentContact } from '../../store/chat/chat.actions';
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { BsChatLeftText } from 'react-icons/bs';
 
 const UserProfile = () => {
   const {targetUser} = useMembers();
@@ -62,9 +63,10 @@ const UserProfile = () => {
 
             {targetUser.header ? <p>{targetUser.header}</p> : null}
 
-            <div className='buttons-container'>
-                <button className='btn white' onClick={() => handleLoadChat(targetUser)}>Send message</button>
-            </div>
+            <button className='btn white no-scale' onClick={() => handleLoadChat(targetUser)} title={`Chat with ${targetUser.first_name}`}>
+              <IconContainer icon={<BsChatLeftText className='icon'/>}/>
+              <span className='btn-text'>Message</span>
+            </button>
 
             <Space/>
 

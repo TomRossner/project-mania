@@ -45,6 +45,7 @@ const Users = () => {
     ) {
       const matchingUsers = [...members?.filter(member => member.first_name.toLowerCase().includes(input.toLowerCase()) ||
       member.last_name.toLowerCase().includes(input.toLowerCase()))];
+
       setSearchResults([...matchingUsers]);
     }
   }
@@ -82,7 +83,7 @@ const Users = () => {
 
   // Check search input
   useEffect(() => {
-    if (!inputValue.length) setSearchResults([]);
+    if (!inputValue.length || !inputValue) setSearchResults([]);
     checkSearchInput(inputValue);
   }, [inputValue]);
 
@@ -126,27 +127,24 @@ const Users = () => {
   const userAdditionalContent = (member) => <>
     <div className='buttons-container'>
 
-      <button className='btn white' onClick={() => handleStartChat(member._id)} title={`Chat with ${member.first_name}`}>
-        <IconContainer icon={<BsChatLeftText className='icon'/>}/>
-        {isMobile ? '' : ' Message'}
-      </button>
-
       <button className='btn white' onClick={() => handleViewProfile(member)} title={`View ${member.first_name}'s profile`}>
         <IconContainer icon={<IoPersonCircleOutline className='icon xl'/>}/>
-        {isMobile ? '' : ' View profile'}
+        <span className='btn-text'>View profile</span>
       </button>
 
       {currentProject?.members?.some(m => m._id === member._id)
         && isAdmin
         &&  <button className='btn white' title={`Remove ${member.first_name} from project`} onClick={() => handleRemoveMemberFromProject(member._id)}>
-              <IconContainer icon={<AiOutlineMinus className='icon'/>}/>{isMobile ? '' : ' Remove from project'}
+              <IconContainer icon={<AiOutlineMinus className='icon'/>}/>
+              <span className='btn-text'>Remove from project</span>
             </button>
       }
 
       {!currentProject?.members?.some(m => m._id === member._id)
         && isAdmin
         &&  <button className='btn white' title={`Add ${member.first_name} to project`} onClick={() => handleAddMember(member)}>
-              <IconContainer icon={<BsPlus className='icon xl'/>}/>{isMobile? '' : ' Add to project'}
+              <IconContainer icon={<BsPlus className='icon xl'/>}/>
+              <span className='btn-text'>Add to project</span>
             </button>
       }
 
@@ -172,7 +170,7 @@ const Users = () => {
             <div className='results-container'>
               <p>{members?.filter(member => member._id !== user?._id).length} {members?.filter(member => member._id !== user?._id).length === 1 ? "user found": "users found"}</p>
               <Line/>
-              <h3>Results</h3>
+              <h3>Results <span>({searchResults.filter(user => user._id !== userInfo?._id).length})</span></h3>
               <div className='grid-container'>
                 {searchResults.length
                   ? <>
