@@ -1,96 +1,184 @@
-import React, { useEffect, useState } from 'react';
-import ProfilePicture from '../../common/ProfilePicture';
-import Space from '../../common/Space';
-import useAuth from '../../../hooks/useAuth';
-import useChat from '../../../hooks/useChat';
-import { useDispatch } from 'react-redux';
-import { setChatSideBarOpen, setCurrentContact } from '../../../store/chat/chat.actions';
-import BlankProfilePicture from '../../common/BlankProfilePicture';
+import React, { useEffect, useRef, useState } from 'react';
+import ChatInputField from './ChatInputField';
 import IconContainer from '../../common/IconContainer';
-import {MdDoneAll} from "react-icons/md";
-import { AM_PM } from '../../../utils/timeFormats';
-import { fetchChatAsync } from '../../../store/chat/chat.actions';
+import useChat from '../../../hooks/useChat';
+import Conversation from './Conversation';
+import useAuth from '../../../hooks/useAuth';
+import { BsChevronRight, BsSearch} from 'react-icons/bs';
+import BlankProfilePicture from '../../common/BlankProfilePicture';
+import ProfilePicture from '../../common/ProfilePicture';
+import { getChat } from '../../../services/api/http.chat';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchChatAsync, setChatSideBarOpen, setContacts, setCurrentContact } from '../../../store/chat/chat.actions';
+import { setCurrentProject } from '../../../store/project/project.actions';
+import ChatFavorites from './ChatFavorites';
+import SearchBar from '../../common/SearchBar';
+import useProject from '../../../hooks/useProject';
+import { useNavigate } from 'react-router-dom';
+import useMobile from '../../../hooks/useMobile';
+import {HiOutlineChatBubbleLeftRight} from "react-icons/hi2";
+import { selectChatSideBarOpen } from '../../../store/chat/chat.selectors';
+import ChatsList from './ChatsList';
 
-const Chat = ({contactId, messages, isTyping}) => {
-    const {getContactInfo} = useChat();
-    const {userInfo} = useAuth();
-    const dispatch = useDispatch();
-    const [lastMessage, setLastMessage] = useState(null);
-    const [unseenMessages, setUnseenMessages] = useState(0);
-    const [contact, setContact] = useState(null);
+const Chat = () => {
+  const {loadContacts, contacts, createNewChat, currentChat} = useChat();
+  const {userInfo} = useAuth();
+  const [searchValue, setSearchValue] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const inputRef = useRef(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const dispatch = useDispatch();
+  const {currentProject} = useProject();
+  const navigate = useNavigate();
+  const {isMobile} = useMobile();
+  const chatSideBarOpen = useSelector(selectChatSideBarOpen);
 
-    // Load chat
-    const loadChat = async (userId, contactId) => {
-      const contact = await getContactInfo(contactId);
+  // Update search value
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  }
+
+  // Check if inputs match contact names
+  const checkContactNames = (searchValue) => {
+    const value = searchValue.toLowerCase();
+
+    const matchingContacts = contacts.filter(contact =>
+      contact.first_name.toLowerCase().includes(value)
+      || contact.last_name.toLowerCase().includes(value)
+      || (contact.first_name.toLowerCase() || contact.last_name.toLowerCase()) === value
+      || contact.first_name.toLowerCase() + ' ' + contact.last_name.toLowerCase() === value
+    );
+    
+    // Set search results
+    setSearchResults(matchingContacts);
+  }
+
+  // Check if chat exists, if not create new chat
+  const handleContactClick = async (contact) => {
+
+    // Check if exists
+    const chatAlreadyExists = await getChat(userInfo?._id, contact._id);
+
+    if (chatAlreadyExists) {
       dispatch(setCurrentContact(contact));
-      dispatch(fetchChatAsync(userId, contactId));
+
+      setIsSearching(false);
+      setSearchValue("");
+    } else {
+      // Create chat
+      await createNewChat(userInfo?._id, contact);
+      
+      dispatch(setCurrentContact(contact));
+
+      setIsSearching(false);
+      setSearchValue("");
     }
+  }
 
-    // Handle chat click
-    const handleChatClick = async (contactId) => {
-      loadChat(userInfo?._id, contactId);
-      dispatch(setChatSideBarOpen(false));
+  // Refresh current chat
+  const refreshCurrentChat = () => {
+    dispatch(fetchChatAsync(currentChat.users[0], currentChat.users[1]));
+  }
+
+  // Toggle chat side bar
+  const toggleChatSideBar = () => {
+    dispatch(setChatSideBarOpen(!chatSideBarOpen));
+  }
+
+  // Set isSearching
+  useEffect(() => {
+    if (inputRef.current && searchValue.length) {
+      setIsSearching(true);
+    } else setIsSearching(false);
+  }, [searchValue]);
+
+  // Check if inputs match contact names
+  useEffect(() => {
+    if (!searchValue.length) return;
+    checkContactNames(searchValue);
+  }, [searchValue]);
+
+  // Set currentProject to null
+  useEffect(() => {
+    if (currentProject) dispatch(setCurrentProject(null));
+  }, []);
+
+  // Remove current user from contacts
+  useEffect(() => {
+    if (!contacts.length) return;
+
+    const isInContacts = contacts.some(contact => contact._id === userInfo?._id);
+
+    if (isInContacts) {
+      dispatch(setContacts([...contacts.filter(c => c._id !== userInfo?._id)]));
     }
+    
+  }, [contacts]);
 
-    // Set last message and unseen messages
-    useEffect(() => {
-      if (!messages?.length) return;
-      setLastMessage(messages[messages.length - 1]);
-      setUnseenMessages(messages.filter(msg => msg.seen === false && msg.from !== userInfo?._id).length);
-    }, [messages]);
+  useEffect(() => {
+    if (!userInfo) return;
 
-    // Refresh contact
-    const refreshContact = async (contactId) => {
-        const contact = await getContactInfo(contactId);
-        setContact(contact);
-    }
+    // Load contacts
+    loadContacts();
 
-    // Load contact
-    useEffect(() => {
-      refreshContact(contactId);
-    }, []);
+    // Refresh current chat
+    if (currentChat) {
+      refreshCurrentChat();
+    } else dispatch(setChatSideBarOpen(true));
+  }, []);
+
+  // Redirect to homepage
+  useEffect(() => {
+    if (!userInfo) navigate('/');
+  }, []);
 
   return (
-    <div
-      className='contact'
-      onClick={() => handleChatClick(contactId)}
-    >
-        <div className='contact-image'>
-          {contact?.base64_img_data || contact?.img_url
-            ? <ProfilePicture src={contact?.base64_img_data || contact?.img_url}/>
-            : <BlankProfilePicture/>
-          }
+    <div className='main-chat-container'>
+      <div className={chatSideBarOpen ? 'left open' : 'left'}>
+        <IconContainer icon={<BsChevronRight className='icon'/>} additionalClass={isMobile ? 'mobile' : 'not-mobile'} onClick={toggleChatSideBar}/>
+
+        <div className='main-chat-title'>
+          <IconContainer icon={<HiOutlineChatBubbleLeftRight className='icon'/>}/>
+          <h1>Chat</h1>
         </div>
 
-        <div className='contact-content'>
-          <h3 className='contact-name'>{contact?.first_name} {contact?.last_name}</h3>
-          <span className='last-time-message-sent'>{lastMessage?.sent_at ? AM_PM(lastMessage?.sent_at) : null}</span>
-          <p className='last-message'>
-            {isTyping
-              ? <span className='typing green'>typing...</span>
-              : <>
-                  {lastMessage?.from === userInfo?._id
-                    ? <>
-                        {lastMessage?.seen === true
-                          ? <><IconContainer icon={<MdDoneAll className='icon green'/>}/>{lastMessage?.text}</>
-                          : <><IconContainer icon={<MdDoneAll className='icon'/>}/>{lastMessage?.text}</>
-                        }
-                      </>
-                    : lastMessage?.text
-                  }
-                </>
-            }
-            
-          </p>
-          <Space/>
-          {/* {lastMessage?.seen === false && unseenMessages
-            ? 
-              <div className='unseen-messages-count-container'>
-                <span className='unseen-messages-count'>{unseenMessages}</span>
+        <SearchBar
+          type="text"
+          refValue={inputRef}
+          placeholderText='Search'
+          fn={handleSearchChange}
+          value={searchValue}
+          icon={<IconContainer icon={<BsSearch className='icon'/>}/>}
+        />
+
+        {isSearching
+        ? <div className='chat-search-results'>
+            {searchResults.length
+            ? searchResults.map(res => (
+              <div key={res._id} className='profile' onClick={() => handleContactClick(res)}>
+                {res.base64_img_data || res.img_url
+                  ? <ProfilePicture src={res.base64_img_data || res.img_url}/>
+                  : <BlankProfilePicture/>
+                }
+                <span>{res.first_name} {res.last_name}</span>
               </div>
-            : null
-          } */}
-        </div>
+            ))
+            : null}
+          </div>
+        : (
+          <>
+            <ChatFavorites/>
+            <ChatsList/>
+          </>
+        )}
+
+      </div>
+
+      <div className='right'>
+        <Conversation/>
+        <ChatInputField/>
+      </div>
+      
     </div>
   )
 }

@@ -5,7 +5,7 @@ import useAuth from '../../../hooks/useAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFavorites, setFavoritesChats } from '../../../store/chat/chat.actions';
 import { selectFavorites, selectFavoritesChats } from '../../../store/chat/chat.selectors';
-import Chat from './Chat';
+import Chat from './ListedChat';
 import useSocketEvents from '../../../hooks/useSocketEvents';
 import Spinner from '../../common/Spinner';
 import useChat from '../../../hooks/useChat';

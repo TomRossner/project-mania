@@ -91,6 +91,7 @@ form{
         .form-project-members{
             display: flex;
             width: 95%;
+            min-height: 7vh;
             margin: 0 auto;
             padding: 0.5rem;
             border-radius: 5px;
@@ -98,13 +99,34 @@ form{
             gap: 0.5rem;
             user-select: none;
 
-            .form-project-member-added{
-                font-weight: 600;
-                color: $blue_hover;
-                border: 1px solid $blue_hover;
-                padding: 0.2rem;
-                text-transform: capitalize;
-                border-radius: 5px;
+            .relative{
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                overflow: hidden;
+
+                .icon-span{
+                    &.circle{
+                        width: auto;
+                        padding: 0.6rem;
+                        border-radius: 50%;
+                        position: absolute;
+                        opacity: 0;
+                        transition: background-color 0.1s;
+
+                        .icon{
+                            font-size: 1.7rem;
+                            color: $dark;
+                        }
+
+                        &:hover, &:active{
+                            opacity: 1;
+                            background-color: rgba(200, 200, 200, 0.7);
+                        }
+                    }
+                }
             }
         }
 

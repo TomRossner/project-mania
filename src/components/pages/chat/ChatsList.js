@@ -5,11 +5,11 @@ import { BsChatLeftTextFill } from 'react-icons/bs';
 import useAuth from '../../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import { selectChats, selectContacts, selectFavorites } from '../../../store/chat/chat.selectors';
-import Chat from './Chat';
 import useSocketEvents from '../../../hooks/useSocketEvents';
 import useChat from '../../../hooks/useChat';
+import ListedChat from './ListedChat';
 
-const ChatContacts = () => {
+const ChatsList = () => {
     const {userInfo} = useAuth();
     const chats = useSelector(selectChats);
     const contacts = useSelector(selectContacts);
@@ -50,7 +50,7 @@ const ChatContacts = () => {
                 {chats?.length
                     ? sortChats(chats).map(chat => {
                         return (
-                            <Chat
+                            <ListedChat
                                 key={chat._id}
                                 contactId={chat.users?.find(uid => uid !== userInfo?._id)}
                                 messages={chat.messages}
@@ -66,4 +66,4 @@ const ChatContacts = () => {
   )
 }
 
-export default ChatContacts;
+export default ChatsList;

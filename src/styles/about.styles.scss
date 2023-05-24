@@ -46,6 +46,7 @@
         width: 100%;
         margin: 0 auto;
         justify-content: space-between;
+        gap: 2rem;
 
         .feature{
             width: 100%;
@@ -232,6 +233,16 @@
                 flex-direction: column;
                 gap: 1rem;
 
+                &:nth-child(even), &:nth-child(odd){
+                    .feature-imgs{
+                        order: 1;
+                    }
+
+                    .feature-text-content{
+                        order: 2;
+                    }
+                }
+
                 .grid-2{
                     width: 100%;
 
@@ -309,6 +320,16 @@
                 margin: 0 auto;
                 flex-direction: column;
                 gap: 1rem;
+
+                &:nth-child(even), &:nth-child(odd){
+                    .feature-imgs{
+                        order: 1;
+                    }
+
+                    .feature-text-content{
+                        order: 2;
+                    }
+                }
 
                 .grid-2{
                     width: 100%;

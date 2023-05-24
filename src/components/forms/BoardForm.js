@@ -12,6 +12,9 @@ import { setMembers } from '../../store/members/members.actions';
 import useProject from '../../hooks/useProject';
 import { ERROR_MESSAGES } from '../../utils/errors';
 import useMembers from '../../hooks/useMembers';
+import ProfilePicture from '../common/ProfilePicture';
+import BlankProfilePicture from '../common/BlankProfilePicture';
+import { RxCross2 } from 'react-icons/rx';
 
 const BoardForm = () => {
   const [readOnly, setReadOnly] = useState(true);
@@ -32,6 +35,8 @@ const BoardForm = () => {
 
   // Handle add member to team
   const handleAddMember = (e) => {
+    if (!e.target.value) return;
+
     const user = members.find(member => member._id === e.target.value);
     
     // Check if user is already in team
@@ -47,6 +52,11 @@ const BoardForm = () => {
     else {
       showError(ERROR_MESSAGES.ADD_MEMBER_FAILED);
     }
+  }
+
+  // Handle remove member
+  const handleRemoveMember = (id) => {
+    setTeam([...team.filter(member => member._id !== id)]);
   }
 
   // Handle submit form
@@ -96,9 +106,9 @@ const BoardForm = () => {
   return (
     <form onSubmit={handleFormSubmit}>
       <div className='form-title-container'>
-        <input className="form-title-input" type="text" name='title' readOnly={readOnly} ref={FormTitleRef} onChange={handleInputChange} value={title}></input>
-        {readOnly && <IconContainer onClick={handleEditFormTitle} icon={<RiEdit2Fill className='icon'/>}></IconContainer>}
-        {!readOnly && <IconContainer additionalClass="check" onClick={validate} icon={<FiCheck className='icon'/>}></IconContainer>}
+        <input className="form-title-input" type="text" name='title' readOnly={readOnly} ref={FormTitleRef} onChange={handleInputChange} value={title}/>
+        {readOnly && <IconContainer onClick={handleEditFormTitle} icon={<RiEdit2Fill className='icon'/>}/>}
+        {!readOnly && <IconContainer additionalClass="check" onClick={validate} icon={<FiCheck className='icon'/>}/>}
       </div>
         <div className='form-inputs-container'>
 
@@ -121,7 +131,7 @@ const BoardForm = () => {
             />
 
             <div className='input-container'>
-              <label htmlFor='members'>Members</label>
+              <label htmlFor='members'>Team members</label>
               <select onChange={handleAddMember}>
                 <option value="">Choose members</option>
                 {members.filter(member => member._id !== userInfo?._id)
@@ -137,19 +147,31 @@ const BoardForm = () => {
 
             <div className='form-project-members'>
               {team.length > 4
-              ?
-              <>
-                {team?.filter((_, index) => index < 4)
-                  .map(member =>
-                    <span key={member._id} className='form-project-member-added' onClick={() => handleRemoveMemberFromProject(member._id)}>
-                      {member.first_name} {member.last_name.substring(0, 1)}.
-                    </span>)}
-                <span>+ {team.filter((_, index) => index > 3).length} more</span>
-              </>
-              : team?.map(member =>
-                  <span key={member._id} className='form-project-member-added' onClick={() => handleRemoveMemberFromProject(member._id)}>
-                    {member.first_name} {member.last_name.substring(0, 1)}.
-                  </span>)}
+                ?
+                <>
+                  {team?.filter((_, index) => index < 4)
+                    .map(member =>
+                      <div key={member._id} onClick={() => handleRemoveMember(member._id)} className='relative' title={`Remove ${member.first_name}`}>
+                        {member.base64_img_data || member.img_url
+                          ? <ProfilePicture src={member.base64_img_data || member.img_url}/> 
+                          : <BlankProfilePicture/>
+                        }
+                        <IconContainer additionalClass={'circle'} icon={<RxCross2 className='icon'/>}/>
+                      </div>
+                    )
+                  }
+                  <span>+ {team.filter((_, index) => index > 3).length} more</span>
+                </>
+                : team?.map(member =>
+                    <div key={member._id} onClick={() => handleRemoveMember(member._id)} className='relative' title={`Remove ${member.first_name}`}>
+                      {member.base64_img_data || member.img_url
+                        ? <ProfilePicture src={member.base64_img_data || member.img_url}/>
+                        : <BlankProfilePicture/>
+                      }
+                      <IconContainer additionalClass={'circle'} icon={<RxCross2 className='icon'/>}/>
+                    </div>
+                  )
+              }
             </div>
 
         </div>

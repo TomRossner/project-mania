@@ -81,8 +81,8 @@ const Logout = lazy(() => import("./components/pages/auth/Logout"));
 
 const TopNav = lazy(() => import("./components/TopNav"));
 const NavBar = lazy(() => import("./components/NavBar")); 
+const Chat = lazy(() => import("./components/pages/chat/Chat"));
 const ActivitySection = lazy(() => import("./components/dashboard/ActivitySection")); 
-const Chat = lazy(() => import("./components/pages/chat/ChatApp"));
 
 const App = () => {
   const dispatch = useDispatch();
