@@ -5,7 +5,7 @@ import ProjectMembers from './ProjectMembers';
 import { projectMenuOptions, projectMenuOptions_admin } from "../../utils/projectMenuOptions";
 import { useDispatch } from 'react-redux';
 import { setProjectMenuOpen, setTasks } from '../../store/globalStates/globalStates.actions';
-import { setCurrentProject } from '../../store/project/project.actions';
+import { setCurrentProject, setCurrentTask } from '../../store/project/project.actions';
 import {AiFillProject} from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 import useProject from '../../hooks/useProject';
@@ -25,7 +25,8 @@ const ProjectInfoBar = () => {
         handleMenuClick,
         handleDeleteProject,
         tasks,
-        isAdmin
+        isAdmin,
+        openTask
     } = useProject();
     const [projectNameInputValue, setProjectNameInputValue] = useState("");
     const titleRef = useRef();
@@ -99,6 +100,16 @@ const ProjectInfoBar = () => {
         setSearchFieldValue(e.target.value);
     }
 
+    const handleSearchResultClick = (task) => {
+        dispatch(setCurrentTask(task));
+        openTask();
+
+        // Clear search
+        setSearchFieldValue('');
+        setSearchResults([]);
+        setIsSearching(false);
+    }
+
     useEffect(() => {
         if (searchFieldValue.length && searchFieldRef.current) {
             setIsSearching(true);
@@ -169,7 +180,7 @@ const ProjectInfoBar = () => {
                 <div className='search-results'>
                     {searchResults?.map(res => {
                         return (
-                            <div key={res._id} className='search-result'>
+                            <div key={res._id} className='search-result' onClick={() => handleSearchResultClick(res)}>
                                 <div>
                                     <p>{res.current_stage.name}</p>
                                     <h3>{res.title}</h3>

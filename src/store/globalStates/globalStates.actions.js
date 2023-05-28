@@ -64,3 +64,6 @@ export const setUserProfileOpen = (bool) => {
 export const setTargetUser = (user) => {
     return createAction(GLOBAL_STATES_ACTION_TYPES.SET_TARGET_USER, user);
 }
+export const setTaskOpen = (bool) => {
+    return createAction(GLOBAL_STATES_ACTION_TYPES.SET_TASK_OPEN, bool);
+}

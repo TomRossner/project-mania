@@ -23,3 +23,5 @@ export const selectAdminModalOpen = (state) => state.globalStates.adminModalOpen
 export const selectUserProfileOpen = (state) => state.globalStates.userProfileOpen;
 
 export const selectTargetUser = (state) => state.globalStates.targetUser;
+
+export const selectTaskOpen = (state) => state.globalStates.taskOpen;

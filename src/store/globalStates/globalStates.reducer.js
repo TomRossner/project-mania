@@ -21,7 +21,8 @@ const INITIAL_STATE = {
     isMobile: false,
     adminModalOpen: false,
     userProfileOpen: false,
-    targetUser: null
+    targetUser: null,
+    taskOpen: false
 }
 
 export const globalStatesReducer = (state = INITIAL_STATE, action) => {
@@ -68,6 +69,8 @@ export const globalStatesReducer = (state = INITIAL_STATE, action) => {
             return {...state, userProfileOpen: payload};
         case GLOBAL_STATES_ACTION_TYPES.SET_TARGET_USER:
             return {...state, targetUser: payload};
+        case GLOBAL_STATES_ACTION_TYPES.SET_TASK_OPEN:
+            return {...state, taskOpen: payload};
         default:
             return state;
     }

@@ -31,6 +31,7 @@ import Footer from "./components/common/Footer";
 import PageNotFound from "./components/pages/PageNotFound";
 import AdminModal from "./components/AdminModal";
 import UserProfile from "./components/common/UserProfile";
+import Task from "./components/dashboard/Task";
 
 // Styles
 import "./styles/general.styles.scss";
@@ -71,6 +72,7 @@ import "./styles/footer.styles.scss";
 import "./styles/menu-icon.styles.scss";
 import "./styles/not-found.styles.scss";
 import "./styles/user-profile.styles.scss";
+import "./styles/task.styles.scss";
 
 // Lazy-loading components
 const Profile = lazy(() => import("./components/pages/profile/Profile")); 
@@ -110,7 +112,8 @@ const App = () => {
     showError,
     changePriorityPopupOpen,
     adminModalOpen,
-    userProfileOpen
+    userProfileOpen,
+    taskOpen
   } = useProject();
   
   const {
@@ -237,6 +240,7 @@ const App = () => {
         {adminFormOpen && <AdminForm/>}
         {adminModalOpen && <AdminModal/>}
         {userProfileOpen && <UserProfile/>}
+        {taskOpen && <Task/>}
         <div className="sections-container">
           <NavBar/>
           <div className="main-content">

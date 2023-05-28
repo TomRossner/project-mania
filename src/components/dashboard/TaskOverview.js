@@ -12,6 +12,8 @@ import { useDrag } from 'react-dnd';
 import OptionsMenu from '../common/OptionsMenu';
 import { task_options } from '../../utils/taskMenuOptions';
 import { dueDateFormat } from '../../utils/timeFormats';
+import { useDispatch } from 'react-redux';
+import { setCurrentTask } from '../../store/project/project.actions';
 
 const TaskOverview = ({task}) => {
     const {
@@ -27,9 +29,11 @@ const TaskOverview = ({task}) => {
         currentProject,
         handleMarkAsDone,
         handleMarkAsNotDone,
-        handleTaskOptions
+        handleTaskOptions,
+        openTask
     } = useProject();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [menuOpen, setMenuOpen] = useState(false);
 
     const [{isDragging}, drag] = useDrag({
@@ -46,8 +50,9 @@ const TaskOverview = ({task}) => {
     const completedLabel = labels.find(label => label.id === 'label_completed');
 
     // Open task
-    const handleOpenTask = (task_id) => {
-        navigate(`/projects/${currentProject._id}/${current_stage.id}/${task_id}`);
+    const handleOpenTask = (task) => {
+        dispatch(setCurrentTask(task));
+        openTask();
     }
 
     // Toggle options
@@ -69,7 +74,7 @@ const TaskOverview = ({task}) => {
                     <IconContainer additionalClass="small" icon={<MdOpenInNew className="icon"/>}/>
                 </button> */}
             </div>
-            <div className='listed-task-title-and-subtitle'>
+            <div className='listed-task-title-and-subtitle' onClick={() => handleOpenTask(task)}>
                 <span className='listed-task-title'>{title}</span>
                 {subtitle && <p className='listed-task-subtitle'>{subtitle}</p>}
             </div>

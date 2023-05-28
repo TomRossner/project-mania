@@ -28,7 +28,8 @@ import {
     setNavOpen,
     setActivitySectionOpen,
     setAdminModalOpen,
-    setUserProfileOpen
+    setUserProfileOpen,
+    setTaskOpen
 } from "../store/globalStates/globalStates.actions";
 import {
     activity_addMember,
@@ -77,7 +78,8 @@ const useProject = () => {
         moveTaskPopupOpen,
         changePriorityPopupOpen,
         adminModalOpen,
-        userProfileOpen
+        userProfileOpen,
+        taskOpen
     } = useSelector(selectGlobalStates);
 
 
@@ -274,6 +276,16 @@ const useProject = () => {
         const percentage = (completedTasks / tasks) * 100;
 
         return percentage.toFixed();
+    }
+
+    // Open task
+    const openTask = () => {
+        dispatch(setTaskOpen(true));
+    }
+
+    // Close task
+    const closeTask = () => {
+        dispatch(setTaskOpen(false));
     }
 
 
@@ -688,6 +700,7 @@ const useProject = () => {
         projectAdmins,
         isAdmin,
         userProfileOpen,
+        taskOpen,
         handleChangePriority,
         handleCreateBoard,
         handleCreate, // handleCreate and handleCreateBoard are similar
@@ -736,6 +749,8 @@ const useProject = () => {
         totalTasks,
         totalCompletedTasks,
         percentage,
+        openTask,
+        closeTask
     }
 }
 
